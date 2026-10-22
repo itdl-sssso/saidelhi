@@ -1,6 +1,6 @@
 # Dev contract — SSSSO Delhi NCR platform
 
-Status: **DRAFT v0.1 — awaiting sign-off** · 22 Oct 2026
+Status: **v0.2 — accepted** · 22 Oct 2026 (v0.2: M0 backend amendments, see §10)
 Scope source: `docs/specs/` (50 page specs, v1 19 Oct 2026) · Design: SSSSO Delhi NCR Design System (`design-system/`) · Visual pages: Claude Design export (pending, `docs/design/`).
 
 This file is the single agreement between the **backend track** and the **frontend track**. Neither track changes a shape in §4–§6 without updating this file in the same commit.
@@ -290,3 +290,20 @@ Definition of done per milestone: `pnpm typecheck && pnpm lint && pnpm test && p
 3. WhatsApp Cloud API credentials (see `docs/whatsapp-setup.md`).
 4. Real district / samithi list (placeholder: Central, East, New Delhi, North, South, West, Gurugram, Noida–Ghaziabad, Faridabad).
 5. Sarva Dharma emblem file; photography.
+
+---
+
+## 10. Amendments log
+
+### v0.2 (M0 backend)
+1. `ArticleSummary` = `Article` minus `bodyHtml` and `gallery`. Used by `/articles` lists, `home.articles`, `home.centenary`, `related`. Detail endpoint returns `ArticleDetail` (Article + `prev`, `next`, `related`, linked `event`).
+2. `Media.width` / `Media.height` are `number | null` (legacy images have unknown sizes).
+3. `KpiTile.period` = `{ from: ISODate | null, to: ISODate, label: I18nText }`; `from` null = all time.
+4. Payload DTOs added (zod in `src/contract`): `HomePayload`, `ImpactPayload`, `DistrictPayload`, `CentreListItem`, `CentreDetail`, `ArticleDetail`, `ArticleRef`, `Thought`, `WingCard`, `SevaTypeImpact`, `DistrictImpact`, `PeriodInfo`, `EventCard`, `LinkInfo`, `Health`, `FeatureFlags`, `Me`, `PrivacyRequestInput`.
+5. Error code `PHONE_NOT_LISTED` (403) added to §2.
+6. Invalid query/path params → 400 `BAD_REQUEST` with `fields`; invalid body → 422 `VALIDATION_FAILED`.
+7. `/articles?c=` accepts `all`, any `ArticleCategory`, or `centenary` (both centenary categories).
+8. `/centres` is paged, default `pageSize` 100; `distanceKm` null until pincode geodata exists.
+9. `/events` without `from`/`to` lists from today (IST) onward.
+10. `Permission` is `string` until M3 defines the set.
+11. KPI facts table is `submission_answer_kpi`; KPI labels/rules live in `src/server/domain/kpi.ts` until `kpi_definition` (M6).
