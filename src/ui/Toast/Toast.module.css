@@ -1,0 +1,65 @@
+.region {
+  position: fixed;
+  z-index: 70;
+  right: var(--space-4);
+  bottom: var(--space-4);
+  left: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-2);
+  pointer-events: none;
+}
+.toast {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  width: 100%;
+  max-width: 420px;
+  padding: 14px 8px 14px 16px;
+  background: var(--white);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  font-size: var(--text-small);
+  line-height: 1.5;
+  color: var(--slate-800);
+  pointer-events: auto;
+  transition: opacity var(--duration-base) var(--ease-serene), transform var(--duration-base) var(--ease-serene);
+}
+@starting-style { .toast { opacity: 0; transform: translateY(8px); } }
+.glyph { width: 28px; height: 28px; flex: none; display: grid; place-items: center; border-radius: 50%; border: 1px solid; }
+.message { flex: 1; padding-top: 3px; min-width: 0; }
+.action {
+  min-height: 44px;
+  margin: -12px 0;
+  padding: 0 10px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--text-link);
+  font: inherit;
+  font-weight: var(--weight-semibold);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.action:hover { background: var(--blue-50); color: var(--text-link-hover); }
+.dismiss {
+  width: 44px;
+  height: 44px;
+  margin: -10px 0;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--slate-600);
+  cursor: pointer;
+}
+.dismiss:hover { background: var(--slate-100); color: var(--slate-800); }
+
+.success { background: var(--signal-success-surface); color: var(--signal-success-text); border-color: var(--signal-success); }
+.info { background: var(--blue-50); color: var(--blue-700); border-color: var(--blue-300); }
+.error { background: var(--signal-error-surface); color: var(--signal-error-text); border-color: var(--signal-error); }
+.offline { background: var(--yellow-50); color: var(--yellow-500); border-color: var(--yellow-300); }

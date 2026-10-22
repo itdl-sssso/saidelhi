@@ -1,0 +1,43 @@
+.root { position: relative; display: inline-flex; }
+.trigger {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  cursor: help;
+  border-radius: var(--radius-sm);
+}
+.trigger:focus-visible { box-shadow: var(--ring-focus); }
+.body {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 0;
+  z-index: 30;
+  width: max-content;
+  max-width: min(260px, 80vw);
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  background: var(--slate-800);
+  color: var(--white);
+  font-family: var(--font-sans-body);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-regular);
+  font-style: normal;
+  line-height: 1.5;
+  letter-spacing: 0;
+  text-transform: none;
+  white-space: normal;
+  box-shadow: var(--shadow-md);
+  display: none;
+  pointer-events: none;
+  transition:
+    opacity var(--duration-fast) var(--ease-serene),
+    transform var(--duration-fast) var(--ease-serene);
+}
+.end .body { left: auto; right: 0; }
+/* display:none while hidden keeps the bubble from widening the page on narrow screens. */
+.root:hover .body,
+.root:focus-within .body { display: block; }
+@starting-style {
+  .root:hover .body,
+  .root:focus-within .body { opacity: 0; transform: translateY(4px); }
+}

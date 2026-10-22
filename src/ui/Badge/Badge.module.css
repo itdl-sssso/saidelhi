@@ -1,0 +1,17 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  border: 1px solid;
+  font-family: var(--font-sans-body);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
+  line-height: 1.4;
+  white-space: nowrap;
+}
+.prem { background: var(--pink-100); color: var(--pink-700); border-color: var(--pink-200); }
+.shanti { background: var(--blue-100); color: var(--blue-700); border-color: var(--blue-200); }
+.sathya { background: var(--yellow-50); color: var(--yellow-500); border-color: var(--yellow-200); }
+.neutral { background: var(--slate-100); color: var(--slate-600); border-color: var(--slate-200); }

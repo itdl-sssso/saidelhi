@@ -1,0 +1,15 @@
+.wrap { position: relative; display: block; }
+.select {
+  appearance: none;
+  padding-right: 40px;
+  cursor: pointer;
+}
+.chevron {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--slate-500);
+  display: inline-flex;
+}

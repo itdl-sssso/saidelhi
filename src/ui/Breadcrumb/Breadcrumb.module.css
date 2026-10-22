@@ -1,0 +1,21 @@
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--text-caption);
+  color: var(--slate-600);
+}
+.item { display: inline-flex; align-items: center; gap: 6px; }
+.item svg { color: var(--slate-400); }
+.link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--blue-600);
+  text-decoration: none;
+}
+.link:hover { color: var(--blue-700); text-decoration: underline; }
