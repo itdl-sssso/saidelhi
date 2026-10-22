@@ -1,0 +1,7 @@
+BATCH 6: discourses (flag `discourses`). Youth 16–30. Full HI versions.
+
+A. /discourses. Hero "Words for young people" + credit "Published with permission of Sri Sathya Sai Sadhana Trust, Publications Division." 14 theme chips (Character, Education and purpose, Discipline, Ceiling on desires, Technology and distraction, Addiction and habits, Parents, Friendship, Self-confidence, Leadership, Service, Time, Career and ethics, Mental peace); search; cards (title, date, place, occasion, tags, why it matters); featured shareable quote.
+
+B. /discourses/[slug]. Breadcrumb; title, date, place, occasion, source "Sathya Sai Speaks Vol 39, Ch 13", tags; HI/EN switch (side-by-side option desktop); long-form reading (66ch, headings, pull quotes, Telugu poems italic set apart); 2–4 quote cards "Share as image" (brand QuoteCard + gold rule, square 1080 export); translation note + report correction; related discourses + Value page.
+
+C. /admin/discourses workspace. List: 87 shortlisted, source, themes, status (Not started/AI draft/In review/Approved/Published), reviewer. Editor split: EN source read-only w/ paragraph numbers | HI draft aligned per paragraph, per-paragraph status; glossary panel (Atma, Dharma, Sathya, Prema, Shanti, Ahimsa, seva, sadhana, buddhi, viveka) with highlights; quote card maker; metadata (both chapter numberings, date, place, occasion, URL, retrieved); Request AI draft / Send for review / Approve / Publish (disabled: "Publishing opens once permission is granted").
