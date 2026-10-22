@@ -9,6 +9,7 @@ export function errorBody(err: ApiError, locale: Locale): ErrorEnvelope {
   const error: ApiErrorBody = { code: err.code, message: err.customMessage ?? errorMessage(err.code, locale) };
   if (err.fields && Object.keys(err.fields).length) error.fields = err.fields;
   if (err.retryAfter !== undefined) error.retryAfter = err.retryAfter;
+  if (err.details) error.details = err.details;
   return { error };
 }
 

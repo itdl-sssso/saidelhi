@@ -56,3 +56,23 @@ export const endpoints = {
 } as const;
 
 export type EndpointName = keyof typeof endpoints;
+
+/** Form-link API (§5.2). The token is a path segment; never log or render it. */
+export const linkEndpoints = {
+  info: (token: string) => p(`/links/${seg(token)}`),
+  otp: (token: string) => p(`/links/${seg(token)}/otp`),
+  verify: (token: string) => p(`/links/${seg(token)}/verify`),
+  publicSession: (token: string) => p(`/links/${seg(token)}/public`),
+  form: (token: string) => p(`/links/${seg(token)}/form`),
+  submissions: (token: string) => p(`/links/${seg(token)}/submissions`),
+  submission: (token: string, id: string) => p(`/links/${seg(token)}/submissions/${seg(id)}`),
+  attachments: (token: string) => p(`/links/${seg(token)}/attachments`),
+} as const;
+
+/** Page route of a form link (`/f/<token>`, `/hi/f/<token>`). */
+export const formLinkPath = (token: string, locale: "en" | "hi" = "en") =>
+  `${locale === "hi" ? "/hi" : ""}/f/${seg(token)}`;
+
+/** Headers the form-link mutations need: CSRF double-submit + idempotency. */
+export const LINK_HEADERS = { csrf: "x-csrf", idempotencyKey: "idempotency-key" } as const;
+export const LINK_COOKIES = { session: "fsid", csrf: "csrf" } as const;

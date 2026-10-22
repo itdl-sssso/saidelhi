@@ -1,0 +1,20 @@
+/** The spec README sample camp. */
+export const EYE_ANSWERS = {
+  samithi: "Mayur Vihar",
+  date: "2026-10-17",
+  venue: "Dr. Ambedkar Bhawan, Mayur Vihar Phase-1",
+  partner: "ICARE Eye Hospital",
+  volunteers: 12,
+  volunteer_hours: 60,
+  registered: 115,
+  male: 50,
+  female: 60,
+  spectacles_total: 63,
+  p_1_0: 12,
+  p_1_5: 10,
+  p_2_0: 20,
+  p_2_5: 14,
+  p_3_0: 7,
+  cataract_found: 13,
+  cataract_referred: 13,
+};

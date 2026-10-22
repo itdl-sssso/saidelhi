@@ -1,6 +1,9 @@
 import "server-only";
 import { getDb } from "../db/client";
-import { env } from "../env";
+import { revalidatePublic } from "../cache";
+import { appSecret, env } from "../env";
+import { DiskStorage } from "../files";
+import { whatsapp } from "../providers/whatsapp";
 import { DbRepo } from "../repo/db";
 import { MockRepo } from "../repo/mock";
 import type { DataRepo } from "../repo/types";
@@ -14,7 +17,7 @@ export type * from "./types";
 let cached: Services | undefined;
 
 function createRepo(): DataRepo {
-  return env().DATA_SOURCE === "db" ? new DbRepo(getDb()) : new MockRepo();
+  return env().DATA_SOURCE === "db" ? new DbRepo(getDb()) : new MockRepo(undefined, appSecret());
 }
 
 /**
@@ -25,6 +28,11 @@ export function services(): Services {
   cached ??= createServices(createRepo(), {
     now: () => new Date(),
     mediaBase: env().MEDIA_URL,
+    secret: appSecret(),
+    whatsapp: whatsapp(),
+    storage: new DiskStorage(env().MEDIA_PRIVATE_ROOT),
+    appUrl: env().APP_URL,
+    revalidate: revalidatePublic,
   });
   return cached;
 }

@@ -5,6 +5,8 @@ export interface ApiErrorOptions {
   message?: string;
   fields?: Record<string, string>;
   retryAfter?: number;
+  /** Extra machine-readable data, e.g. `{ link: LinkInfo }` on 410 link errors. */
+  details?: Record<string, unknown>;
   cause?: unknown;
 }
 
@@ -15,6 +17,7 @@ export class ApiError extends Error {
   readonly fields?: Record<string, string>;
   readonly retryAfter?: number;
   readonly customMessage?: string;
+  readonly details?: Record<string, unknown>;
 
   constructor(code: ErrorCode, opts: ApiErrorOptions = {}) {
     super(opts.message ?? code, { cause: opts.cause });
@@ -24,6 +27,7 @@ export class ApiError extends Error {
     this.fields = opts.fields;
     this.retryAfter = opts.retryAfter;
     this.customMessage = opts.message;
+    this.details = opts.details;
   }
 }
 

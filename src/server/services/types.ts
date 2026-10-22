@@ -1,4 +1,16 @@
 import type {
+  AnswerMap,
+  FormLink,
+  FormPayload,
+  LinkAttachment,
+  LinkInfo,
+  LinkPurpose,
+  LinkSession,
+  Locale,
+  OtpSent,
+  PublicSessionRequest,
+  Submission,
+  SubmissionPatch,
   Article,
   ArticleDetail,
   ArticlesQuery,
@@ -15,6 +27,10 @@ import type {
   Paged,
   PrivacyRequestParsed,
 } from "@/contract";
+import type { CacheTag } from "../cache";
+import type { PrivateStorage } from "../files";
+import type { WhatsAppProvider } from "../providers/whatsapp/types";
+import type { LinkRec } from "../repo/links-types";
 
 export interface HomeService {
   get(): Promise<HomePayload>;
@@ -59,6 +75,71 @@ export interface FlagsService {
   flags(): Promise<FeatureFlags>;
 }
 
+/** Result of verify/public: the route sets `fsid` (httpOnly) and `csrf` cookies from it. */
+export interface SessionGrant {
+  session: LinkSession;
+  sessionToken: string;
+  csrf: string;
+  maxAgeSeconds: number;
+}
+
+export interface NewLinkOptions {
+  label?: string;
+  /** Phone (E.164 or Indian 10-digit) for WhatsApp delivery, or 'qr' for a printed poster. */
+  sendTo?: string | "qr";
+  recipientLabel?: string;
+  expiresAt?: Date;
+  maxUses?: number | null;
+  /** Desk links only; report links always need OTP, public links never. */
+  otpRequired?: boolean;
+  createdBy?: string;
+  /** Send `form_link_sent` on WhatsApp right away. */
+  send?: boolean;
+  lang?: Locale;
+}
+
+export interface UploadedFile {
+  name: string;
+  bytes: Uint8Array;
+}
+
+export interface LinksService {
+  /** GET /links/:token. Throws 404 for unknown tokens, 410 (with details) for closed links. */
+  info(token: string, sessionToken: string | null): Promise<LinkInfo>;
+  sendOtp(token: string, phone: string, locale: Locale): Promise<OtpSent>;
+  verify(token: string, phone: string, code: string, locale: Locale): Promise<SessionGrant>;
+  /** null when the honeypot was filled (answer as if it worked, set nothing). */
+  startPublic(token: string, input: PublicSessionRequest): Promise<SessionGrant | null>;
+  form(token: string, sessionToken: string | null, locale: Locale): Promise<FormPayload>;
+  submit(
+    token: string,
+    sessionToken: string | null,
+    idempotencyKey: string,
+    answers: AnswerMap,
+    locale: Locale,
+  ): Promise<{ submission: Submission; replayed: boolean }>;
+  update(token: string, sessionToken: string | null, id: string, patch: SubmissionPatch, locale: Locale): Promise<Submission>;
+  attach(
+    token: string,
+    sessionToken: string | null,
+    file: UploadedFile,
+    fieldId: string,
+    idempotencyKey: string | null,
+    locale: Locale,
+  ): Promise<LinkAttachment>;
+
+  // Portal helpers (M3 wraps these with RBAC).
+  /** The token is returned once, for immediate delivery; FormLink.url can be rebuilt later. */
+  createLink(eventId: string, purpose: LinkPurpose, opts?: NewLinkOptions): Promise<{ link: FormLink; token: string }>;
+  addAllowedPhone(eventId: string, phone: string, label: string | null): Promise<void>;
+  revokeLink(linkId: string): Promise<FormLink>;
+  extendLink(linkId: string, until: Date): Promise<FormLink>;
+  listLinksForEvent(eventId: string): Promise<FormLink[]>;
+  /** Re-sends `form_link_sent` to the phone the link was issued to. */
+  resendLink(linkId: string, lang?: Locale): Promise<FormLink>;
+  linkUrl(link: LinkRec, locale?: Locale): string;
+}
+
 export interface Services {
   readonly dataSource: "mock" | "db";
   home: HomeService;
@@ -69,10 +150,21 @@ export interface Services {
   articles: ArticlesService;
   privacy: PrivacyService;
   flags: FlagsService;
+  links: LinksService;
 }
 
 export interface ServiceDeps {
   now: () => Date;
   /** Public URL prefix for legacy media paths. */
   mediaBase: string;
+  /** Root secret (link tokens, keyed hashes, CSRF). Defaults to the dev secret. */
+  secret?: string;
+  whatsapp?: WhatsAppProvider;
+  storage?: PrivateStorage;
+  /** Origin for form-link URLs. */
+  appUrl?: string;
+  /** Called after mutations that change public data. */
+  revalidate?: (tags: readonly CacheTag[]) => void;
 }
+
+export type LinkServiceDeps = Required<ServiceDeps>;

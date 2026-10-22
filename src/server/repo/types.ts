@@ -22,6 +22,7 @@ import type {
   TimelineChannel,
   Wing,
 } from "@/contract";
+import type { LinksRepo } from "./links-types";
 
 export interface OrgUnitRec {
   id: string;
@@ -234,6 +235,8 @@ export interface ArticleFilter {
 
 export interface DataRepo {
   readonly kind: "mock" | "db";
+  /** Form templates, links, OTP, sessions, submissions (M2). */
+  readonly links: LinksRepo;
 
   orgUnits(): Promise<OrgUnitRec[]>;
   sevaTypes(): Promise<SevaTypeRec[]>;

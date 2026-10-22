@@ -6,11 +6,20 @@
  *
  *   pnpm db:seed            (after db:migrate, and after db:import-legacy)
  */
-import { sql } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { closeDb, getDb } from "../src/server/db/client";
 import { postcontentPostcontent } from "../src/server/db/legacy";
 import {
   articleI18n,
+  attachment,
+  consentRecord,
+  formLink,
+  formTemplate,
+  formVersion,
+  linkAllowedPhone,
+  linkSession,
+  otpChallenge,
+  submission,
   centre,
   centreGathering,
   contentItem,
@@ -24,6 +33,9 @@ import {
   sevaType,
   submissionAnswerKpi,
 } from "../src/server/db/tables";
+import { appSecret, env } from "../src/server/env";
+import { lintDefinition } from "../src/contract";
+import { DEV_COORDINATOR_PHONE, devAllowedPhones, devLinks, SEED_EVENT_FORM_LOCKS, seedTemplates } from "../src/server/forms/seed-data";
 import { fx, loadFixtures, SAMPLE_ARTICLE_ID } from "../src/server/mock/fixtures";
 import type { OrgUnitRec } from "../src/server/repo/types";
 
@@ -48,9 +60,19 @@ async function main() {
   }
   const db = getDb();
   const f = loadFixtures();
+  const secret = appSecret();
+  const forms = seedTemplates();
+  for (const v of forms.versions) {
+    const problems = lintDefinition(v.definition);
+    if (problems.length) throw new Error(`Form ${v.id} is invalid:\n  ${problems.join("\n  ")}`);
+  }
+  const links = devLinks(secret);
 
   await db.transaction(async (tx) => {
     await tx.execute(sql`SET FOREIGN_KEY_CHECKS = 0`);
+    for (const t of [consentRecord, attachment, submission, linkSession, otpChallenge, linkAllowedPhone, formLink, formVersion, formTemplate]) {
+      await tx.delete(t);
+    }
     for (const t of [articleI18n, submissionAnswerKpi, eventTimeline, impactEstimate, event, centreGathering, centre, partner, orgClosure, orgUnit, sevaType, contentItem, setting]) {
       await tx.delete(t);
     }
@@ -68,6 +90,14 @@ async function main() {
     await tx.insert(impactEstimate).values(f.estimates);
     await tx.insert(contentItem).values(f.contentItems);
     await tx.insert(setting).values(Object.entries(f.settings).map(([key, value]) => ({ key, value })));
+
+    await tx.insert(formTemplate).values(forms.templates);
+    await tx.insert(formVersion).values(forms.versions);
+    for (const [eventId, formVersionId] of Object.entries(SEED_EVENT_FORM_LOCKS)) {
+      await tx.update(event).set({ formVersionId }).where(eq(event.id, eventId));
+    }
+    await tx.insert(formLink).values(links.map((l) => l.rec));
+    await tx.insert(linkAllowedPhone).values(devAllowedPhones(secret));
 
     const sample = f.articles.find((a) => a.id === SAMPLE_ARTICLE_ID);
     if (sample) {
@@ -97,7 +127,13 @@ async function main() {
     content_item: f.contentItems.length,
     setting: Object.keys(f.settings).length,
   };
-  console.log("Seeded:", counts);
+  console.log("Seeded:", { ...counts, form_template: forms.templates.length, form_link: links.length });
+
+  if (env().NODE_ENV !== "production") {
+    const base = env().APP_URL.replace(/\/$/, "");
+    console.log(`\nDEV form links (tokens derive from SESSION_SECRET; coordinator phone ${DEV_COORDINATOR_PHONE}, OTP codes print in the server log):`);
+    for (const l of links) console.log(`  ${l.key.padEnd(14)} ${l.rec.purpose.padEnd(7)} ${base}/f/${l.token}`);
+  }
 }
 
 main()
