@@ -3,6 +3,8 @@ import { and, asc, count, desc, eq, gt, gte, inArray, isNotNull, isNull, lt, lte
 import type { ContentKind } from "@/contract";
 import type { Db } from "../db/client";
 import { DbLinksRepo } from "./links-db";
+import { toEventRec } from "./event-row";
+import { DbPortalRepo } from "./portal-db";
 import { postcontentContentpostimage as postImage, postcontentPostcontent as post } from "../db/legacy";
 import {
   articleI18n,
@@ -26,43 +28,10 @@ import type {
   AuditRec,
   DataRepo,
   EventFilter,
-  EventRec,
   PrivacyRequestRec,
 } from "./types";
 
-type EventRow = typeof event.$inferSelect;
 type I18nRow = typeof articleI18n.$inferSelect;
-
-const toEventRec = (r: EventRow): EventRec => ({
-  id: r.id,
-  sevaType: r.sevaType,
-  status: r.status,
-  titleEn: r.titleEn,
-  titleHi: r.titleHi,
-  descriptionEn: r.descriptionEn,
-  descriptionHi: r.descriptionHi,
-  startsAt: r.startsAt,
-  endsAt: r.endsAt,
-  postponedTo: r.postponedTo,
-  venueName: r.venueName,
-  venueAddress: r.venueAddress,
-  venueLat: r.venueLat,
-  venueLng: r.venueLng,
-  samithiId: r.samithiId,
-  districtId: r.districtId,
-  centreId: r.centreId,
-  partnerId: r.partnerId,
-  volunteersNeeded: r.volunteersNeeded,
-  volunteersJoined: r.volunteersJoined,
-  bring: r.bring,
-  resultsPhotos: r.resultsPhotos,
-  recurring: r.recurring,
-  source: r.source,
-  createdBy: r.createdBy,
-  reportDueAt: r.reportDueAt,
-  approvedAt: r.approvedAt,
-  version: r.version,
-});
 
 const toI18n = (r: I18nRow | null): ArticleI18nRec | null =>
   r
@@ -84,9 +53,11 @@ export class DbRepo implements DataRepo {
   readonly kind = "db" as const;
 
   readonly links: DbLinksRepo;
+  readonly portal: DbPortalRepo;
 
   constructor(private readonly db: Db) {
     this.links = new DbLinksRepo(db);
+    this.portal = new DbPortalRepo(db);
   }
 
   async orgUnits() {
@@ -103,6 +74,8 @@ export class DbRepo implements DataRepo {
         introHi: orgUnit.introHi,
         sortOrder: orgUnit.sortOrder,
         active: orgUnit.active,
+        mergedIntoId: orgUnit.mergedIntoId,
+        version: orgUnit.version,
       })
       .from(orgUnit);
   }

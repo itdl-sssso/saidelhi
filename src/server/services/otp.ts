@@ -50,8 +50,12 @@ function assertNotLocked(c: OtpRec | null, now: Date) {
   }
 }
 
-/** Creates and sends a code. Throws LOCKED (423), RATE_LIMITED (429) or PROVIDER_UNAVAILABLE (503). */
-export async function sendOtp(d: OtpDeps, t: OtpTarget, lang: Locale): Promise<OtpSent> {
+/**
+ * Creates and sends a code. Throws LOCKED (423), RATE_LIMITED (429) or PROVIDER_UNAVAILABLE (503).
+ * `deliver` replaces the WhatsApp send (email channel; or a no-op for unknown portal numbers,
+ * which still get a challenge so throttling and locks behave identically).
+ */
+export async function sendOtp(d: OtpDeps, t: OtpTarget, lang: Locale, deliver?: (code: string) => Promise<unknown>): Promise<OtpSent> {
   const now = d.now();
   const last = await d.repo.latestOtp(t.phoneHash, t.purpose, t.linkId);
   assertNotLocked(last, now);
@@ -79,7 +83,7 @@ export async function sendOtp(d: OtpDeps, t: OtpTarget, lang: Locale): Promise<O
   };
   await d.repo.insertOtp(rec);
   try {
-    await d.whatsapp.sendTemplate(t.phone, "login_code", lang, [code]);
+    await (deliver ? deliver(code) : d.whatsapp.sendTemplate(t.phone, "login_code", lang, [code]));
   } catch (err) {
     // Do not leave a usable code behind, and let the user retry immediately.
     await d.repo.updateOtp(id, { expiresAt: now, consumedAt: now, sentAt: new Date(0) });

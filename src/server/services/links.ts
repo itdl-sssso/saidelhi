@@ -28,7 +28,7 @@ import { newId } from "../db/columns";
 import { istDate, toIso } from "../domain/time";
 import { sniffMime } from "../files";
 import { ApiError, notFound } from "../http/errors";
-import type { AttachmentRec, ConsentRec, LinkRec, LinkSessionRec, SubmissionRec } from "../repo/links-types";
+import type { AttachmentRec, ConsentRec, LinkRec, LinkSessionRec, NewSubmissionWrite, SubmissionRec } from "../repo/links-types";
 import type { DataRepo, EventRec } from "../repo/types";
 import { decryptField, encryptField } from "../security/crypto";
 import {
@@ -308,6 +308,40 @@ export function createLinksService(repo: DataRepo, deps: LinkServiceDeps): Links
     };
   }
 
+  /** Event move + pending report approval for a received report (applied atomically by the repo). */
+  function reportReceived(eventId: string, byLabel: string): NonNullable<NewSubmissionWrite["eventStatus"]> {
+    const at = now();
+    return {
+      from: ["planned", "awaiting_report"],
+      to: "report_submitted",
+      timeline: { status: "report_submitted", at, byRole: "samithi_coord", byLabel, channel: "portal" },
+      approval: {
+        id: newId(),
+        eventId,
+        kind: "report",
+        state: "pending",
+        requestedAt: at,
+        requestedBy: null,
+        requestedByLabel: byLabel,
+        requestChannel: "portal",
+        decidedBy: null,
+        decidedAt: null,
+        channel: null,
+        reason: null,
+        escalatedAt: null,
+        selfApproved: false,
+      },
+    };
+  }
+
+  async function afterReport(eventId: string) {
+    try {
+      await deps.onReportSubmitted(eventId);
+    } catch (err) {
+      console.error("[links] report notification failed", err instanceof Error ? err.message : err);
+    }
+  }
+
   async function sendLink(l: LinkRec, phone: string, lang: Locale) {
     const ev = await eventOf(l);
     const title = loc(i18n(ev.titleEn, ev.titleHi), lang);
@@ -420,13 +454,7 @@ export function createLinksService(repo: DataRepo, deps: LinkServiceDeps): Links
         consents: p.consents,
         attachmentIds: p.fileIds,
         linkId: ctx.link.id,
-        eventStatus: isReport
-          ? {
-              from: ["planned", "awaiting_report", "escalated"],
-              to: "report_submitted",
-              timeline: { status: "report_submitted", at: now(), byRole: "samithi_coord", byLabel: allowed?.label ?? rec.submittedByMasked, channel: "portal" },
-            }
-          : null,
+        eventStatus: isReport ? reportReceived(ctx.ev.id, allowed?.label ?? rec.submittedByMasked) : null,
         volunteersJoinedDelta: ctx.link.purpose === "public" ? 1 : 0,
       });
       if (result === "used_up") throw gone(ctx.link, await infoOf({ ...ctx.link, uses: ctx.link.maxUses ?? ctx.link.uses }, ctx.ev, false));
@@ -436,6 +464,7 @@ export function createLinksService(repo: DataRepo, deps: LinkServiceDeps): Links
         return { submission: toDto(again, true), replayed: true };
       }
       deps.revalidate(isReport ? ["events", "home"] : ["events"]);
+      if (isReport) await afterReport(ctx.ev.id);
       return { submission: toDto(rec, true), replayed: false };
     },
 
@@ -456,8 +485,11 @@ export function createLinksService(repo: DataRepo, deps: LinkServiceDeps): Links
         consents: p.consents,
         attachmentIds: p.fileIds,
         eventId: ctx.ev.id,
+        // Corrections after "request changes" go back to the district.
+        eventStatus: ctx.link.purpose === "report" ? { ...reportReceived(ctx.ev.id, existing.submittedByMasked), from: ["awaiting_report"] } : null,
       });
       if (res === "conflict") throw new ApiError("CONFLICT");
+      if (ctx.link.purpose === "report" && ctx.ev.status === "awaiting_report") await afterReport(ctx.ev.id);
       const updated = await links.submissionById(id);
       if (!updated) throw notFound();
       return toDto(updated, true);
@@ -599,5 +631,6 @@ export function createLinksService(repo: DataRepo, deps: LinkServiceDeps): Links
     },
 
     linkUrl: urlOf,
+    describe: toFormLink,
   };
 }

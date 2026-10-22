@@ -3,6 +3,7 @@ import { getDb } from "../db/client";
 import { revalidatePublic } from "../cache";
 import { appSecret, env } from "../env";
 import { DiskStorage } from "../files";
+import { email } from "../providers/email";
 import { whatsapp } from "../providers/whatsapp";
 import { DbRepo } from "../repo/db";
 import { MockRepo } from "../repo/mock";
@@ -30,6 +31,7 @@ export function services(): Services {
     mediaBase: env().MEDIA_URL,
     secret: appSecret(),
     whatsapp: whatsapp(),
+    email: email(),
     storage: new DiskStorage(env().MEDIA_PRIVATE_ROOT),
     appUrl: env().APP_URL,
     revalidate: revalidatePublic,

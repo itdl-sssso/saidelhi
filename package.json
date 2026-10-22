@@ -20,11 +20,13 @@
     "db:reset": "bash scripts/db-reset.sh"
   },
   "dependencies": {
-    "lucide-react": "^1.61.0",
     "drizzle-orm": "^0.45.4",
+    "lucide-react": "^1.61.0",
     "mysql2": "^3.24.6",
     "next": "16.4.2",
     "next-intl": "^4.14.9",
+    "pdf-lib": "^1.17.1",
+    "qrcode": "^1.5.4",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "sanitize-html": "^2.18.1",
@@ -35,6 +37,7 @@
   "devDependencies": {
     "@tailwindcss/turbopack": "^4",
     "@types/node": "^20",
+    "@types/qrcode": "^1.5.6",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/sanitize-html": "^2.16.2",

@@ -23,6 +23,7 @@ import type {
   Wing,
 } from "@/contract";
 import type { LinksRepo } from "./links-types";
+import type { PortalRepo } from "./portal-types";
 
 export interface OrgUnitRec {
   id: string;
@@ -36,6 +37,8 @@ export interface OrgUnitRec {
   introHi: string | null;
   sortOrder: number;
   active: boolean;
+  mergedIntoId: string | null;
+  version: number;
 }
 
 export interface SevaTypeRec {
@@ -110,7 +113,12 @@ export interface EventRec {
   createdBy: string | null;
   reportDueAt: Date | null;
   approvedAt: Date | null;
+  approvalRequestedAt: Date | null;
+  escalatedAt: Date | null;
+  escalatedFrom: EventStatus | null;
+  selfApproved: boolean;
   version: number;
+  updatedAt: Date;
 }
 
 export interface TimelineRec {
@@ -237,6 +245,8 @@ export interface DataRepo {
   readonly kind: "mock" | "db";
   /** Form templates, links, OTP, sessions, submissions (M2). */
   readonly links: LinksRepo;
+  /** People, sessions, approvals, audit and admin writes (M3). */
+  readonly portal: PortalRepo;
 
   orgUnits(): Promise<OrgUnitRec[]>;
   sevaTypes(): Promise<SevaTypeRec[]>;

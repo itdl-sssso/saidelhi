@@ -24,6 +24,8 @@ const unit = (
   introHi: intro?.[1] ?? null,
   sortOrder,
   active: true,
+  mergedIntoId: null,
+  version: 1,
 });
 
 export const NCR_ID = fx("ORG", 1);

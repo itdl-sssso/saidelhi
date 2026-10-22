@@ -4,11 +4,12 @@ import { z } from "zod";
 import { ArticleCategoryFilter, ImpactPeriod, PrivacyRequestType, SevaType } from "./enums";
 import { ISODate, Locale } from "./primitives";
 
-const blankToUndefined = (v: unknown) => (v === "" || v === null ? undefined : v);
-const opt = <T extends z.ZodType>(schema: T) => z.preprocess(blankToUndefined, schema.optional());
+export const blankToUndefined = (v: unknown) => (v === "" || v === null ? undefined : v);
+/** Optional query param; empty strings count as absent. */
+export const opt = <T extends z.ZodType>(schema: T) => z.preprocess(blankToUndefined, schema.optional());
 
-const Slug = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Invalid slug").max(80);
-const QueryBool = z.enum(["true", "false", "1", "0"]).transform((v) => v === "true" || v === "1");
+export const Slug = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Invalid slug").max(80);
+export const QueryBool = z.enum(["true", "false", "1", "0"]).transform((v) => v === "true" || v === "1");
 
 export const Pagination = z.object({
   page: z.preprocess(blankToUndefined, z.coerce.number().int().min(1).default(1)),

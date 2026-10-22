@@ -76,3 +76,38 @@ export const formLinkPath = (token: string, locale: "en" | "hi" = "en") =>
 /** Headers the form-link mutations need: CSRF double-submit + idempotency. */
 export const LINK_HEADERS = { csrf: "x-csrf", idempotencyKey: "idempotency-key" } as const;
 export const LINK_COOKIES = { session: "fsid", csrf: "csrf" } as const;
+
+/** Portal auth (§5.3). */
+export const authEndpoints = {
+  otp: () => p("/auth/otp"),
+  verify: () => p("/auth/verify"),
+  logout: () => p("/auth/logout"),
+  me: () => p("/auth/me"),
+} as const;
+
+type AdminEventAction = "submit" | "approve-plan" | "approve-report" | "request-changes" | "cancel" | "postpone" | "reopen";
+
+/** Portal API (§5.4). Query objects mirror the zod query schemas in portal.ts. */
+export const adminEndpoints = {
+  overview: (q?: { scope?: string }) => withQuery(p("/admin/overview"), q),
+  events: (q?: object) => withQuery(p("/admin/events"), q),
+  event: (id: string) => p(`/admin/events/${seg(id)}`),
+  eventAction: (id: string, action: AdminEventAction) => p(`/admin/events/${seg(id)}/${action}`),
+  eventLinks: (id: string) => p(`/admin/events/${seg(id)}/links`),
+  bulkResendLinks: () => p("/admin/events/bulk/resend-links"),
+  links: (q?: object) => withQuery(p("/admin/links"), q),
+  linkAction: (id: string, action: "resend" | "extend" | "revoke") => p(`/admin/links/${seg(id)}/${action}`),
+  linkQrPdf: (id: string) => p(`/admin/links/${seg(id)}/qr.pdf`),
+  approvals: (q?: { tab?: "plans" | "reports" | "escalated" } & PageQuery) => withQuery(p("/admin/approvals"), q),
+  approvalsBulk: () => p("/admin/approvals/bulk"),
+  orgTree: () => p("/admin/org/tree"),
+  org: () => p("/admin/org"),
+  orgUnit: (id: string) => p(`/admin/org/${seg(id)}`),
+  orgAction: (id: string, action: "merge" | "deactivate") => p(`/admin/org/${seg(id)}/${action}`),
+  people: (q?: object) => withQuery(p("/admin/people"), q),
+  invite: () => p("/admin/people/invite"),
+  person: (id: string) => p(`/admin/people/${seg(id)}`),
+  deactivatePerson: (id: string) => p(`/admin/people/${seg(id)}/deactivate`),
+  audit: (q?: object) => withQuery(p("/admin/audit"), q),
+  attachment: (id: string) => p(`/admin/attachments/${seg(id)}`),
+} as const;

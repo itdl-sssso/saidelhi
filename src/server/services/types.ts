@@ -29,7 +29,10 @@ import type {
 } from "@/contract";
 import type { CacheTag } from "../cache";
 import type { PrivateStorage } from "../files";
+import type { EmailProvider } from "../providers/email";
 import type { WhatsAppProvider } from "../providers/whatsapp/types";
+import type { AuthService } from "./auth";
+import type { PortalServices } from "./portal";
 import type { LinkRec } from "../repo/links-types";
 
 export interface HomeService {
@@ -138,6 +141,8 @@ export interface LinksService {
   /** Re-sends `form_link_sent` to the phone the link was issued to. */
   resendLink(linkId: string, lang?: Locale): Promise<FormLink>;
   linkUrl(link: LinkRec, locale?: Locale): string;
+  /** FormLink DTO for a stored link (portal lists). */
+  describe(link: LinkRec): FormLink;
 }
 
 export interface Services {
@@ -151,6 +156,10 @@ export interface Services {
   privacy: PrivacyService;
   flags: FlagsService;
   links: LinksService;
+  /** Portal sign-in and sessions (§5.3). */
+  auth: AuthService;
+  /** Coordinator portal (§5.4) and jobs. */
+  portal: PortalServices;
 }
 
 export interface ServiceDeps {
@@ -160,6 +169,8 @@ export interface ServiceDeps {
   /** Root secret (link tokens, keyed hashes, CSRF). Defaults to the dev secret. */
   secret?: string;
   whatsapp?: WhatsAppProvider;
+  /** Login-code fallback channel. */
+  email?: EmailProvider;
   storage?: PrivateStorage;
   /** Origin for form-link URLs. */
   appUrl?: string;
@@ -167,4 +178,7 @@ export interface ServiceDeps {
   revalidate?: (tags: readonly CacheTag[]) => void;
 }
 
-export type LinkServiceDeps = Required<ServiceDeps>;
+export type LinkServiceDeps = Required<ServiceDeps> & {
+  /** Called after a report is received or corrected (portal notifies the district). */
+  onReportSubmitted: (eventId: string) => Promise<void>;
+};

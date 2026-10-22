@@ -12,6 +12,8 @@ export interface RouteSpec<Q extends z.ZodType | undefined, B extends z.ZodType 
   query?: Q;
   body?: B;
   params?: P;
+  /** Runs before any parsing (auth first: a bad body from an anonymous caller is still 401). */
+  guard?: (req: NextRequest, requestId: string) => Promise<void>;
 }
 
 export interface RouteArgs<Q, B, P> {
@@ -72,6 +74,7 @@ export function route<
         if (!result.success) throw new ApiError(code, { fields: issuesToFields(result.error.issues, locale) });
         return result.data as Out<S>;
       };
+      if (spec.guard) await spec.guard(req, requestId);
       const params = await parse(spec.params as P, () => ctx.params, "BAD_REQUEST");
       const query = await parse(spec.query as Q, () => queryObject(url), "BAD_REQUEST");
       const body = await parse(spec.body as B, () => readJson(req), "VALIDATION_FAILED");
