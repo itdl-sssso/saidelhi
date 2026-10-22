@@ -1,0 +1,4 @@
+a.nb{text-decoration:none}
+.fnav .nsep{width:1px;height:24px;background:var(--border-subtle);margin:0 4px;flex:none}
+.fnav.dark .nsep{background:rgba(255,255,255,.25)}
+@media (max-width:900px){.fnav .nlinks .nsep{width:auto;height:1px;margin:6px 10px}}

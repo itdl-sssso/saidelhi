@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>SSSSO Delhi NCR — UI arrangements</title>
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 56"><rect width="120" height="56" fill="#AEC6CF"/><text x="12" y="34" font-size="15" font-family="sans-serif" fill="#1F2937">ARR</text></svg></template>
+<link rel="stylesheet" href="style.css">
+<style>
+.wf-page-sub{max-width:900px;line-height:1.5}
+.frame.tall{padding-top:34px}
+.lbl{font-size:13px;color:#8b93a1;margin:0 0 6px}
+.vp{border:2px dashed #1F2937;border-radius:14px;background:#fff;position:relative;overflow:hidden}
+.vp-tag{position:absolute;right:10px;bottom:8px;font-size:12px;color:#8b93a1;border:2px dashed #ccc;border-radius:999px;padding:1px 10px;background:#fff}
+.floatnav{position:absolute;left:50%;transform:translateX(-50%) scale(.84);transform-origin:top center;top:12px;display:flex;flex-wrap:nowrap;justify-content:center;gap:6px;align-items:center;background:#fff;border:2px solid #1F2937;border-radius:999px;padding:6px 10px;font-size:12px;z-index:3}
+.floatnav span{padding:3px 9px;border:2px dashed #ccc;border-radius:999px;white-space:nowrap}
+.floatnav .mark{width:26px;height:26px;border-radius:50%;border:2px dashed #E8A0A0;display:inline-block}
+.sidedots{position:absolute;right:5px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:9px;z-index:3}
+.sidedots i{width:10px;height:10px;border-radius:50%;border:2px dashed #1F2937;display:block}
+.sidedots i.on{background:#F7CAC9;border-style:solid}
+.lotus{position:relative;width:200px;height:200px;margin:0 auto}
+.lotus .core{position:absolute;left:50%;top:50%;width:56px;height:56px;margin:-28px 0 0 -28px;border:2px dashed #E8A0A0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;color:#999;text-align:center;background:#fff;z-index:2}
+.lotus .pet{position:absolute;left:50%;top:50%;width:56px;height:86px;margin:-86px 0 0 -28px;border:2px dashed #8FAFC4;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:#F8FBFC;display:flex;align-items:flex-start;justify-content:center;padding-top:8px;font-size:11px;color:#7b8494;transform-origin:50% 100%}
+.lotus.closed .pet{--r:0deg;--d:-34px}
+.lotus.mid .pet{--d:-12px}
+.lotus.open .pet{--d:14px}
+.p1{transform:rotate(var(--r,0deg)) translateY(calc(-1 * var(--d,0px)))}
+.pet b{display:block;font-weight:400;transform:rotate(calc(-1 * var(--r,0deg)));line-height:1.3;font-size:11px}
+.pet b small{font-size:10px;color:#9aa1ad;display:block}
+.stage3{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:16px}
+.cap{font-size:13px;color:#6b7280;margin-top:8px;text-align:center}
+.strip{display:flex;gap:10px;flex-wrap:wrap}
+.strip .ph-box{flex:1;min-width:120px}
+.inv{border:2px dashed #1F2937;border-radius:12px;background:#fff;padding:0;overflow:hidden}
+.inv table{border-collapse:collapse;width:100%;font-size:14px}
+.inv th,.inv td{border-bottom:2px dashed #e3e3e3;padding:10px 14px;text-align:left;vertical-align:top}
+.inv th{background:#F5F9FB;font-weight:700;border-bottom:2px dashed #8FAFC4}
+.inv td:first-child{width:34%}
+.inv .grp td{background:#FEFDF0;font-weight:700;border-bottom:2px dashed #D8CD5A}
+.tabs{display:flex;gap:10px;flex-wrap:wrap;padding:20px 24px 0;max-width:1200px;margin:0 auto}
+.tabs a{color:#1F2937;text-decoration:none;padding:7px 16px;border:2px dashed #ccc;border-radius:999px;font-size:15px;background:#fff}
+.tabs a.active{border:2px solid #1F2937;background:#AEC6CF}
+.vp.dark{background:#2A2F3A;border-color:#5b657a}
+.vp.dusk{background:#5B5468}
+.vp.dawn{background:#B9A9B8}
+.vp.bright{background:#FFFDF3}
+.dark .pet,.dusk .pet{background:#3a4150;border-color:#6b7689;color:#aab2c0}
+.dark .core,.dusk .core{background:#3a4150;border-color:#6b7689;color:#aab2c0}
+.dark .cap-in{color:#cfd5de}
+.snap{display:grid;grid-template-columns:1fr 1fr;gap:14px;height:100%;padding:36px 14px 14px}
+#t-a2 .vp-tag{top:8px;bottom:auto;left:10px;right:auto}
+.rot{display:inline-block;font-size:11px;color:#8b93a1}
+.iconnav{display:flex;gap:8px;align-items:center;background:#fff;border:2px solid #1F2937;border-radius:999px;padding:7px 12px;width:max-content}
+.ic{display:inline-flex;align-items:center;gap:6px;border:2px dashed #ccc;border-radius:999px;height:34px;min-width:34px;padding:0 8px;justify-content:center;font-size:12px;transition:.24s cubic-bezier(.22,.61,.36,1);background:#fff}
+.ic em{font-style:normal;color:#9aa1ad;font-size:11px}
+.ic .nm{max-width:0;overflow:hidden;white-space:nowrap;opacity:0;transition:.24s cubic-bezier(.22,.61,.36,1)}
+.ic:hover{background:#F7CAC9;border-style:solid;border-color:#1F2937}
+.ic:hover .nm{max-width:110px;opacity:1;margin-left:2px}
+.legend{font-size:13px;color:#6b7280}
+a{color:#31415B}a:hover{color:#1F2937}
+</style></head>
+<body>
+<nav class="wf-nav">
+<a href="index.html">← Back to page wireframes</a>
+<a href="#" data-t="a" onclick="showT('a');return false;" class="active">A · Lotus bloom + floating nav</a>
+<a href="#" data-t="a2" onclick="showT('a2');return false;">A2 · 3D lotus journey</a>
+<a href="A2 3D Lotus Journey.html" style="border-style:solid;background:#F7CAC9">A2 prototype ↗</a>
+<a href="#" data-t="b" onclick="showT('b');return false;">B · Full-bleed chapters</a>
+<a href="#" data-t="c" onclick="showT('c');return false;">C · Sticky visual split</a>
+<a href="#" data-t="d" onclick="showT('d');return false;">D · One-screen mosaic</a>
+<a href="#" data-t="inv" onclick="showT('inv');return false;">Feature inventory</a>
+</nav>
+
+<!-- ============ A ============ -->
+<section class="wf-t" id="t-a">
+<div class="wf-page-title">A · Lotus bloom hero + floating minimal nav</div>
+<div class="wf-page-sub">Visual-first home. The page opens on a closed lotus; scrolling blooms it, five petals settle into the five human values and act as the primary navigation. Nav chrome shrinks to one floating pill. Text-heavy blocks from the current home move behind the petals or down into a short visual strip.</div>
+<div class="wf-container">
+
+<div class="frame tall"><span class="frame-tag tag-pink">Hero — scroll storyboard</span>
+<p class="note">Three scroll states of one sticky hero (100vh, pinned ~2.5 screens). Petal placement only — real artwork/photography to follow.</p>
+<div class="stage3">
+<div>
+<div class="vp" style="height:330px;display:flex;align-items:center;justify-content:center;position:relative;padding-top:56px">
+<span class="vp-tag">scroll 0%</span>
+<div class="floatnav"><span class="mark"></span><span>Sai</span><span>Seva</span><span>Values</span><span>Reach us</span><span style="border:2px solid #1F2937;background:#F7CAC9">Donate</span></div>
+<div class="lotus closed">
+<div class="pet p1" style="--r:0deg"></div><div class="pet p1" style="--r:72deg"></div><div class="pet p1" style="--r:144deg"></div><div class="pet p1" style="--r:216deg"></div><div class="pet p1" style="--r:288deg"></div>
+<div class="core">closed bud</div>
+</div>
+</div>
+<p class="cap">Bud + one line: "Love all, serve all."</p>
+</div>
+<div>
+<div class="vp" style="height:330px;display:flex;align-items:center;justify-content:center;position:relative">
+<span class="vp-tag">scroll 50%</span>
+<div class="lotus mid">
+<div class="pet p1" style="--r:0deg"><b>Sathya</b></div><div class="pet p1" style="--r:72deg"><b>Dharma</b></div><div class="pet p1" style="--r:144deg"><b>Shanti</b></div><div class="pet p1" style="--r:216deg"><b>Prema</b></div><div class="pet p1" style="--r:288deg"><b>Ahimsa</b></div>
+<div class="core">glow</div>
+</div>
+</div>
+<p class="cap">Petals separate, value names fade in</p>
+</div>
+<div>
+<div class="vp" style="height:330px;display:flex;align-items:center;justify-content:center;position:relative">
+<span class="vp-tag">scroll 100%</span>
+<div class="sidedots"><i class="on"></i><i></i><i></i><i></i><i></i></div>
+<div class="lotus open">
+<div class="pet p1" style="--r:0deg"><b>Sathya<br><small>About</small></b></div><div class="pet p1" style="--r:72deg"><b>Dharma<br><small>Programs</small></b></div><div class="pet p1" style="--r:144deg"><b>Shanti<br><small>Bhajans</small></b></div><div class="pet p1" style="--r:216deg"><b>Prema<br><small>Get involved</small></b></div><div class="pet p1" style="--r:288deg"><b>Ahimsa<br><small>Reach us</small></b></div>
+<div class="core">Sai figure emerges</div>
+</div>
+</div>
+<p class="cap">Bloomed: 5 petals = 5 values = 5 destinations</p>
+</div>
+</div>
+<p class="note" style="margin-top:16px">Petal = value + the page it leads to. Hover shows the value's gloss + quote; click navigates. Keyboard/reduced-motion fallback: petals render bloomed and static, no pin-scroll.</p>
+</div>
+
+<div class="frame"><span class="frame-tag tag-blue">Floating minimal nav — states</span>
+<div class="stage3">
+<div><p class="lbl">Rest (over hero)</p><div class="vp" style="height:120px;position:relative"><div class="floatnav" style="position:absolute"><span class="mark"></span><span>Sai</span><span>Seva</span><span>Values</span><span>Reach us</span><span style="border:2px solid #1F2937;background:#F7CAC9">Donate</span></div></div></div>
+<div><p class="lbl">Scrolled (condensed to mark + menu)</p><div class="vp" style="height:120px;position:relative"><div class="floatnav" style="position:absolute"><span class="mark"></span><span>≡ Menu</span><span style="border:2px solid #1F2937;background:#F7CAC9">Donate</span></div></div></div>
+<div><p class="lbl">Expanded (overlay sheet)</p><div class="vp" style="height:120px;position:relative"><div class="floatnav" style="position:absolute;flex-direction:column;flex-wrap:nowrap;align-items:stretch;border-radius:16px;top:10px"><span>About / Programs / Get involved</span><span>Reach us · EN / HI</span><span>Search</span></div></div></div>
+</div>
+<p class="note" style="margin-top:14px">Pill floats 14px from top, centred, max ~560px. Right-edge dot rail marks scroll chapters. Language toggle + search live inside the expanded sheet, not the rest state.</p>
+</div>
+
+<div class="frame"><span class="frame-tag tag-yellow">Below the hero — visual, not textual</span>
+<p class="note">Each block is one image/number/verb. Wordy blocks become drawers.</p>
+<div class="grid grid-3">
+<div class="card"><div class="ph-box" style="min-height:150px">full-bleed seva photo</div><div class="strip" style="margin-top:10px"><span class="pill">12,500 meals</span></div></div>
+<div class="card"><div class="ph-box" style="min-height:150px">NCR map, pins only</div><div class="strip" style="margin-top:10px"><span class="pill">tap a district</span></div></div>
+<div class="card"><div class="ph-box" style="min-height:150px">vertical reel</div><div class="strip" style="margin-top:10px"><span class="pill">stories</span></div></div>
+</div>
+<div class="row" style="margin-top:16px"><div class="ph-box" style="flex:1;min-height:70px">Words of Sai — one quote at a time, audio play button, arrows (carousel replaces the 4-card scroll track)</div></div>
+</div>
+
+</div>
+</section>
+
+<!-- ============ A2 ============ -->
+<section class="wf-t" id="t-a2" style="display:none">
+<div class="wf-page-title">A2 · 3D lotus journey — dark bud to blessing</div>
+<div class="wf-page-sub">One 3D lotus drives the whole home page. Act I: a dark, closed bud brightens and blooms as you scroll. Act II: the camera pushes into each petal in turn — five scroll-snapped sections, Baba plus that petal on the left, the section's content on the right, the petal rotating as the panel advances. Placement only; the dashed boxes stand in for the rendered model.</div>
+<div class="wf-container">
+
+<div class="frame tall"><span class="frame-tag tag-pink">Act I · light journey (4 scroll states, pinned)</span>
+<div class="stage3">
+<div>
+<div class="vp dark" style="height:260px;display:flex;align-items:center;justify-content:center;position:relative">
+<span class="vp-tag">0% · night</span>
+<div class="lotus closed"><div class="pet p1" style="--r:0deg"></div><div class="pet p1" style="--r:72deg"></div><div class="pet p1" style="--r:144deg"></div><div class="pet p1" style="--r:216deg"></div><div class="pet p1" style="--r:288deg"></div><div class="core">dark bud</div></div>
+</div>
+<p class="cap">Near-black stage, single rim light. One line of type only.</p>
+</div>
+<div>
+<div class="vp dusk" style="height:260px;display:flex;align-items:center;justify-content:center;position:relative">
+<span class="vp-tag">35% · first light</span>
+<div class="lotus mid"><div class="pet p1" style="--r:0deg"></div><div class="pet p1" style="--r:72deg"></div><div class="pet p1" style="--r:144deg"></div><div class="pet p1" style="--r:216deg"></div><div class="pet p1" style="--r:288deg"></div><div class="core">glow starts</div></div>
+</div>
+<p class="cap">Petals part; warm light seeds inside the core.</p>
+</div>
+<div>
+<div class="vp dawn" style="height:260px;display:flex;align-items:center;justify-content:center;position:relative">
+<span class="vp-tag">70% · opening</span>
+<div class="lotus open"><div class="pet p1" style="--r:0deg"><b>Sathya</b></div><div class="pet p1" style="--r:72deg"><b>Dharma</b></div><div class="pet p1" style="--r:144deg"><b>Shanti</b></div><div class="pet p1" style="--r:216deg"><b>Prema</b></div><div class="pet p1" style="--r:288deg"><b>Ahimsa</b></div><div class="core">form appears</div></div>
+</div>
+<p class="cap">Value names surface on the petal faces as they open.</p>
+</div>
+<div>
+<div class="vp bright" style="height:260px;display:flex;align-items:center;justify-content:center;position:relative">
+<span class="vp-tag">100% · blessing</span>
+<div class="lotus open"><div class="pet p1" style="--r:0deg"><b>Sathya</b></div><div class="pet p1" style="--r:72deg"><b>Dharma</b></div><div class="pet p1" style="--r:144deg"><b>Shanti</b></div><div class="pet p1" style="--r:216deg"><b>Prema</b></div><div class="pet p1" style="--r:288deg"><b>Ahimsa</b></div><div class="core" style="border-style:solid;border-color:#E8A0A0;background:#FDF4F4">Bhagawan<br>abhaya hasta</div></div>
+</div>
+<p class="cap">Fully bright, glow at its peak, blessing hand raised. Hold.</p>
+</div>
+</div>
+<p class="note" style="margin-top:16px">Exposure, petal angle and camera distance are all one scroll value. Act I occupies roughly 2.5 viewport heights of pinned scroll, then releases into Act II.</p>
+</div>
+
+<div class="frame tall"><span class="frame-tag tag-yellow">Act II · five snapped value sections</span>
+<p class="note">Each section is 100vh and scroll-snapped. Left half: Baba + the active petal, rotating as the panel enters. Right half: that value's content. Camera dollies from the whole flower to a single petal face.</p>
+<div class="stage3">
+<div>
+<div class="vp bright" style="min-height:250px;position:relative"><span class="vp-tag">snap 1 · Sathya</span>
+<div class="snap">
+<div class="ph-box" style="min-height:100%">Baba + Sathya petal<br><span class="rot">petal rotation 0° → 12°</span></div>
+<div class="row" style="flex-direction:column;gap:10px"><div class="card yellow" style="padding:12px"><h3 style="font-size:15px">Sathya · truth</h3><p class="note" style="margin:0">one quote, two lines</p></div><div class="ph-box" style="min-height:60px">photo</div><span class="pill" style="align-self:flex-start">About us →</span></div>
+</div></div>
+<p class="cap">Section content = the current About / values copy, one value at a time</p>
+</div>
+<div>
+<div class="vp bright" style="min-height:250px;position:relative"><span class="vp-tag">snap 2 · Dharma</span>
+<div class="snap">
+<div class="ph-box" style="min-height:100%">camera has rotated to the next petal<br><span class="rot">72° → 84°</span></div>
+<div class="row" style="flex-direction:column;gap:10px"><div class="card yellow" style="padding:12px"><h3 style="font-size:15px">Dharma · right conduct</h3><p class="note" style="margin:0">quote</p></div><div class="ph-box" style="min-height:60px">seva photo</div><span class="pill" style="align-self:flex-start">Programs →</span></div>
+</div></div>
+<p class="cap">Left visual is continuous — the flower never re-mounts between snaps</p>
+</div>
+<div>
+<div class="vp bright" style="min-height:250px;position:relative"><span class="vp-tag">snap 5 · Ahimsa</span>
+<div class="snap">
+<div class="ph-box" style="min-height:100%">last petal, camera pulls back out<br><span class="rot">288° → 360°</span></div>
+<div class="row" style="flex-direction:column;gap:10px"><div class="card yellow" style="padding:12px"><h3 style="font-size:15px">Ahimsa · non-violence</h3><p class="note" style="margin:0">quote</p></div><div class="ph-box" style="min-height:60px">photo</div><span class="pill" style="align-self:flex-start">Reach us →</span></div>
+</div></div>
+<p class="cap">After snap 5 the camera returns to the full bloom, then normal page scroll resumes</p>
+</div>
+</div>
+<div class="row" style="margin-top:16px"><div class="ph-box" style="flex:1;min-height:74px">Then, un-snapped and scrolling normally: impact numbers · seva map · stories reel · footer (see option A's visual strip)</div></div>
+<p class="note" style="margin-top:14px">Right-edge dot rail doubles as the petal indicator — five dots, current one filled; clicking a dot snaps to that petal. Mobile: petals stack as five full-screen cards, visual on top, content below; no pinning.</p>
+</div>
+
+<div class="frame"><span class="frame-tag tag-blue">Floating nav · icon expands to label on hover</span>
+<p class="note">Hover the pills below — this one is live. Icons only at rest, name reveals on hover/focus; Donate stays labelled.</p>
+<div class="iconnav">
+<span class="ic" style="border-color:#E8A0A0"><em>◎</em></span>
+<span class="ic"><em>◈</em><span class="nm">About</span></span>
+<span class="ic"><em>❋</em><span class="nm">Programs</span></span>
+<span class="ic"><em>♫</em><span class="nm">Bhajans</span></span>
+<span class="ic"><em>◇</em><span class="nm">Get involved</span></span>
+<span class="ic"><em>⌖</em><span class="nm">Reach us</span></span>
+<span class="ic"><em>⌕</em><span class="nm">Search</span></span>
+<span class="ic" style="border-style:solid;border-color:#1F2937;background:#F7CAC9">Donate</span>
+</div>
+<p class="note" style="margin-top:14px">Glyphs above are wireframe stand-ins — production uses the design system's Lucide set at 18px / 1.75 stroke: <span class="legend">hand-heart · music · book-open · graduation-cap · map-pin · search</span>. Each target stays ≥44px including padding; label reveal is 240ms on the serene easing, and the expanded name is always in the DOM for screen readers.</p>
+<div class="grid grid-2" style="margin-top:16px">
+<div><p class="lbl">Over the dark act (Act I)</p><div class="vp dark" style="height:92px;position:relative;display:flex;align-items:flex-start;justify-content:center;padding-top:14px"><div class="iconnav" style="background:rgba(255,255,255,.12);border-color:#cfd5de"><span class="ic" style="background:transparent;border-color:#8f9aae;color:#e8ecf2"><em style="color:#cfd5de">◎</em></span><span class="ic" style="background:transparent;border-color:#8f9aae;color:#e8ecf2"><em style="color:#cfd5de">◈</em></span><span class="ic" style="background:transparent;border-color:#8f9aae;color:#e8ecf2"><em style="color:#cfd5de">❋</em></span><span class="ic" style="background:transparent;border-color:#8f9aae;color:#e8ecf2"><em style="color:#cfd5de">♫</em></span><span class="ic" style="border-style:solid;border-color:#F7CAC9;background:#F7CAC9">Donate</span></div></div><p class="cap">Nav inverts to light-on-dark while the stage is dark, then flips at first light</p></div>
+<div><p class="lbl">Inside a snapped petal section</p><div class="vp bright" style="height:92px;position:relative;display:flex;align-items:flex-start;justify-content:center;padding-top:14px"><div class="iconnav"><span class="ic" style="border-color:#E8A0A0"><em>◎</em></span><span class="ic" style="background:#F7CAC9;border-style:solid;border-color:#1F2937"><em>◈</em><span class="nm" style="max-width:110px;opacity:1">Sathya</span></span><span class="ic"><em>❋</em></span><span class="ic"><em>♫</em></span><span class="ic" style="border-style:solid;border-color:#1F2937;background:#F7CAC9">Donate</span></div></div><p class="cap">The active petal's icon stays expanded as a "you are here" marker</p></div>
+</div>
+</div>
+
+<div class="frame"><span class="frame-tag tag-pink">Production notes</span>
+<div class="grid grid-2">
+<div class="card"><h3>To build this we need</h3><p class="note" style="margin:0">A lotus 3D model (petals as separate named meshes so they can rotate independently), a Baba figure or a photographic plate for the core, and one HDRI / light rig that ramps dark → bright. Model weight budget: under ~4 MB for mobile.</p></div>
+<div class="card"><h3>Fallbacks</h3><p class="note" style="margin:0">No WebGL, reduced-motion, or slow connection → a pre-rendered image sequence of the four Act I states, and Act II as five static cards. No pinning, no snapping, same content, same order.</p></div>
+</div>
+</div>
+
+</div>
+</section>
+
+<!-- ============ B ============ -->
+<section class="wf-t" id="t-b" style="display:none">
+<div class="wf-page-title">B · Full-bleed chapters</div>
+<div class="wf-page-sub">The home page becomes five full-height "chapters", each one image with a single line over it. Floating nav + dot rail. All supporting detail is one tap deeper, so the landing experience is nearly wordless.</div>
+<div class="wf-container">
+<div class="frame"><span class="frame-tag tag-pink">Scroll sequence</span>
+<div class="grid grid-3">
+<div><div class="vp" style="height:230px;position:relative"><span class="vp-tag">01</span><div class="floatnav" style="position:absolute"><span class="mark"></span><span>≡</span><span style="border:2px solid #1F2937;background:#F7CAC9">Donate</span></div><div class="ph-box" style="height:100%;border:none;border-radius:12px">lotus bloom · "Love all, serve all."</div></div><p class="cap">Chapter 1 — invitation</p></div>
+<div><div class="vp" style="height:230px;position:relative"><span class="vp-tag">02</span><div class="ph-box" style="height:100%;border:none;border-radius:12px">Sai portrait · one quote, audio</div></div><p class="cap">Chapter 2 — Words of Sai</p></div>
+<div><div class="vp" style="height:230px;position:relative"><span class="vp-tag">03</span><div class="ph-box" style="height:100%;border:none;border-radius:12px">hands / meals photo · "12,500 meals"</div></div><p class="cap">Chapter 3 — impact, one number</p></div>
+</div>
+<div class="grid grid-3" style="margin-top:16px">
+<div><div class="vp" style="height:230px;position:relative"><span class="vp-tag">04</span><div class="ph-box" style="height:100%;border:none;border-radius:12px">NCR map, full-bleed, pins</div></div><p class="cap">Chapter 4 — where we serve</p></div>
+<div><div class="vp" style="height:230px;position:relative"><span class="vp-tag">05</span><div class="ph-box" style="height:100%;border:none;border-radius:12px">reel · "Offer your hands"</div></div><p class="cap">Chapter 5 — stories + CTA</p></div>
+<div><div class="vp" style="height:230px;position:relative"><span class="vp-tag">footer</span><div class="grid grid-3" style="padding:14px"><div class="ph-box" style="min-height:60px">centre locator</div><div class="ph-box" style="min-height:60px">WhatsApp bot</div><div class="ph-box" style="min-height:60px">newsletter</div></div></div><p class="cap">Footer unchanged</p></div>
+</div>
+<p class="note" style="margin-top:16px">Each chapter has one optional "read more" chip that opens a drawer with the current wireframe's copy — nothing is deleted, just deferred.</p>
+</div>
+</div>
+</section>
+
+<!-- ============ C ============ -->
+<section class="wf-t" id="t-c" style="display:none">
+<div class="wf-page-title">C · Sticky visual split</div>
+<div class="wf-page-sub">Left column pins a single large visual (the lotus, then photography that swaps per section); right column scrolls short blocks. Good if content volume has to stay high but should feel lighter.</div>
+<div class="wf-container">
+<div class="frame"><span class="frame-tag tag-blue">Home — split scroll</span>
+<div class="vp" style="padding:16px;position:relative">
+<div class="floatnav" style="position:absolute"><span class="mark"></span><span>Sai</span><span>Seva</span><span>Values</span><span style="border:2px solid #1F2937;background:#F7CAC9">Donate</span></div>
+<div class="grid grid-2" style="margin-top:56px">
+<div class="ph-box" style="min-height:420px;position:sticky;top:0">sticky visual — lotus blooms here, then swaps to seva photography as the right column advances</div>
+<div class="row" style="flex-direction:column;gap:14px">
+<div class="card pink"><h3>Love all, serve all.</h3><div class="strip"><span class="pill solid">Join a seva</span><span class="pill">Find your centre</span></div></div>
+<div class="card blue"><h3>Words of Sai</h3><div class="ph-box" style="min-height:60px">one quote + audio</div></div>
+<div class="card yellow"><h3>Five human values</h3><div class="strip"><span class="pill">Sathya</span><span class="pill">Dharma</span><span class="pill">Shanti</span><span class="pill">Prema</span><span class="pill">Ahimsa</span></div></div>
+<div class="card"><h3>Impact</h3><div class="strip"><span class="pill">12,500 meals</span><span class="pill">450 units</span><span class="pill">1,200 children</span></div></div>
+<div class="card"><h3>Where we serve</h3><div class="ph-box" style="min-height:110px">NCR map</div></div>
+<div class="card"><h3>Stories</h3><div class="ph-box" style="min-height:90px">reel + audio story</div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ============ D ============ -->
+<section class="wf-t" id="t-d" style="display:none">
+<div class="wf-page-title">D · One-screen mosaic</div>
+<div class="wf-page-sub">Everything above the fold as a tile board — no long scroll. Each tile is a picture with a two-word label; tapping opens the full section. Densest option, but reads as visual because tiles are image-led.</div>
+<div class="wf-container">
+<div class="frame"><span class="frame-tag tag-yellow">Home — bento</span>
+<div class="vp" style="padding:16px;position:relative">
+<div class="floatnav" style="position:absolute"><span class="mark"></span><span>≡ Menu</span><span style="border:2px solid #1F2937;background:#F7CAC9">Donate</span></div>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:112px;gap:14px;margin-top:56px">
+<div class="ph-box" style="grid-column:span 2;grid-row:span 2">lotus / Sai — hero tile, blooms in place on hover</div>
+<div class="ph-box" style="grid-column:span 2">one quote + audio</div>
+<div class="ph-box">Sathya</div><div class="ph-box">Dharma</div>
+<div class="ph-box">Shanti</div><div class="ph-box">Prema</div><div class="ph-box">Ahimsa</div>
+<div class="ph-box" style="grid-column:span 2;grid-row:span 2">NCR map · pins</div>
+<div class="ph-box" style="grid-row:span 2">reel</div>
+<div class="ph-box">12,500 meals</div>
+<div class="ph-box" style="background:#F7CAC9;border-style:solid;color:#1F2937">Join a seva</div>
+</div>
+</div>
+<p class="note" style="margin-top:14px">Scroll below the board holds only footer + newsletter. Mobile: 2-column, hero tile full width.</p>
+</div>
+</div>
+</section>
+
+<!-- ============ INVENTORY ============ -->
+<section class="wf-t" id="t-inv" style="display:none">
+<div class="wf-page-title">Feature inventory — nothing dropped</div>
+<div class="wf-page-sub">Every element present in the current wireframes, and where it lands in the arrangements above. "Drawer / deeper" means it still exists, just not on first paint.</div>
+<div class="wf-container">
+<div class="inv" style="margin-top:24px">
+<table>
+<tr><th>Element in current wireframe</th><th>Where it goes</th></tr>
+<tr class="grp"><td colspan="2">Header (all pages)</td></tr>
+<tr><td>Sarva Dharma logo</td><td>Mark inside floating nav pill (26px round)</td></tr>
+<tr><td>Nav: Home · About · Programs · Get Involved · Reach Us</td><td>A/A2: floating pill of icons that expand to names on hover; A also mirrors them on the five petals</td></tr>
+<tr><td>EN / HI language toggle</td><td>Expanded nav sheet</td></tr>
+<tr><td>Donate button</td><td>Always visible in floating nav (only solid element)</td></tr>
+<tr><td>Search</td><td>Expanded nav sheet</td></tr>
+<tr class="grp"><td colspan="2">Home</td></tr>
+<tr><td>Hero quote "Love all, serve all."</td><td>Over the closed bud, scroll state 0</td></tr>
+<tr><td>Live event badge (Unity Run &amp; Ride)</td><td>Small pill under floating nav; only renders when an event is live</td></tr>
+<tr><td>Quick actions: Bhajans · Stories · Seva registration</td><td>A: petal sub-labels (Shanti→Bhajans, Prema→Get involved); B/D: footer + chapter CTAs</td></tr>
+<tr><td>Words of Sai — 4-card discourse scroll track</td><td>One quote at a time + audio + arrows; full list on the discourses page</td></tr>
+<tr><td>Impact stats (meals, blood units, children)</td><td>One number per visual tile / chapter; full set in drawer</td></tr>
+<tr><td>"Join the movement" CTA</td><td>Solid tile in mosaic / end of chapter 5</td></tr>
+<tr><td>Seva activity map + district dropdown</td><td>Full-bleed map chapter / 2×2 mosaic tile; dropdown becomes tap-a-pin</td></tr>
+<tr><td>Stories: vertical video reel, audio story, blog card</td><td>Reel is the visual; audio + blog move into the stories drawer</td></tr>
+<tr><td>Footer: centre locator, WhatsApp seva bot, newsletter</td><td>Unchanged in all four arrangements</td></tr>
+<tr class="grp"><td colspan="2">About Us</td></tr>
+<tr><td>Split hero — "Sixty years of quiet service"</td><td>Kept; becomes the About page's own sticky-split hero (option C pattern)</td></tr>
+<tr><td>Five human values pin-scroll + quotes</td><td>Promoted to the home hero: A2 gives each value its own snapped petal section; About keeps the long-form page per value</td></tr>
+<tr><td>Three wings — spiritual, service, education</td><td>Kept, 3-up on About</td></tr>
+<tr><td>Landmarks spotlight + 360° preview + "Plan a visit"</td><td>Kept on About; also a candidate for a home chapter later</td></tr>
+<tr class="grp"><td colspan="2">Key Programs &amp; SSSVIP</td></tr>
+<tr><td>Programs masonry (Vidya Jyoti, Bal Vikas, Narayana Seva)</td><td>Kept — already image-led, matches the visual direction</td></tr>
+<tr><td>SSSVIP hero + "Grama Seva is Rama Seva"</td><td>Kept as full-bleed chapter on the SSSVIP page</td></tr>
+<tr><td>7-Care modules — tabs, metrics, micro-activity drawers</td><td>Kept in full; tabs stay the densest surface in the site</td></tr>
+<tr class="grp"><td colspan="2">Get Involved</td></tr>
+<tr><td>Volunteer hub + interest chips</td><td>Kept</td></tr>
+<tr><td>Donations &amp; 80G, copy IFSC / account no., UPI QR</td><td>Kept; reached from the persistent Donate button</td></tr>
+<tr><td>3-step registration drawer</td><td>Kept as a drawer over any page</td></tr>
+<tr><td>WhatsApp seva bot (persistent action)</td><td>Kept; bottom-right FAB, never merged into the floating nav</td></tr>
+<tr class="grp"><td colspan="2">Reach Us &amp; Directory</td></tr>
+<tr><td>NCR district map (10 districts, click to filter)</td><td>Kept; shares one map component with the home map</td></tr>
+<tr><td>Office bearers grid + State / Wing / District filters</td><td>Kept, 4-up</td></tr>
+<tr><td>Per-person Call · Email · WhatsApp actions</td><td>Kept</td></tr>
+</table>
+</div>
+<p class="note" style="margin-top:18px">Open questions: on mobile, does A2 keep the snapped petal sections or fall back to five static cards? Do the petals carry the value names or the page names when both can't fit? And who supplies the lotus 3D model and the figure for the core?</p>
+</div>
+</section>
+
+<script>
+function showT(id){
+  document.querySelectorAll('.wf-t').forEach(function(el){el.style.display='none'});
+  document.getElementById('t-'+id).style.display='block';
+  document.querySelectorAll('.wf-nav a[data-t]').forEach(function(a){a.classList.remove('active')});
+  document.querySelector('.wf-nav a[data-t="'+id+'"]').classList.add('active');
+  window.scrollTo(0,0);
+}
+showT('a');
+</script>
+</body></html>

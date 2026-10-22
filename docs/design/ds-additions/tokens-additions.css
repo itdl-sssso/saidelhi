@@ -1,0 +1,25 @@
+/* SSSSO Delhi NCR — design system additions v1 (19 Oct 2026). Extends tokens; restyles nothing. */
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@300..700&family=Noto+Serif+Devanagari:wght@400..600&display=swap");
+:root{
+  /* Devanagari pairing: Latin glyphs resolve to Playfair/Inter, Devanagari falls through to Noto */
+  --font-serif-hi:"Noto Serif Devanagari","Mukta",serif;
+  --font-sans-hi:"Noto Sans Devanagari","Mukta",sans-serif;
+  --font-serif-display:"Playfair Display","Noto Serif Devanagari",Georgia,"Times New Roman",serif;
+  --font-sans-body:"Inter","Noto Sans Devanagari",system-ui,-apple-system,"Segoe UI",sans-serif;
+  /* Portal density */
+  --text-portal-body:15px;--text-kpi:32px;--text-kpi-sm:26px;
+  /* Signals: text + surface pairs (success/alert lifted from Alert; error + warning new) */
+  --signal-success-surface:#F1F6F2;--signal-success-text:#3F6B4E;
+  --signal-alert-surface:#FBF1EC;--signal-alert-text:#8A4B2C;
+  --signal-error:#E2A49E;--signal-error-surface:#FDF1F0;--signal-error-text:#9B2F2A;
+  --signal-warning:var(--yellow-300);--signal-warning-surface:var(--yellow-50);--signal-warning-text:var(--yellow-500);
+  /* Estimate hatch (charts, map tiles) */
+  --pattern-estimate:repeating-linear-gradient(135deg,var(--blue-300) 0 2px,var(--blue-50) 2px 6px); /* @kind other */
+  /* Data-vis ramp (Shanti blue only; never colour alone) */
+  --viz-0:var(--slate-100);--viz-1:var(--blue-50);--viz-2:var(--blue-100);--viz-3:var(--blue-300);--viz-4:var(--blue-400);--viz-5:var(--blue-600);
+  /* Shell metrics */
+  --sidenav-w:264px;--topbar-h:64px;--tabbar-h:68px;--sheet-w:420px;
+  --scrim:rgba(31,41,55,.28);
+}
+/* Hindi: open the leading for matras, drop Latin tracking (it breaks the shirorekha), no uppercase eyebrows */
+:lang(hi){--leading-body:1.85;--leading-heading:1.45;--leading-tight:1.35;--tracking-display:0em;--tracking-eyebrow:.02em}

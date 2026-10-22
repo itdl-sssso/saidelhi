@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>SSSSO Delhi NCR — Wireframes</title>
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 56"><rect width="120" height="56" fill="#F7CAC9"/><text x="18" y="32" font-size="16" font-family="sans-serif" fill="#1F2937">WF</text></svg></template>
+<link rel="stylesheet" href="style.css"></head>
+<body>
+<nav class="wf-nav">
+<a href="#" data-page="overview" onclick="showPage('overview');return false;" class="active">Overview</a>
+<a href="#" data-page="home" onclick="showPage('home');return false;">Home</a>
+<a href="#" data-page="about" onclick="showPage('about');return false;">About Us</a>
+<a href="#" data-page="key-programs" onclick="showPage('key-programs');return false;">Key Programs / SSSVIP</a>
+<a href="#" data-page="get-involved" onclick="showPage('get-involved');return false;">Get Involved</a>
+<a href="#" data-page="reach-us" onclick="showPage('reach-us');return false;">Reach Us</a>
+</nav>
+
+<section class="wf-page" id="page-overview">
+<div class="wf-page-title">SSSSO Delhi NCR — site wireframes</div>
+<div class="wf-page-sub">Low-fi structure, one section per frame. Placeholder stats/quotes from the brief; real content and imagery to follow.</div>
+<div class="wf-container">
+<div class="grid grid-2" style="margin-top:32px">
+<a href="#" onclick="showPage('home');return false;" style="text-decoration:none;color:inherit"><div class="card"><h3>1. Home</h3><p class="note">Hero, Words of Sai carousel, impact bento, seva map, stories, footer</p></div></a>
+<a href="#" onclick="showPage('about');return false;" style="text-decoration:none;color:inherit"><div class="card"><h3>2. About Us</h3><p class="note">Split hero, 5 human values, 3 wings, landmarks spotlight</p></div></a>
+<a href="#" onclick="showPage('key-programs');return false;" style="text-decoration:none;color:inherit"><div class="card"><h3>3. Key Programs &amp; SSSVIP</h3><p class="note">Programs grid, SSSVIP hero, 7-care modules</p></div></a>
+<a href="#" onclick="showPage('get-involved');return false;" style="text-decoration:none;color:inherit"><div class="card"><h3>4. Get Involved &amp; Volunteer</h3><p class="note">Volunteer hub, donations &amp; 80G, multi-step form, WhatsApp FAB</p></div></a>
+<a href="#" onclick="showPage('reach-us');return false;" style="text-decoration:none;color:inherit"><div class="card"><h3>5. Reach Us &amp; Directory</h3><p class="note">District map, office bearers grid, quick actions</p></div></a>
+</div>
+</div>
+</section>
+
+<section class="wf-page" id="page-home">
+<div class="wf-page-title">Home (/)</div>
+<div class="wf-container">
+
+<div class="frame"><span class="frame-tag tag-blue">Header</span>
+<div class="row" style="align-items:center;justify-content:space-between">
+<div class="ph-box" style="width:120px;height:44px">Sarva Dharma logo</div>
+<div class="row">
+<span class="pill">Home</span><span class="pill">About</span><span class="pill">Programs</span><span class="pill">Get Involved</span><span class="pill">Reach Us</span>
+</div>
+<div class="row"><span class="pill">EN / HI</span><span class="pill solid">Donate</span></div>
+</div>
+</div>
+
+<div class="frame"><span class="frame-tag tag-pink">Hero</span>
+<div class="ph-box" style="min-height:280px;flex-direction:column;gap:12px">
+<div style="font-size:22px;color:#555">"Love all, serve all."</div>
+<span class="badge-live"><span class="dot"></span> Live: Unity Run &amp; Ride</span>
+</div>
+<div class="row" style="justify-content:center;margin-top:-24px;flex-wrap:wrap">
+<span class="pill solid">Search</span><span class="pill solid">Bhajans</span><span class="pill solid">Stories</span><span class="pill solid">Seva registration</span>
+</div>
+</div>
+
+<div class="frame"><span class="frame-tag tag-blue">Words of Sai — discourses</span>
+<p class="note">Horizontal scroll track, audio + excerpt per card</p>
+<div class="hscroll">
+<div class="card blue"><div class="ph-box" style="min-height:60px">audio</div>Excerpt one…</div>
+<div class="card blue"><div class="ph-box" style="min-height:60px">audio</div>Excerpt two…</div>
+<div class="card blue"><div class="ph-box" style="min-height:60px">audio</div>Excerpt three…</div>
+<div class="card blue"><div class="ph-box" style="min-height:60px">audio</div>Excerpt four…</div>
+</div>
+</div>
+
+<div class="frame"><span class="frame-tag tag-yellow">Real-time impact &amp; activities</span>
+<div class="grid grid-2">
+<div class="card yellow">
+<h3>Impact so far</h3>
+<div class="grid grid-2">
+<div class="ph-box">12,500 meals served</div>
+<div class="ph-box">450 blood units</div>
+<div class="ph-box">1,200 children taught</div>
+<div class="ph-box">Join the movement →</div>
+</div>
+</div>
+<div class="card">
+<h3>Seva activity map</h3>
+<span class="pill">NCR district ▾</span>
+<div class="ph-box" style="min-height:160px;margin-top:12px">simplified NCR district map — pins on hover/tap show activity</div>
+</div>
+</div>
+</div>
+
+<div class="frame"><span class="frame-tag tag-pink">Stories of transformation</span>
+<div class="grid grid-2">
+<div class="card pink"><div class="ph-box" style="min-height:220px">vertical video reel (autoplay)</div>Watch golden stories</div>
+<div class="row" style="flex-direction:column;gap:16px">
+<div class="card"><div class="ph-box" style="min-height:80px">audio story</div></div>
+<div class="card"><div class="ph-box" style="min-height:80px">reader blog card</div></div>
+</div>
+</div>
+</div>
+
+<div class="footer"><span class="frame-tag tag-blue" style="top:-38px">Footer</span>
+<div class="grid grid-3">
+<div class="ph-box">centre locator map widget</div>
+<div class="ph-box">WhatsApp seva bot</div>
+<div class="ph-box">newsletter signup</div>
+</div>
+</div>
+
+</div>
+</section>
+
+<section class="wf-page" id="page-about">
+<div class="wf-page-title">About Us (/about-us)</div>
+<div class="wf-container">
+
+<div class="frame"><span class="frame-tag tag-blue">Header</span>
+<div class="ph-box" style="min-height:44px">shared header — see Home</div>
+</div>
+
+<div class="frame"><span class="frame-tag tag-pink">Hero — split</span>
+<div class="grid grid-2">
+<div class="ph-box" style="min-height:200px">Large statement: "Sixty years of quiet service across Delhi NCR"</div>
+<div class="ph-box" style="min-height:200px">Portrait / photo frame</div>
+</div>
+</div>
+
+<div class="frame"><span class="frame-tag tag-yellow">The five human values</span>
+<p class="note">Horizontal pin-scroll: Sathya, Dharma, Shanti, Prema, Ahimsa — one value + quote per step</p>
+<div class="hscroll">
+<div class="card yellow">Sathya<br>(truth)</div>
+<div class="card yellow">Dharma<br>(right conduct)</div>
+<div class="card yellow">Shanti<br>(peace)</div>
+<div class="card yellow">Prema<br>(love)</div>
+<div class="card yellow">Ahimsa<br>(non-violence)</div>
+</div>
+</div>
+
+<div class="frame"><span class="frame-tag tag-blue">Three wings</span>
+<div class="grid grid-3">
+<div class="card blue"><div class="ph-box" style="min-height:100px">loop</div>Spiritual wing</div>
+<div class="card blue"><div class="ph-box" style="min-height:100px">loop</div>Service wing</div>
+<div class="card blue"><div class="ph-box" style="min-height:100px">loop</div>Education wing</div>
+</div>
+</div>
+
+<div class="frame"><span class="frame-tag tag-pink">Landmarks spotlight</span>
+<div class="card pink">
+<h3>Sri Sathya Sai International Centre</h3>
+<div class="ph-box" style="min-height:160px">360° photo preview</div>
+<span class="pill solid" style="margin-top:12px">Plan a visit</span>
+</div>
+</div>
+
+<div class="footer"><span class="frame-tag tag-blue" style="top:-38px">Footer</span>
+<div class="ph-box" style="min-height:60px">shared footer — see Home</div>
+</div>
+
+</div>
+</section>
+
+<section class="wf-page" id="page-key-programs">
+<div class="wf-page-title">Key Programs &amp; SSSVIP (/key-programs, /sssvip)</div>
+<div class="wf-container">
+
+<div class="frame"><span class="frame-tag tag-blue">Header</span>
+<div class="ph-box" style="min-height:44px">shared header — see Home</div>
+</div>
+
+<div class="frame"><span class="frame-tag tag-yellow">Key programs grid</span>
+<p class="note">Masonry, hover-zoom imagery</p>
+<div class="grid grid-3">
+<div class="card yellow"><div class="ph-box" style="min-height:140px">image</div>Vidya Jyoti</div>
+<div class="card yellow"><div class="ph-box" style="min-height:200px">image</div>Bal Vikas</div>
+<div class="card yellow"><div class="ph-box" style="min-height:120px">image</div>Narayana Seva</div>
+</div>
+</div>
+
+<div class="frame"><span class="frame-tag tag-pink">SSSVIP hero</span>
+<div class="ph-box" style="min-height:200px">Village transformation media + quote: "Grama Seva is Rama Seva"</div>
+</div>
+
+<div class="frame"><span class="frame-tag tag-blue">7-Care modules</span>
+<p class="note">Tabbed / accordion cards, each with metric tags + micro-activities</p>
+<div class="row">
+<span class="pill solid">Individual</span><span class="pill">Education</span><span class="pill">Medical</span><span class="pill">Socio</span><span class="pill">Spiritual</span><span class="pill">Employment</span><span class="pill">Agri</span>
+</div>
+<div class="card blue" style="margin-top:16px">
+<h3>Individual care</h3>
+<div class="row"><span class="pill">metric: 320 families</span></div>
+<div class="ph-box" style="margin-top:12px">expansion drawer — micro-activities (e.g. digital literacy, Sai protein distribution, compost training)</div>
+</div>
+</div>
+
+<div class="footer"><span class="frame-tag tag-blue" style="top:-38px">Footer</span>
+<div class="ph-box" style="min-height:60px">shared footer — see Home</div>
+</div>
+
+</div>
+</section>
+
+<section class="wf-page" id="page-get-involved">
+<div class="wf-page-title">Get Involved &amp; Volunteer (/get-involved)</div>
+<div class="wf-container">
+
+<div class="frame"><span class="frame-tag tag-blue">Header</span>
+<div class="ph-box" style="min-height:44px">shared header — see Home</div>
+</div>
+
+<div class="frame"><span class="frame-tag tag-pink">Split cards</span>
+<div class="grid grid-2">
+<div class="card blue">
+<h3>Volunteer hub</h3>
+<div class="row"><span class="pill">Medical camps</span><span class="pill">Narayana Seva</span><span class="pill">EHV teaching</span><span class="pill">Media / graphics</span></div>
+</div>
+<div class="card pink">
+<h3>Donations &amp; 80G</h3>
+<p class="note">Section 80G tax exemption info</p>
+<div class="row"><span class="pill solid">Copy IFSC</span><span class="pill solid">Copy account no.</span></div>
+<div class="ph-box" style="min-height:120px;margin-top:12px">UPI QR code</div>
+</div>
+</div>
+</div>
+
+<div class="frame"><span class="frame-tag tag-yellow">Registration form (3-step drawer)</span>
+<div class="grid grid-3">
+<div class="card yellow">Step 1<br>Contact info</div>
+<div class="card yellow">Step 2<br>District selection</div>
+<div class="card yellow">Step 3<br>Preferred wing</div>
+</div>
+<div class="row" style="justify-content:flex-end;margin-top:12px"><span class="pill solid">Next →</span></div>
+</div>
+
+<div class="frame"><span class="frame-tag tag-pink">Persistent action</span>
+<div class="row" style="justify-content:flex-end"><span class="pill solid">Chat with WhatsApp seva bot</span></div>
+</div>
+
+<div class="footer"><span class="frame-tag tag-blue" style="top:-38px">Footer</span>
+<div class="ph-box" style="min-height:60px">shared footer — see Home</div>
+</div>
+
+</div>
+</section>
+
+<section class="wf-page" id="page-reach-us">
+<div class="wf-page-title">Reach Us &amp; Directory (/reach-us)</div>
+<div class="wf-container">
+
+<div class="frame"><span class="frame-tag tag-blue">Header</span>
+<div class="ph-box" style="min-height:44px">shared header — see Home</div>
+</div>
+
+<div class="frame"><span class="frame-tag tag-yellow">District map</span>
+<p class="note">Simplified NCR district map placeholder; clicking a district filters the table below</p>
+<div class="ph-box" style="min-height:220px">10 NCR districts — click to filter</div>
+</div>
+
+<div class="frame"><span class="frame-tag tag-blue">Office bearers grid</span>
+<div class="row"><span class="pill solid">State leadership</span><span class="pill">Wing incharges</span><span class="pill">District presidents</span></div>
+<div class="grid grid-4" style="margin-top:16px">
+<div class="card"><div class="ph-box" style="min-height:80px">photo</div>Name, role<div class="row" style="margin-top:8px"><span class="pill">Call</span><span class="pill">Email</span><span class="pill">WhatsApp</span></div></div>
+<div class="card"><div class="ph-box" style="min-height:80px">photo</div>Name, role<div class="row" style="margin-top:8px"><span class="pill">Call</span><span class="pill">Email</span><span class="pill">WhatsApp</span></div></div>
+<div class="card"><div class="ph-box" style="min-height:80px">photo</div>Name, role<div class="row" style="margin-top:8px"><span class="pill">Call</span><span class="pill">Email</span><span class="pill">WhatsApp</span></div></div>
+<div class="card"><div class="ph-box" style="min-height:80px">photo</div>Name, role<div class="row" style="margin-top:8px"><span class="pill">Call</span><span class="pill">Email</span><span class="pill">WhatsApp</span></div></div>
+</div>
+</div>
+
+<div class="footer"><span class="frame-tag tag-blue" style="top:-38px">Footer</span>
+<div class="ph-box" style="min-height:60px">shared footer — see Home</div>
+</div>
+
+</div>
+</section>
+
+<script>
+function showPage(id){
+  document.querySelectorAll('.wf-page').forEach(function(el){el.style.display='none'});
+  document.getElementById('page-'+id).style.display='block';
+  document.querySelectorAll('.wf-nav a').forEach(function(a){a.classList.remove('active')});
+  document.querySelector('.wf-nav a[data-page="'+id+'"]').classList.add('active');
+  window.scrollTo(0,0);
+}
+showPage('overview');
+</script>
+</body></html>

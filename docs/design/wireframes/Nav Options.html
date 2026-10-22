@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="design_doc_mode" content="canvas">
+<title>Navbar options</title>
+<link rel="stylesheet" href="../_ds/sssso-delhi-ncr-design-system-9ec6b9ec-3169-4084-8acf-09aeff92e3a6/tokens/fonts.css">
+<link rel="stylesheet" href="../_ds/sssso-delhi-ncr-design-system-9ec6b9ec-3169-4084-8acf-09aeff92e3a6/tokens/colors.css">
+<link rel="stylesheet" href="../_ds/sssso-delhi-ncr-design-system-9ec6b9ec-3169-4084-8acf-09aeff92e3a6/tokens/typography.css">
+<link rel="stylesheet" href="../_ds/sssso-delhi-ncr-design-system-9ec6b9ec-3169-4084-8acf-09aeff92e3a6/tokens/spacing.css">
+<link rel="stylesheet" href="../_ds/sssso-delhi-ncr-design-system-9ec6b9ec-3169-4084-8acf-09aeff92e3a6/tokens/elevation.css">
+<link rel="stylesheet" href="../_ds/sssso-delhi-ncr-design-system-9ec6b9ec-3169-4084-8acf-09aeff92e3a6/tokens/motion.css">
+<link rel="stylesheet" href="../_ds/sssso-delhi-ncr-design-system-9ec6b9ec-3169-4084-8acf-09aeff92e3a6/styles.css">
+<style>
+*{box-sizing:border-box}
+body{font-family:var(--font-sans-body);color:var(--text-body)}
+a{color:var(--text-link);text-decoration:none}a:hover{color:var(--text-link-hover)}
+.fr{position:absolute;width:1120px;background:var(--cream);border-radius:16px;padding:28px 32px 32px;font-size:15px}
+.fr h2{font-family:var(--font-serif-display);font-weight:400;font-size:24px;margin:0 0 4px;color:var(--slate-900)}
+.fr .why{margin:0 0 20px;color:var(--slate-600);max-width:80ch;line-height:1.55}
+.fr .pc{display:flex;gap:24px;margin-top:18px;font-size:13px;color:var(--slate-600)}
+.fr .pc b{color:var(--slate-800);font-weight:600}
+.stage{position:relative;background:linear-gradient(var(--blue-50),var(--cream));border:1px solid var(--border-subtle);border-radius:14px;padding:18px;min-height:96px}
+.pill{display:flex;align-items:center;gap:4px;padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.88);border:1px solid var(--border-subtle);box-shadow:var(--shadow-sm);width:max-content;margin:0 auto}
+.nb{display:inline-flex;align-items:center;gap:6px;height:44px;min-width:44px;padding:0 12px;justify-content:center;border-radius:999px;color:var(--slate-700);font-size:15px;white-space:nowrap}
+.nb.on{background:var(--pink-100);color:var(--pink-700)}
+.nb.ico{padding:0}
+.mark{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--pink-50);border:1px solid var(--border-warm);color:var(--pink-700);margin-right:4px}
+.sep{width:1px;height:24px;background:var(--border-subtle);margin:0 4px}
+.lang{display:inline-flex;align-items:center;height:36px;padding:0 12px;border-radius:999px;border:1px solid var(--border-subtle);font-size:13px;color:var(--slate-700);gap:6px}
+.lang b{font-weight:600;color:var(--slate-900)}
+.don{display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 16px;border-radius:999px;background:var(--pink-200);color:var(--pink-800,#7a2a3a);font-size:14px;font-weight:500;margin-left:4px}
+.menu{position:absolute;background:#fff;border:1px solid var(--border-subtle);border-radius:16px;box-shadow:var(--shadow-lg);padding:8px;display:flex;flex-direction:column;min-width:220px}
+.menu a{display:flex;align-items:center;gap:10px;height:44px;padding:0 12px;border-radius:10px;color:var(--slate-800)}
+.menu a:first-child{background:var(--pink-50)}
+.menu .ext{margin-left:auto;color:var(--slate-500)}
+.menu hr{border:0;border-top:1px solid var(--border-subtle);margin:6px 4px}
+.util{display:flex;justify-content:flex-end;align-items:center;gap:18px;font-size:13px;color:var(--slate-600);padding:0 8px 10px}
+.util a{color:var(--slate-700);display:inline-flex;gap:4px;align-items:center}
+.panel{position:absolute;left:50%;transform:translateX(-50%);top:84px;width:760px;background:#fff;border:1px solid var(--border-subtle);border-radius:24px;box-shadow:var(--shadow-lg);padding:28px;display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.panel h4{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--slate-500);margin:0 0 10px;font-weight:600;font-family:var(--font-sans-body)}
+.panel a{display:flex;align-items:center;gap:10px;height:40px;color:var(--slate-800)}
+.panel .ft{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border-subtle);padding-top:16px;font-size:13px;color:var(--slate-600)}
+.tip{position:absolute;font-size:12px;background:var(--slate-800);color:#fff;border-radius:6px;padding:4px 8px}
+</style></head>
+<body>
+<div class="fr" id="o0" style="left:0;top:0"></div>
+<div class="fr" id="o1" style="left:0;top:320px"></div>
+<div class="fr" id="o2" style="left:0;top:980px"></div>
+<div class="fr" id="o3" style="left:0;top:1380px"></div>
+<div class="fr" id="o4" style="left:0;top:2160px"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/lucide@0.454.0/dist/umd/lucide.js"></script>
+<script src="../_ds/sssso-delhi-ncr-design-system-9ec6b9ec-3169-4084-8acf-09aeff92e3a6/_ds_bundle.js"></script>
+<script type="text/babel">
+const {Icon}=window.SSSSODelhiNCRDesignSystem_9ec6b9;
+const I=(n,s=18)=><Icon name={n} size={s}/>;
+const Mark=()=><span className="mark">{I('home')}</span>;
+const Lang=({compact})=>compact?<span className="lang"><b>EN</b><span>·</span><span>हि</span></span>:<span className="lang"><span>हिंदी</span><b>EN</b></span>;
+const Don=({ext=true})=><span className="don">{I('heart',16)}Donate{ext?I('external-link',16):null}</span>;
+const Head=({t,why,pc})=><><h2>{t}</h2><p className="why">{why}</p></>;
+const PC=({p,c})=><div className="pc"><span><b>Good:</b> {p}</span><span><b>Cost:</b> {c}</span></div>;
+
+function O0(){return <><Head t="Today (coordinator login removed)" why="Nine icon-only links, a flag item, language toggle, SaiConnect and Donate in one pill. Visitors must hover to learn what each icon means."/>
+<div className="stage"><div className="pill"><Mark/>{['info','hand-heart','music','heart-handshake','chart-column'].map(n=><span key={n} className="nb ico">{I(n)}</span>)}<span className="sep"></span>{['newspaper','calendar-days','book-open'].map(n=><span key={n} className="nb ico">{I(n)}</span>)}<span className="sep"></span><Lang/><span className="nb">SaiConnect{I('external-link',16)}</span><Don/></div></div></>}
+
+function O1(){return <><Head t="A · Fewer words, plus “More”" why="Four labelled links people actually look for. Bhajans, Impact, News and Discourses move into a “More” menu; SaiConnect sits at the bottom of that menu. Language shrinks to a compact switch."/>
+<div className="stage" style={{minHeight:400}}><div className="pill"><Mark/><span className="nb">About</span><span className="nb">Programs</span><span className="nb on">Calendar</span><span className="nb">Get involved</span><span className="nb" style={{background:'var(--blue-50)'}}>More{I('chevron-down',16)}</span><span className="sep"></span><Lang compact/><Don/></div>
+<div className="menu" style={{left:610,top:84}}><a>{I('music')}Bhajans</a><a>{I('chart-column')}Impact</a><a>{I('newspaper')}News</a><a>{I('book-open')}Discourses</a><hr/><a>{I('log-in')}SaiConnect<span className="ext">{I('external-link',16)}</span></a></div></div>
+<PC p="Labels are readable at a glance; still one row; works in Hindi (longer words) because there are only four." c="Bhajans and News are one click deeper."/></>}
+
+function O2(){return <><Head t="B · Two rows: utilities above, pages below" why="A thin text row carries language, SaiConnect and Donate. The main pill holds only pages, with labels. Common on organisation sites; nothing is hidden."/>
+<div className="stage" style={{paddingTop:12}}><div className="util"><span><b style={{fontWeight:600,color:'var(--slate-900)'}}>EN</b> · हिंदी</span><a>SaiConnect{I('external-link',16)}</a><a style={{color:'var(--pink-700)',fontWeight:500}}>{I('heart',16)}Donate{I('external-link',16)}</a></div>
+<div className="pill"><Mark/><span className="nb">About</span><span className="nb">Programs</span><span className="nb">Bhajans</span><span className="nb on">Calendar</span><span className="nb">News</span><span className="nb">Impact</span><span className="nb">Get involved</span></div></div>
+<PC p="Every page visible with a label; Donate stays one click." c="Wider pill (doesn’t fit below ~1100px, so tablet uses the menu); Donate loses its button weight; Discourses still needs a home."/></>}
+
+function O3(){return <><Head t="C · Minimal pill + full menu panel" why="Only four things stay out: Home, Menu, Calendar and Donate. “Menu” opens a calm panel grouped by intent — Learn, Visit, Serve — with language and SaiConnect in its footer. Same pattern on phone and desktop."/>
+<div className="stage" style={{minHeight:480}}><div className="pill"><Mark/><span className="nb on">{I('menu')}Menu</span><span className="nb">{I('calendar-days')}Calendar</span><span className="nb">{I('map-pin')}Find a centre</span><span className="sep"></span><Don/></div>
+<div className="panel"><div><h4>Learn</h4><a>{I('info')}About us</a><a>{I('music')}Bhajans</a><a>{I('book-open')}Discourses</a><a>{I('newspaper')}News</a></div>
+<div><h4>Visit</h4><a>{I('calendar-days')}Calendar</a><a>{I('map-pin')}Centres</a><a>{I('chart-column')}Impact</a></div>
+<div><h4>Serve</h4><a>{I('hand-heart')}Programs</a><a>{I('heart-handshake')}Join a seva</a><a>{I('heart')}Donate{I('external-link',16)}</a></div>
+<div className="ft"><Lang/><a style={{display:'inline-flex',gap:4,alignItems:'center'}}>SaiConnect{I('external-link',16)}</a></div></div></div>
+<PC p="Quietest bar; scales to any number of pages; one pattern for all screen sizes; suits the lotus hero." c="Everything except Calendar and Centres is behind one click."/></>}
+
+function O4(){return <><Head t="D · Keep icons, tidy the edges" why="Smallest change. Icons stay but the active item shows its label, separators go, Discourses loses its dashed ring (flag shown only in the sitemap), language becomes one tap target, and SaiConnect moves to the footer."/>
+<div className="stage" style={{minHeight:150}}><div className="pill"><Mark/>{['info','hand-heart','music','heart-handshake','chart-column','newspaper'].map(n=><span key={n} className="nb ico">{I(n)}</span>)}<span className="nb on">{I('calendar-days')}Calendar</span><span className="nb ico">{I('book-open')}</span><Lang compact/><Don ext={false}/></div>
+<span className="tip" style={{left:400,top:84}}>Bhajans</span></div>
+<PC p="Same look as today; about 30% narrower." c="Still relies on hover tooltips to explain icons — hard on touch and for first-time visitors."/></>}
+
+[O0,O1,O2,O3,O4].forEach((C,i)=>ReactDOM.createRoot(document.getElementById('o'+i)).render(<C/>));
+</script>
+</body></html>
