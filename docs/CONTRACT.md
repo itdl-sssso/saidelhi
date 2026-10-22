@@ -307,3 +307,14 @@ Definition of done per milestone: `pnpm typecheck && pnpm lint && pnpm test && p
 9. `/events` without `from`/`to` lists from today (IST) onward.
 10. `Permission` is `string` until M3 defines the set.
 11. KPI facts table is `submission_answer_kpi`; KPI labels/rules live in `src/server/domain/kpi.ts` until `kpi_definition` (M6).
+
+### v0.3 (M2 backend)
+1. `LinkInfo` adds `expiresAt`, `botChallenge`, `hasSession`.
+2. Error body may carry `details`; 410 link errors carry `{ link: LinkInfo }` (`LinkGoneDetails`). Event card only for expired/revoked.
+3. `Submission` adds `version`; `answers` include personal answers only for the submitting link session.
+4. `FormField` adds optional `prefill`, `readOnly`, `consent`, `format: "phone"`. KPI refs may carry a dimension (`"eye.spectacles_by_power:+1.0"`, `parseKpiRef`). Cross-rule operands may be sums (`"a+b+c"`).
+5. New schemas: `LinkTokenParams`, `LinkSubmissionParams`, `OtpRequest`, `OtpSent`, `VerifyRequest`, `PublicSessionRequest`, `LinkSession`, `FormPayload` (+`purpose`, `event`), `SubmissionInput`, `SubmissionPatch`, `LinkAttachment`, `ATTACHMENT_LIMITS`, `linkEndpoints`, `formLinkPath`, `LINK_HEADERS`, `LINK_COOKIES`. Shared validation engine: `src/contract/form-rules.ts` (client reuses it for live checks).
+6. Wrong OTP → 422 `fields.code` + tries left. Replayed submission → 201 with `idempotent-replayed: true`. Cookie mutations without valid `x-csrf` → 403.
+7. Env: `APP_URL`; `SESSION_SECRET` required in production. Link tokens = HMAC(nonce, SESSION_SECRET); rotating the secret invalidates all links.
+8. Desk links without OTP open a session via `POST /links/:token/public` (bot check). Used-up report/desk links still admit a verified session to edit its own report.
+9. `GET /media/[...path]` serves `MEDIA_ROOT` (legacy Django media), excluded from the i18n proxy.
