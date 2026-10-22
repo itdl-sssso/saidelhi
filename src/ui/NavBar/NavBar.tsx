@@ -38,7 +38,17 @@ function isCurrent(pathname: string, href: string) {
   return href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
 }
 
-export function NavBar({
+/** Live navbar: marks the current page from the URL. */
+export function NavBar(props: NavBarProps) {
+  return <NavBarView {...props} pathname={usePathname()} />;
+}
+
+/**
+ * The same bar for a known (or unknown, "") path. Used as the prerendered fallback while
+ * the URL of a dynamic route is not yet known, so the shell never waits for it.
+ */
+export function NavBarView({
+  pathname,
   orgName,
   region,
   emblemSrc,
@@ -47,10 +57,9 @@ export function NavBar({
   donate,
   utilityLinks,
   languageSwitch,
-}: NavBarProps) {
+}: NavBarProps & { pathname: string }) {
   const t = useTranslations("nav");
   const tc = useTranslations("common");
-  const pathname = usePathname();
   const panelId = useId();
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);

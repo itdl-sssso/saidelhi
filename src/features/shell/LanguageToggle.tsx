@@ -12,9 +12,13 @@ const OPTIONS: Array<{ locale: Locale; label: string; name: string }> = [
 
 /** Links to the same path in the other language; the current language is marked, not disabled. */
 export function LanguageToggle() {
+  return <LanguageToggleView pathname={usePathname()} />;
+}
+
+/** Prerender fallback while the URL is unknown: links to the home page in each language. */
+export function LanguageToggleView({ pathname }: { pathname: string }) {
   const t = useTranslations("nav");
   const locale = useLocale();
-  const pathname = usePathname();
   return (
     <div role="group" aria-label={t("language")} className={styles.toggle}>
       {OPTIONS.map((o) => (

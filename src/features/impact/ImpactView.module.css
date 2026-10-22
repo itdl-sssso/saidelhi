@@ -1,0 +1,90 @@
+.eyebrow {
+  margin: 0;
+  font-size: var(--text-eyebrow);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  font-weight: var(--weight-semibold);
+  color: var(--blue-600);
+}
+.eyebrow:lang(hi) { letter-spacing: 0; text-transform: none; font-size: var(--text-small); }
+
+.filters { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: flex-end; }
+.filters nav { width: 100%; }
+@media (min-width: 600px) {
+  .filters nav { width: auto; }
+}
+.districtForm { display: flex; gap: var(--space-2); align-items: flex-end; flex: 1 1 220px; max-width: 320px; }
+.districtForm > div { flex: 1; }
+.apply {
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-subtle);
+  background: var(--white);
+  font: inherit;
+  font-size: var(--text-small);
+  cursor: pointer;
+}
+.approved { display: inline-flex; gap: 6px; align-items: center; }
+.approved svg { color: var(--signal-success); flex: none; }
+
+.kpis { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+@media (min-width: 900px) {
+  .kpis { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-4); }
+}
+
+.programs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-4);
+}
+@media (min-width: 700px) {
+  .programs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 1000px) {
+  .programs { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+.program dl { margin: 0; display: flex; flex-direction: column; }
+.program dl > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-3);
+  padding: 8px 0;
+  border-top: 1px solid var(--border-subtle);
+  font-size: var(--text-small);
+}
+.program dt { color: var(--slate-700); }
+.program dd {
+  margin: 0;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  font-family: var(--font-serif-display);
+  font-size: 20px;
+  color: var(--text-heading);
+  line-height: 1.2;
+  text-align: right;
+}
+.programHead { display: flex; align-items: center; gap: 12px; }
+.program > a { margin-top: auto; align-self: flex-start; }
+
+.mapLayout { display: grid; gap: var(--space-4); }
+/* Phone: the ranked list carries the data; the schematic map needs room to be legible. */
+div.mapCard { display: none; }
+@media (min-width: 900px) {
+  .mapLayout { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: var(--space-6); align-items: start; }
+  div.mapCard { display: flex; }
+}
+.listTitle { font-weight: var(--weight-semibold); color: var(--slate-700); }
+@media (max-width: 899px) {
+  .listTitle { display: none; }
+}
+
+.split { display: grid; gap: var(--space-10); }
+@media (min-width: 900px) {
+  .split { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: var(--space-6); align-items: start; }
+}
+.summary { display: inline-flex; gap: 10px; align-items: center; }

@@ -1,14 +1,16 @@
 import { useTranslations } from "next-intl";
-import { NavBar, type NavGroup } from "@/ui/NavBar";
-import { LanguageToggle } from "./LanguageToggle";
+import { NavBar, type NavBarProps, NavBarView, type NavGroup } from "@/ui/NavBar";
+import { LanguageToggle, LanguageToggleView } from "./LanguageToggle";
 import { DONATE_URL, EMBLEM_SRC, SAICONNECT_URL } from "./links";
 
 export type SiteHeaderProps = {
   /** Feature flag `discourses`: the nav item stays hidden until the Trust grants permission. */
   discourses?: boolean;
+  /** Render without reading the URL: the Suspense fallback for routes whose path is dynamic. */
+  pathless?: boolean;
 };
 
-export function SiteHeader({ discourses = false }: SiteHeaderProps) {
+export function SiteHeader({ discourses = false, pathless = false }: SiteHeaderProps) {
   const t = useTranslations("nav");
   const tm = useTranslations("meta");
 
@@ -40,22 +42,21 @@ export function SiteHeader({ discourses = false }: SiteHeaderProps) {
     },
   ];
 
-  return (
-    <NavBar
-      orgName={tm("orgName")}
-      region={tm("region")}
-      emblemSrc={EMBLEM_SRC}
-      quickLinks={[
-        { href: "/calendar", label: t("calendar"), icon: "calendar-days" },
-        { href: "/centres/map", label: t("findCentre"), icon: "map-pin" },
-      ]}
-      groups={groups}
-      donate={{ href: DONATE_URL, label: t("donate") }}
-      utilityLinks={[
-        { href: SAICONNECT_URL, label: t("saiConnectLabel"), icon: "log-in", external: true },
-        { href: "/admin/login", label: t("coordinatorLogin"), icon: "lock", quiet: true },
-      ]}
-      languageSwitch={<LanguageToggle />}
-    />
-  );
+  const props: NavBarProps = {
+    orgName: tm("orgName"),
+    region: tm("region"),
+    emblemSrc: EMBLEM_SRC,
+    quickLinks: [
+      { href: "/calendar", label: t("calendar"), icon: "calendar-days" },
+      { href: "/centres/map", label: t("findCentre"), icon: "map-pin" },
+    ],
+    groups,
+    donate: { href: DONATE_URL, label: t("donate") },
+    utilityLinks: [
+      { href: SAICONNECT_URL, label: t("saiConnectLabel"), icon: "log-in", external: true },
+      { href: "/admin/login", label: t("coordinatorLogin"), icon: "lock", quiet: true },
+    ],
+    languageSwitch: pathless ? <LanguageToggleView pathname="/" /> : <LanguageToggle />,
+  };
+  return pathless ? <NavBarView {...props} pathname="" /> : <NavBar {...props} />;
 }

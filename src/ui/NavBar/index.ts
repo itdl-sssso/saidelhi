@@ -1,1 +1,1 @@
-export { NavBar, type NavBarProps, type NavGroup, type NavItem } from "./NavBar";
+export { NavBar, NavBarView, type NavBarProps, type NavGroup, type NavItem } from "./NavBar";
