@@ -1,0 +1,22 @@
+.otp { display: flex; gap: 8px; max-width: 360px; }
+.otp input {
+  flex: 1 1 0;
+  width: 0;
+  min-width: 0;
+  max-width: 52px;
+  height: 58px;
+  padding: 0;
+  text-align: center;
+  font-family: var(--font-serif-display);
+  font-size: 26px;
+  color: var(--text-heading);
+  font-variant-numeric: tabular-nums;
+  background: var(--white);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  outline: 0;
+  caret-color: var(--pink-500);
+}
+.otp input:focus { border-color: var(--border-focus); box-shadow: var(--ring-focus); }
+.otp input:disabled { background: var(--slate-100); color: var(--slate-500); }
+.error input { border-color: var(--signal-error-text); }

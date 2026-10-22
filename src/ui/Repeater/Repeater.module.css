@@ -1,0 +1,30 @@
+.list { display: flex; flex-direction: column; gap: 12px; }
+.empty { margin: 0; font-size: var(--text-small); color: var(--text-muted); }
+.row { overflow: hidden; background: var(--white); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); }
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 4px 4px 16px;
+  background: var(--sand);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.title { font-size: var(--text-small); font-weight: 600; color: var(--slate-800); }
+.remove {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--slate-600);
+  cursor: pointer;
+}
+.remove:hover { background: var(--slate-100); color: var(--slate-800); }
+.remove:focus-visible { outline: 0; box-shadow: var(--ring-focus); }
+.body { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; padding: 16px; }
+/* Full-width cells for long text inside a row. */
+.body > [data-wide="true"] { grid-column: 1 / -1; }

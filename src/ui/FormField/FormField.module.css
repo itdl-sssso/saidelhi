@@ -1,0 +1,60 @@
+/* Form field kit (DS additions ext-forms / components.css `sx-field`, `sx-ctl`). */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  font-family: var(--font-sans-body);
+}
+.label {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: baseline;
+  font-size: var(--text-small);
+  font-weight: var(--weight-medium);
+  line-height: 1.45;
+  color: var(--slate-800);
+}
+.optional { font-size: var(--text-caption); font-weight: var(--weight-regular); color: var(--text-muted); }
+.help { font-size: var(--text-caption); line-height: 1.5; color: var(--text-muted); }
+.messages { display: flex; flex-direction: column; gap: 6px; }
+
+/* Shared control box: 48px tall, 16px text so phones don't zoom on focus. */
+.ctl {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 48px;
+  padding: 0 14px;
+  font-family: var(--font-sans-body);
+  font-size: 16px;
+  color: var(--text-body);
+  text-align: left;
+  background: var(--white);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  transition: border-color var(--duration-fast) var(--ease-serene), box-shadow var(--duration-fast) var(--ease-serene);
+}
+.ctl:focus-within { border-color: var(--border-focus); box-shadow: var(--ring-focus); }
+.ctl input,
+.ctl select,
+.ctl textarea {
+  flex: 1;
+  min-width: 0;
+  height: 46px;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  outline: 0;
+}
+.ctl input::placeholder { color: var(--slate-400); }
+.ctl[data-state="error"] { border-color: var(--signal-error-text); }
+.ctl[data-state="warning"] { border-color: var(--signal-warning); }
+.ctl[data-readonly="true"] { background: var(--slate-100); color: var(--slate-700); }
+.ctlIcon { display: inline-flex; flex: none; color: var(--slate-500); }
+.prefix { flex: none; font-size: var(--text-small); color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.tabular { font-variant-numeric: tabular-nums; }
