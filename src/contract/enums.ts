@@ -1,0 +1,147 @@
+import { z } from "zod";
+
+export const EventStatus = z.enum([
+  "draft",
+  "awaiting_approval",
+  "planned",
+  "awaiting_report",
+  "report_submitted",
+  "approved",
+  "cancelled",
+  "postponed",
+  "escalated",
+]);
+export type EventStatus = z.infer<typeof EventStatus>;
+
+/** Statuses visible on public pages (spec 09: "Planned or later", excluding escalated). */
+export const PublicEventStatus = z.enum([
+  "planned",
+  "awaiting_report",
+  "report_submitted",
+  "approved",
+  "cancelled",
+  "postponed",
+]);
+export type PublicEventStatus = z.infer<typeof PublicEventStatus>;
+export const PUBLIC_EVENT_STATUSES = PublicEventStatus.options;
+
+/** Extensible via settings; these are the built-in codes. */
+export const SevaType = z.enum([
+  "eye",
+  "blood",
+  "medical",
+  "narayan_seva",
+  "bal_vikas",
+  "bhajan",
+  "study_circle",
+  "disaster_relief",
+  "cleanliness",
+  "other",
+]);
+export type SevaType = z.infer<typeof SevaType>;
+
+export const Wing = z.enum(["service", "educational", "spiritual", "mahila", "youth"]);
+export type Wing = z.infer<typeof Wing>;
+
+export const LinkPurpose = z.enum(["report", "desk", "public"]);
+export type LinkPurpose = z.infer<typeof LinkPurpose>;
+
+export const LinkState = z.enum(["active", "expired", "revoked", "used_up"]);
+export type LinkState = z.infer<typeof LinkState>;
+
+export const Source = z.enum(["form", "upload", "whatsapp", "scan", "portal"]);
+export type Source = z.infer<typeof Source>;
+
+export const Confidence = z.enum(["high", "check", "low"]);
+export type Confidence = z.infer<typeof Confidence>;
+
+/** Legacy letters map positionally: N,A,C,D,K,S,P. */
+export const ArticleCategory = z.enum([
+  "news",
+  "activities",
+  "centenary_national",
+  "centenary_state",
+  "key_programs",
+  "special_programs",
+  "stories",
+]);
+export type ArticleCategory = z.infer<typeof ArticleCategory>;
+
+export const LEGACY_ARTICLE_CATEGORY = {
+  N: "news",
+  A: "activities",
+  C: "centenary_national",
+  D: "centenary_state",
+  K: "key_programs",
+  S: "special_programs",
+  P: "stories",
+} as const satisfies Record<string, ArticleCategory>;
+export type LegacyArticleCategory = keyof typeof LEGACY_ARTICLE_CATEGORY;
+
+/** `?c=` filter on /articles: a category, the `centenary` group (both centenary_*), or `all`. */
+export const ArticleCategoryFilter = z.union([ArticleCategory, z.enum(["all", "centenary"])]);
+export type ArticleCategoryFilter = z.infer<typeof ArticleCategoryFilter>;
+
+export const Role = z.enum([
+  "state_admin",
+  "district_coord",
+  "samithi_coord",
+  "content_editor",
+  "translator",
+  "pii_officer",
+]);
+export type Role = z.infer<typeof Role>;
+
+export const OrgUnitKind = z.enum(["ncr", "district", "samithi"]);
+export type OrgUnitKind = z.infer<typeof OrgUnitKind>;
+
+export const GatheringKind = z.enum(["bhajan", "study_circle", "bal_vikas"]);
+export type GatheringKind = z.infer<typeof GatheringKind>;
+
+export const PartnerKind = z.enum(["hospital", "blood_bank", "ngo", "school"]);
+export type PartnerKind = z.infer<typeof PartnerKind>;
+
+export const TimelineChannel = z.enum(["whatsapp", "portal", "system"]);
+export type TimelineChannel = z.infer<typeof TimelineChannel>;
+
+export const SubmissionStatus = z.enum(["submitted", "approved", "changes_requested"]);
+export type SubmissionStatus = z.infer<typeof SubmissionStatus>;
+
+export const InboxState = z.enum(["for_me", "escalated", "done"]);
+export type InboxState = z.infer<typeof InboxState>;
+
+export const FormFieldKind = z.enum([
+  "number",
+  "text",
+  "date",
+  "time",
+  "select",
+  "multiselect",
+  "yesno",
+  "repeater",
+  "file",
+  "heading",
+  "help",
+]);
+export type FormFieldKind = z.infer<typeof FormFieldKind>;
+
+export const DiscourseBlockType = z.enum(["para", "heading", "poem", "quote"]);
+export type DiscourseBlockType = z.infer<typeof DiscourseBlockType>;
+
+export const ImpactPeriod = z.enum(["this_year", "last_year", "all"]);
+export type ImpactPeriod = z.infer<typeof ImpactPeriod>;
+
+export const PrivacyRequestType = z.enum(["access", "correction", "deletion", "grievance"]);
+export type PrivacyRequestType = z.infer<typeof PrivacyRequestType>;
+
+export const PrivacyRequestStatus = z.enum(["received", "in_progress", "done", "rejected"]);
+export type PrivacyRequestStatus = z.infer<typeof PrivacyRequestStatus>;
+
+export const ContentKind = z.enum(["thought_for_day", "announcement", "home_section"]);
+export type ContentKind = z.infer<typeof ContentKind>;
+
+export const FeatureFlag = z.enum(["discourses", "offline_mode", "ai_extraction"]);
+export type FeatureFlag = z.infer<typeof FeatureFlag>;
+
+export const ValueSlug = z.enum(["sathya", "dharma", "shanti", "prema", "ahimsa"]);
+export type ValueSlug = z.infer<typeof ValueSlug>;

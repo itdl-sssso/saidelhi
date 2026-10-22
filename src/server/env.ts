@@ -1,0 +1,61 @@
+import "server-only";
+import { z } from "zod";
+
+const blank = (v: unknown) => (v === "" ? undefined : v);
+const optStr = z.preprocess(blank, z.string().optional());
+
+const EnvSchema = z
+  .object({
+    NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
+    DATA_SOURCE: z.preprocess(blank, z.enum(["mock", "db"]).default("mock")),
+    DATABASE_URL: z.preprocess(blank, z.url({ protocol: /^mysql$/ }).optional()),
+    MEDIA_ROOT: z.preprocess(blank, z.string().default("./media")),
+    MEDIA_PRIVATE_ROOT: z.preprocess(blank, z.string().default("./media-private")),
+    MEDIA_URL: z.preprocess(blank, z.string().default("/media")),
+    SESSION_SECRET: z.preprocess(blank, z.string().min(32).optional()),
+    CRON_SECRET: optStr,
+    WHATSAPP_PROVIDER: z.preprocess(blank, z.enum(["console", "cloud"]).default("console")),
+    WA_PHONE_NUMBER_ID: optStr,
+    WA_BUSINESS_ACCOUNT_ID: optStr,
+    WA_ACCESS_TOKEN: optStr,
+    WA_APP_SECRET: optStr,
+    WA_VERIFY_TOKEN: optStr,
+    WA_GRAPH_VERSION: z.preprocess(blank, z.string().default("v23.0")),
+    EXTRACTOR_PROVIDER: z.preprocess(blank, z.enum(["stub", "ollama"]).default("stub")),
+    OLLAMA_URL: z.preprocess(blank, z.url().default("http://127.0.0.1:11434")),
+    OLLAMA_MODEL: z.preprocess(blank, z.string().default("qwen2.5:7b-instruct")),
+  })
+  .superRefine((env, ctx) => {
+    if (env.DATA_SOURCE === "db" && !env.DATABASE_URL) {
+      ctx.addIssue({ code: "custom", path: ["DATABASE_URL"], message: "required when DATA_SOURCE=db" });
+    }
+    if (env.WHATSAPP_PROVIDER === "cloud") {
+      for (const k of ["WA_PHONE_NUMBER_ID", "WA_ACCESS_TOKEN", "WA_APP_SECRET", "WA_VERIFY_TOKEN"] as const) {
+        if (!env[k]) ctx.addIssue({ code: "custom", path: [k], message: "required when WHATSAPP_PROVIDER=cloud" });
+      }
+    }
+    if (env.NODE_ENV === "production" && env.DATA_SOURCE === "db" && !env.SESSION_SECRET) {
+      ctx.addIssue({ code: "custom", path: ["SESSION_SECRET"], message: "required in production" });
+    }
+  });
+
+export type Env = z.infer<typeof EnvSchema>;
+
+let cached: Env | undefined;
+
+/** Validated server environment. Throws with every problem listed on first use. */
+export function env(): Env {
+  if (cached) return cached;
+  const parsed = EnvSchema.safeParse(process.env);
+  if (!parsed.success) {
+    const lines = parsed.error.issues.map((i) => `  ${i.path.join(".")}: ${i.message}`);
+    throw new Error(`Invalid environment:\n${lines.join("\n")}`);
+  }
+  cached = parsed.data;
+  return cached;
+}
+
+/** For tests only. */
+export function resetEnvCache(): void {
+  cached = undefined;
+}

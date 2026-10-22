@@ -1,0 +1,31 @@
+name: saidelhi
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: saidelhi-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: saidelhi
+      MYSQL_USER: app
+      MYSQL_PASSWORD: app
+      TZ: UTC
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_0900_ai_ci
+      - --default-time-zone=+00:00
+    ports:
+      - "3307:3306"
+    volumes:
+      - saidelhi-mysql-data:/var/lib/mysql
+      - ./docs/db/saidelhi-schema.sql:/docker-entrypoint-initdb.d/01-legacy-schema.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot", "--silent"]
+      interval: 3s
+      timeout: 3s
+      retries: 40
+      start_period: 10s
+
+volumes:
+  saidelhi-mysql-data:
