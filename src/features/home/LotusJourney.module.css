@@ -1,0 +1,311 @@
+/* 3D lotus journey (design: docs/design/wireframes/A2 3D Lotus Journey.html, a2-app-v2.jsx).
+   Modes on .journey[data-mode]:
+   - (unset)   server HTML / no JavaScript: night poster, first act, petal cards.
+   - enhanced  WebGL stage drives acts and petals from the scroll position.
+   - static    reduced motion, no WebGL, save-data or low-power: light bloom poster. */
+
+.journey {
+  --night: #04060b;
+  --on-dark: #fff9ef;
+  --on-dark-soft: rgba(255, 249, 239, 0.8);
+  position: relative;
+  isolation: isolate;
+  background: var(--night);
+}
+
+/* ---- Stage: pinned behind the journey only, scrolls away with it ---- */
+.stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  margin-bottom: -100vh;
+  margin-bottom: -100svh;
+  overflow: hidden;
+  z-index: 0;
+  background-color: var(--night);
+}
+.poster {
+  position: absolute;
+  inset: 0;
+  transition: opacity 900ms var(--ease-serene);
+  /* A quiet night sky drawn in CSS: no image request on the critical path. */
+  background:
+    radial-gradient(46% 38% at 50% 64%, rgba(255, 206, 140, 0.1), transparent 70%),
+    radial-gradient(1.2px 1.2px at 12% 18%, rgba(255, 255, 255, 0.85), transparent 60%),
+    radial-gradient(1px 1px at 28% 42%, rgba(220, 235, 255, 0.7), transparent 60%),
+    radial-gradient(1.4px 1.4px at 46% 12%, rgba(255, 236, 200, 0.85), transparent 60%),
+    radial-gradient(1px 1px at 63% 33%, rgba(255, 255, 255, 0.7), transparent 60%),
+    radial-gradient(1.2px 1.2px at 81% 21%, rgba(220, 235, 255, 0.8), transparent 60%),
+    radial-gradient(1px 1px at 90% 58%, rgba(255, 255, 255, 0.6), transparent 60%),
+    radial-gradient(1px 1px at 8% 72%, rgba(220, 235, 255, 0.6), transparent 60%),
+    radial-gradient(1.3px 1.3px at 36% 80%, rgba(255, 236, 200, 0.6), transparent 60%),
+    radial-gradient(1px 1px at 72% 86%, rgba(255, 255, 255, 0.5), transparent 60%),
+    var(--night);
+  background-size: auto, 340px 300px, 260px 310px, 410px 290px, 300px 350px, 380px 260px, 290px 330px, 350px 280px, 320px 300px, 270px 340px, auto;
+}
+.canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.gl { opacity: 0; transition: opacity 900ms var(--ease-serene); }
+.glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(46% 42% at 50% 56%, rgba(255, 206, 140, 0.55), rgba(255, 206, 140, 0) 70%);
+}
+.heart { position: absolute; left: 0; top: 0; pointer-events: none; will-change: transform; }
+.heart img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 58%;
+  height: 58%;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+  object-position: 50% 26%;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 520ms var(--ease-serene);
+  box-shadow: 0 0 0 1px rgba(200, 164, 92, 0.9), 0 0 0 7px rgba(255, 249, 239, 0.55), 0 12px 32px rgba(31, 41, 55, 0.28);
+}
+.journey:not([data-mode="enhanced"]) .heart { display: none; }
+.journey[data-ready="1"] .poster { opacity: 0; }
+.journey[data-ready="1"] .gl { opacity: 1; }
+
+/* ---- Rail: value dots, desktop only, while the stage is live ---- */
+.rail { display: none; }
+@media (min-width: 900px) {
+  .journey[data-mode="enhanced"] .rail {
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-end;
+  }
+}
+.rail a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+  padding: 4px 6px;
+  border-radius: var(--radius-pill);
+  font-size: var(--text-caption);
+  color: var(--slate-500);
+  text-decoration: none;
+}
+.journey[data-tone="dark"] .rail a { color: rgba(255, 255, 255, 0.8); }
+.railDot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1px solid currentColor;
+  transition: transform var(--duration-base) var(--ease-serene), background var(--duration-base) var(--ease-serene);
+}
+.railLabel { opacity: 0; transition: opacity var(--duration-base) var(--ease-serene); }
+.rail a:hover .railLabel,
+.rail a:focus-visible .railLabel,
+.rail a[aria-current] .railLabel { opacity: 1; }
+.rail a[aria-current] .railDot { background: var(--pink-200); border-color: var(--pink-400); transform: scale(1.35); }
+
+/* ---- Act I: four short statements while the lotus opens ---- */
+.act1 { position: relative; z-index: 1; }
+.pin {
+  position: relative;
+  min-height: calc(100svh - var(--header-h));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: clamp(40px, 12svh, 120px) var(--gutter-mobile) 96px;
+  text-align: center;
+}
+.journey[data-mode="enhanced"] .act1 { height: 400svh; }
+.journey[data-mode="enhanced"] .pin {
+  position: sticky;
+  top: var(--header-h);
+  height: calc(100svh - var(--header-h));
+  min-height: 0;
+  justify-content: center;
+  padding-top: 0;
+  padding-bottom: 12svh;
+}
+.acts { position: relative; width: min(760px, 100%); }
+.act {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  transition: opacity 500ms var(--ease-serene), transform 500ms var(--ease-serene);
+}
+.act:not([data-index="0"]) {
+  position: absolute;
+  inset: 0 0 auto 0;
+}
+/* Without the stage only the first statement shows; the rest stay readable to screen readers. */
+.journey:not([data-mode="enhanced"]) .act:not([data-index="0"]) {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.journey[data-mode="enhanced"] .act { opacity: 0; transform: translateY(14px); }
+.journey[data-mode="enhanced"][data-act="0"] .act[data-index="0"],
+.journey[data-mode="enhanced"][data-act="1"] .act[data-index="1"],
+.journey[data-mode="enhanced"][data-act="2"] .act[data-index="2"],
+.journey[data-mode="enhanced"][data-act="3"] .act[data-index="3"] { opacity: 1; transform: none; }
+
+.actEyebrow {
+  margin: 0;
+  font-size: var(--text-eyebrow);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  font-weight: var(--weight-semibold);
+  color: var(--gold-300);
+}
+.actEyebrow:lang(hi) { letter-spacing: 0; text-transform: none; font-size: var(--text-small); }
+.actTitle {
+  margin: 0;
+  font-size: clamp(34px, 5.2vw, 60px);
+  letter-spacing: var(--tracking-display);
+  color: var(--on-dark);
+  text-wrap: balance;
+}
+.actBody {
+  margin: 0;
+  max-width: 44ch;
+  font-size: var(--text-lead);
+  line-height: 1.55;
+  color: var(--on-dark-soft);
+}
+.hint {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 16px;
+  font-size: var(--text-caption);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--on-dark);
+  opacity: 0.75;
+  text-decoration: none;
+  transition: opacity 400ms linear;
+}
+.hint:lang(hi) { letter-spacing: 0; }
+.journey[data-mode="enhanced"][data-hint="0"] .hint { opacity: 0; pointer-events: none; }
+
+.journey[data-tone="light"] .actTitle { color: var(--slate-900); }
+.journey[data-tone="light"] .actBody { color: var(--slate-600); }
+.journey[data-tone="light"] .actEyebrow { color: var(--gold-600); }
+
+/* ---- Act II: one section per value petal ---- */
+.act2 { position: relative; z-index: 1; }
+.petal {
+  min-height: 100svh;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: calc(var(--header-h) + 16px) 16px 20px;
+  scroll-margin-top: 0;
+}
+@media (min-width: 900px) {
+  .petal { align-items: center; justify-content: flex-end; padding: calc(var(--header-h) + 24px) 72px 40px 40px; }
+}
+.panel {
+  position: relative;
+  width: 100%;
+  max-width: 486px;
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-top: 6px solid var(--dharma-rule);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 22px 22px 24px;
+  transition: opacity 480ms var(--ease-serene), transform 480ms var(--ease-serene);
+}
+@media (min-width: 768px) {
+  .panel { padding: 28px; }
+}
+.journey[data-mode="enhanced"] .panel { opacity: 0; transform: translateY(18px); }
+.journey[data-mode="enhanced"][data-focus="0"] .petal[data-index="0"] .panel,
+.journey[data-mode="enhanced"][data-focus="1"] .petal[data-index="1"] .panel,
+.journey[data-mode="enhanced"][data-focus="2"] .petal[data-index="2"] .panel,
+.journey[data-mode="enhanced"][data-focus="3"] .petal[data-index="3"] .panel,
+.journey[data-mode="enhanced"][data-focus="4"] .petal[data-index="4"] .panel,
+.journey[data-mode="enhanced"] .panel:focus-within { opacity: 1; transform: none; }
+
+.crest { width: 52px; height: 52px; margin-bottom: 10px; }
+.crest img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.petalTitle { margin: 6px 0 0; font-size: var(--text-h2); }
+.gloss { margin: 2px 0 0; font-size: var(--text-small); color: var(--text-muted); }
+.quote {
+  margin: 16px 0 6px;
+  font-family: var(--font-serif-display);
+  font-style: italic;
+  font-size: var(--text-h4);
+  line-height: 1.45;
+  color: var(--slate-800);
+  max-width: var(--measure-quote);
+}
+.quote p { margin: 0; }
+.quote p::before { content: "\201C"; }
+.quote p::after { content: "\201D"; }
+.quote:lang(hi) { font-style: normal; }
+.attrib { margin: 0; font-size: var(--text-caption); color: var(--text-muted); }
+.body { margin: 14px 0 0; font-size: var(--text-body-size); color: var(--slate-600); }
+.foot { display: flex; align-items: center; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+@media (max-height: 760px) {
+  .petalTitle { font-size: 26px; }
+  .quote { font-size: 18px; margin: 12px 0 4px; }
+  .body { font-size: var(--text-small); margin-top: 10px; }
+}
+
+/* ---- Static mode: light bloom poster, compact petal cards ---- */
+.journey[data-mode="static"],
+.journey[data-mode="static"] .stage { background: #fffdf3; }
+.journey[data-mode="static"] .poster {
+  background:
+    url("/images/lotus-bloom.webp") center 78% / min(760px, 130vw) auto no-repeat,
+    linear-gradient(to bottom, #fffdf3, var(--cream));
+}
+.journey[data-mode="static"] .actTitle { color: var(--slate-900); }
+.journey[data-mode="static"] .actBody { color: var(--slate-600); }
+.journey[data-mode="static"] .actEyebrow { color: var(--gold-600); }
+.journey[data-mode="static"] .hint { color: var(--slate-700); }
+.journey[data-mode="static"] .act2 {
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-8) var(--gutter-mobile) var(--space-12);
+  max-width: var(--container-max);
+  margin: 0 auto;
+}
+.journey[data-mode="static"] .petal { min-height: 0; padding: 0; align-items: stretch; }
+.journey[data-mode="static"] .panel { max-width: none; box-shadow: var(--shadow-sm); }
+@media (min-width: 900px) {
+  .journey[data-mode="static"] .act2 { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: var(--space-12) var(--gutter-desktop) var(--space-16); }
+}
+
+/* Before hydration, reduced-motion readers already get the light poster (no flash). */
+@media (prefers-reduced-motion: reduce) {
+  .journey:not([data-mode="enhanced"]),
+  .journey:not([data-mode="enhanced"]) .stage { background: #fffdf3; }
+  .journey:not([data-mode="enhanced"]) .poster {
+    background:
+      url("/images/lotus-bloom.webp") center 78% / min(760px, 130vw) auto no-repeat,
+      linear-gradient(to bottom, #fffdf3, var(--cream));
+  }
+  .journey:not([data-mode="enhanced"]) .actTitle { color: var(--slate-900); }
+  .journey:not([data-mode="enhanced"]) .actBody { color: var(--slate-600); }
+  .journey:not([data-mode="enhanced"]) .actEyebrow { color: var(--gold-600); }
+  .journey:not([data-mode="enhanced"]) .hint { color: var(--slate-700); }
+}
