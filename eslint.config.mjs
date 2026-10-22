@@ -14,6 +14,7 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     // Reference material (design exports, specs), not app code.
     "docs/**",
+    ".claude/**",
     // drizzle-kit pull scratch output.
     ".drizzle-pull/**",
   ]),
