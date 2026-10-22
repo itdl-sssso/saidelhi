@@ -41,6 +41,8 @@ export const ApiErrorBody = z.object({
   message: z.string(),
   fields: z.record(z.string(), z.string()).optional(),
   retryAfter: z.number().int().nonnegative().optional(),
+  /** Code-specific data, e.g. 410 link errors carry `{ link: LinkInfo }` (see LinkGoneDetails). */
+  details: z.record(z.string(), z.unknown()).optional(),
 });
 export type ApiErrorBody = z.infer<typeof ApiErrorBody>;
 

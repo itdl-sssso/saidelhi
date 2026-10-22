@@ -1,4 +1,5 @@
 import {
+  type AnyMySqlColumn,
   boolean,
   date,
   datetime,
@@ -12,6 +13,7 @@ import {
 } from "drizzle-orm/mysql-core";
 import type { EventStatus, I18nText, Media, Role, SevaType, Source, TimelineChannel } from "@/contract";
 import { createdAt, idPk, idRef, timestamps } from "../columns";
+import { formVersion } from "./forms";
 import { centre, orgUnit, partner, sevaType } from "./org";
 
 export const event = mysqlTable(
@@ -53,6 +55,8 @@ export const event = mysqlTable(
     /** app_user.id once M3 lands. */
     createdBy: idRef("created_by"),
     reportDueAt: datetime("report_due_at", { mode: "date" }),
+    /** Report form version locked when the first report/desk link is issued. */
+    formVersionId: idRef("form_version_id").references((): AnyMySqlColumn => formVersion.id),
     approvedAt: datetime("approved_at", { mode: "date" }),
     version: int("version").notNull().default(1),
     ...timestamps(),

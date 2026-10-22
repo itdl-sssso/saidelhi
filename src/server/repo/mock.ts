@@ -1,5 +1,7 @@
 import type { ContentKind } from "@/contract";
 import { type Fixtures, loadFixtures } from "../mock/fixtures";
+import { DEV_SESSION_SECRET } from "../security/crypto";
+import { MemoryLinksRepo } from "./links-mock";
 import type { ArticleFilter, ArticleRec, AuditRec, DataRepo, EventFilter, PrivacyRequestRec } from "./types";
 
 const isPublished = (a: ArticleRec) => !a.i18n || a.i18n.status === "published";
@@ -11,7 +13,14 @@ export class MockRepo implements DataRepo {
   readonly privacyRequests: PrivacyRequestRec[] = [];
   readonly audit: AuditRec[] = [];
 
-  constructor(private readonly fx: Fixtures = loadFixtures()) {}
+  readonly links: MemoryLinksRepo;
+
+  constructor(
+    private readonly fx: Fixtures = loadFixtures(),
+    secret: string = DEV_SESSION_SECRET,
+  ) {
+    this.links = new MemoryLinksRepo(fx, secret);
+  }
 
   async orgUnits() {
     return this.fx.orgUnits;

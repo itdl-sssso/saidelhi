@@ -2,6 +2,7 @@ import "server-only";
 import { and, asc, count, desc, eq, gt, gte, inArray, isNotNull, isNull, lt, lte, or, type SQL, sql } from "drizzle-orm";
 import type { ContentKind } from "@/contract";
 import type { Db } from "../db/client";
+import { DbLinksRepo } from "./links-db";
 import { postcontentContentpostimage as postImage, postcontentPostcontent as post } from "../db/legacy";
 import {
   articleI18n,
@@ -82,7 +83,11 @@ const articlePublished = or(isNull(articleI18n.status), eq(articleI18n.status, "
 export class DbRepo implements DataRepo {
   readonly kind = "db" as const;
 
-  constructor(private readonly db: Db) {}
+  readonly links: DbLinksRepo;
+
+  constructor(private readonly db: Db) {
+    this.links = new DbLinksRepo(db);
+  }
 
   async orgUnits() {
     return this.db

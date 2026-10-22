@@ -1,4 +1,4 @@
-// M2/M4 shapes. Complete enough to type against; details may grow with the milestone.
+// Form definitions, submissions and the form-link API (§4.3, §5.2).
 import { z } from "zod";
 import { Confidence, FormFieldKind, InboxState, LinkPurpose, LinkState, SevaType, Source, SubmissionStatus } from "./enums";
 import { EventCard } from "./events";
@@ -11,6 +11,10 @@ export const Rule = z.object({
 });
 export type Rule = z.infer<typeof Rule>;
 
+/**
+ * Operands are a field id, a sum of field ids joined by "+" ("p10+p15+p20"), or
+ * (right only) a number. Ids resolve within the same repeater row first.
+ */
 export const CrossRule = z.object({
   op: z.enum(["lte", "gte", "eq", "lt", "gt"]),
   left: z.string(),
@@ -21,6 +25,13 @@ export const CrossRule = z.object({
 export type CrossRule = z.infer<typeof CrossRule>;
 
 export const FieldOption = z.object({ value: z.string(), label: I18nText });
+
+/** Event values a field can be prefilled from (GET /links/:token/form → prefill). */
+export const PrefillKey = z.enum(["samithi", "date", "venue", "partner"]);
+export type PrefillKey = z.infer<typeof PrefillKey>;
+
+export const FieldFormat = z.enum(["phone"]);
+export type FieldFormat = z.infer<typeof FieldFormat>;
 
 export type FormField = {
   id: string;
@@ -34,10 +45,17 @@ export type FormField = {
   showIf?: Rule;
   checks?: CrossRule[];
   warnAbove?: number;
+  /** KPI key, optionally with a dimension: "eye.spectacles_by_power:+1.0". */
   kpi: string | null;
   locked: boolean;
   personal: boolean;
   fields?: FormField[];
+  /** Filled from the event; with readOnly the server ignores submitted values. */
+  prefill?: PrefillKey;
+  readOnly?: boolean;
+  /** yes/no that records consent for the personal fields in its row or section. */
+  consent?: boolean;
+  format?: FieldFormat;
 };
 export const FormField: z.ZodType<FormField> = z.object({
   id: z.string(),
@@ -57,7 +75,17 @@ export const FormField: z.ZodType<FormField> = z.object({
   get fields() {
     return z.array(FormField).optional();
   },
+  prefill: PrefillKey.optional(),
+  readOnly: z.boolean().optional(),
+  consent: z.boolean().optional(),
+  format: FieldFormat.optional(),
 });
+
+/** Splits "key:dim" into its parts (dim '' = total). */
+export function parseKpiRef(ref: string): { key: string; dim: string } {
+  const i = ref.indexOf(":");
+  return i < 0 ? { key: ref, dim: "" } : { key: ref.slice(0, i), dim: ref.slice(i + 1) };
+}
 
 export const FormSection = z.object({
   id: z.string(),
@@ -77,18 +105,31 @@ export const FormDefinition = z.object({
 });
 export type FormDefinition = z.infer<typeof FormDefinition>;
 
+export const Answers = z.record(z.string(), z.unknown());
+export type Answers = z.infer<typeof Answers>;
+
 export const Submission = z.object({
   id: Id,
   eventId: Id,
   linkId: Id,
   definitionVersion: z.number().int().positive(),
-  answers: z.record(z.string(), z.unknown()),
+  /** Includes personal-section answers only for the link session that sent them. */
+  answers: Answers,
   submittedAt: ISODateTime,
+  /** Masked; '' for public sign-ups without a verified phone. */
   submittedBy: MaskedPhone,
   source: Source,
   status: SubmissionStatus,
+  /** Send back on PATCH; mismatch → 409. */
+  version: z.number().int().positive(),
 });
 export type Submission = z.infer<typeof Submission>;
+
+// ---- Form links (§5.2) -------------------------------------------------------
+
+/** Path params. Any malformed token is answered like an unknown one (404). */
+export const LinkTokenParams = z.object({ token: z.string().min(1).max(128) });
+export const LinkSubmissionParams = LinkTokenParams.extend({ id: Id });
 
 /** GET /links/:token */
 export const LinkInfo = z.object({
@@ -97,8 +138,78 @@ export const LinkInfo = z.object({
   event: EventCard.nullable(),
   otpRequired: z.boolean(),
   deskLabel: z.string().nullable(),
+  expiresAt: ISODateTime,
+  /** Signed bot-check challenge for POST /public (public links and desk links without OTP). */
+  botChallenge: z.string().nullable(),
+  /** true when the request already carries a valid `fsid` session for this link. */
+  hasSession: z.boolean(),
 });
 export type LinkInfo = z.infer<typeof LinkInfo>;
+
+/** `error.details` of 410 LINK_EXPIRED / LINK_REVOKED / LINK_USED_UP (event only for expired and revoked, spec 22). */
+export const LinkGoneDetails = z.object({ link: LinkInfo });
+export type LinkGoneDetails = z.infer<typeof LinkGoneDetails>;
+
+/** POST /links/:token/otp */
+export const OtpRequest = z.object({ phone: z.string().trim().min(8).max(20) });
+export type OtpRequest = z.infer<typeof OtpRequest>;
+
+/** 202 body of POST /links/:token/otp (sent whether or not a code went out, except PHONE_NOT_LISTED). */
+export const OtpSent = z.object({ resendAfter: z.number().int().nonnegative(), expiresIn: z.number().int().positive() });
+export type OtpSent = z.infer<typeof OtpSent>;
+
+/** POST /links/:token/verify */
+export const VerifyRequest = z.object({
+  phone: z.string().trim().min(8).max(20),
+  code: z.string().trim().regex(/^\d{6}$/),
+});
+export type VerifyRequest = z.infer<typeof VerifyRequest>;
+
+/** POST /links/:token/public. `website` is a honeypot; leave it empty. */
+export const PublicSessionRequest = z.object({
+  botToken: z.string().min(1).max(512),
+  website: z.string().max(200).optional(),
+});
+export type PublicSessionRequest = z.infer<typeof PublicSessionRequest>;
+
+/** Body of verify/public. Also sets cookies `fsid` (httpOnly) and `csrf` (send back as `x-csrf`). */
+export const LinkSession = z.object({ expiresAt: ISODateTime, csrf: z.string() });
+export type LinkSession = z.infer<typeof LinkSession>;
+
+/** GET /links/:token/form */
+export const FormPayload = z.object({
+  purpose: LinkPurpose,
+  event: EventCard,
+  definition: FormDefinition,
+  prefill: Answers,
+  existing: Submission.nullable(),
+  editable: z.boolean(),
+});
+export type FormPayload = z.infer<typeof FormPayload>;
+
+/** POST /links/:token/submissions (header `Idempotency-Key` required). */
+export const SubmissionInput = z.object({ answers: Answers });
+export type SubmissionInput = z.infer<typeof SubmissionInput>;
+
+/** PATCH /links/:token/submissions/:id */
+export const SubmissionPatch = z.object({ answers: Answers, version: z.number().int().positive() });
+export type SubmissionPatch = z.infer<typeof SubmissionPatch>;
+
+/** 201 body of POST /links/:token/attachments (multipart: `file`, `fieldId`). Never public. */
+export const LinkAttachment = z.object({
+  id: Id,
+  fieldId: z.string(),
+  name: z.string(),
+  mime: z.string(),
+  size: z.number().int().nonnegative(),
+  uploadedAt: ISODateTime,
+});
+export type LinkAttachment = z.infer<typeof LinkAttachment>;
+
+export const ATTACHMENT_LIMITS = {
+  maxBytes: 10 * 1024 * 1024,
+  mimes: ["image/jpeg", "image/png", "image/webp", "application/pdf"],
+} as const;
 
 export const InboxRaw = z.object({
   kind: z.enum(["text", "image", "pdf", "spreadsheet", "voice"]),

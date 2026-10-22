@@ -1,0 +1,99 @@
+// Template catalogue (docs/whatsapp-setup.md §5). Bodies mirror what is submitted
+// to Meta for approval; {{n}} are positional parameters. The console provider
+// renders them so dev logs read like the real messages.
+import type { I18nText } from "@/contract";
+
+export type TemplateCategory = "authentication" | "utility" | "marketing";
+
+export interface TemplateDef {
+  name: string;
+  category: TemplateCategory;
+  params: number;
+  body: I18nText & { hi: string };
+}
+
+const def = (name: string, category: TemplateCategory, params: number, en: string, hi: string): TemplateDef => ({
+  name,
+  category,
+  params,
+  body: { en, hi },
+});
+
+export const WHATSAPP_TEMPLATES = {
+  login_code: def(
+    "login_code",
+    "authentication",
+    1,
+    "Your code is {{1}}. It expires in 5 minutes. Never share it.",
+    "आपका कोड {{1}} है। यह 5 मिनट में समाप्त हो जाएगा। इसे कभी किसी से साझा न करें।",
+  ),
+  plan_approval_request: def(
+    "plan_approval_request",
+    "utility",
+    3,
+    "New plan for approval: {{1}} on {{2}} at {{3}}. Reply Approve, Reject or Ask.",
+    "स्वीकृति के लिए नई योजना: {{1}}, {{2}} को {{3}} में। स्वीकृत करें, अस्वीकार करें या पूछें का जवाब दें।",
+  ),
+  report_approval_request: def(
+    "report_approval_request",
+    "utility",
+    2,
+    "Report received for {{1}}: {{2}}. Approve or request changes.",
+    "{{1}} की रिपोर्ट मिली: {{2}}। स्वीकृत करें या बदलाव माँगें।",
+  ),
+  form_link_sent: def(
+    "form_link_sent",
+    "utility",
+    3,
+    "{{1}} for {{2}}: {{3}} This link is only for you. Please don't forward it.",
+    "{{2}} के लिए {{1}}: {{3}} यह लिंक केवल आपके लिए है। कृपया इसे आगे न भेजें।",
+  ),
+  event_reminder_day_before: def(
+    "event_reminder_day_before",
+    "utility",
+    2,
+    "Tomorrow: {{1}} at {{2}}. Checklist and form links are in your earlier message.",
+    "कल: {{1}}, {{2}} में। चेकलिस्ट और फ़ॉर्म लिंक आपके पिछले संदेश में हैं।",
+  ),
+  report_reminder: def(
+    "report_reminder",
+    "utility",
+    2,
+    "How did {{1}} go? Report here: {{2}}",
+    "{{1}} कैसा रहा? यहाँ रिपोर्ट करें: {{2}}",
+  ),
+  escalation_notice: def(
+    "escalation_notice",
+    "utility",
+    2,
+    "{{1}} has waited 3 days for district approval and has been passed to the state team: {{2}}",
+    "{{1}} ज़िला स्वीकृति के लिए 3 दिन से रुका है और राज्य टीम को भेजा गया है: {{2}}",
+  ),
+  invite_coordinator: def(
+    "invite_coordinator",
+    "utility",
+    2,
+    "You've been added as {{1}} on the Sai Seva Delhi NCR portal. Sign in: {{2}}",
+    "आपको साई सेवा दिल्ली एनसीआर पोर्टल पर {{1}} के रूप में जोड़ा गया है। साइन इन करें: {{2}}",
+  ),
+  volunteer_reminder: def(
+    "volunteer_reminder",
+    "utility",
+    2,
+    "You're down for {{1}} tomorrow at {{2}}. Thank you.",
+    "आप कल {{2}} में {{1}} के लिए शामिल हैं। धन्यवाद।",
+  ),
+  seva_broadcast: def(
+    "seva_broadcast",
+    "marketing",
+    2,
+    "{{1}}: {{2}} Reply STOP to stop these messages.",
+    "{{1}}: {{2}} ये संदेश बंद करने के लिए STOP लिखें।",
+  ),
+} as const satisfies Record<string, TemplateDef>;
+
+export type TemplateName = keyof typeof WHATSAPP_TEMPLATES;
+
+export function renderTemplate(name: TemplateName, lang: "en" | "hi", params: readonly string[]): string {
+  return WHATSAPP_TEMPLATES[name].body[lang].replace(/\{\{(\d+)\}\}/g, (_, n: string) => params[Number(n) - 1] ?? "");
+}

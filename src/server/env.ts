@@ -1,5 +1,6 @@
 import "server-only";
 import { z } from "zod";
+import { DEV_SESSION_SECRET } from "./security/crypto";
 
 const blank = (v: unknown) => (v === "" ? undefined : v);
 const optStr = z.preprocess(blank, z.string().optional());
@@ -12,6 +13,8 @@ const EnvSchema = z
     MEDIA_ROOT: z.preprocess(blank, z.string().default("./media")),
     MEDIA_PRIVATE_ROOT: z.preprocess(blank, z.string().default("./media-private")),
     MEDIA_URL: z.preprocess(blank, z.string().default("/media")),
+    /** Public origin used to build form-link URLs. */
+    APP_URL: z.preprocess(blank, z.url().default("http://localhost:3000")),
     SESSION_SECRET: z.preprocess(blank, z.string().min(32).optional()),
     CRON_SECRET: optStr,
     WHATSAPP_PROVIDER: z.preprocess(blank, z.enum(["console", "cloud"]).default("console")),
@@ -34,7 +37,7 @@ const EnvSchema = z
         if (!env[k]) ctx.addIssue({ code: "custom", path: [k], message: "required when WHATSAPP_PROVIDER=cloud" });
       }
     }
-    if (env.NODE_ENV === "production" && env.DATA_SOURCE === "db" && !env.SESSION_SECRET) {
+    if (env.NODE_ENV === "production" && !env.SESSION_SECRET) {
       ctx.addIssue({ code: "custom", path: ["SESSION_SECRET"], message: "required in production" });
     }
   });
@@ -53,6 +56,14 @@ export function env(): Env {
   }
   cached = parsed.data;
   return cached;
+}
+
+/** Root secret for keyed hashes, link tokens, CSRF and field encryption. */
+export function appSecret(): string {
+  const e = env();
+  if (e.SESSION_SECRET) return e.SESSION_SECRET;
+  if (e.NODE_ENV === "production") throw new Error("SESSION_SECRET is required in production");
+  return DEV_SESSION_SECRET;
 }
 
 /** For tests only. */

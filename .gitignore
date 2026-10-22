@@ -55,3 +55,7 @@ next-env.d.ts
 # local media
 /media/
 /media-private/
+
+# local media (legacy mount + private uploads)
+/media
+/media-private
