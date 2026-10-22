@@ -318,3 +318,11 @@ Definition of done per milestone: `pnpm typecheck && pnpm lint && pnpm test && p
 7. Env: `APP_URL`; `SESSION_SECRET` required in production. Link tokens = HMAC(nonce, SESSION_SECRET); rotating the secret invalidates all links.
 8. Desk links without OTP open a session via `POST /links/:token/public` (bot check). Used-up report/desk links still admit a verified session to edit its own report.
 9. `GET /media/[...path]` serves `MEDIA_ROOT` (legacy Django media), excluded from the i18n proxy.
+
+### Backlog from M1 frontend (to land with M3/M5 backend)
+- `EventPublic.approvedAt: ISODateTime | null` (spec 10 "approved on").
+- `EventPublic.centre: { slug } | null` (samithi → centre link; today relies on equal slugs).
+- `GET /org/units?kind=district|samithi` (calendar filter options).
+- Expand centre weekly gatherings into calendar occurrences (recurring, rendered lighter).
+- Public not-found for unknown ids/slugs returns 200 after streaming starts; needs status fix.
+- WhatsApp opt-in endpoint (Join / Calendar explainer) — M4.
