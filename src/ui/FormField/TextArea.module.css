@@ -1,0 +1,17 @@
+.area {
+  width: 100%;
+  min-height: 96px;
+  padding: 12px 14px;
+  font-family: var(--font-sans-body);
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--slate-900);
+  background: var(--white);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  resize: vertical;
+  outline: 0;
+}
+.area:focus { border-color: var(--border-focus); box-shadow: var(--ring-focus); }
+.area[data-state="error"] { border-color: var(--signal-error-text); }
+.area[data-state="warning"] { border-color: var(--signal-warning); }

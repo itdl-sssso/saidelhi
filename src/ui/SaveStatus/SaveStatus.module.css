@@ -1,0 +1,7 @@
+.status { display: inline-flex; align-items: center; gap: 6px; font-size: var(--text-caption); line-height: 1.45; color: var(--slate-700); }
+.queued { color: var(--yellow-500); }
+.sent { color: var(--signal-success-text); }
+.error { color: var(--signal-error-text); }
+.spin { animation: spin 900ms linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .spin { animation: none; } }

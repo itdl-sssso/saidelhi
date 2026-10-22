@@ -1,0 +1,24 @@
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 16px;
+  font-family: var(--font-sans-body);
+  font-size: var(--text-small);
+  color: var(--slate-700);
+  background: var(--white);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: background var(--duration-fast) var(--ease-serene);
+}
+@media (hover: hover) {
+  .chip:hover:not(:disabled) { background: var(--slate-100); }
+}
+.chip[aria-pressed="true"] { background: var(--blue-50); border-color: var(--blue-300); color: var(--blue-700); }
+.chip:focus-visible { outline: 0; border-color: var(--border-focus); box-shadow: var(--ring-focus); }
+.chip:disabled { opacity: 0.5; cursor: not-allowed; }
+.chips[data-state="error"] .chip[aria-pressed="false"] { border-color: var(--signal-error-text); }

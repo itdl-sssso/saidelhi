@@ -27,7 +27,7 @@ import { SkeletonCard, SkeletonKpi, SkeletonRows } from "@/ui/Skeleton";
 import { StatusPill } from "@/ui/StatusPill";
 import { Stepper } from "@/ui/Stepper";
 import { Switch } from "@/ui/Switch";
-import { DialogDemo, PendingDemo, SheetDemo, TabsDemo, ToastDemo } from "./Demos";
+import { DialogDemo, FormKitDemo, PendingDemo, SheetDemo, TabsDemo, ToastDemo } from "./Demos";
 
 export const metadata = { title: "Component kitchen sink", robots: { index: false } };
 
@@ -240,6 +240,10 @@ export default async function KitchenSink() {
             <Switch label="Disabled switch" disabled />
           </div>
         </div>
+      </Section>
+
+      <Section id="form-kit" title="Form kit (/f/ links)">
+        <FormKitDemo />
       </Section>
 
       <Section id="surfaces" title="Surfaces">

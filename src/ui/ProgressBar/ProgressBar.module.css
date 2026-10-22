@@ -1,0 +1,16 @@
+.root { display: flex; flex-direction: column; gap: 6px; }
+.sticky {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  padding: 10px 16px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: var(--veil-blur);
+  -webkit-backdrop-filter: var(--veil-blur);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.caption { display: flex; justify-content: space-between; gap: 8px; font-size: var(--text-caption); line-height: 1.45; color: var(--slate-700); }
+.caption b { font-weight: 600; color: var(--slate-900); }
+.track { height: 6px; overflow: hidden; border-radius: var(--radius-pill); background: var(--slate-100); }
+.track i { display: block; height: 100%; background: var(--pink-400); border-radius: var(--radius-pill); transition: width var(--duration-base) var(--ease-serene); }
+@media (prefers-reduced-motion: reduce) { .track i { transition: none; } }
