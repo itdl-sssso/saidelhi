@@ -326,3 +326,9 @@ Definition of done per milestone: `pnpm typecheck && pnpm lint && pnpm test && p
 - Expand centre weekly gatherings into calendar occurrences (recurring, rendered lighter).
 - Public not-found for unknown ids/slugs returns 200 after streaming starts; needs status fix.
 - WhatsApp opt-in endpoint (Join / Calendar explainer) — M4.
+
+### v0.4 (M3 backend)
+1. CSRF header name is `x-csrf` (`PORTAL_HEADERS`, `LINK_HEADERS`).
+2. `reopen` requires `events.reopen` (state admin only); district coord → 403.
+3. `selfApproved` lives on `EventRow` only, not `EventAdmin`.
+4. Dev seed users: +91 90000 00001…09 (one per role + extras), …00 deactivated. Re-seed clears sessions/audit.
