@@ -1,0 +1,25 @@
+.root {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+  border: 1px solid;
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-5);
+  font-size: var(--text-small);
+  line-height: var(--leading-body);
+  color: var(--slate-700);
+}
+.icon { display: inline-flex; margin-top: 3px; }
+.body { min-width: 0; flex: 1; }
+.title { display: block; font-weight: var(--weight-semibold); }
+
+.note { background: var(--surface-truth); border-color: var(--border-truth); }
+.note .icon, .note .title { color: var(--yellow-500); }
+.info { background: var(--surface-calm); border-color: var(--border-calm); }
+.info .icon, .info .title { color: var(--blue-700); }
+.success { background: var(--signal-success-surface); border-color: var(--signal-success); }
+.success .icon, .success .title { color: var(--signal-success-text); }
+.attention { background: var(--signal-alert-surface); border-color: var(--signal-alert); }
+.attention .icon, .attention .title { color: var(--signal-alert-text); }
+.error { background: var(--signal-error-surface); border-color: var(--signal-error); }
+.error .icon, .error .title { color: var(--signal-error-text); }

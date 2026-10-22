@@ -1,0 +1,19 @@
+.dash { color: var(--slate-400); }
+.lt5 { font-family: var(--font-sans-body); font-size: 0.6em; font-weight: var(--weight-medium); color: var(--slate-700); }
+.inline .lt5 { font-size: inherit; }
+
+.estimate {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 12px 3px 10px;
+  border-radius: var(--radius-pill);
+  border: 1px dashed var(--blue-300);
+  background: var(--white);
+  color: var(--blue-700);
+  font-family: var(--font-sans-body);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
+  line-height: 1.4;
+  white-space: nowrap;
+}

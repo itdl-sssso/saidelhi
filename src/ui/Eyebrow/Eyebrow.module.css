@@ -1,0 +1,26 @@
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin: 0;
+  font-family: var(--font-sans-body);
+  font-size: var(--text-eyebrow);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-eyebrow);
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+.eyebrow::before {
+  content: "";
+  flex: none;
+  width: 24px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.5;
+}
+.eyebrow:lang(hi) { text-transform: none; font-size: var(--text-caption); }
+
+.calm { color: var(--blue-600); }
+.warm { color: var(--pink-700); }
+.muted { color: var(--slate-500); }
+.inverse { color: var(--blue-100); }

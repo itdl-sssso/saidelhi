@@ -1,0 +1,70 @@
+.root {
+  background: var(--surface-card);
+  border: 1px solid var(--border-calm);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  min-width: 0;
+}
+.head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-5) var(--space-6);
+  background: var(--surface-calm);
+  border-bottom: 1px solid var(--border-calm);
+  color: var(--blue-700);
+}
+.title {
+  margin: 0;
+  font-family: var(--font-serif-display);
+  font-size: var(--text-h4);
+  font-weight: var(--weight-medium);
+  color: var(--blue-700);
+}
+.list { list-style: none; margin: 0; padding: 0; }
+.item {
+  position: relative;
+  display: flex;
+  gap: var(--space-4);
+  align-items: center;
+  padding: var(--space-4) var(--space-6);
+  border-bottom: 1px solid var(--border-subtle);
+  transition: background var(--duration-fast) var(--ease-serene);
+}
+.item:last-child { border-bottom: 0; }
+.linked:hover { background: var(--cream); }
+.linked:focus-within { background: var(--cream); box-shadow: inset var(--ring-focus); }
+.date {
+  flex: 0 0 62px;
+  text-align: center;
+  background: var(--blue-50);
+  border: 1px solid var(--border-calm);
+  border-radius: var(--radius-md);
+  padding: 6px 0;
+  line-height: 1.1;
+}
+.month { display: block; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue-600); }
+.month:lang(hi) { letter-spacing: 0; }
+.day { display: block; font-family: var(--font-serif-display); font-size: 22px; color: var(--blue-700); }
+.main { flex: 1; min-width: 0; }
+.name { font-size: var(--text-body-size); font-weight: var(--weight-medium); color: var(--text-body); line-height: 1.4; }
+.link { color: inherit; text-decoration: none; }
+.link:hover { color: var(--blue-700); }
+.link:focus-visible { box-shadow: none; }
+.link::after { content: ""; position: absolute; inset: 0; }
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px var(--space-3);
+  margin-top: 4px;
+  font-size: var(--text-caption);
+  color: var(--slate-600);
+}
+.meta span { display: inline-flex; align-items: center; gap: 5px; }
+.footer { padding: var(--space-4) var(--space-6); border-top: 1px solid var(--border-subtle); background: var(--cream); }
+
+@media (max-width: 767px) {
+  .head, .item, .footer { padding-inline: var(--space-4); }
+  .item { flex-wrap: wrap; }
+}

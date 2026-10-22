@@ -1,0 +1,31 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+  max-width: 440px;
+  margin: 0 auto;
+  padding: var(--space-10) var(--space-6);
+}
+.glyph {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 6px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--surface-calm);
+  border: 1px solid var(--border-calm);
+  color: var(--blue-600);
+}
+.title {
+  margin: 0;
+  font-family: var(--font-serif-display);
+  font-weight: var(--weight-regular);
+  font-size: var(--text-h4);
+  line-height: var(--leading-heading);
+  color: var(--text-heading);
+}
+.body { margin: 0; font-size: var(--text-small); line-height: var(--leading-body); color: var(--slate-600); }
+.action { margin-top: 6px; display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-2); }

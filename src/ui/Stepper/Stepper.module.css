@@ -1,0 +1,26 @@
+.list { display: flex; flex-wrap: wrap; gap: 4px; margin: 0; padding: 0; list-style: none; }
+.step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 6px 14px 6px 6px;
+  border-radius: var(--radius-pill);
+  font-size: var(--text-small);
+  color: var(--slate-600);
+}
+.num {
+  width: 28px;
+  height: 28px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid var(--slate-300);
+  background: var(--white);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-semibold);
+}
+.done .num { background: var(--blue-100); border-color: var(--blue-400); color: var(--blue-700); }
+.current { background: var(--pink-50); color: var(--pink-700); font-weight: var(--weight-medium); }
+.current .num { background: var(--pink-200); border-color: var(--pink-400); color: var(--pink-700); }

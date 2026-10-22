@@ -1,0 +1,32 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border-radius: var(--radius-lg);
+  border: 1px solid;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  color: var(--text-body);
+  transition:
+    box-shadow var(--duration-base) var(--ease-serene),
+    transform var(--duration-base) var(--ease-serene);
+}
+.body { padding: var(--card-padding); display: flex; flex-direction: column; gap: var(--space-3); flex: 1; }
+.flush { padding: 0; }
+
+.plain { background: var(--surface-card); border-color: var(--border-subtle); }
+.calm { background: var(--surface-calm); border-color: var(--border-calm); }
+.warm { background: var(--surface-warm); border-color: var(--border-warm); }
+.truth { background: var(--surface-truth); border-color: var(--border-truth); }
+
+.cap { height: 6px; flex: none; background: var(--dharma-rule); }
+
+.interactive { cursor: pointer; }
+@media (hover: hover) {
+  .interactive:hover { transform: translateY(var(--lift-hover)); box-shadow: var(--shadow-lg); }
+}
+.interactive:focus-within { box-shadow: var(--shadow-lg), var(--ring-focus); }
+
+@media (max-width: 767px) {
+  .body { padding: var(--space-5); }
+}

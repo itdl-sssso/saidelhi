@@ -1,0 +1,15 @@
+.skip {
+  position: fixed;
+  top: var(--space-3);
+  left: var(--space-3);
+  z-index: 100;
+  padding: 12px 20px;
+  border-radius: var(--radius-pill);
+  background: var(--white);
+  color: var(--blue-700);
+  font-weight: var(--weight-semibold);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-200%);
+  transition: transform var(--duration-fast) var(--ease-serene);
+}
+.skip:focus-visible { transform: none; box-shadow: var(--shadow-lg), var(--ring-focus); }
