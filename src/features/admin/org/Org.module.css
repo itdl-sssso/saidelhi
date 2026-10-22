@@ -1,0 +1,19 @@
+.tree { display: flex; flex-direction: column; padding: 8px; gap: 2px; margin: 0; list-style: none; }
+.group { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.row { display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 12px; border-radius: var(--radius-md); border: 0; background: transparent; font: inherit; font-size: var(--text-portal-body); color: var(--slate-800); cursor: pointer; text-align: left; width: 100%; }
+.row:hover { background: var(--slate-100); }
+.row[aria-selected="true"] { background: var(--blue-50); box-shadow: inset 0 0 0 1px var(--blue-300); color: var(--blue-700); }
+.row[data-inactive="true"] { color: var(--slate-500); }
+.name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.depth1 { padding-left: 12px; }
+.depth2 { padding-left: 44px; }
+.depth0 { font-weight: 600; }
+.chev { width: 28px; height: 28px; display: grid; place-items: center; border-radius: 50%; border: 0; background: transparent; color: var(--slate-600); cursor: pointer; flex: none; margin-left: -6px; }
+.chev:hover { background: var(--slate-200); }
+.chevSp { width: 22px; flex: none; }
+.cap { font-size: var(--text-caption); color: var(--text-muted); white-space: nowrap; }
+.code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 14px; flex: 1; color: var(--slate-800); }
+.ro { display: flex; align-items: center; gap: 8px; min-height: 48px; padding: 0 14px; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); background: var(--slate-100); }
+.search { display: flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 12px; border-radius: var(--radius-pill); border: 1px solid var(--border-subtle); background: var(--white); color: var(--slate-500); }
+.search input { border: 0; outline: 0; background: transparent; font: inherit; font-size: var(--text-small); width: 150px; color: var(--text-body); }
+.search:focus-within { border-color: var(--border-focus); box-shadow: var(--ring-focus); }
