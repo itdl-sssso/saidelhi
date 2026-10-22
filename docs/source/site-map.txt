@@ -1,0 +1,214 @@
+ 
+ Site map — page navigation 
+Site map 
+Every page of the public site, the coordinator portal and the WhatsApp channel, and where their links go. Arrows show in-page links; the global nav bar appears on every public page and isn’t drawn as arrows. Updated 19 October 2026 with the platform gap review and the decisions that followed. 
+ Wireframed 
+ New page, not yet wireframed 
+ Behind a feature flag 
+ External 
+ Global nav on every page → 
+ Home icon → Home About → About Programs → Programs Bhajans → Value Shanti Get involved → Join a seva Impact → Impact Reach us → Map News → Articles (news) Calendar → Calendar Discourses → Discourses Donate → existing saidelhi.org donation page SaiConnect → external, new tab हिंदी / EN toggle Coordinator login → Portal 
+Public site 
+Replaces saidelhi.org. Key content (articles, centres, timings) is migrated. Every page is in Hindi and English. 
+Five values 
+ Value Sathya Truth 
+ Value Dharma Right conduct · Education wing 
+ Value Shanti Peace · Spiritual wing · “Bhajans” 
+ Value Prema Love · Service wing 
+ Value Ahimsa Non-violence 
+Hub 
+ Home A2 3D Lotus Journey.html
+Sections: #act2 · #seva · #involve · upcoming seva strip 
+ New About Organisation, wings, districts 
+ New Impact Public KPIs · district map · 12-month trend · approved data only 
+ Feature flag Discourses Youth library · theme filter · Hindi 
+ Feature flag Discourse Text page + quote cards 
+Seva & news 
+ New Programs All seva types 
+ New Program Eye · Blood · Medical · Narayan Seva · Bal Vikas · Other 
+ Articles Listing · ?c=all / news / activities / centenary 
+ Article Detail · ?id=… 
+Events 
+ Calendar Filters: district · seva type · samithi 
+ New Event Before: details, volunteers needed. After: results 
+ New Join a seva Sign up for an event · WhatsApp opt-in 
+Places 
+ Map Centre locator 
+ New District Totals · upcoming seva · centres 
+ New Centre / samithi Timings · upcoming · results · contact 
+ Google Maps External · directions 
+ Forward link (CTA, card, chip) Back link (breadcrumb) Footer on every page: Impact · Calendar · Centres · Join a seva · Privacy · Donate Privacy & data requests (new) is linked from the footer and from every form. 
+WhatsApp → event → impact 
+How a planned activity moves from a coordinator’s WhatsApp message to the public site. Only registered coordinators can plan. 
+ Plan Coordinator messages the bot: type, date, venue, volunteers needed WhatsApp bot 
+ Draft Bot reads it into an event draft and asks the coordinator to confirm Portal → Events (planned) 
+ District approval Approve / Reject / Ask on WhatsApp. Reminder on day 2; escalates to state after 3 days Portal → Approvals (fallback) 
+ Published Appears on Calendar, Event, Centre, District and Home’s upcoming strip Public site 
+ Form links sent Report and desk links to the coordinator on WhatsApp; QR for the camp desk Portal → Form links 
+ Reported Totals via form, Excel upload, WhatsApp or a scan. Non-form data goes to the review inbox Portal → Review inbox 
+ Approved District approves; numbers appear on Event, Centre, District and Impact Public site 
+ Report link · /f/<token> For the coordinator. WhatsApp OTP; only phones listed for the event. Event day to +14 days; reopens for surgery follow-up. 
+ Desk link · /f/<token> One per registration desk, named. Camp day only. Offline drafts on the phone from the pilot. 
+ Public link · /f/<token> Join an event as a volunteer. Rate-limited, bot check, consent. Counts only, no profiles. 
+Coordinator portal all new 
+One private area at /admin behind WhatsApp OTP. Screens are scoped by role: samithi, district, state, content editor, translator, PII officer. Solid borders mark the five screens to wireframe first. 
+Operate 
+ Overview “Needs you” list · KPIs for my scope · upcoming 
+ Event detail Status timeline · form links + QR · submissions · scan · audit 
+ Events Planned · upcoming · awaiting report · submitted · approved 
+ Review inbox Source beside AI draft · district first, state data team for hard cases 
+ Approvals Web fallback for WhatsApp approvals 
+District + state 
+Collect 
+ Form builder Fields · rules · EN/HI labels · KPI mapping · personal-data flag · versions 
+ Form templates Library per seva type · state publishes, districts request 
+ Form links Every live link · expiry · uses · revoke · resend · print QR 
+ Uploads Excel/CSV history · errors · re-upload 
+Builder: state only 
+Organisation 
+ Districts & samithis Hierarchy · codes · active dates 
+ Centres Public profile · timings · map pin · contact 
+ Partners Hospitals · blood banks 
+ People & access Users · roles · scopes · invites · access review 
+State admin; districts for their own 
+Publish 
+ Content Articles · news · centenary · Home sections · Thought for the Day · bhajan timings 
+ Discourses AI draft → human review → publish · behind flag 
+ Public impact controls Which KPIs are public · estimate labels 
+ Migration One-off import from saidelhi.org 
+State media/IT team · translators (LTST) 
+Communicate 
+ WhatsApp Message templates · reminders · broadcasts · conversation log 
+ Volunteer sign-ups Notify coordinators · counts only 
+State; districts send reminders 
+Govern 
+ Reports & exports Monthly report · every export logged 
+ Data health Reporting rate · backlog · rejected rows 
+ Follow-up Cataract → surgery list · restricted 
+ Privacy Consent · data requests · retention · breach log 
+ Audit log · Settings Seva types · KPI definitions · Hindi strings · feature flags 
+State admin · PII officer 
+WhatsApp bot new 
+Coordinators 
+ Plan an activity Guided questions → draft → confirm 
+ Report totals Form’s question sequence, or the report link 
+ Login code OTP for the portal and report links 
+District coordinators 
+ Approve Approve / Reject / Ask on plans and reports 
+ Reminders Day 2 nudge · escalation notice at day 3 
+Public & volunteers 
+ What’s on near me Upcoming events by pincode or district 
+ My upcoming seva For people who joined an event 
+Links by page 
+Page 
+Links out (besides global nav) 
+Home changed 
+Value petals ×5 → each Value page 
+Wing cards → Programs (Shanti, Prema, Dharma wings) 
+Upcoming seva strip → Event; “All upcoming” → Calendar 
+Impact figures → Impact 
+Activities “See all” → Articles (activities); cards → Article 
+Centenary chips → Article; “View all” → Articles (centenary) 
+News “See all” → Articles (news); “Full calendar” → Calendar 
+“Open the centre map” → Map 
+Auditorium “Know more” → Article (auditorium-booking) 
+“Join a seva” → Join a seva 
+Footer (shared): Impact, Calendar, Centres, Join a seva, Privacy, Donate 
+Value ×5 changed 
+Breadcrumb → Home, Home #act2 
+Previous / next → the other values 
+Wing link → Program (Prema → service seva, Dharma → Bal Vikas, Shanti → bhajans) 
+Related discourses → Discourse (when flag is on) 
+Shared footer replaces the old one 
+About new 
+Districts → District; wings → Programs 
+“Find a centre” → Map 
+Impact new 
+District map → District 
+Seva type figures → Program 
+Recent completed events → Event 
+Programs / Program new 
+Programs → each Program 
+Program → upcoming Event, results so far, “Join a seva”, related Articles 
+Calendar changed 
+Breadcrumb → Home 
+Filters in place: district, seva type, samithi 
+Each item → Event 
+Event new 
+Breadcrumb → Home, Calendar 
+Venue → Map / Google Maps; samithi → Centre; district → District 
+“Join this seva” → public form link 
+After the event: results; “Read the report” → Article (if written) 
+Map changed 
+Breadcrumb → Home 
+Centre pin → Centre 
+“Directions” → Google Maps (new tab) 
+District new 
+Centres → Centre; upcoming → Event 
+“All districts” → Impact 
+Centre new 
+Upcoming → Event; past results → Event 
+“Directions” → Google Maps; district → District 
+Articles / Article 
+Unchanged; Article can link back to its Event 
+Join a seva new 
+Pick an event → Event → public form link 
+WhatsApp opt-in; consent → Privacy 
+Discourses flag 
+Theme filter in place; cards → Discourse 
+Discourse → related Value page, quote card share 
+Privacy new 
+Data request form; grievance contact (data protection lead, to be appointed) 
+Wireframe docs 
+ index.html — page wireframes (internal tabs only) 
+ arrangements.html → index.html, Home 
+Gaps 
+ Value pages are dead ends Previous/next, wing links and related discourses added above. 
+ Calendar and Map link nowhere new Event, Centre and District pages connect them. 
+ Placeholders Join a seva, Volunteer and WhatsApp bot are designed above. Donate and SaiConnect become external links. 
+ Inconsistent footers One shared footer on every page. 
+ No admin screens The whole coordinator portal needs wireframes. Start with Overview, Event detail, Review inbox, Form builder and Form links. 
+ New public pages unwireframed Event, Centre, District, Impact, Programs, Join a seva, About, Privacy, Discourses. 
+ Design system No admin components (tables, filters, form field kit, builder canvas, charts, side nav). Inter has no Devanagari; add a Hindi face. Sarva Dharma emblem still missing. 
+ Still open Pilot district · hosting (org server preferred, deferred) · WhatsApp coexistence check on the existing number · data protection lead · Trust permission for discourses. 
+Decisions 
+Topic 
+Decision 
+Domain 
+Replaces saidelhi.org; key content migrated 
+Hierarchy 
+Delhi NCR → districts → samithis 
+Login 
+WhatsApp OTP; SaiConnect is a plain external link (no API access) 
+Donate 
+Keep the existing saidelhi.org donation page and gateway; link to it 
+Approvals 
+District on WhatsApp; escalate to state after 3 days 
+Planning 
+Registered coordinators only 
+Review inbox 
+District first, state data team for hard cases; AI drafts, people check 
+Forms 
+Own builder; state publishes, districts request; event-scoped token links; offline from the pilot 
+Seva types (v1) 
+Eye, blood, medical, Narayan Seva, Bal Vikas and others 
+Personal data 
+Counts by default; cataract follow-up only, with consent; no ID numbers; volunteers counted, not profiled; no donor pre-registration 
+Public detail 
+Samithi-level totals; demographics district-level, counts under 5 hidden 
+Language 
+Hindi and English everywhere from day one 
+Photos 
+Allowed without identifiable beneficiaries or children 
+Analytics 
+Cookieless, self-hosted 
+Content 
+State media/IT team 
+Discourses 
+Built behind a feature flag; on once the Sadhana Trust grants permission (via LTST). Hindi; AI draft + human review; text pages and quote cards 
+Costs 
+State pays WhatsApp messages and AI; hosting on the org server preferred 
+Team 
+One developer with Claude Code; pilot as soon as possible 
+ Made with Claude Design 
+ 

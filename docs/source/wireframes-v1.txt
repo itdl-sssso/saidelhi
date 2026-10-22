@@ -1,0 +1,135 @@
+ 
+ SSSSO Delhi NCR — Wireframes 
+ Overview 
+ Home 
+ About Us 
+ Key Programs / SSSVIP 
+ Get Involved 
+ Reach Us 
+SSSSO Delhi NCR — site wireframes 
+Low-fi structure, one section per frame. Placeholder stats/quotes from the brief; real content and imagery to follow. 
+Home 
+About Us 
+Key Programs / SSSVIP 
+Get Involved 
+Reach Us 
+Home (/) 
+ Header 
+Sarva Dharma logo 
+ Home About Programs Get Involved Reach Us 
+ EN / HI Donate 
+ Hero 
+"Love all, serve all." 
+ Live: Unity Run & Ride 
+ Search Bhajans Stories Seva registration 
+ Words of Sai — discourses 
+Horizontal scroll track, audio + excerpt per card 
+audio Excerpt one… 
+audio Excerpt two… 
+audio Excerpt three… 
+audio Excerpt four… 
+ Real-time impact & activities 
+Impact so far 
+12,500 meals served 
+450 blood units 
+1,200 children taught 
+Join the movement → 
+Seva activity map 
+ NCR district ▾ 
+simplified NCR district map — pins on hover/tap show activity 
+ Stories of transformation 
+vertical video reel (autoplay) Watch golden stories 
+audio story 
+reader blog card 
+ Footer 
+centre locator map widget 
+WhatsApp seva bot 
+newsletter signup 
+About Us (/about-us) 
+ Header 
+shared header — see Home 
+ Hero — split 
+Large statement: "Sixty years of quiet service across Delhi NCR" 
+Portrait / photo frame 
+ The five human values 
+Horizontal pin-scroll: Sathya, Dharma, Shanti, Prema, Ahimsa — one value + quote per step 
+Sathya
+(truth) 
+Dharma
+(right conduct) 
+Shanti
+(peace) 
+Prema
+(love) 
+Ahimsa
+(non-violence) 
+ Three wings 
+loop Spiritual wing 
+loop Service wing 
+loop Education wing 
+ Landmarks spotlight 
+Sri Sathya Sai International Centre 
+360° photo preview 
+ Plan a visit 
+ Footer 
+shared footer — see Home 
+Key Programs & SSSVIP (/key-programs, /sssvip) 
+ Header 
+shared header — see Home 
+ Key programs grid 
+Masonry, hover-zoom imagery 
+image Vidya Jyoti 
+image Bal Vikas 
+image Narayana Seva 
+ SSSVIP hero 
+Village transformation media + quote: "Grama Seva is Rama Seva" 
+ 7-Care modules 
+Tabbed / accordion cards, each with metric tags + micro-activities 
+ Individual Education Medical Socio Spiritual Employment Agri 
+Individual care 
+ metric: 320 families 
+expansion drawer — micro-activities (e.g. digital literacy, Sai protein distribution, compost training) 
+ Footer 
+shared footer — see Home 
+Get Involved & Volunteer (/get-involved) 
+ Header 
+shared header — see Home 
+ Split cards 
+Volunteer hub 
+ Medical camps Narayana Seva EHV teaching Media / graphics 
+Donations & 80G 
+Section 80G tax exemption info 
+ Copy IFSC Copy account no. 
+UPI QR code 
+ Registration form (3-step drawer) 
+Step 1
+Contact info 
+Step 2
+District selection 
+Step 3
+Preferred wing 
+ Next → 
+ Persistent action 
+ Chat with WhatsApp seva bot 
+ Footer 
+shared footer — see Home 
+Reach Us & Directory (/reach-us) 
+ Header 
+shared header — see Home 
+ District map 
+Simplified NCR district map placeholder; clicking a district filters the table below 
+10 NCR districts — click to filter 
+ Office bearers grid 
+ State leadership Wing incharges District presidents 
+photo Name, role
+ Call Email WhatsApp 
+photo Name, role
+ Call Email WhatsApp 
+photo Name, role
+ Call Email WhatsApp 
+photo Name, role
+ Call Email WhatsApp 
+ Footer 
+shared footer — see Home 
+ Made with Claude Design 
+ 
