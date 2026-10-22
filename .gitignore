@@ -32,6 +32,7 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
 
 # vercel
 .vercel
@@ -46,3 +47,10 @@ next-env.d.ts
 # graft's local graph cache — regenerable, not committed (run `graft build`).
 /graft/
 /.local-dumps
+
+# drizzle-kit pull scratch output (curated into src/server/db/legacy.ts)
+/.drizzle-pull/
+
+# local media
+/media/
+/media-private/
