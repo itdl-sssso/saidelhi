@@ -1,0 +1,6 @@
+.details summary { cursor: pointer; color: var(--text-link); font-size: var(--text-small); min-height: 32px; display: inline-flex; align-items: center; text-decoration: underline; text-underline-offset: 3px; }
+.body { margin-top: 8px; display: flex; flex-direction: column; gap: 10px; padding: 10px 12px; border-radius: var(--radius-md); background: var(--sand); max-width: 560px; }
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+.pairs { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 2px 12px; margin: 4px 0 0; font-size: var(--text-caption); }
+.pairs dt { color: var(--slate-500); }
+.pairs dd { margin: 0; color: var(--slate-900); overflow-wrap: anywhere; }
