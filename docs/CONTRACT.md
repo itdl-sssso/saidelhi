@@ -332,3 +332,7 @@ Definition of done per milestone: `pnpm typecheck && pnpm lint && pnpm test && p
 2. `reopen` requires `events.reopen` (state admin only); district coord → 403.
 3. `selfApproved` lives on `EventRow` only, not `EventAdmin`.
 4. Dev seed users: +91 90000 00001…09 (one per role + extras), …00 deactivated. Re-seed clears sessions/audit.
+
+### Backlog from M2 frontend
+- `FormPayload.editable` must be false for public links when the event is not `planned`/`postponed` (today send fails 409).
+- Seed label "Under 18 (optional)" duplicates the kit's optional marker — fix data.
