@@ -2,6 +2,7 @@
 // private attachments. Implemented in memory (links-mock.ts) and on MySQL (links-db.ts).
 import type { EventStatus, FormDefinition, LinkPurpose, Role, SevaType, Source, SubmissionStatus, TimelineChannel } from "@/contract";
 import type { FormVersionStatus, OtpPurpose } from "../db/schema/forms";
+import type { ApprovalRec } from "./portal-types";
 
 export interface TemplateRec {
   id: string;
@@ -144,8 +145,8 @@ export interface NewSubmissionWrite {
   attachmentIds: string[];
   /** Link whose `uses` is incremented; fails with "used_up" once max_uses is reached. */
   linkId: string;
-  /** Moves the event only when its current status is one of `from`. */
-  eventStatus: { from: readonly EventStatus[]; to: EventStatus; timeline: TimelineInput } | null;
+  /** Moves the event only when its current status is one of `from` (and then opens `approval`). */
+  eventStatus: { from: readonly EventStatus[]; to: EventStatus; timeline: TimelineInput; approval?: ApprovalRec } | null;
   volunteersJoinedDelta: number;
 }
 
@@ -159,6 +160,8 @@ export interface SubmissionUpdateWrite {
   consents: ConsentRec[];
   attachmentIds: string[];
   eventId: string;
+  /** A corrected report after "request changes" moves the event back to report_submitted. */
+  eventStatus?: NewSubmissionWrite["eventStatus"];
 }
 
 export type NewSubmissionResult = "ok" | "used_up" | "duplicate_key";

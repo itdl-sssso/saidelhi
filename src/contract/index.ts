@@ -9,5 +9,7 @@ export * from "./form-rules";
 export * from "./content";
 export * from "./impact";
 export * from "./system";
+export * from "./auth";
+export * from "./portal";
 export * from "./queries";
 export * from "./endpoints";

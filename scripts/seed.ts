@@ -10,8 +10,13 @@ import { eq, sql } from "drizzle-orm";
 import { closeDb, getDb } from "../src/server/db/client";
 import { postcontentPostcontent } from "../src/server/db/legacy";
 import {
+  appUser,
+  approval,
   articleI18n,
   attachment,
+  auditLog,
+  portalSession,
+  roleAssignment,
   consentRecord,
   formLink,
   formTemplate,
@@ -36,7 +41,7 @@ import {
 import { appSecret, env } from "../src/server/env";
 import { lintDefinition } from "../src/contract";
 import { DEV_COORDINATOR_PHONE, devAllowedPhones, devLinks, SEED_EVENT_FORM_LOCKS, seedTemplates } from "../src/server/forms/seed-data";
-import { fx, loadFixtures, SAMPLE_ARTICLE_ID } from "../src/server/mock/fixtures";
+import { devUserPhone, fx, loadFixtures, portalFixtures, SAMPLE_ARTICLE_ID } from "../src/server/mock/fixtures";
 import type { OrgUnitRec } from "../src/server/repo/types";
 
 function closure(units: readonly OrgUnitRec[]) {
@@ -67,18 +72,21 @@ async function main() {
     if (problems.length) throw new Error(`Form ${v.id} is invalid:\n  ${problems.join("\n  ")}`);
   }
   const links = devLinks(secret);
+  const portal = portalFixtures(secret);
 
   await db.transaction(async (tx) => {
     await tx.execute(sql`SET FOREIGN_KEY_CHECKS = 0`);
     for (const t of [consentRecord, attachment, submission, linkSession, otpChallenge, linkAllowedPhone, formLink, formVersion, formTemplate]) {
       await tx.delete(t);
     }
-    for (const t of [articleI18n, submissionAnswerKpi, eventTimeline, impactEstimate, event, centreGathering, centre, partner, orgClosure, orgUnit, sevaType, contentItem, setting]) {
+    for (const t of [approval, portalSession, roleAssignment, appUser, auditLog, articleI18n, submissionAnswerKpi, eventTimeline, impactEstimate, event, centreGathering, centre, partner, orgClosure, orgUnit, sevaType, contentItem, setting]) {
       await tx.delete(t);
     }
     await tx.execute(sql`SET FOREIGN_KEY_CHECKS = 1`);
 
     await tx.insert(orgUnit).values(f.orgUnits);
+    await tx.insert(appUser).values(portal.users);
+    await tx.insert(roleAssignment).values(portal.roles);
     await tx.insert(orgClosure).values(closure(f.orgUnits));
     await tx.insert(sevaType).values(f.sevaTypes.map((s, i) => ({ id: fx("SVT", i + 1), ...s })));
     await tx.insert(partner).values(f.partners);
@@ -86,6 +94,7 @@ async function main() {
     await tx.insert(centreGathering).values(f.gatherings);
     await tx.insert(event).values(f.events);
     await tx.insert(eventTimeline).values(f.timeline);
+    await tx.insert(approval).values(portal.approvals);
     await tx.insert(submissionAnswerKpi).values(f.kpiFacts);
     await tx.insert(impactEstimate).values(f.estimates);
     await tx.insert(contentItem).values(f.contentItems);
@@ -133,6 +142,13 @@ async function main() {
     const base = env().APP_URL.replace(/\/$/, "");
     console.log(`\nDEV form links (tokens derive from SESSION_SECRET; coordinator phone ${DEV_COORDINATOR_PHONE}, OTP codes print in the server log):`);
     for (const l of links) console.log(`  ${l.key.padEnd(14)} ${l.rec.purpose.padEnd(7)} ${base}/f/${l.token}`);
+    console.log("\nDEV portal logins (OTP prints in the server log):");
+    const byId = new Map(portal.users.map((u) => [u.id, u]));
+    for (const [i, r] of portal.roles.entries()) {
+      const u = byId.get(r.userId)!;
+      const num = (i + 1) % 10;
+      console.log(`  ${devUserPhone(num).padEnd(15)} ${r.role.padEnd(14)} ${u.name} [${u.status}]`);
+    }
   }
 }
 

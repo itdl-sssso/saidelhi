@@ -43,5 +43,9 @@ export const auditLog = mysqlTable(
     ipHash: varchar("ip_hash", { length: 64 }),
     data: json("data").$type<Record<string, unknown>>(),
   },
-  (t) => [index("audit_log_at_idx").on(t.at), index("audit_log_entity_idx").on(t.entity, t.entityId)],
+  (t) => [
+    index("audit_log_at_idx").on(t.at),
+    index("audit_log_entity_idx").on(t.entity, t.entityId),
+    index("audit_log_actor_idx").on(t.actorId, t.at),
+  ],
 );

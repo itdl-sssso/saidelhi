@@ -3,7 +3,8 @@ import { estimates, events, kpiFacts, timeline } from "./events";
 import { centres, gatherings, orgUnits, partners, sevaTypes } from "./org";
 
 export * from "./ids";
-export { EVENT } from "./events";
+export { EVENT, USER } from "./events";
+export { devUserPhone, portalFixtures, type PortalFixtures } from "./people";
 export { CENTRE, DISTRICT, NCR_ID, PARTNER, SAMITHI } from "./org";
 export { SAMPLE_ARTICLE_ID } from "./content";
 

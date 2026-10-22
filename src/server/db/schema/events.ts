@@ -58,6 +58,13 @@ export const event = mysqlTable(
     /** Report form version locked when the first report/desk link is issued. */
     formVersionId: idRef("form_version_id").references((): AnyMySqlColumn => formVersion.id),
     approvedAt: datetime("approved_at", { mode: "date" }),
+    /** When the plan was last sent for approval. */
+    approvalRequestedAt: datetime("approval_requested_at", { mode: "date" }),
+    escalatedAt: datetime("escalated_at", { mode: "date" }),
+    /** Status before escalation (awaiting_approval or report_submitted), so approval resumes the right path. */
+    escalatedFrom: varchar("escalated_from", { length: 24 }).$type<EventStatus>(),
+    /** District coordinator planned and approved their own event (spec 27). */
+    selfApproved: boolean("self_approved").notNull().default(false),
     version: int("version").notNull().default(1),
     ...timestamps(),
   },

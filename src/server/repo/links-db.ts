@@ -3,6 +3,7 @@ import { and, desc, eq, gte, inArray, isNull, lt, or, sql } from "drizzle-orm";
 import type { Db } from "../db/client";
 import { newId } from "../db/columns";
 import {
+  approval,
   attachment,
   consentRecord,
   event,
@@ -34,17 +35,17 @@ import type {
   SubmissionUpdateWrite,
 } from "./links-types";
 
-type Tx = Parameters<Parameters<Db["transaction"]>[0]>[0];
+export type Tx = Parameters<Parameters<Db["transaction"]>[0]>[0];
 type Exec = Db | Tx;
 
-const affected = (res: unknown): number => {
+export const affected = (res: unknown): number => {
   const header = Array.isArray(res) ? res[0] : res;
   return typeof header === "object" && header !== null && "affectedRows" in header && typeof header.affectedRows === "number"
     ? header.affectedRows
     : 0;
 };
 
-function isDuplicateKey(err: unknown): boolean {
+export function isDuplicateKey(err: unknown): boolean {
   for (let e: unknown = err, i = 0; e && i < 4; i++) {
     if (typeof e === "object" && e !== null && "code" in e && e.code === "ER_DUP_ENTRY") return true;
     e = typeof e === "object" && e !== null && "cause" in e ? e.cause : null;
@@ -54,7 +55,7 @@ function isDuplicateKey(err: unknown): boolean {
 
 class UsedUp extends Error {}
 
-const linkCols = {
+export const linkCols = {
   id: formLink.id,
   tokenHash: formLink.tokenHash,
   tokenNonce: formLink.tokenNonce,
@@ -89,7 +90,7 @@ const otpCols = {
   consumedAt: otpChallenge.consumedAt,
 };
 
-const submissionCols = {
+export const submissionCols = {
   id: submission.id,
   eventId: submission.eventId,
   linkId: submission.linkId,
@@ -108,7 +109,7 @@ const submissionCols = {
   approvedAt: submission.approvedAt,
 };
 
-const attachmentCols = {
+export const attachmentCols = {
   id: attachment.id,
   eventId: attachment.eventId,
   linkId: attachment.linkId,
@@ -314,15 +315,7 @@ export class DbLinksRepo implements LinksRepo {
         await this.writeFacts(tx, w.submission.eventId, w.submission.id, w.facts);
         if (w.consents.length) await tx.insert(consentRecord).values(w.consents);
         await this.claimAttachments(tx, w.attachmentIds, w.submission.id);
-        if (w.eventStatus) {
-          const moved = await tx
-            .update(event)
-            .set({ status: w.eventStatus.to, version: sql`${event.version} + 1` })
-            .where(and(eq(event.id, w.submission.eventId), inArray(event.status, [...w.eventStatus.from])));
-          if (affected(moved) > 0) {
-            await tx.insert(eventTimeline).values({ id: newId(), eventId: w.submission.eventId, ...w.eventStatus.timeline });
-          }
-        }
+        await this.moveEvent(tx, w.submission.eventId, w.eventStatus);
         if (w.volunteersJoinedDelta) {
           await tx
             .update(event)
@@ -356,6 +349,7 @@ export class DbLinksRepo implements LinksRepo {
       await tx.delete(consentRecord).where(eq(consentRecord.submissionId, w.id));
       if (w.consents.length) await tx.insert(consentRecord).values(w.consents);
       await this.claimAttachments(tx, w.attachmentIds, w.id);
+      await this.moveEvent(tx, w.eventId, w.eventStatus ?? null);
     });
     return result;
   }
@@ -376,6 +370,18 @@ export class DbLinksRepo implements LinksRepo {
       .where(and(eq(attachment.linkId, linkId), eq(attachment.idempotencyKey, key)))
       .limit(1);
     return r ?? null;
+  }
+
+  /** Moves the event when its status is one of `from`, adding the timeline step and opening the approval. */
+  private async moveEvent(tx: Exec, eventId: string, m: NewSubmissionWrite["eventStatus"]) {
+    if (!m) return;
+    const moved = await tx
+      .update(event)
+      .set({ status: m.to, version: sql`${event.version} + 1` })
+      .where(and(eq(event.id, eventId), inArray(event.status, [...m.from])));
+    if (affected(moved) === 0) return;
+    await tx.insert(eventTimeline).values({ id: newId(), eventId, ...m.timeline });
+    if (m.approval) await tx.insert(approval).values(m.approval);
   }
 
   private async writeFacts(tx: Exec, eventId: string, submissionId: string, facts: readonly FactInput[]) {

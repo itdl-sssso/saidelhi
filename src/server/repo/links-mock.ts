@@ -18,6 +18,7 @@ import type {
   SubmissionUpdateWrite,
   TemplateRec,
 } from "./links-types";
+import type { ApprovalRec } from "./portal-types";
 
 const latestFirst = (a: SubmissionRec, b: SubmissionRec) => b.submittedAt.getTime() - a.submittedAt.getTime();
 
@@ -32,6 +33,10 @@ export class MemoryLinksRepo implements LinksRepo {
   readonly submissions: SubmissionRec[] = [];
   readonly attachments: AttachmentRec[] = [];
   readonly consents: ConsentRec[] = [];
+  /** Shared with MemoryPortalRepo (report submissions open an approval). */
+  readonly approvals: ApprovalRec[] = [];
+  /** created_at of links (the record type has none). */
+  readonly linkCreatedAt = new Map<string, Date>();
   private readonly locks: Map<string, string>;
 
   constructor(
@@ -84,6 +89,7 @@ export class MemoryLinksRepo implements LinksRepo {
 
   async insertLink(rec: LinkRec) {
     this.links.push({ ...rec });
+    this.linkCreatedAt.set(rec.id, new Date());
   }
 
   async updateLink(id: string, patch: Partial<Pick<LinkRec, "expiresAt" | "revokedAt" | "lastOpenedAt">>) {
@@ -154,15 +160,9 @@ export class MemoryLinksRepo implements LinksRepo {
     this.writeFacts(w.submission.eventId, w.submission.id, w.facts);
     this.consents.push(...w.consents);
     this.claimAttachments(w.attachmentIds, w.submission.id);
+    this.moveEvent(w.submission.eventId, w.eventStatus);
     const ev = this.fx.events.find((e) => e.id === w.submission.eventId);
-    if (ev) {
-      if (w.eventStatus && w.eventStatus.from.includes(ev.status)) {
-        ev.status = w.eventStatus.to;
-        ev.version += 1;
-        this.fx.timeline.push({ id: newId(), eventId: ev.id, ...w.eventStatus.timeline, note: null });
-      }
-      ev.volunteersJoined += w.volunteersJoinedDelta;
-    }
+    if (ev) ev.volunteersJoined += w.volunteersJoinedDelta;
     return "ok";
   }
 
@@ -176,7 +176,17 @@ export class MemoryLinksRepo implements LinksRepo {
     }
     this.consents.splice(0, this.consents.length, ...this.consents.filter((c) => c.submissionId !== w.id), ...w.consents);
     this.claimAttachments(w.attachmentIds, w.id);
+    this.moveEvent(w.eventId, w.eventStatus ?? null);
     return "ok";
+  }
+
+  private moveEvent(eventId: string, m: NewSubmissionWrite["eventStatus"]) {
+    const ev = this.fx.events.find((e) => e.id === eventId);
+    if (!ev || !m || !m.from.includes(ev.status)) return;
+    ev.status = m.to;
+    ev.version += 1;
+    this.fx.timeline.push({ id: newId(), eventId: ev.id, ...m.timeline, note: null });
+    if (m.approval) this.approvals.push({ ...m.approval });
   }
 
   async insertAttachment(rec: AttachmentRec) {
