@@ -43,6 +43,7 @@ export function createDistrictsService(repo: DataRepo, deps: ServiceDeps): Distr
         intro: district.introEn ? i18n(district.introEn, district.introHi) : null,
         kpis: hasAnyData(data) ? headlineTiles(data, win.info) : null,
         bySevaType: bySevaType(data, org),
+        demographics: [], // M5 backend: fill from age/gender KPI dims (spec 13)
         upcoming: await assembleEvents(repo, org, upcoming.rows),
         centres: districtCentres.map((c) => toCentreListItem(c, gatherings.filter((g) => g.centreId === c.id), org, now)),
       };

@@ -45,9 +45,11 @@ export const endpoints = {
   article: (slug: string) => p(`/articles/${seg(slug)}`),
   events: (q?: EventsQueryParams) => withQuery(p("/events"), q),
   event: (id: string) => p(`/events/${seg(id)}`),
-  join: (q?: { district?: string; sevaType?: SevaType; from?: string; to?: string }) => withQuery(p("/join"), q),
-  centres: (q?: { q?: string; district?: string } & PageQuery) => withQuery(p("/centres"), q),
+  join: (q?: { district?: string; sevaType?: SevaType; from?: string; to?: string } & PageQuery) => withQuery(p("/join"), q),
+  centres: (q?: { q?: string; district?: string; pincode?: string } & PageQuery) => withQuery(p("/centres"), q),
   centre: (slug: string) => p(`/centres/${seg(slug)}`),
+  /** v0.6: DistrictSummary[] (About page, district index). */
+  districts: () => p("/districts"),
   district: (slug: string) => p(`/districts/${seg(slug)}`),
   discourses: (q?: { theme?: string; q?: string }) => withQuery(p("/discourses"), q),
   discourse: (slug: string) => p(`/discourses/${seg(slug)}`),

@@ -13,4 +13,6 @@ export * from "./auth";
 export * from "./portal";
 export * from "./whatsapp";
 export * from "./queries";
+export * from "./public";
+export * from "./redirects";
 export * from "./endpoints";
