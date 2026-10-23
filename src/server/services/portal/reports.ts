@@ -15,7 +15,7 @@ import type {
   ScopeRef,
 } from "@/contract";
 import { auditRec, type SystemActor } from "../../audit";
-import { type Actor, assertCan, assertInScope, can, inScope } from "../../auth/rbac";
+import { type Actor, assertCan, assertInScope, inScope } from "../../auth/rbac";
 import { newId } from "../../db/columns";
 import { addDays, istDate, istDayStart, istMonth, toIso } from "../../domain/time";
 import { KPI_DEFS } from "../../domain/kpi";

@@ -55,7 +55,10 @@ export class MemoryPrivacyRepo implements PrivacyRepo {
 
   async deleteRequests(ids: readonly string[], audit?: AuditRec[]) {
     let n = 0;
-    for (const id of ids) if (!this.deleted.has(id) && this.base.some((r) => r.id === id)) (this.deleted.add(id), n++);
+    for (const id of ids) if (!this.deleted.has(id) && this.base.some((r) => r.id === id)) {
+        this.deleted.add(id);
+        n++;
+      }
     await this.audit(audit);
     return n;
   }
@@ -68,7 +71,10 @@ export class MemoryPrivacyRepo implements PrivacyRepo {
 
   async clearPersonal(ids: readonly string[], audit?: AuditRec[]) {
     let n = 0;
-    for (const s of this.links.submissions) if (ids.includes(s.id) && s.personalAnswers) ((s.personalAnswers = null), n++);
+    for (const s of this.links.submissions) if (ids.includes(s.id) && s.personalAnswers) {
+        s.personalAnswers = null;
+        n++;
+      }
     await this.audit(audit);
     return n;
   }

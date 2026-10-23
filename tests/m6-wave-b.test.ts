@@ -305,3 +305,303 @@ describe("migration + redirects", () => {
     expect(q.data.every((x) => x.from.includes("about") || x.to.includes("about"))).toBe(true);
   });
 });
+
+// ---- follow-up / privacy / reports / health / cron ----------------------------
+
+import { ExportField, type ExportRequest, FollowUpDetail, HealthPayload } from "@/contract";
+import type { SubmissionRec } from "@/server/repo/links-types";
+import { encryptField } from "@/server/security/crypto";
+import { DEV_SESSION_SECRET } from "@/server/security/crypto";
+import { phoneHash } from "@/server/security/phone";
+
+const CAMP_PHONE = "+919811100001";
+
+function campSubmission(eventId: string): SubmissionRec {
+  return {
+    id: "SUB_FU_1",
+    eventId,
+    linkId: null,
+    sessionId: null,
+    formVersionId: "none",
+    definitionVersion: 1,
+    answers: {},
+    personalAnswers: {
+      followup: [
+        { name: "Asha Devi", age: 67, gender: "female", phone: CAMP_PHONE, locality: "Rohini", consent: true },
+        { name: "No Consent", age: 70, phone: "+919811100002", consent: false },
+        { name: "Ram Lal", age: 58, gender: "male", phone: "+919811100003", consent: "yes" },
+      ],
+    },
+    submittedByHash: null,
+    submittedByMasked: "",
+    source: "form",
+    status: "submitted",
+    idempotencyKey: null,
+    version: 1,
+    submittedAt: NOW,
+    approvedAt: null,
+  };
+}
+
+async function approvedCamp() {
+  const t = m6Setup();
+  t.repo.links.submissions.push(campSubmission(EVENT.eyePreetReport));
+  const state = await t.actor(USER.stateC);
+  await t.svc.portal.events.act(state, EVENT.eyePreetReport, "approve-report", {});
+  return { t, state, pii: await t.actor(USER.piiF) };
+}
+
+describe("follow-up", () => {
+  it("imports consented rows on approval, masks phones and audits reads and reveals", async () => {
+    const { t, pii } = await approvedCamp();
+    const list = await t.svc.portal.followUp.list(pii, { page: 1, pageSize: 50 } as never);
+    expect(list.data.map((r) => r.name).sort()).toEqual(["Asha Devi", "Ram Lal"]);
+    expect(list.meta.counts.open).toBe(2);
+    const asha = list.data.find((r) => r.name === "Asha Devi")!;
+    expect(asha.phone).not.toContain("9811100001");
+    expect(JSON.stringify(list)).not.toContain("9811100001");
+
+    const before = (await t.repo.portal.listAudit({ limit: 500, offset: 0 })).rows.length;
+    const detail = FollowUpDetail.parse(await t.svc.portal.followUp.get(pii, asha.id));
+    expect(detail.history.map((h) => h.kind)).toContain("viewed");
+    const raw = await t.svc.portal.followUp.revealPhone(pii, asha.id);
+    expect(raw.phone).toBe(CAMP_PHONE);
+    const audit = (await t.repo.portal.listAudit({ limit: 500, offset: 0 })).rows;
+    expect(audit.length).toBeGreaterThanOrEqual(before + 2);
+    expect(audit.some((a) => a.action === "followup.reveal" && a.entityId === asha.id)).toBe(true);
+    expect(JSON.stringify(audit)).not.toContain("9811100001");
+
+    const called = await t.svc.portal.followUp.call(pii, asha.id, { outcome: "answered", minutes: 4, version: detail.version });
+    expect(called.lastContactAt).not.toBeNull();
+    const done = await t.svc.portal.followUp.patch(pii, asha.id, { status: "done", version: called.version });
+    expect(done.status).toBe("done");
+    expect(done.surgeryDate).not.toBeNull();
+    expect(done.deleteOn).not.toBeNull();
+    expect(await errCode(t.svc.portal.followUp.patch(pii, asha.id, { status: "referred", version: called.version }))).toBe("CONFLICT");
+  });
+
+  it("is closed to district roles and re-approval does not duplicate", async () => {
+    const { t, state } = await approvedCamp();
+    const district = await t.actor(USER.districtB);
+    expect(await errCode(t.svc.portal.followUp.list(district, { page: 1, pageSize: 10 } as never))).toBe("FORBIDDEN");
+    const coord = await t.actor(USER.coordA);
+    expect(await errCode(t.svc.portal.followUp.list(coord, { page: 1, pageSize: 10 } as never))).toBe("FORBIDDEN");
+    expect((await t.svc.portal.followUp.list(state, { page: 1, pageSize: 10, status: "all" } as never)).meta.total).toBe(2);
+  });
+});
+
+describe("privacy", () => {
+  async function withRequest() {
+    const x = await approvedCamp();
+    await x.t.repo.createPrivacyRequest(
+      { id: "PRQ1", name: "Asha Devi", phone: CAMP_PHONE, type: "deletion", details: "Please delete my data", locale: "en", dueAt: new Date(NOW.getTime() + 20 * 86_400_000), ipHash: null },
+      { actorId: null, actorRole: "public", action: "privacy.request", entity: "privacy_request", entityId: "PRQ1", scopeId: null, requestId: null, ipHash: null, data: null },
+    );
+    await x.t.repo.wa.saveOptIn({
+      id: "OPT1",
+      phoneHash: phoneHash(DEV_SESSION_SECRET, CAMP_PHONE),
+      phoneEnc: encryptField(DEV_SESSION_SECRET, CAMP_PHONE),
+      phoneMasked: "+91 98•••••01",
+      districtId: null,
+      sevaTypes: ["eye"],
+      locale: "en",
+      status: "opted_in",
+      via: "web",
+      requestedAt: NOW,
+      consentAt: NOW,
+      stoppedAt: null,
+      ipHash: null,
+    });
+    return x;
+  }
+
+  it("finds, exports and erases every source; counts stay", async () => {
+    const { t, pii } = await withRequest();
+    const open = await t.svc.portal.privacy.request(pii, "PRQ1");
+    expect(open.matches).toBeNull();
+    expect(open.ref).toBe("PR-0001");
+    expect(open.phone).not.toContain("9811100001");
+
+    const found = await t.svc.portal.privacy.find(pii, "PRQ1", { version: open.version });
+    expect(found.steps.found).not.toBeNull();
+    const kinds = found.matches!.map((m) => m.kind).sort();
+    expect(kinds).toEqual(["followup", "privacy_request", "submission_personal", "whatsapp_optin"]);
+
+    const dump = await t.svc.portal.privacy.exportJson(pii, "PRQ1");
+    expect(JSON.stringify(dump)).toContain("Asha Devi");
+    expect(JSON.stringify(dump)).not.toContain("Ram Lal");
+
+    const cur = await t.svc.portal.privacy.request(pii, "PRQ1");
+    const ids = found.matches!.filter((m) => m.erasable).map((m) => m.id);
+    expect(await errCode(t.svc.portal.privacy.erase(pii, "PRQ1", { matchIds: [...ids, "PRQ1"], version: cur.version }))).toBe("VALIDATION_FAILED");
+    const erased = await t.svc.portal.privacy.erase(pii, "PRQ1", { matchIds: ids, version: cur.version });
+    expect(erased.steps.erased).not.toBeNull();
+    expect(erased.matches!.map((m) => m.kind).sort()).toEqual(["privacy_request"]);
+
+    const sub = t.repo.links.submissions.find((s) => s.id === "SUB_FU_1")!;
+    const names = (sub.personalAnswers!.followup as { name: string }[]).map((r) => r.name);
+    expect(names).toEqual(["No Consent", "Ram Lal"]);
+    expect((await t.svc.portal.followUp.list(pii, { page: 1, pageSize: 10, status: "all" } as never)).data.map((r) => r.name)).toEqual(["Ram Lal"]);
+    expect(await t.repo.wa.optInByHash(phoneHash(DEV_SESSION_SECRET, CAMP_PHONE))).toBeNull();
+    // Event figures are untouched.
+    expect((await t.repo.portal.factsForEvents([EVENT.eyePreetReport])).length).toBeGreaterThan(0);
+
+    const reply = await t.svc.portal.privacy.reply(pii, "PRQ1", { message: "Your data was deleted.", version: erased.version });
+    expect(reply.steps.replied).not.toBeNull();
+    expect(t.whatsapp.sent.at(-1)).toMatchObject({ template: "privacy_reply", params: ["Your data was deleted."] });
+  });
+
+  it("read-only roles can look but not act; others see nothing", async () => {
+    const { t } = await withRequest();
+    const translator = await t.actor(USER.translatorE);
+    expect(await errCode(t.svc.portal.privacy.requests(translator, { page: 1, pageSize: 10 } as never))).toBe("FORBIDDEN");
+    const coord = await t.actor(USER.coordA);
+    expect(await errCode(t.svc.portal.privacy.find(coord, "PRQ1", { version: 1 }))).toBe("FORBIDDEN");
+  });
+
+  it("breach register has a 72 h deadline and step checklist", async () => {
+    const t = m6Setup();
+    const pii = await t.actor(USER.piiF);
+    const b = await t.svc.portal.privacy.createBreach(pii, { title: "Lost phone with register photos" });
+    expect(b.ref).toBe("BR-001");
+    expect(Date.parse(b.deadlineAt) - Date.parse(b.discoveredAt)).toBe(72 * 3_600_000);
+    const done = await t.svc.portal.privacy.patchBreach(pii, b.id, { step: { key: "contain", done: true }, version: b.version });
+    expect(done.steps[0].doneAt).not.toBeNull();
+    expect((await t.svc.portal.privacy.overview(pii)).counts.openBreaches).toBe(1);
+  });
+
+  it("retention: dry-run `due` equals what the cron deletes; toggles are honoured", async () => {
+    const { t, pii } = await approvedCamp();
+    const list = await t.svc.portal.followUp.list(pii, { page: 1, pageSize: 10 } as never);
+    // Age one record past its deletion date.
+    const rec = (await t.repo.m6.docGet<{ deleteOn: string }>("followup_person", list.data[0].id))!;
+    await t.repo.m6.docUpdate("followup_person", { id: rec.id, k1: rec.k1, k2: rec.k2, data: { ...rec.data, deleteOn: "2026-01-01" } });
+    const jobs = await t.svc.portal.privacy.retention(pii);
+    expect(jobs.find((j) => j.key === "followup")).toMatchObject({ due: 1, enabled: true, locked: false });
+    expect(jobs.find((j) => j.key === "otp")?.locked).toBe(true);
+
+    await t.svc.portal.privacy.setRetention(pii, "followup", false);
+    const off = await t.svc.portal.jobs.run("retention");
+    expect(off.changed).toBe(0);
+    await t.svc.portal.privacy.setRetention(pii, "followup", true);
+    const on = await t.svc.portal.jobs.run("retention");
+    expect(on.ids).toContain("followup");
+    expect((await t.svc.portal.followUp.list(pii, { page: 1, pageSize: 10, status: "all" } as never)).meta.total).toBe(1);
+    const after = await t.svc.portal.privacy.retention(pii);
+    expect(after.find((j) => j.key === "followup")).toMatchObject({ due: 0, lastDeleted: 1 });
+    expect(await errCode(t.svc.portal.privacy.setRetention(pii, "otp", false))).toBe("VALIDATION_FAILED");
+  });
+});
+
+describe("reports and exports", () => {
+  const base: ExportRequest & { fields: string[]; sevaTypes: never[] } = { kind: "event_reports", scopeId: "", from: "2026-01-01", to: "2026-12-31", sevaTypes: [], fields: ["date", "title", "district", "eye.screened"], reason: "Annual review" };
+
+  it("exports allow-listed columns as CSV with BOM and logs the reason", async () => {
+    const t = m6Setup();
+    const state = await t.actor(USER.stateC);
+    const overview = await t.svc.portal.reports.overview(state);
+    ExportField.array().parse(overview.exportFields);
+    expect(overview.exportFields.map((f) => f.key)).not.toContain("name");
+    const ncr = overview.schedules[0].scope.id;
+    const res = await t.svc.portal.reports.exportCsv(state, { ...base, scopeId: ncr });
+    expect(res.csv.startsWith("﻿")).toBe(true);
+    expect(res.csv.split("\r\n")[0]).toBe("﻿Date,Event,District,People screened");
+    expect(res.rows).toBeGreaterThan(0);
+    const after = await t.svc.portal.reports.overview(state);
+    expect(after.recentExports[0]).toMatchObject({ reason: "Annual review", rows: res.rows, by: expect.any(String) });
+    const audit = (await t.repo.portal.listAudit({ action: "export.create", limit: 10, offset: 0 })).rows;
+    expect(audit).toHaveLength(1);
+  });
+
+  it("rejects personal or unknown fields, short reasons and out-of-scope units", async () => {
+    const t = m6Setup();
+    const state = await t.actor(USER.stateC);
+    const ncr = (await t.svc.portal.reports.overview(state)).schedules[0].scope.id;
+    expect(await errCode(t.svc.portal.reports.exportCsv(state, { ...base, scopeId: ncr, fields: ["date", "phone"] }))).toBe("VALIDATION_FAILED");
+    expect(await errCode(t.svc.portal.reports.exportCsv(state, { ...base, scopeId: ncr, fields: ["followup"] }))).toBe("VALIDATION_FAILED");
+    expect(await errCode(t.svc.portal.reports.exportCsv(state, { ...base, scopeId: ncr, reason: "  " }))).toBe("VALIDATION_FAILED");
+    expect(await errCode(t.svc.portal.reports.exportCsv(state, { ...base, scopeId: ncr, kind: "events", fields: ["eye.screened"] }))).toBe("VALIDATION_FAILED");
+    const east = await t.actor(USER.districtB);
+    expect(await errCode(t.svc.portal.reports.exportCsv(east, { ...base, scopeId: DISTRICT.north }))).toBe("NOT_FOUND");
+    const coord = await t.actor(USER.coordA);
+    expect(await errCode(t.svc.portal.reports.exportCsv(coord, { ...base, scopeId: DISTRICT.north }))).toBe("FORBIDDEN");
+  });
+
+  it("builds the monthly PDF and the monthly cron delivers once", async () => {
+    const t = m6Setup();
+    const state = await t.actor(USER.stateC);
+    const report = await t.svc.portal.reports.generateMonthly(state, { month: "2026-10" });
+    expect(report).toMatchObject({ status: "ready", month: "2026-10" });
+    expect(report.pages).toBeGreaterThanOrEqual(2);
+    const bytes = await t.svc.portal.reports.monthlyPdf(state, report.id);
+    expect(new TextDecoder().decode(bytes.slice(0, 5))).toBe("%PDF-");
+    const east = await t.actor(USER.districtB);
+    expect(await errCode(t.svc.portal.reports.generateMonthly(east, { month: "2026-10" }))).toBe("FORBIDDEN");
+    expect(await errCode(t.svc.portal.reports.monthlyPdf(east, report.id))).toBe("NOT_FOUND");
+
+    t.clock.t = new Date("2026-11-08T06:30:00+05:30");
+    const sentBefore = t.whatsapp.sent.length;
+    const run = await t.svc.portal.jobs.run("monthly-report");
+    expect(run.ids).toHaveLength(1);
+    expect(run.notified).toBeGreaterThan(0);
+    // Recipients with an email get it by email; no report reminders ride along.
+    expect(t.whatsapp.sent.length).toBe(sentBefore);
+    expect((await t.svc.portal.jobs.run("monthly-report")).ids).toHaveLength(0);
+    const sched = (await t.svc.portal.reports.overview(state)).schedules[0];
+    const patched = await t.svc.portal.reports.patchSchedule(state, sched.id, { dayOfMonth: 10, version: sched.version });
+    expect(patched.dayOfMonth).toBe(10);
+  });
+});
+
+describe("health", () => {
+  it("matches the contract and scopes rows to the actor", async () => {
+    const t = m6Setup();
+    const state = await t.actor(USER.stateC);
+    const ncr = HealthPayload.parse(await t.svc.portal.health.get(state, {}));
+    expect(ncr.months).toHaveLength(6);
+    expect(ncr.scope.kind).toBe("ncr");
+    expect(ncr.reportingRate.length).toBeGreaterThan(1);
+    expect(ncr.reportingRate[0].href).toContain("/admin/events?district=");
+    expect(ncr.tiles.map((x) => x.key)).toEqual(["on_time_rate", "event_to_report_days", "waiting_approval", "estimate_share"]);
+    const east = await t.actor(USER.districtB);
+    const own = HealthPayload.parse(await t.svc.portal.health.get(east, {}));
+    expect(own.scope.kind).toBe("district");
+    expect(own.reportingRate.every((r) => r.href.includes("samithi="))).toBe(true);
+    expect(await errCode(t.svc.portal.health.get(east, { scope: DISTRICT.north }))).toBe("NOT_FOUND");
+    const coord = await t.actor(USER.coordA);
+    expect(await errCode(t.svc.portal.health.get(coord, {}))).toBe("FORBIDDEN");
+  });
+});
+
+describe("cron dispatch", () => {
+  it("never lets an unknown job run report reminders", async () => {
+    const t = m6Setup();
+    expect(await errCode(t.svc.portal.jobs.run("something-new" as never))).toBe("NOT_FOUND");
+    const before = t.whatsapp.sent.length;
+    await t.svc.portal.jobs.run("retention");
+    expect(t.whatsapp.sent.length).toBe(before);
+  });
+});
+
+describe("home wings", () => {
+  it("editable home sections override the static wing cards", async () => {
+    const t = m6Setup();
+    const staticWings = (await t.svc.home.get()).wings;
+    expect(staticWings).toHaveLength(5);
+    const content = await t.actor(USER.contentD);
+    const created = await t.svc.portal.content.create(content, {
+      kind: "item",
+      type: "home_section",
+      key: "wing.youth",
+      title: { en: "Young seva", hi: null },
+      body: { en: "New summary for youth.", hi: null },
+      href: "/programs?wing=youth",
+    } as never);
+    // Drafts never show.
+    expect((await t.svc.home.get()).wings).toHaveLength(5);
+    await t.svc.portal.content.patch(content, created.id, { status: "published", version: created.version } as never);
+    const wings = (await t.svc.home.get()).wings;
+    expect(wings[0]).toMatchObject({ wing: "youth", title: { en: "Young seva" }, summary: { en: "New summary for youth." } });
+    expect(wings).toHaveLength(5);
+  });
+});

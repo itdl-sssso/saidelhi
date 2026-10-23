@@ -57,6 +57,9 @@ export class MemoryStorage implements PrivateStorage {
   async get(rel: string) {
     return this.files.get(rel) ?? null;
   }
+  async delete(rel: string) {
+    return this.files.delete(rel);
+  }
 }
 
 export const DEV_TOKENS = Object.fromEntries(devLinks(DEV_SESSION_SECRET).map((l) => [l.key, l.token])) as Record<string, string>;

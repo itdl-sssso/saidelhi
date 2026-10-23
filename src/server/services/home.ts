@@ -43,6 +43,33 @@ export const DEFAULT_WINGS: readonly WingCard[] = [
   },
 ];
 
+const WING_CODES: ReadonlySet<string> = new Set(DEFAULT_WINGS.map((w) => w.wing));
+
+/** Editable wing cards (content items kind home_section, key = wing code) over the static defaults. */
+function pickWings(items: readonly ContentItemRec[]): WingCard[] {
+  const codeOf = (i: ContentItemRec) => (i.key ?? "").replace(/^wing\./, "");
+  const mine = items.filter((i) => WING_CODES.has(codeOf(i)));
+  if (mine.length === 0) return [...DEFAULT_WINGS];
+  const order = new Map<string, number>();
+  const edited = new Map<string, WingCard>();
+  const hidden = new Set<string>();
+  for (const i of mine) {
+    const wing = codeOf(i) as WingCard["wing"];
+    if (i.status === "archived") hidden.add(wing);
+    if (i.status !== "published") continue;
+    const base = DEFAULT_WINGS.find((w) => w.wing === wing) as WingCard;
+    order.set(wing, i.sortOrder);
+    edited.set(wing, {
+      wing,
+      title: i.titleEn ? i18n(i.titleEn, i.titleHi) : base.title,
+      summary: i.bodyEn ? i18n(i.bodyEn, i.bodyHi) : base.summary,
+      href: i.href?.startsWith("/") ? i.href : base.href,
+    });
+  }
+  const cards = DEFAULT_WINGS.filter((w) => !hidden.has(w.wing)).map((w, idx) => ({ card: edited.get(w.wing) ?? w, at: order.get(w.wing) ?? 1000 + idx }));
+  return cards.sort((a, b) => a.at - b.at).map((c) => c.card);
+}
+
 function pickThought(items: readonly ContentItemRec[], today: string): Thought | null {
   const t = items
     .filter((i) => i.status === "published" && i.bodyEn && i.date && i.date <= today)
@@ -64,7 +91,7 @@ export function createHomeService(repo: DataRepo, deps: ServiceDeps): HomeServic
   return {
     async get(): Promise<HomePayload> {
       const now = deps.now();
-      const [org, settings, thoughts] = await Promise.all([loadOrg(repo), loadSettings(repo), repo.contentItems("thought_for_day")]);
+      const [org, settings, thoughts, sections] = await Promise.all([loadOrg(repo), loadSettings(repo), repo.contentItems("thought_for_day"), repo.contentItems("home_section")]);
       const win = periodWindow("this_year", now);
 
       const [upcoming, year, latest, centenary] = await Promise.all([
@@ -82,7 +109,7 @@ export function createHomeService(repo: DataRepo, deps: ServiceDeps): HomeServic
           : null,
         articles: latest.rows,
         centenary: centenary.rows,
-        wings: [...DEFAULT_WINGS],
+        wings: pickWings(sections),
       };
     },
   };

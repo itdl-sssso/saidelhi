@@ -19,11 +19,19 @@ Tests: vitest has two projects (`vitest.config.mts`): `unit` (parallel) and `db`
 - 10 Migration (41): `services/portal/migration.ts` (`portal.migration`), routes `/admin/migration/runs[/:id[/import|/report.csv]]`, `/admin/redirects`. Analysis recomputed on get/patch while `mapping`; import snapshots types/counts/issues. Import: skip=no-op; hidden/redirect_only -> article_i18n hidden (+redirect `/content/<slug>` -> `/news` for redirect_only); category target = native copy when it differs from the legacy letter; posts with personal_data/empty_body/slug_clash that are published become draft; hidden/draft editor decisions never re-published. Redirect rows only when missing/different (idempotent). Sitemap: `<loc>` paths; slug matches -> `/news/<slug>` migration row; unmatched listed with problem `slug_clash` (no `unmatched` member in contract).
 - Tests: `tests/m6-wave-b.test.ts` (content x5, migration x3) + m6.db.integration (content/redirect/migration preview, cleans up).
 
+- 11 Follow-up (46): `portal/followup.ts` (`portal.followUp`), routes `/admin/follow-up[/:id[/reveal-phone|calls]]`. `followup_person` docs (k1 event, k2 status), id `fu_<submissionId>_<i>`, phone sealed (`phoneEnc`), populated in `lifecycle` side effect of `approve-report` for eye events (all approval paths use `transition`; idempotent, consent-only; failure logged not thrown). NCR-wide (`actor.all`) + `followup.read|reveal` else 403. Audit: `followup.list` (counts only), `followup.view`, `followup.reveal`; log kinds viewed/revealed/call/status/note. `meta.counts` on list. Seed has no personal answers so no backfill needed.
+- 12 Privacy (47): `portal/privacy.ts` (`portal.privacy`), new repo port `repo.privacy` (`privacy-types/db/mock.ts`), routes `/admin/privacy/**` (overview, dpo, requests, find/erase/reply, export.json, consents, retention, breaches). `ref` = `PR-nnnn` by created order; steps stored as `step@iso` in `privacy_request.steps`; matches recomputed live (erasable: submissions via scrubbing only records carrying the phone, followup, optin, conversation; portal_user + requests read-only). Retention keys + `retention` cron (`runRetention`) write `retention_run` docs; toggles in setting `privacy.retention`; `PrivateStorage.delete?` added. Templates `privacy_reply`, `monthly_report_ready`.
+- 13 Reports (44): `portal/reports.ts` (`portal.reports`), routes `/admin/reports`, `/reports/monthly` (POST 202, inline build), `/reports/monthly/[file]` (`<id>.pdf`), `/reports/schedules/:id`, `/admin/exports` (CSV, BOM, formula-guarded). Allow-list `EXPORT_FIELDS`; PDF via pdf-lib stored `reports/<month>-<scope>-<ts>.pdf`; schedule `sched_monthly_state` created lazily (state admins, day 7). Cron `monthly-report` runs once per schedule+month (notification claim), email if address else WhatsApp.
+- 14 Health (45): `portal/health.ts`, route `/admin/health`. On time = report <= 7 days after event end (timeline `report_submitted`).
+- 5 Cron dispatch is an exhaustive switch; route accepts any string, unknown -> 404.
+- 6 Home wings read published `home_section` items (key `wing.<code>`), hidden (archived) removes a wing, drafts ignored.
+- Tests: wave-b unit (22) + `m6.db.integration` health/reports/privacy on MySQL.
+
 ## In progress
 -
 
-## Next (wave B, remaining)
-- 11 Follow-up (46), 12 Privacy (47), 13 Reports+exports (44), 14 Health (45), tests for each in `tests/m6-wave-b.test.ts`; cron jobs (`publish-scheduled`, `monthly-report`, `retention`) in `services/portal/jobs.ts` + `/api/v1/jobs`.
+## Next
+- Wave B backend done. Left for lead: contract notes below, integration/walkthrough.
 
 ## Decisions
 - M6 tables = generic JSON document tables (`id,k1,k2,version,data,created_at,updated_at`), accessed through `repo.m6` (`docGet/docList/docInsert/docUpdate/docUpsert/docDelete`, optional audit rows in same txn). Lookup-key meaning per table in `repo/m6-types.ts`. Columns only added to existing tables.
@@ -43,3 +51,7 @@ Tests: vitest has two projects (`vitest.config.mts`): `unit` (parallel) and `db`
 - Gaps: home sections (`content_item` home_section) are editable but the public Home does not read them yet; `programs.ts` stories still use legacy-only `articlesForEvents`; `RedirectsService` caches 5 min so new rows can lag; `monthly-report`/`retention` cron names fall through to report reminders until tasks 13/12 add branches.
 - Proposal: document in CONTRACT.md that `FormTemplateDetail.version` is the draft revision counter (see decision above).
 - Proposal: `VolunteerEventRow.event` is `EventCard` (no status) — fine; frontend may want `status` later.
+- Proposal: `PrivacyRequestRow.ref` is derived from created order (a deleted request shifts later refs); a stored ref column would be stable.
+- Proposal: monthly PDF text is ASCII-only (Helvetica); Hindi names print as `?`. Needs an embedded Devanagari font (fontkit) if the PDF should carry Hindi.
+- Note: inbox_media/whatsapp media retention assume private storage paths; WhatsApp media bytes live in `MEDIA_PRIVATE_ROOT`.
+- Note: `meta.counts` on follow-up list uses keys open/all/referred/scheduled/done/declined/unreachable.

@@ -198,4 +198,40 @@ describe.skipIf(!pool)("M6 on MySQL (integration)", () => {
       for (const fn of cleanup.reverse()) await fn().catch(() => {});
     }
   });
+  it("health, reports, privacy and follow-up queries run on MySQL", async () => {
+    const s = svc!;
+    const state = (await s.auth.actorFor(USER.stateC, rc))!;
+    const pii = (await s.auth.actorFor(USER.piiF, rc))!;
+    const cleanup: (() => Promise<unknown>)[] = [];
+    try {
+      const health = await s.portal.health.get(state, {});
+      expect(health.months).toHaveLength(6);
+      expect(health.tiles).toHaveLength(4);
+
+      const reports = await s.portal.reports.overview(state);
+      cleanup.push(() => repo!.m6.docDelete("report_schedule", "sched_monthly_state"));
+      const ncr = reports.schedules[0].scope.id;
+      const csv = await s.portal.reports.exportCsv(state, { kind: "kpi_totals", scopeId: ncr, from: "2020-01-01", to: "2030-12-31", sevaTypes: [], fields: ["district", "seva_type", "events", "eye.screened"], reason: "integration test" });
+      expect(csv.csv.startsWith("\uFEFFDistrict,Seva type,Events,People screened")).toBe(true);
+      const logs = await repo!.m6.docList("export_log", { limit: 5 });
+      for (const l of logs) cleanup.push(() => repo!.m6.docDelete("export_log", l.id));
+
+      const overview = await s.portal.privacy.overview(pii);
+      expect(overview.can.manage).toBe(true);
+      await s.portal.privacy.requests(pii, { page: 1, pageSize: 5 } as never);
+      expect((await s.portal.privacy.consents(pii)).whatsappOptins.optedIn).toBeGreaterThanOrEqual(0);
+      const retention = await s.portal.privacy.retention(pii);
+      expect(retention.map((r) => r.key)).toContain("register_scans");
+      expect(retention.every((r) => r.due >= 0)).toBe(true);
+
+      const breach = await s.portal.privacy.createBreach(pii, { title: "integration breach" });
+      cleanup.push(() => repo!.m6.docDelete("breach", breach.id));
+      expect((await s.portal.privacy.breaches(pii)).some((b) => b.id === breach.id)).toBe(true);
+
+      const fu = await s.portal.followUp.list(pii, { page: 1, pageSize: 5, status: "all" } as never);
+      expect(fu.meta.counts.all).toBeGreaterThanOrEqual(0);
+    } finally {
+      for (const fn of cleanup.reverse()) await fn().catch(() => {});
+    }
+  });
 });
