@@ -13,4 +13,5 @@ installDevFixtures([
   () => import("./migration/dev-fixtures"),
   () => import("./reports/dev-fixtures"),
   () => import("./health/dev-fixtures"),
+  () => import("./followup/dev-fixtures"),
 ]);
