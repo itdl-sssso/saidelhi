@@ -1,8 +1,6 @@
 "use client";
 
 // Client data layer for the discourse workspace (spec 39). Talks to /api/v1/admin/discourses*.
-// TEMP M7: while backend B2 is not merged the route 404s with a non-JSON body; in dev only, we then switch
-// to the in-memory placeholder store in dev-fixtures.ts. Remove `fixtureMode`/`fx` branches after B2 lands.
 import { useLocale, useTranslations } from "next-intl";
 import { useCallback, useEffect, useState } from "react";
 import { type ApiErrorBody, isErrorEnvelope } from "@/contract";
@@ -10,20 +8,12 @@ import { usePathname, useRouter } from "@/i18n/navigation";
 import type { AppLocale } from "@/lib/format";
 import { portalRequest } from "@/lib/portal-api";
 import { useToast } from "@/ui/Toast";
-import { type FxResult, fx } from "./dev-fixtures";
-
-// TEMP M7
-let fixtureMode = false;
-const devOnly = process.env.NODE_ENV !== "production";
 
 export type Result<T> =
   | { ok: true; status: number; data: T; meta?: unknown }
   | { ok: false; status: number; error: ApiErrorBody };
 
-/** Route missing = 404 that is not our error envelope (the public catch-all page). */
-const routeMissing = (status: number, json: unknown) => status === 404 && !isErrorEnvelope(json);
-
-async function realGet<T>(url: string, locale: AppLocale): Promise<Result<T> & { missing?: boolean }> {
+async function get0<T>(url: string, locale: AppLocale): Promise<Result<T>> {
   let status = 0;
   let json: unknown = null;
   try {
@@ -38,18 +28,12 @@ async function realGet<T>(url: string, locale: AppLocale): Promise<Result<T> & {
     return { ok: true, status, data: body.data, meta: body.meta };
   }
   if (isErrorEnvelope(json)) return { ok: false, status, error: json.error };
-  return { ok: false, status, error: { code: "INTERNAL", message: "Unexpected response" }, missing: routeMissing(status, json) };
+  return { ok: false, status, error: { code: "INTERNAL", message: "Unexpected response" } };
 }
 
-/** GET with fixture fallback. */
-export async function get<T>(url: string, locale: AppLocale, fixture: () => FxResult<T>): Promise<Result<T>> {
-  if (devOnly && fixtureMode) return fixture() as Result<T>;
-  const res = await realGet<T>(url, locale);
-  if (devOnly && !res.ok && res.missing) {
-    fixtureMode = true;
-    return fixture() as Result<T>;
-  }
-  return res;
+/** GET one JSON endpoint. */
+export async function get<T>(url: string, locale: AppLocale): Promise<Result<T>> {
+  return get0<T>(url, locale);
 }
 
 export type DiscState<T> =
@@ -97,17 +81,9 @@ export function useDiscMutate(onReload: () => void) {
   const [pending, setPending] = useState<string | null>(null);
 
   const run = useCallback(
-    async <T,>(url: string, method: "POST" | "PATCH", body: unknown, fixture: () => FxResult<T>, opts: { key?: string; quiet?: boolean } = {}): Promise<Result<T>> => {
+    async <T,>(url: string, method: "POST" | "PATCH", body: unknown, opts: { key?: string; quiet?: boolean } = {}): Promise<Result<T>> => {
       setPending(opts.key ?? "*");
-      let res: Result<T>;
-      if (devOnly && fixtureMode) res = fixture() as Result<T>;
-      else {
-        const r = await portalRequest<T>(url, { method, body, locale });
-        if (devOnly && !r.ok && r.status === 404 && r.error.code === "INTERNAL") {
-          fixtureMode = true;
-          res = fixture() as Result<T>;
-        } else res = r;
-      }
+      const res = await portalRequest<T>(url, { method, body, locale });
       setPending(null);
       if (res.ok) return res;
       if (opts.quiet && res.status !== 409 && res.status !== 401) return res;
@@ -124,5 +100,3 @@ export function useDiscMutate(onReload: () => void) {
   );
   return { run, pending };
 }
-
-export { fx };

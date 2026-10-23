@@ -32,7 +32,7 @@ import { PageHead } from "../kit";
 import { RowMenu } from "../Menu";
 import { Loadable, Note, TableFoot } from "../parts";
 import { hrefWith } from "../url";
-import { type Result, fx, get, useDisc, useDiscMutate } from "./api";
+import { type Result, get, useDisc, useDiscMutate } from "./api";
 import { StatusPill } from "./shared";
 import styles from "../Admin.module.css";
 import d from "./Discourses.module.css";
@@ -60,7 +60,7 @@ export function DiscoursesList({ can }: { can: ListCan }) {
   const params = Object.fromEntries(sp.entries());
   const query = { q, theme, status, reviewer, page };
   const url = adminEndpoints.discourses({ ...query, pageSize: 25 });
-  const api = useDisc<AdminDiscourseRow[]>(url, (l) => get(url, l, () => fx.list(query)));
+  const api = useDisc<AdminDiscourseRow[]>(url, (l) => get(url, l));
   const { run, pending } = useDiscMutate(api.reload);
   const [adding, setAdding] = useState(false);
   const [glossary, setGlossary] = useState(false);
@@ -78,9 +78,9 @@ export function DiscoursesList({ can }: { can: ListCan }) {
   const meta = api.status === "ready" ? (api.meta as (AdminDiscoursesMeta & { pageSize: number }) | null) : null;
 
   const aiDraft = async (r: AdminDiscourseRow) => {
-    const det = await get<AdminDiscourseDetail>(adminEndpoints.discourse(r.id), locale, () => fx.detail(r.id));
+    const det = await get<AdminDiscourseDetail>(adminEndpoints.discourse(r.id), locale);
     if (!det.ok) return;
-    const res = await run(adminEndpoints.discourseAction(r.id, "ai-draft"), "POST", { version: det.data.version }, () => fx.action(r.id, "ai-draft", { version: det.data.version }), { key: `ai-${r.id}` });
+    const res = await run(adminEndpoints.discourseAction(r.id, "ai-draft"), "POST", { version: det.data.version }, { key: `ai-${r.id}` });
     if (res.ok) api.reload();
   };
 
@@ -224,7 +224,7 @@ function CreateDialog({ open, onClose, onDone }: { open: boolean; onClose: () =>
       why: { en: f.why.trim(), hi: null },
       sourceText: f.source.trim(),
     };
-    const res = await run<AdminDiscourseDetail>(adminEndpoints.discourses(), "POST", body, () => fx.create(body), { key: "create", quiet: true });
+    const res = await run<AdminDiscourseDetail>(adminEndpoints.discourses(), "POST", body, { key: "create", quiet: true });
     if (res.ok) {
       setErr(null);
       onClose();
@@ -270,7 +270,7 @@ function CreateDialog({ open, onClose, onDone }: { open: boolean; onClose: () =>
 function GlossarySheet({ open, onClose }: { open: boolean; onClose: () => void }) {
   const t = useTranslations("admin.discourses");
   const url = open ? adminEndpoints.discourseGlossary() : null;
-  const api = useDisc<GlossaryTerm[]>(url, (l) => get(adminEndpoints.discourseGlossary(), l, () => fx.glossary()));
+  const api = useDisc<GlossaryTerm[]>(url, (l) => get(adminEndpoints.discourseGlossary(), l));
   return (
     <SideSheet open={open} onClose={onClose} title={t("glossary")}>
       <p className={styles.cap}>{t("glossaryBody")}</p>
@@ -301,7 +301,7 @@ function GlossarySheet({ open, onClose }: { open: boolean; onClose: () => void }
 function AssignDialog({ row, onClose, onDone }: { row: AdminDiscourseRow | null; onClose: () => void; onDone: () => void }) {
   const t = useTranslations("admin.discourses");
   const id = row?.id ?? null;
-  const api = useDisc<AdminDiscourseDetail>(id, (l) => get(adminEndpoints.discourse(id ?? ""), l, () => fx.detail(id ?? "")));
+  const api = useDisc<AdminDiscourseDetail>(id, (l) => get(adminEndpoints.discourse(id ?? ""), l));
   const { run, pending } = useDiscMutate(api.reload);
   const [pick, setPick] = useState<string | null>(null);
   const det = api.status === "ready" ? api.data : null;
@@ -309,7 +309,7 @@ function AssignDialog({ row, onClose, onDone }: { row: AdminDiscourseRow | null;
   const save = async () => {
     if (!det) return;
     const body = { version: det.version, reviewerId: value || null };
-    const res: Result<unknown> = await run(adminEndpoints.discourse(det.id), "PATCH", body, () => fx.patch(det.id, body), { key: "assign" });
+    const res: Result<unknown> = await run(adminEndpoints.discourse(det.id), "PATCH", body, { key: "assign" });
     if (res.ok) {
       setPick(null);
       onClose();

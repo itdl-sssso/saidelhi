@@ -31,7 +31,7 @@ import { useToast } from "@/ui/Toast";
 import { renderQuoteImage, shareOrDownload } from "@/features/discourses/quote-image";
 import { Note, Loadable } from "../parts";
 import { PageHead, Panel } from "../kit";
-import { type Result, fx, get, useDisc, useDiscMutate } from "./api";
+import { type Result, get, useDisc, useDiscMutate } from "./api";
 import { BlockPill, StatusPill } from "./shared";
 import styles from "../Admin.module.css";
 import d from "./Discourses.module.css";
@@ -40,8 +40,8 @@ type Action = "ai-draft" | "send-review" | "approve" | "publish" | "unpublish";
 type Body = Omit<DiscoursePatch, "version">;
 
 export function DiscourseEditor({ id }: { id: string }) {
-  const api = useDisc<AdminDiscourseDetail>(id, (l) => get(adminEndpoints.discourse(id), l, () => fx.detail(id)));
-  const gl = useDisc<GlossaryTerm[]>(id, (l) => get(adminEndpoints.discourseGlossary(), l, () => fx.glossary()));
+  const api = useDisc<AdminDiscourseDetail>(id, (l) => get(adminEndpoints.discourse(id), l));
+  const gl = useDisc<GlossaryTerm[]>(id, (l) => get(adminEndpoints.discourseGlossary(), l));
   return (
     <div className={styles.page}>
       <Loadable api={api} rows={8}>
@@ -79,7 +79,7 @@ function Editor({ initial, glossary, reload }: { initial: AdminDiscourseDetail; 
       const job = chain.current.then(async () => {
         setSave("sending");
         const full: DiscoursePatch = { ...body, version: verRef.current };
-        const res = await run<AdminDiscourseDetail>(adminEndpoints.discourse(det.id), "PATCH", full, () => fx.patch(det.id, full), { key: "patch", quiet: true });
+        const res = await run<AdminDiscourseDetail>(adminEndpoints.discourse(det.id), "PATCH", full, { key: "patch", quiet: true });
         if (res.ok) {
           verRef.current = res.data.version;
           setDet(res.data);
@@ -159,7 +159,7 @@ function Editor({ initial, glossary, reload }: { initial: AdminDiscourseDetail; 
   const act = async (action: Action, extra: { reviewerId?: string; blockIds?: string[] } = {}) => {
     await flush();
     const body = { version: verRef.current, ...extra };
-    const res = await run<AdminDiscourseDetail>(adminEndpoints.discourseAction(det.id, action), "POST", body, () => fx.action(det.id, action, body), { key: action, quiet: true });
+    const res = await run<AdminDiscourseDetail>(adminEndpoints.discourseAction(det.id, action), "POST", body, { key: action, quiet: true });
     if (res.ok) {
       verRef.current = res.data.version;
       setDet(res.data);
