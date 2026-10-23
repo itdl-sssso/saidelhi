@@ -14,4 +14,5 @@ installDevFixtures([
   () => import("./reports/dev-fixtures"),
   () => import("./health/dev-fixtures"),
   () => import("./followup/dev-fixtures"),
+  () => import("./privacy/dev-fixtures"),
 ]);

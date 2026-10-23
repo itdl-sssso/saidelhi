@@ -96,3 +96,24 @@
 .reveal:disabled { opacity: 0.6; cursor: progress; }
 .late { color: var(--signal-error-text); font-weight: 600; }
 .consentOk { color: var(--signal-success-text); display: inline-flex; }
+/* Privacy (47) */
+.splitMain { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; align-items: start; }
+@media (min-width: 1100px) { .splitMain { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); } }
+.soon { color: var(--signal-alert-text); font-weight: 600; }
+.clock { display: flex; gap: 12px; align-items: center; padding: 12px 14px; border-radius: var(--radius-md); background: var(--blue-50); border: 1px solid var(--blue-300); color: var(--blue-700); }
+.clock.hot { background: var(--signal-alert-surface); border-color: var(--signal-alert); color: var(--signal-alert-text); }
+.clockT { display: flex; flex-direction: column; font-size: var(--text-caption); min-width: 0; }
+.clockBig { font-size: var(--text-body-lg, 18px); font-weight: 600; }
+.checklist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.checklist li { display: grid; grid-template-columns: 24px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border-subtle); font-size: var(--text-small); line-height: 1.5; }
+.checklist li:last-child { border-bottom: 0; }
+.chkDone { color: var(--signal-success-text); display: inline-flex; }
+.chkPend { color: var(--slate-500); display: inline-flex; }
+.matchList { list-style: none; margin: 0; padding: 10px 12px; display: flex; flex-direction: column; gap: 4px; background: var(--sand); border-radius: var(--radius-md); font-size: var(--text-small); }
+.matchList li { display: flex; gap: 8px; flex-wrap: wrap; justify-content: space-between; }
+.stepNote { margin: 2px 0 0; color: var(--slate-600); font-size: var(--text-caption); }
+@media (max-width: 480px) { .checklist li { grid-template-columns: 24px minmax(0, 1fr); } .checklist li > :last-child { grid-column: 2; justify-self: start; } }
+.pastList { list-style: none; margin: 0; padding: 0; }
+.pastList li { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; justify-content: space-between; padding: 10px 16px; border-bottom: 1px solid var(--border-subtle); }
+.pastList li:last-child { border-bottom: 0; }
+.dpoAv { width: 40px; height: 40px; border-radius: 50%; display: inline-grid; place-items: center; background: var(--slate-100); color: var(--slate-500); flex: none; font-weight: 600; }
