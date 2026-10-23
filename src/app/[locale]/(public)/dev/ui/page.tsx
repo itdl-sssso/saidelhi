@@ -25,6 +25,7 @@ import { Select } from "@/ui/Select";
 import { SevaCard } from "@/ui/SevaCard";
 import { SkeletonCard, SkeletonKpi, SkeletonRows } from "@/ui/Skeleton";
 import { StatusPill } from "@/ui/StatusPill";
+import { Meter } from "@/ui/Meter";
 import { Stepper } from "@/ui/Stepper";
 import { Switch } from "@/ui/Switch";
 import { DialogDemo, FormKitDemo, PendingDemo, SheetDemo, TabsDemo, ToastDemo } from "./Demos";
@@ -320,6 +321,8 @@ export default async function KitchenSink() {
         <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Calendar", href: "/calendar" }, { label: "Eye camp, 17 Oct 2026" }]} />
         <TabsDemo />
         <Stepper label="Plan an event" steps={["Event", "Volunteers", "Form links", "Review"]} current={2} />
+        <Meter value={5} max={6} label="5 of 6 volunteers" />
+        <Meter value={12} max={10} label="12 of 10 volunteers" tone="green" />
         <Pagination page={3} pageSize={25} total={132} href={(p) => `/dev/ui?page=${p}`} />
         <Pagination page={1} pageSize={25} total={20} href={(p) => `/dev/ui?page=${p}`} />
       </Section>
