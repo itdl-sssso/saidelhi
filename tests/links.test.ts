@@ -155,7 +155,7 @@ describe("OTP", () => {
     expect(t.whatsapp.sent.at(-1)?.lang).toBe("hi");
   });
 
-  it("3 wrong codes lock for 10 minutes, then a new code works", async () => {
+  it("5 wrong codes (default setting) lock for 10 minutes, then a new code works", async () => {
     const t = linkServices();
     const tok = DEV_TOKENS["eye-report"];
     await t.links.sendOtp(tok, DEV_COORDINATOR_PHONE, "en");
@@ -163,8 +163,8 @@ describe("OTP", () => {
     const wrong = good === "000000" ? "111111" : "000000";
     const e1 = await apiError(t.links.verify(tok, DEV_COORDINATOR_PHONE, wrong, "en"));
     expect(e1.code).toBe("VALIDATION_FAILED");
-    expect(e1.fields?.code).toMatch(/2 tries left/);
-    await apiError(t.links.verify(tok, DEV_COORDINATOR_PHONE, wrong, "en"));
+    expect(e1.fields?.code).toMatch(/4 tries left/);
+    for (let i = 0; i < 3; i++) await apiError(t.links.verify(tok, DEV_COORDINATOR_PHONE, wrong, "en"));
     const e3 = await apiError(t.links.verify(tok, DEV_COORDINATOR_PHONE, wrong, "en"));
     expect(e3).toMatchObject({ code: "LOCKED", retryAfter: 600 });
     // Even the right code is refused while locked, and so is a resend.

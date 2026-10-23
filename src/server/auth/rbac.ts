@@ -29,10 +29,12 @@ export const ROLE_PERMISSIONS: Record<Role, readonly Permission[]> = {
     "people.manage",
     "reports.export",
     "health.read",
+    "forms.read",
+    "partners.manage",
     "whatsapp.reminders",
   ],
   samithi_coord: COORD_COMMON,
-  content_editor: ["content.edit", "impact.manage", "partners.manage"],
+  content_editor: ["content.edit", "impact.manage", "partners.manage", "centres.manage"],
   translator: ["discourses.edit"],
   pii_officer: ["followup.read", "followup.reveal", "privacy.manage", "audit.read"],
 };

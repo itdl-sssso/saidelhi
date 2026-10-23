@@ -23,6 +23,7 @@ import type {
   Wing,
 } from "@/contract";
 import type { LinksRepo } from "./links-types";
+import type { M6Repo } from "./m6-types";
 import type { PortalRepo } from "./portal-types";
 import type { WaRepo } from "./wa-types";
 
@@ -50,6 +51,9 @@ export interface SevaTypeRec {
   wing: Wing;
   sortOrder: number;
   active: boolean;
+  /** Published form template for this seva type (M6). */
+  templateId?: string | null;
+  version?: number;
 }
 
 export interface PartnerRec {
@@ -260,6 +264,8 @@ export interface DataRepo {
   readonly portal: PortalRepo;
   /** WhatsApp bot, review inbox and opt-in (M4). */
   readonly wa: WaRepo;
+  /** Portal P1 documents and settings writes (M6). */
+  readonly m6: M6Repo;
 
   orgUnits(): Promise<OrgUnitRec[]>;
   sevaTypes(): Promise<SevaTypeRec[]>;

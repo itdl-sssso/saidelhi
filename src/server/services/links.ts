@@ -44,9 +44,9 @@ import {
   verifyBotChallenge,
 } from "../security/link-token";
 import { maskPhone, normalisePhone, phoneHash } from "../security/phone";
-import { sendOtp, verifyOtp } from "./otp";
+import { otpPolicy, sendOtp, verifyOtp } from "./otp";
 import { i18n } from "./org-index";
-import { loadOrg } from "./shared";
+import { loadLinkDefaults, loadOrg } from "./shared";
 import type { LinkServiceDeps, LinksService, NewLinkOptions, SessionGrant } from "./types";
 
 export const LINK_SESSION_TTL_MS = 4 * 60 * 60 * 1000;
@@ -92,7 +92,7 @@ interface Ctx {
 export function createLinksService(repo: DataRepo, deps: LinkServiceDeps): LinksService {
   const links = repo.links;
   const now = () => deps.now();
-  const otpDeps = { repo: links, whatsapp: deps.whatsapp, secret: deps.secret, now };
+  const otpDeps = { repo: links, whatsapp: deps.whatsapp, secret: deps.secret, now, policy: () => otpPolicy(repo) };
 
   const tokenOf = (l: LinkRec) => deriveLinkToken(deps.secret, l.tokenNonce);
   const urlOf = (l: LinkRec, locale: Locale = "en") => `${deps.appUrl.replace(/\/$/, "")}${formLinkPath(tokenOf(l), locale)}`;
@@ -633,7 +633,15 @@ export function createLinksService(repo: DataRepo, deps: LinkServiceDeps): Links
       const phone = opts.sendTo && opts.sendTo !== "qr" ? normalisePhone(opts.sendTo) : null;
       if (opts.sendTo && opts.sendTo !== "qr" && !phone) throw new ApiError("VALIDATION_FAILED", { fields: { sendTo: MSG.phone.en } });
       const existing = await links.linksForEvent(eventId);
-      const defaultExpiry = new Date(ev.startsAt.getTime() + (purpose === "report" ? 14 : purpose === "desk" ? 2 : 0) * DAY);
+      const defs = await loadLinkDefaults(repo);
+      const base = ev.endsAt ?? ev.startsAt;
+      const defaultExpiry = new Date(
+        purpose === "report"
+          ? base.getTime() + defs.reportLinkDays * DAY
+          : purpose === "desk"
+            ? ev.startsAt.getTime() + (defs.deskLink === "event_day_plus_1" ? 2 : 1) * DAY
+            : ev.startsAt.getTime(),
+      );
       const nonce = newLinkNonce();
       const token = deriveLinkToken(deps.secret, nonce);
       const rec: LinkRec = {

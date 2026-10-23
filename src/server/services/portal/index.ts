@@ -7,9 +7,10 @@ import { type AdminLinksService, createAdminLinksService } from "./links";
 import { createOrgService, type OrgService } from "./org";
 import { createOverviewService, type OverviewService } from "./overview";
 import { createPeopleService, type PeopleService } from "./people";
+import { createSettingsService, type SettingsService } from "./settings";
 import type { PortalCtx } from "./shared";
 
-export type { AdminEventsService, AdminLinksService, ApprovalsService, AttachmentsService, AuditService, JobsService, OrgService, OverviewService, PeopleService };
+export type { AdminEventsService, AdminLinksService, ApprovalsService, AttachmentsService, AuditService, JobsService, OrgService, OverviewService, PeopleService, SettingsService };
 export type { PortalCtx, PortalDeps } from "./shared";
 
 /** Coordinator portal services (§5.4). Every method takes the acting `Actor` and enforces RBAC + scope. */
@@ -23,6 +24,7 @@ export interface PortalServices {
   audit: AuditService;
   attachments: AttachmentsService;
   jobs: JobsService;
+  settings: SettingsService;
   /** Hook for the form-link flow after a report is received. */
   onReportSubmitted(eventId: string): Promise<void>;
 }
@@ -40,6 +42,7 @@ export function createPortalServices(ctx: PortalCtx): PortalServices {
     audit: createAuditService(ctx),
     attachments: createAttachmentsService(ctx),
     jobs: createJobsService(ctx),
+    settings: createSettingsService(ctx),
     onReportSubmitted: (eventId) => reportReceived(ctx, eventId),
   };
 }

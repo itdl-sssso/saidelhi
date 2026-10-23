@@ -4,6 +4,7 @@ import type { ContentKind, PartnerKind } from "@/contract";
 import type { Db } from "../db/client";
 import { PUBLIC_ARTICLE_LETTERS } from "../domain/articles";
 import { DbLinksRepo } from "./links-db";
+import { DbM6Repo } from "./m6-db";
 import { toEventRec } from "./event-row";
 import { DbPortalRepo } from "./portal-db";
 import { DbWaRepo } from "./wa-db";
@@ -62,11 +63,13 @@ export class DbRepo implements DataRepo {
   readonly links: DbLinksRepo;
   readonly portal: DbPortalRepo;
   readonly wa: DbWaRepo;
+  readonly m6: DbM6Repo;
 
   constructor(private readonly db: Db) {
     this.links = new DbLinksRepo(db);
     this.portal = new DbPortalRepo(db);
     this.wa = new DbWaRepo(db);
+    this.m6 = new DbM6Repo(db);
   }
 
   async orgUnits() {
@@ -99,6 +102,8 @@ export class DbRepo implements DataRepo {
         wing: sevaType.wing,
         sortOrder: sevaType.sortOrder,
         active: sevaType.active,
+        templateId: sevaType.templateId,
+        version: sevaType.version,
       })
       .from(sevaType)
       .orderBy(asc(sevaType.sortOrder));

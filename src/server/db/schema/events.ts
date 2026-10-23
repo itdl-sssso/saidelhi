@@ -138,6 +138,8 @@ export const impactEstimate = mysqlTable(
     kpiKey: varchar("kpi_key", { length: 64 }).notNull(),
     /** First day of the month the estimate covers. */
     month: date("month", { mode: "string" }).notNull(),
+    /** 'year' estimates sit on Jan 1 of their year. */
+    period: varchar("period", { length: 8 }).$type<"year" | "month">().notNull().default("month"),
     value: int("value").notNull(),
     note: text("note"),
     visible: boolean("visible").notNull().default(true),

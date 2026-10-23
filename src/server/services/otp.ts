@@ -7,7 +7,9 @@ import type { OtpPurpose } from "../db/schema/forms";
 import { ApiError } from "../http/errors";
 import type { WhatsAppProvider } from "../providers/whatsapp/types";
 import type { LinksRepo, OtpRec } from "../repo/links-types";
+import type { DataRepo } from "../repo/types";
 import { hmacHex, safeEqual } from "../security/crypto";
+import { loadLinkDefaults } from "./shared";
 
 export const OTP_POLICY = {
   ttlMs: 5 * 60 * 1000,
@@ -37,6 +39,8 @@ export interface OtpTarget {
 
 export interface OtpDeps {
   repo: LinksRepo;
+  /** Attempts/lock from settings; defaults to OTP_POLICY. */
+  policy?: () => Promise<{ maxAttempts: number; lockMs: number }>;
   whatsapp: WhatsAppProvider;
   secret: string;
   now: () => Date;
@@ -105,11 +109,18 @@ export async function verifyOtp(d: OtpDeps, t: Omit<OtpTarget, "phone">, code: s
     return;
   }
   const attempts = c.attempts + 1;
-  if (attempts >= OTP_POLICY.maxAttempts) {
-    const lockedUntil = new Date(now.getTime() + OTP_POLICY.lockMs);
+  const policy = (await d.policy?.()) ?? OTP_POLICY;
+  if (attempts >= policy.maxAttempts) {
+    const lockedUntil = new Date(now.getTime() + policy.lockMs);
     await d.repo.updateOtp(c.id, { attempts, lockedUntil, consumedAt: now });
-    throw new ApiError("LOCKED", { retryAfter: secs(OTP_POLICY.lockMs) });
+    throw new ApiError("LOCKED", { retryAfter: secs(policy.lockMs) });
   }
   await d.repo.updateOtp(c.id, { attempts });
-  throw new ApiError("VALIDATION_FAILED", { fields: { code: T.wrong(OTP_POLICY.maxAttempts - attempts)[locale] } });
+  throw new ApiError("VALIDATION_FAILED", { fields: { code: T.wrong(policy.maxAttempts - attempts)[locale] } });
+}
+
+/** OTP attempts/lock from settings (`links`), in the shape verifyOtp wants. */
+export async function otpPolicy(repo: DataRepo): Promise<{ maxAttempts: number; lockMs: number }> {
+  const l = await loadLinkDefaults(repo);
+  return { maxAttempts: l.otpMaxAttempts, lockMs: l.otpLockMinutes * 60 * 1000 };
 }
