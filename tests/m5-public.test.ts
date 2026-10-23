@@ -116,7 +116,7 @@ describe("programs", () => {
   });
 
   it("routes: list ok, unknown type 400, inactive-or-missing 404", async () => {
-    const list = await programsGet(new NextRequest("http://x/api/v1/programs?wing=service"));
+    const list = await programsGet(new NextRequest("http://x/api/v1/programs?wing=service"), { params: Promise.resolve({}) });
     expect(list.status).toBe(200);
     const bad = await programGet(new NextRequest("http://x/api/v1/programs/zzz"), { params: Promise.resolve({ type: "zzz" }) });
     expect(bad.status).toBe(400);
@@ -179,7 +179,7 @@ describe("join", () => {
     const svc = createServices(repo, { now: () => NOW, mediaBase: "/media", whatsappPublic: { number: "+91 98100 00000", keyword: "HELLO" } });
     const j = await svc.join.get({ page: 1, pageSize: 12 });
     expect(j.whatsapp.waMeUrl).toBe("https://wa.me/919810000000?text=HELLO");
-    const res = await joinGet(new NextRequest("http://x/api/v1/join?sevaType=blood"));
+    const res = await joinGet(new NextRequest("http://x/api/v1/join?sevaType=blood"), { params: Promise.resolve({}) });
     expect(res.status).toBe(200);
   });
 });
@@ -192,7 +192,7 @@ describe("districts index and demographics", () => {
     const east = list.find((d) => d.district.slug === "east");
     expect(east?.samithiCount).toBe(3);
     expect(east?.centreCount).toBe(3);
-    const res = await districtsGet(new NextRequest("http://x/api/v1/districts"));
+    const res = await districtsGet(new NextRequest("http://x/api/v1/districts"), { params: Promise.resolve({}) });
     expect(res.status).toBe(200);
   });
 
@@ -304,10 +304,11 @@ describe("redirects service", () => {
   });
 
   it("route: 200 with target, 404 without, 400 without path", async () => {
-    const ok = await redirectsGet(new NextRequest("http://x/api/v1/redirects?path=/about-us/"));
+    const ok = await redirectsGet(new NextRequest("http://x/api/v1/redirects?path=/about-us/"), { params: Promise.resolve({}) });
     expect(ok.status).toBe(200);
     expect((await ok.json()).data).toEqual({ to: "/about", permanent: true });
-    expect((await redirectsGet(new NextRequest("http://x/api/v1/redirects?path=/zzz"))).status).toBe(404);
-    expect((await redirectsGet(new NextRequest("http://x/api/v1/redirects"))).status).toBe(400);
+    const ctx = { params: Promise.resolve({}) };
+    expect((await redirectsGet(new NextRequest("http://x/api/v1/redirects?path=/zzz"), ctx)).status).toBe(404);
+    expect((await redirectsGet(new NextRequest("http://x/api/v1/redirects"), ctx)).status).toBe(400);
   });
 });

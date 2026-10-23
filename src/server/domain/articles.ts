@@ -27,40 +27,65 @@ export function legacyLettersFor(filter: ArticleCategoryFilter): LegacyArticleCa
   return [LETTER_BY_CATEGORY[filter]];
 }
 
+/** Letters that may be shown publicly; any other legacy category (e.g. 'O') is never public. */
+export const PUBLIC_ARTICLE_LETTERS = Object.keys(LEGACY_ARTICLE_CATEGORY) as LegacyArticleCategory[];
+
 export const CENTENARY_LETTERS = legacyLettersFor("centenary") ?? [];
 
-const SANITIZE: sanitizeHtml.IOptions = {
-  allowedTags: [
-    "p", "br", "hr", "h2", "h3", "h4", "h5", "h6", "strong", "b", "em", "i", "u", "s", "sub", "sup",
-    "blockquote", "ul", "ol", "li", "a", "img", "figure", "figcaption", "table", "thead", "tbody",
-    "tr", "th", "td", "span", "div",
-  ],
-  allowedAttributes: {
-    a: ["href", "title", "target", "rel"],
-    img: ["src", "alt", "width", "height", "loading"],
-    td: ["colspan", "rowspan"],
-    th: ["colspan", "rowspan"],
-  },
-  allowedSchemes: ["http", "https", "mailto", "tel"],
-  allowedSchemesByTag: { img: ["http", "https", "data"] },
-  allowProtocolRelative: false,
-  // Legacy CKEditor h1s would compete with the page title.
-  transformTags: {
-    h1: "h2",
-    a: (tagName, attribs) => ({
-      tagName,
-      attribs: /^https?:\/\//.test(attribs.href ?? "")
-        ? { ...attribs, target: "_blank", rel: "noopener noreferrer" }
-        : attribs,
-    }),
-    img: (tagName, attribs) => ({ tagName, attribs: { ...attribs, loading: "lazy" } }),
-  },
-  exclusiveFilter: (frame) => frame.tag === "p" && !frame.text.trim() && !frame.mediaChildren.length,
-};
+const LEGACY_MEDIA_URL = /^(?:https?:\/\/(?:www\.)?saidelhi\.org)?\/?(?:\.\.?\/)*media\//i;
 
-export function sanitizeBody(html: string | null): string {
+/** Old absolute (`https://saidelhi.org/media/x.jpg`) and relative (`media/x.jpg`) uploads -> `<mediaBase>/x.jpg`. */
+export function rewriteLegacyMedia(url: string | undefined, mediaBase: string): string | undefined {
+  if (!url) return url;
+  const u = url.trim();
+  return LEGACY_MEDIA_URL.test(u) ? `${mediaBase.replace(/\/$/, "")}/${u.replace(LEGACY_MEDIA_URL, "")}` : url;
+}
+
+function sanitizeOptions(mediaBase: string): sanitizeHtml.IOptions {
+  return {
+    allowedTags: [
+      "p", "br", "hr", "h2", "h3", "h4", "h5", "h6", "strong", "b", "em", "i", "u", "s", "sub", "sup",
+      "blockquote", "ul", "ol", "li", "a", "img", "figure", "figcaption", "table", "thead", "tbody",
+      "tr", "th", "td", "span", "div",
+    ],
+    // `style`, `class` and `width/height` styling from the old CKEditor never survive.
+    allowedAttributes: {
+      a: ["href", "title", "target", "rel"],
+      img: ["src", "alt", "width", "height", "loading"],
+      td: ["colspan", "rowspan"],
+      th: ["colspan", "rowspan"],
+    },
+    allowedSchemes: ["http", "https", "mailto", "tel"],
+    allowedSchemesByTag: { img: ["http", "https", "data"] },
+    allowProtocolRelative: false,
+    // Legacy CKEditor h1s would compete with the page title.
+    transformTags: {
+      h1: "h2",
+      a: (tagName, attribs) => {
+        const href = rewriteLegacyMedia(attribs.href, mediaBase);
+        return {
+          tagName,
+          attribs: /^https?:\/\//.test(href ?? "")
+            ? { ...attribs, href: href as string, target: "_blank", rel: "noopener noreferrer" }
+            : href === undefined
+              ? attribs
+              : { ...attribs, href },
+        };
+      },
+      img: (tagName, attribs) => ({ tagName, attribs: { ...attribs, src: rewriteLegacyMedia(attribs.src, mediaBase) ?? "", loading: "lazy" } }),
+    },
+    // Empty paragraphs (`<p>&nbsp;</p>`, `<p><br></p>`) are CKEditor spacing, not content.
+    exclusiveFilter: (frame) => frame.tag === "p" && !frame.text.replace(/\u00a0/g, " ").trim() && !frame.mediaChildren.length,
+  };
+}
+
+const optionsCache = new Map<string, sanitizeHtml.IOptions>();
+
+export function sanitizeBody(html: string | null, mediaBase = "/media"): string {
   if (!html) return "";
-  return sanitizeHtml(html, SANITIZE).trim();
+  let opts = optionsCache.get(mediaBase);
+  if (!opts) optionsCache.set(mediaBase, (opts = sanitizeOptions(mediaBase)));
+  return sanitizeHtml(html, opts).trim();
 }
 
 export function readingMinutes(html: string): number {
@@ -84,8 +109,8 @@ function legacyMedia(ctx: ArticleContext, path: string, alt: string): Media {
 
 export function toArticle(rec: ArticleRec, ctx: ArticleContext): Article {
   const i18n = rec.i18n;
-  const bodyEn = sanitizeBody(rec.content);
-  const bodyHi = i18n?.bodyHi ? sanitizeBody(i18n.bodyHi) : null;
+  const bodyEn = sanitizeBody(rec.content, ctx.mediaBase);
+  const bodyHi = i18n?.bodyHi ? sanitizeBody(i18n.bodyHi, ctx.mediaBase) : null;
   const district = i18n?.districtId ? ctx.districts.get(i18n.districtId) : undefined;
   return {
     slug: rec.slug,

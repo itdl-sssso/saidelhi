@@ -9,6 +9,8 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { eq, sql } from "drizzle-orm";
+import mysql from "mysql2/promise";
+import { logPolish, polishLegacy } from "./legacy-polish";
 import { closeDb, getDb } from "../src/server/db/client";
 import { postcontentPostcontent } from "../src/server/db/legacy";
 import {
@@ -168,6 +170,17 @@ async function main() {
     whatsapp_message: wa.messages.length,
     whatsapp_optin: wa.optIns.length,
   });
+
+  // Legacy posts (if imported) get district tags now that the districts exist.
+  const url = env().DATABASE_URL;
+  if (url) {
+    const conn = await mysql.createConnection({ uri: url, timezone: "Z", charset: "utf8mb4" });
+    try {
+      logPolish(await polishLegacy(conn));
+    } finally {
+      await conn.end();
+    }
+  }
 
   // Placeholder register photo for the seeded inbox item (a 1x1 PNG; the real ones come from WhatsApp).
   const photo = path.resolve(env().MEDIA_PRIVATE_ROOT, "inbox", "seed-register.png");

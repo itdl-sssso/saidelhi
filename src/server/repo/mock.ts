@@ -1,4 +1,5 @@
 import type { ContentKind, PartnerKind } from "@/contract";
+import { PUBLIC_ARTICLE_LETTERS } from "../domain/articles";
 import { type Fixtures, loadFixtures, portalFixtures, waFixtures } from "../mock/fixtures";
 import { DEV_SESSION_SECRET } from "../security/crypto";
 import { MemoryLinksRepo } from "./links-mock";
@@ -6,7 +7,7 @@ import { MemoryPortalRepo } from "./portal-mock";
 import { MemoryWaRepo } from "./wa-mock";
 import type { ArticleFilter, ArticleRec, AuditRec, DataRepo, EventFilter, PrivacyRequestRec, RedirectRec } from "./types";
 
-const isPublished = (a: ArticleRec) => !a.i18n || a.i18n.status === "published";
+const isPublished = (a: ArticleRec) => (!a.i18n || a.i18n.status === "published") && PUBLIC_ARTICLE_LETTERS.includes(a.category as never);
 const byNewest = (a: ArticleRec, b: ArticleRec) => b.createdAt.getTime() - a.createdAt.getTime() || b.id - a.id;
 
 /** In-memory repository over src/server/mock/fixtures. Writes stay in memory. */
@@ -131,7 +132,7 @@ export class MockRepo implements DataRepo {
   }
 
   async articleBySlug(slug: string) {
-    return this.fx.articles.find((a) => a.slug === slug) ?? null;
+    return this.fx.articles.find((a) => a.slug === slug && PUBLIC_ARTICLE_LETTERS.includes(a.category as never)) ?? null;
   }
 
   async articleNeighbours(article: ArticleRec) {
