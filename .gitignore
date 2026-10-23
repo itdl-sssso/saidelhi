@@ -59,3 +59,8 @@ next-env.d.ts
 # local media (legacy mount + private uploads)
 /media
 /media-private
+
+# e2e
+/test-results/
+/playwright-report/
+/tests/e2e/.cache/
