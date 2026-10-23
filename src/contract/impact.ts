@@ -73,6 +73,17 @@ export const HomePayload = z.object({
 });
 export type HomePayload = z.infer<typeof HomePayload>;
 
+/**
+ * v0.6: age / gender split (spec 13; district level and above only). Each bar obeys public
+ * small-number suppression (<5 → `{lt5:true}`); `value:null` = not reported.
+ */
+export const DemographicSplit = z.object({
+  key: z.enum(["age", "gender"]),
+  label: I18nText,
+  bars: z.array(z.object({ key: z.string(), label: I18nText, figure: Figure })),
+});
+export type DemographicSplit = z.infer<typeof DemographicSplit>;
+
 /** GET /districts/:slug */
 export const DistrictPayload = z.object({
   district: OrgUnit,
@@ -81,6 +92,8 @@ export const DistrictPayload = z.object({
   /** null when the district has no approved data this year. */
   kpis: z.array(KpiTile).nullable(),
   bySevaType: z.array(SevaTypeImpact),
+  /** v0.6: this year's demographic splits; [] when none reported. */
+  demographics: z.array(DemographicSplit),
   upcoming: z.array(EventPublic),
   centres: z.array(CentreListItem),
 });

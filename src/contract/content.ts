@@ -76,3 +76,7 @@ export const Discourse = z.object({
   quotes: z.array(z.object({ en: z.string(), hi: z.string().nullable() })),
 });
 export type Discourse = z.infer<typeof Discourse>;
+
+/** v0.6: card shape for discourse lists (Value page "Related discourses", spec 02/15). */
+export const DiscourseSummary = Discourse.pick({ slug: true, n: true, title: true, date: true, place: true, themes: true });
+export type DiscourseSummary = z.infer<typeof DiscourseSummary>;

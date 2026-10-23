@@ -173,15 +173,15 @@ Paged<T>  { data:T[], meta:{page,pageSize,total} }
 | Method & path | Returns | Spec |
 |---|---|---|
 | `GET /home` | `{ thought, upcoming:EventPublic[≤6], kpis:KpiTile[4]|null, articles:Article[3], centenary:Article[], wings }` | 01 |
-| `GET /values/:slug` | value content + related events/discourses | 02 |
+| `GET /values/:slug` | `ValuePayload` (v0.6) | 02 |
 | `GET /impact?period=this_year|last_year|all&district=` | `{ tiles, bySevaType, byDistrict, trend:{month,figure}[], recent:EventPublic[5], methodNote }` | 04 |
-| `GET /programs?wing=` · `GET /programs/:type` | program list / detail with KPIs, funnel, upcoming, articles, partners | 05–06 |
+| `GET /programs?wing=` · `GET /programs/:type` | `ProgramCard[]` / `ProgramDetail` (v0.6) | 05–06 |
 | `GET /articles?c=&page=` · `GET /articles/:slug` | `Paged<Article>` / `Article` + prev/next/related | 07–08 |
 | `GET /events?from&to&district&sevaType&samithi&needsVolunteers&page` | `Paged<EventPublic>` (status ≥ planned) | 09 |
 | `GET /events/:id` | `EventPublic` | 10 |
-| `GET /join?district&sevaType&from&to` | events needing volunteers + WhatsApp opt-in info | 11 |
-| `GET /centres?q=&district=` · `GET /centres/:slug` | centre list (with next gathering, distance if pincode) / detail | 12, 14 |
-| `GET /districts/:slug` | district page payload | 13 |
+| `GET /join?district&sevaType&from&to` | `JoinPayload` (v0.6) | 11 |
+| `GET /centres?q=&district=&pincode=` · `GET /centres/:slug` | centre list (with next gathering, distance if pincode) / detail | 12, 14 |
+| `GET /districts` · `GET /districts/:slug` | `DistrictSummary[]` / `DistrictPayload` (v0.6) | 13 |
 | `GET /discourses?theme&q` · `GET /discourses/:slug` | flag-gated (404 when off) | 15–16 |
 | `POST /privacy/requests` | `{ id }` · 201 · rate-limited, bot-checked | 17 |
 | `GET /redirects?path=` | legacy saidelhi.org URL → new path | 18, 41 |
@@ -361,3 +361,16 @@ Zod lives in `src/contract/whatsapp.ts` (+ `events.ts`, `endpoints.ts`, `auth.ts
 9. `GET /events` gathering rows: 28-day horizon when `to` absent.
 10. Env: `EXTRACTOR_PROVIDER=rules|ollama`, `OLLAMA_MODEL=smollm2:1.7b`, new `WA_DISPLAY_NUMBER`, `WA_COEXISTENCE`. Migrations `0003_m4_whatsapp`, `0004_m4_whatsapp_msg_index`.
 10. M4 integration: HTTP 404 for unknown `/events/:id`, `/centres/:slug`, `/admin/events/:id[/edit]` (EN + `/hi`) is answered by `src/proxy.ts` (Node runtime): it probes existence (`services().events.exists(id, publicOnly)`, `centres.bySlug`; positive hits cached 60 s in-process) and rewrites unknown ones to the localised `[...rest]` catch-all (real 404). Reason: with Cache Components, `params` must sit under Suspense, so a page-level `notFound()` always streams as 200 (Next docs: guides/streaming "The HTTP contract"). New service method `EventsService.exists`. Frontend dev-fixture shim removed; simulator reset now sends `{ phone }`.
+
+### v0.6 (M5 — lead, before tracks)
+Zod: new `src/contract/public.ts` + `src/contract/redirects.ts`; edits in `content.ts`, `impact.ts`, `queries.ts`, `endpoints.ts`. Plan: `docs/progress/M5-plan.md`.
+1. Editorial copy for Values, About, Programs/Program (descriptions, "what happens" steps, value prose, teachings) lives in `messages/{en,hi}.json` (frontend). APIs carry live data only. Content-admin editing of this copy is out of scope (spec 38 covers articles/home/thoughts only).
+2. `GET /values/:slug` (`ValueParams`) → `ValuePayload { slug, prev, next, lived:{sevaType|null, wing|null}, facts:LabelledFigure[], upcoming:EventPublic[≤3], discourses:DiscourseSummary[≤3]|null }`. Mapping fixed in `VALUE_LINKS` (sathya→study circles/overview, dharma→bal_vikas, shanti→bhajan, prema→narayan_seva/service, ahimsa→cleanliness/overview). `discourses:null` when flag off. Order `VALUE_ORDER` cycles.
+3. `GET /programs?wing=` (`ProgramsQuery`) → `ProgramCard[]` (`next:{eventId,startsAt,district}|null`, `thisYear:LabelledFigure|null`, `href`). `GET /programs/:type` (`ProgramParams`, unknown/inactive type → 404) → `ProgramDetail { …card, kpis:KpiTile[]|null, funnel:LabelledFigure[]|null, upcoming:EventPublic[≤6], articles:Article[≤3], partners:Partner[] }`. Funnel figures `value:null` → "—".
+4. `GET /join` (`JoinQuery`: district, sevaType, from, to, page, pageSize=12) → `JoinPayload { events:Paged<EventPublic>, whatsapp:WhatsAppContact{number|null, waMeUrl|null, keyword} }` (single `data` object; paging inside `events.meta`). Events = public non-recurring planned|postponed with open volunteer slots. No personal-data form on Join (spec 11); `POST /whatsapp/optin` is not used there (see plan, user question Q1).
+5. `GET /districts` → `DistrictSummary[] { district:UnitRef, samithiCount, centreCount }`. `DistrictPayload.demographics: DemographicSplit[]` (age|gender bars, `<5` suppressed; `[]` when none) — new required field.
+6. `GET /centres` adds `pincode` (6 digits) → `distanceKm` + nearest-first; unknown pincode → nulls. Pincode centroids: static NCR table shipped by backend.
+7. `DiscourseSummary` = `Discourse.pick(slug,n,title,date,place,themes)`.
+8. Redirects: `legacyRedirect(path)` / `isLegacyPath(path)` pure rules from Django `urls.py` (about-us, contact-us, get-involved, wings/<name>, content/<Name>/getallposts, content/<slug>, book-auditorium, saidelhi-backend). `GET /redirects?path=` (`RedirectQuery`) → `RedirectTarget {to, permanent}` | 404. New `redirect` table (manual/migration rows) checked before rules. `src/proxy.ts` answers legacy paths with 301 (localised to unprefixed EN).
+9. Public routes (unlocalised): `/values/[slug]`, `/about`, `/programs`, `/programs/[type]`, `/news`, `/news/[slug]`, `/join`, `/centres/map`, `/districts/[slug]`. Proxy 404 probes extend to `news/[slug]`, `districts/[slug]`, `programs/[type]`, `values/[slug]`; `centres/map` must be excluded from the centre probe.
+10. Endpoint builders: `endpoints.districts()`, `centres({pincode})`, `join({…page})`.

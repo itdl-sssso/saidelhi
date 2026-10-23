@@ -37,6 +37,8 @@ export type OrgUnitsQuery = z.infer<typeof OrgUnitsQuery>;
 export const CentresQuery = z.object({
   q: opt(z.string().trim().max(80)),
   district: opt(Slug),
+  /** v0.6: 6-digit pincode → `distanceKm` filled, nearest first; unknown pincode → nulls, name order. */
+  pincode: opt(z.string().trim().regex(/^\d{6}$/, "Enter a 6-digit pincode")),
   page: Pagination.shape.page,
   pageSize: z.preprocess(blankToUndefined, z.coerce.number().int().min(1).max(100).default(100)),
 });
