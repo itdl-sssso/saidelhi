@@ -261,7 +261,7 @@ function Meta({ event }: { event: EventPublic }) {
         </dt>
         <dd>
           <b>
-            <Link href={`/centres/${event.samithi.slug}`}>
+            <Link href={`/centres/${event.centre?.slug ?? event.samithi.slug}`}>
               <LocalText value={event.samithi.name} />
             </Link>
           </b>
@@ -311,6 +311,7 @@ function After({ event, results }: { event: EventPublic; results: EventResults }
         </ul>
         <p className={pub.cap}>
           {t("approvedCaption", { date: formatDate(event.startsAt, locale) })}
+          {event.approvedAt ? ` ${t("approvedOn", { date: formatDate(event.approvedAt, locale) })}` : null}
           {showServedNote ? ` ${t("servedNote")}` : null}
         </p>
       </div>

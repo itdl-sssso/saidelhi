@@ -306,7 +306,8 @@
     "followUpPending": "{of} लोगों का फ़ॉलो-अप शुरू हो गया है",
     "followUpSoFar": "अब तक {of} में से {done}",
     "followUpNotePartner": "सभी को {partner} रेफ़र किया गया। फ़ॉलो-अप होने पर हम इसे अपडेट करते हैं।",
-    "followUpNote": "फ़ॉलो-अप होने पर हम इसे अपडेट करते हैं।"
+    "followUpNote": "फ़ॉलो-अप होने पर हम इसे अपडेट करते हैं।",
+    "approvedOn": "{date} को स्वीकृत।"
   },
   "centre": {
     "crumbHome": "होम",

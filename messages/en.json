@@ -306,7 +306,8 @@
     "followUpPending": "Follow-up for {of} people has started",
     "followUpSoFar": "{done} of {of} so far",
     "followUpNotePartner": "Everyone was referred to {partner}. We update this as follow-up happens.",
-    "followUpNote": "We update this as follow-up happens."
+    "followUpNote": "We update this as follow-up happens.",
+    "approvedOn": "Approved on {date}."
   },
   "centre": {
     "crumbHome": "Home",
