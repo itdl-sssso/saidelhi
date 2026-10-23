@@ -12,3 +12,12 @@
 
 ## Next (B2)
 Workspace API per plan item 4. Snapshot = `Discourse` public shape via `buildSnapshot`; publish must also `revalidate(["discourses"])`. RBAC changes pending.
+
+## Run B2 (done)
+- Repo port += `adminRows`, `byId`, `maxN`, `slugs`, `insert`, `update(id, expectVersion, {rec, blocks}, audit)` (mock + db, audit in same tx). Mock repo now pushes audit via portal.
+- Public read now keys on live `published_snapshot` (not `status`): editing a published discourse sets status `in_review`, public keeps serving the snapshot until re-publish; unpublish clears snapshot.
+- Service `services/portal/discourses.ts` (`services().portal.discourses`): list/get/create/patch/aiDraft/sendReview/approve/publish/unpublish/glossary. Routes under `src/app/api/v1/admin/discourses/**` (glossary static route before `[id]`).
+- RBAC: translator = edit+review; content_editor += edit, review, publish; state all. Perms: list/get/patch/create/ai-draft/send-review = edit; approve + block `approved` + `reviewerId` patch = review; publish/unpublish = publish.
+- Errors: stale version 409; 422 `fields`: `blocks.<i>`, `quotes.<i>`, `quotes`, `blocks`, `reviewerId`, `flag_off`, `not_approved`, `slug`, `sourceText`, `status`. Publish writes snapshot+publishedAt, `revalidate(["discourses"])` (also on unpublish). Audit `discourse.{create,update,ai_draft,send_review,approve,publish,unpublish}` (ids/field names only, no text).
+- Tests: `tests/m7-workspace.test.ts` (mock), `tests/m7-workspace.db.integration.test.ts` (rows slug `ws-test-*`, n>=900011, cleaned).
+- No glossary CRUD (not in contract).
