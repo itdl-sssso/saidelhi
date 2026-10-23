@@ -1,4 +1,4 @@
-import type { DistrictPayload } from "@/contract";
+import type { DistrictPayload, OrgUnit, OrgUnitsQuery } from "@/contract";
 import type { DataRepo } from "../repo/types";
 import { toCentreListItem } from "./centres";
 import { assembleEvents } from "./event-assembler";
@@ -9,6 +9,16 @@ import type { DistrictsService, ServiceDeps } from "./types";
 
 export function createDistrictsService(repo: DataRepo, deps: ServiceDeps): DistrictsService {
   return {
+    async units(q: OrgUnitsQuery): Promise<OrgUnit[]> {
+      const org = await loadOrg(repo);
+      if (q.kind === "district") return org.districts().map((u) => org.toOrgUnit(u));
+      const parents = q.district ? [org.district(q.district)].filter((d) => !!d) : org.districts();
+      return parents
+        .flatMap((d) => org.samithisOf(d.id))
+        .sort((a, b) => a.nameEn.localeCompare(b.nameEn))
+        .map((u) => org.toOrgUnit(u));
+    },
+
     async bySlug(slug: string): Promise<DistrictPayload | null> {
       const [org, settings] = await Promise.all([loadOrg(repo), loadSettings(repo)]);
       const district = org.district(slug);

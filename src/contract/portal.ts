@@ -417,7 +417,7 @@ export type AuditQuery = z.infer<typeof AuditQuery>;
 
 // ---- Jobs -------------------------------------------------------------------
 
-export const CronJob = z.enum(["escalations", "report-reminders", "event-status"]);
+export const CronJob = z.enum(["escalations", "report-reminders", "event-status", "reminders"]);
 export type CronJob = z.infer<typeof CronJob>;
 
 export const JobResult = z.object({

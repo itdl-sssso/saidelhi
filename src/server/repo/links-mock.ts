@@ -153,9 +153,11 @@ export class MemoryLinksRepo implements LinksRepo {
 
   async createSubmission(w: NewSubmissionWrite): Promise<NewSubmissionResult> {
     if (w.submission.idempotencyKey && (await this.submissionByIdempotencyKey(w.submission.idempotencyKey))) return "duplicate_key";
-    const link = this.links.find((l) => l.id === w.linkId);
-    if (!link || (link.maxUses !== null && link.uses >= link.maxUses)) return "used_up";
-    link.uses += 1;
+    if (w.linkId) {
+      const link = this.links.find((l) => l.id === w.linkId);
+      if (!link || (link.maxUses !== null && link.uses >= link.maxUses)) return "used_up";
+      link.uses += 1;
+    }
     this.submissions.push(structuredClone(w.submission));
     this.writeFacts(w.submission.eventId, w.submission.id, w.facts);
     this.consents.push(...w.consents);

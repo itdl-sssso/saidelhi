@@ -4,10 +4,11 @@ import { CloudWhatsApp } from "./cloud";
 import { ConsoleWhatsApp } from "./console";
 import type { WhatsAppProvider } from "./types";
 
-export type { DevMessage, SendResult, WhatsAppProvider } from "./types";
-export { WHATSAPP_TEMPLATES, renderTemplate, type TemplateName } from "./templates";
+export type { OutboundMessage, SendMeta, SendResult, WhatsAppProvider } from "./types";
+export { COST_PAISE_PER_MESSAGE, WHATSAPP_TEMPLATES, renderTemplate, templateCostPaise, type TemplateName } from "./templates";
 export { verifyWebhookSignature } from "./cloud";
-export { ConsoleWhatsApp, devMessageLog } from "./console";
+export { ConsoleWhatsApp } from "./console";
+export { LoggedWhatsApp } from "./logged";
 
 let cached: WhatsAppProvider | undefined;
 

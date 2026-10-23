@@ -23,10 +23,14 @@ const EnvSchema = z
     WA_ACCESS_TOKEN: optStr,
     WA_APP_SECRET: optStr,
     WA_VERIFY_TOKEN: optStr,
+    /** Public number shown on /admin/whatsapp (E.164); display only. */
+    WA_DISPLAY_NUMBER: optStr,
+    /** Note on the status tab: the number also runs in the WhatsApp Business app. */
+    WA_COEXISTENCE: z.preprocess(blank, z.enum(["true", "false"]).default("false").transform((v) => v === "true")),
     WA_GRAPH_VERSION: z.preprocess(blank, z.string().default("v23.0")),
-    EXTRACTOR_PROVIDER: z.preprocess(blank, z.enum(["stub", "ollama"]).default("stub")),
+    EXTRACTOR_PROVIDER: z.preprocess(blank, z.enum(["rules", "ollama"]).default("rules")),
     OLLAMA_URL: z.preprocess(blank, z.url().default("http://127.0.0.1:11434")),
-    OLLAMA_MODEL: z.preprocess(blank, z.string().default("qwen2.5:7b-instruct")),
+    OLLAMA_MODEL: z.preprocess(blank, z.string().default("smollm2:1.7b")),
   })
   .superRefine((env, ctx) => {
     if (env.DATA_SOURCE === "db" && !env.DATABASE_URL) {

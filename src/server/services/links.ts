@@ -309,12 +309,12 @@ export function createLinksService(repo: DataRepo, deps: LinkServiceDeps): Links
   }
 
   /** Event move + pending report approval for a received report (applied atomically by the repo). */
-  function reportReceived(eventId: string, byLabel: string): NonNullable<NewSubmissionWrite["eventStatus"]> {
+  function reportReceived(eventId: string, byLabel: string, channel: "portal" | "whatsapp" = "portal"): NonNullable<NewSubmissionWrite["eventStatus"]> {
     const at = now();
     return {
       from: ["planned", "awaiting_report"],
       to: "report_submitted",
-      timeline: { status: "report_submitted", at, byRole: "samithi_coord", byLabel, channel: "portal" },
+      timeline: { status: "report_submitted", at, byRole: "samithi_coord", byLabel, channel },
       approval: {
         id: newId(),
         eventId,
@@ -323,7 +323,7 @@ export function createLinksService(repo: DataRepo, deps: LinkServiceDeps): Links
         requestedAt: at,
         requestedBy: null,
         requestedByLabel: byLabel,
-        requestChannel: "portal",
+        requestChannel: channel,
         decidedBy: null,
         decidedAt: null,
         channel: null,
@@ -332,6 +332,19 @@ export function createLinksService(repo: DataRepo, deps: LinkServiceDeps): Links
         selfApproved: false,
       },
     };
+  }
+
+  /** The report form version locked to the event (locks the seva type's published one on first use). */
+  async function reportVersion(ev: EventRec) {
+    let versionId = await links.eventFormVersionId(ev.id);
+    if (!versionId) {
+      const t = (await links.templates()).find((x) => x.active && x.purpose === "report" && x.sevaType === ev.sevaType);
+      const v = t ? await links.publishedVersion(t.id) : null;
+      versionId = v ? await links.lockEventFormVersion(ev.id, v.id) : null;
+    }
+    const version = versionId ? await links.versionById(versionId) : null;
+    if (!version) throw new ApiError("CONFLICT", { message: MSG.noForm.en });
+    return version;
   }
 
   async function afterReport(eventId: string) {
@@ -406,7 +419,9 @@ export function createLinksService(repo: DataRepo, deps: LinkServiceDeps): Links
         definition: def,
         prefill: await prefillFor(def, ctx.ev, locale),
         existing: existing ? toDto(existing, true) : null,
-        editable: existing ? editableSub(existing, ctx.ev) : st === "active" && !LOCKED_EVENT.includes(ctx.ev.status),
+        editable: existing
+          ? editableSub(existing, ctx.ev)
+          : st === "active" && (ctx.link.purpose === "public" ? SIGNUP_OPEN : REPORTABLE).includes(ctx.ev.status),
       };
     },
 
@@ -539,6 +554,60 @@ export function createLinksService(repo: DataRepo, deps: LinkServiceDeps): Links
       };
       await links.insertAttachment(rec);
       return toDtoA(rec);
+    },
+
+    async reportContext(eventId, locale) {
+      const ev = await repo.eventById(eventId);
+      if (!ev) throw notFound();
+      const version = await reportVersion(ev);
+      return { definition: version.definition, prefill: await prefillFor(version.definition, ev, locale) };
+    },
+
+    async submitExternal(input) {
+      const ev = await repo.eventById(input.eventId);
+      if (!ev) throw notFound();
+      if (ev.status !== "planned" && ev.status !== "awaiting_report") {
+        throw new ApiError("CONFLICT", { message: loc(ev.status === "report_submitted" || ev.status === "escalated" ? MSG.alreadySent : MSG.closed, input.locale) });
+      }
+      const version = await reportVersion(ev);
+      const def = version.definition;
+      const prefill = await prefillFor(def, ev, input.locale);
+      const result = validateAnswers(def, withReadOnly(def, input.answers, prefill));
+      if (!result.ok) throw new ApiError("VALIDATION_FAILED", { fields: issuesToFieldMap(result.errors, input.locale) });
+      const { answers, personal } = splitPersonal(def, result.clean);
+      const id = newId();
+      const reportLink = (await links.linksForEvent(ev.id)).find((l) => l.purpose === "report") ?? null;
+      const rec: SubmissionRec = {
+        id,
+        eventId: ev.id,
+        linkId: reportLink?.id ?? null,
+        sessionId: null,
+        formVersionId: def.id,
+        definitionVersion: def.version,
+        answers,
+        personalAnswers: Object.keys(personal).length ? personal : null,
+        submittedByHash: input.byHash,
+        submittedByMasked: input.byMasked,
+        source: input.source,
+        status: "submitted",
+        idempotencyKey: input.idempotencyKey ?? null,
+        version: 1,
+        submittedAt: now(),
+        approvedAt: null,
+      };
+      const res = await links.createSubmission({
+        submission: rec,
+        facts: kpiFactsFromAnswers(def, result.clean).map((f) => ({ kpiKey: f.key, dim: f.dim, value: f.value })),
+        consents: [],
+        attachmentIds: [],
+        linkId: rec.linkId,
+        eventStatus: reportReceived(ev.id, input.byLabel, input.source === "whatsapp" ? "whatsapp" : "portal"),
+        volunteersJoinedDelta: 0,
+      });
+      if (res !== "ok") throw new ApiError("CONFLICT");
+      deps.revalidate(["events", "home"]);
+      await afterReport(ev.id);
+      return toDto(rec, false);
     },
 
     // ---- Portal helpers (M3 adds RBAC around these) -------------------------

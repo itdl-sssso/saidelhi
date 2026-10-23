@@ -306,11 +306,13 @@ export class DbLinksRepo implements LinksRepo {
   async createSubmission(w: NewSubmissionWrite): Promise<NewSubmissionResult> {
     try {
       await this.db.transaction(async (tx) => {
-        const used = await tx
-          .update(formLink)
-          .set({ uses: sql`${formLink.uses} + 1` })
-          .where(and(eq(formLink.id, w.linkId), or(isNull(formLink.maxUses), lt(formLink.uses, formLink.maxUses))));
-        if (affected(used) === 0) throw new UsedUp();
+        if (w.linkId) {
+          const used = await tx
+            .update(formLink)
+            .set({ uses: sql`${formLink.uses} + 1` })
+            .where(and(eq(formLink.id, w.linkId), or(isNull(formLink.maxUses), lt(formLink.uses, formLink.maxUses))));
+          if (affected(used) === 0) throw new UsedUp();
+        }
         await tx.insert(submission).values(w.submission);
         await this.writeFacts(tx, w.submission.eventId, w.submission.id, w.facts);
         if (w.consents.length) await tx.insert(consentRecord).values(w.consents);

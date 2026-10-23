@@ -1,8 +1,9 @@
 import type { ContentKind } from "@/contract";
-import { type Fixtures, loadFixtures, portalFixtures } from "../mock/fixtures";
+import { type Fixtures, loadFixtures, portalFixtures, waFixtures } from "../mock/fixtures";
 import { DEV_SESSION_SECRET } from "../security/crypto";
 import { MemoryLinksRepo } from "./links-mock";
 import { MemoryPortalRepo } from "./portal-mock";
+import { MemoryWaRepo } from "./wa-mock";
 import type { ArticleFilter, ArticleRec, AuditRec, DataRepo, EventFilter, PrivacyRequestRec } from "./types";
 
 const isPublished = (a: ArticleRec) => !a.i18n || a.i18n.status === "published";
@@ -16,6 +17,7 @@ export class MockRepo implements DataRepo {
 
   readonly links: MemoryLinksRepo;
   readonly portal: MemoryPortalRepo;
+  readonly wa: MemoryWaRepo;
 
   constructor(
     private readonly fx: Fixtures = loadFixtures(),
@@ -23,6 +25,7 @@ export class MockRepo implements DataRepo {
   ) {
     this.links = new MemoryLinksRepo(fx, secret);
     this.portal = new MemoryPortalRepo(fx, this.links, portalFixtures(secret));
+    this.wa = new MemoryWaRepo(waFixtures(secret));
   }
 
   async orgUnits() {

@@ -5,6 +5,7 @@ import type { Db } from "../db/client";
 import { DbLinksRepo } from "./links-db";
 import { toEventRec } from "./event-row";
 import { DbPortalRepo } from "./portal-db";
+import { DbWaRepo } from "./wa-db";
 import { postcontentContentpostimage as postImage, postcontentPostcontent as post } from "../db/legacy";
 import {
   articleI18n,
@@ -54,10 +55,12 @@ export class DbRepo implements DataRepo {
 
   readonly links: DbLinksRepo;
   readonly portal: DbPortalRepo;
+  readonly wa: DbWaRepo;
 
   constructor(private readonly db: Db) {
     this.links = new DbLinksRepo(db);
     this.portal = new DbPortalRepo(db);
+    this.wa = new DbWaRepo(db);
   }
 
   async orgUnits() {

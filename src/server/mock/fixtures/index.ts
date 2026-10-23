@@ -5,6 +5,7 @@ import { centres, gatherings, orgUnits, partners, sevaTypes } from "./org";
 export * from "./ids";
 export { EVENT, USER } from "./events";
 export { devUserPhone, portalFixtures, type PortalFixtures } from "./people";
+export { waFixtures, type WaFixtures } from "./wa";
 export { CENTRE, DISTRICT, NCR_ID, PARTNER, SAMITHI } from "./org";
 export { SAMPLE_ARTICLE_ID } from "./content";
 

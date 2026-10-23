@@ -33,6 +33,8 @@ export const EVENT = {
   medicalSaketPlan: fx("EVT", 24),
   balVikasRohiniEscalated: fx("EVT", 25),
   bloodRohiniPlan: fx("EVT", 26),
+  // M4: an eye camp waiting for a report (chat report flow and inbox drafts match it).
+  eyeMayurCamp: fx("EVT", 27),
 } as const;
 
 /** Portal users referenced by events (see people.ts). */
@@ -386,6 +388,23 @@ export const events: EventRec[] = [
     reportDueAt: at("2026-10-14", "23:59"),
   }),
   ev({
+    id: EVENT.eyeMayurCamp,
+    sevaType: "eye",
+    status: "awaiting_report",
+    titleEn: "Eye screening camp, Mayur Vihar",
+    titleHi: "नेत्र जाँच शिविर, मयूर विहार",
+    descriptionEn: "Free eye screening and reading spectacles.",
+    descriptionHi: "निःशुल्क नेत्र जाँच और पढ़ने के चश्मे।",
+    startsAt: at("2026-10-21", "09:00"),
+    venueName: "Sai Centre Mayur Vihar",
+    venueAddress: "Pocket 2, Mayur Vihar Phase-1, Delhi",
+    samithiId: SAMITHI.mayurVihar,
+    districtId: DISTRICT.east,
+    centreId: CENTRE.mayurVihar,
+    createdBy: USER.coordA,
+    reportDueAt: at("2026-10-24", "23:59"),
+  }),
+  ev({
     id: EVENT.medicalLaxmiOverdue,
     sevaType: "medical",
     status: "awaiting_report",
@@ -576,6 +595,8 @@ export const timeline: TimelineRec[] = [
   step(EVENT.eyePreetReport, "report_submitted", at("2026-10-20", "11:30"), "Coordinator I", "portal"),
   step(EVENT.narayanMayurOverdue, "planned", at("2026-10-03", "10:00"), "District coordinator B", "portal"),
   step(EVENT.narayanMayurOverdue, "awaiting_report", at("2026-10-12", "01:00"), null, "system"),
+  step(EVENT.eyeMayurCamp, "planned", at("2026-10-10", "10:00"), "District coordinator B", "whatsapp"),
+  step(EVENT.eyeMayurCamp, "awaiting_report", at("2026-10-21", "01:00"), null, "system"),
   step(EVENT.medicalLaxmiOverdue, "planned", at("2026-10-08", "10:00"), "District coordinator B", "portal"),
   step(EVENT.medicalLaxmiOverdue, "awaiting_report", at("2026-10-19", "01:00"), null, "system"),
   step(EVENT.cleanMayurDraft, "draft", at("2026-10-19", "18:00"), "Coordinator A", "portal"),

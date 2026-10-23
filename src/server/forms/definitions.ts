@@ -104,7 +104,7 @@ export const eyeCampReport: FormDefinition = {
         kpi: "people.female",
         checks: [err("lte", "male+female", "registered", t("Men and women together can't be more than people screened.", "पुरुष और महिलाएँ मिलाकर जाँचे गए लोगों से अधिक नहीं हो सकते।"))],
       }),
-      num("under_18", t("Under 18 (optional)", "18 वर्ष से कम (वैकल्पिक)"), {
+      num("under_18", t("Under 18", "18 वर्ष से कम"), {
         kpi: "people.under_18",
         checks: [err("lte", "under_18", "registered", t("Can't be more than people screened.", "जाँचे गए लोगों से अधिक नहीं हो सकते।"))],
       }),
