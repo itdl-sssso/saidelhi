@@ -7,10 +7,16 @@
 - Icons added: download, library, share-2. Strings: `discourses` namespace EN+HI (HI needs native review).
 - Values page already renders `discourses` cards (M5).
 
-## TEMP M7 shims
-- `src/features/discourses/dev-fixtures.ts` placeholder discourses; `data.ts` uses `services().discourses` (`list(q)` -> DiscoursesPayload|null, `bySlug(slug)` -> DiscourseDetail|null) when present, else fixtures (only when flag on). Remove fixtures + the `backend()` cast once backend B1 merges; align method names.
-
 ## Next / notes
 - Free-text `date` shown as is (no HI localisation).
 - Related cards omit "why" (summary only).
 - Proxy 404 probe for `/discourses/<slug>` is backend (B1).
+
+## Run F2 (workspace) — done
+- `/admin/discourses` list (`DiscoursesList.tsx`): flag bar, KPI tiles, filters, table, row menu (AI draft, assign reviewer; hidden by `can.*`), shortlist dialog, glossary drawer.
+- `/admin/discourses/[id]` editor (`DiscourseEditor.tsx`): aligned EN/HI rows, per-block approve (`can.review`), glossary issues, autosave w/ version (409 toast reload), quote picker + PNG export, workflow buttons (send-review/approve/publish gated by `can.*` + `publishBlockers`).
+- Merged main (B2). All TEMP M7 fixtures removed (admin api.ts fx/fixtureMode, public data.ts now `services().discourses`). Nav item gated `discourses.edit`. SectionPlaceholder gone.
+- DoD: tsc, lint, test (363) green. `pnpm typecheck` segfaults in `next typegen` (env flake); `tsc --noEmit` clean.
+
+## F2 next
+- Browser check at 375px and `/hi` against real DB not done by this resume (no dev server run).

@@ -3,14 +3,6 @@ import "server-only";
 import { cacheLife, cacheTag } from "next/cache";
 import type { DiscourseDetail, DiscoursesPayload, DiscoursesQuery } from "@/contract";
 import { services } from "@/server/services";
-import { fixtureDetail, fixtureList } from "./dev-fixtures";
-
-// TEMP M7: backend service shape is not merged yet; use it when present, else placeholder fixtures.
-type DiscoursesService = {
-  list(q: DiscoursesQuery): Promise<DiscoursesPayload | null>;
-  bySlug(slug: string): Promise<DiscourseDetail | null>;
-};
-const backend = (): DiscoursesService | undefined => (services() as unknown as { discourses?: DiscoursesService }).discourses;
 
 export async function getDiscourseFlag(): Promise<boolean> {
   "use cache";
@@ -23,16 +15,12 @@ export async function getDiscourses(q: DiscoursesQuery): Promise<DiscoursesPaylo
   "use cache";
   cacheLife("hours");
   cacheTag("discourses");
-  const svc = backend();
-  if (svc) return svc.list(q);
-  return (await services().flags.flags()).discourses ? fixtureList(q) : null;
+  return services().discourses.list(q);
 }
 
 export async function getDiscourse(slug: string): Promise<DiscourseDetail | null> {
   "use cache";
   cacheLife("hours");
   cacheTag("discourses", `discourse:${slug}`);
-  const svc = backend();
-  if (svc) return svc.bySlug(slug);
-  return (await services().flags.flags()).discourses ? fixtureDetail(slug) : null;
+  return services().discourses.bySlug(slug);
 }
