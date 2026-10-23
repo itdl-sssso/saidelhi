@@ -9,6 +9,7 @@ import { usePathname, useRouter } from "@/i18n/navigation";
 import type { AppLocale } from "@/lib/format";
 import { type ApiResult, portalRequest } from "@/lib/portal-api";
 import { useToast } from "@/ui/Toast";
+import { isMissingRoute } from "./devFixture";
 
 export interface RunOptions {
   /** Identifies the control that is busy (`pending === key`). */
@@ -18,6 +19,10 @@ export interface RunOptions {
   refresh?: boolean;
   /** Skip the toast for 422 so the caller can show field errors. */
   quiet422?: boolean;
+  /** Dev only (see devFixture.ts): pretend success when the backend route does not exist yet. */
+  devFixture?: boolean;
+  /** Client-fetched pages: what the 409 "Reload" button does (default: router.refresh). */
+  onReload?: () => void;
 }
 
 export function useAction() {
@@ -33,6 +38,10 @@ export function useAction() {
       setPending(opts.key ?? "*");
       const res = await portalRequest<T>(url, { method: init.method ?? "POST", body: init.body ?? {}, locale });
       setPending(null);
+      if (opts.devFixture && isMissingRoute(res)) {
+        toast.show({ tone: "success", message: "Dev fixture: no backend yet, nothing saved" });
+        return { ok: true, status: 200, data: undefined as T };
+      }
       if (res.ok) {
         if (opts.success) toast.show({ tone: "success", message: opts.success });
         if (opts.refresh !== false) router.refresh();
@@ -42,7 +51,7 @@ export function useAction() {
       if (res.status === 401) {
         router.push({ pathname: "/admin/login", query: { next: pathname } });
       } else if (res.status === 409) {
-        toast.show({ tone: "error", message: t("conflict"), action: { label: t("reload"), onClick: () => router.refresh() } });
+        toast.show({ tone: "error", message: t("conflict"), action: { label: t("reload"), onClick: () => (opts.onReload ?? router.refresh)() } });
       } else if (res.status === 0) {
         toast.show({ tone: "offline", message: t("network") });
       } else if (res.status === 422) {

@@ -28,6 +28,7 @@ import {
   sumChecks,
   sumState,
 } from "../model";
+import { cx } from "@/ui/cx";
 import styles from "./formlink.module.css";
 
 export const fieldDomId = (path: string) => `f-${path.replaceAll(".", "-")}`;
@@ -57,6 +58,29 @@ export interface RenderCtx {
   locale: AppLocale;
   /** Inside a personal-data section: the section is marked, so single fields are not. */
   inPersonal?: boolean;
+  /** Review inbox: per-field AI confidence notes (icon + text, never colour alone). */
+  marks?: Record<string, FieldMark>;
+}
+
+export interface FieldMark {
+  level: "check" | "low";
+  /** "Check this" / "Low confidence, check this". */
+  label: string;
+  whyLabel: string;
+  why: string | null;
+}
+
+function MarkNote({ mark }: { mark: FieldMark }) {
+  return (
+    <details className={styles.markNote}>
+      <summary>
+        <Icon name="triangle-alert" size={16} />
+        <span>{mark.label}</span>
+        {mark.why ? <span className={styles.markWhy}>{mark.whyLabel}</span> : null}
+      </summary>
+      {mark.why ? <p>{mark.why}</p> : null}
+    </details>
+  );
 }
 
 function notesFor(ctx: RenderCtx, path: string, key = path): FieldNote[] {
@@ -263,8 +287,9 @@ export function SectionFields({ section, ctx }: { section: FormSection; ctx: Ren
   return (
     <div className={styles.fields}>
       {section.fields.map((f) => (
-        <div key={f.id} className={styles.stack} style={{ gap: 8 }}>
+        <div key={f.id} className={cx(styles.stack, ctx.marks?.[f.id] && styles.marked)} style={{ gap: 8 }}>
           <FieldView f={f} path={f.id} ctx={ctx} scope={ctx.scope} />
+          {ctx.marks?.[f.id] ? <MarkNote mark={ctx.marks[f.id]} /> : null}
           {sums.filter((c) => c.anchor === f.id && isVisible(f, ctx.scope)).map((c) => <SumLine key={c.owner + c.rule.message.en} check={c} ctx={ctx} />)}
         </div>
       ))}

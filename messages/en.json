@@ -1311,6 +1311,227 @@
       "empty": "No entries match.",
       "emptyBody": "Try a different filter or date range.",
       "appendOnly": "The log is append-only. Personal data such as phone numbers is never stored in it."
+    },
+    "inbox": {
+      "title": "Review inbox",
+      "itemMeta": "Review item",
+      "sub": "Reports that came in by WhatsApp, sheet or scan. Check each draft, then approve it into its event.",
+      "tabsLabel": "Inbox tabs",
+      "tab": {
+        "for_me": "For me",
+        "escalated": "Escalated to state",
+        "done": "Done"
+      },
+      "forbidden": "You don't have access to the review inbox.",
+      "loadError": "The inbox did not load.",
+      "retry": "Try again",
+      "notFound": "This item is not in the inbox any more.",
+      "backToList": "Back to the inbox",
+      "empty": {
+        "for_me": "Nothing to review right now.",
+        "escalated": "Nothing has been sent to the state team.",
+        "done": "No finished items yet."
+      },
+      "emptyBody": "New reports from WhatsApp, sheets and scans will show up here.",
+      "noEvent": "No event matched",
+      "age": "{n, plural, =0 {Today} one {# day} other {# days}}",
+      "confidence": {
+        "high": "High",
+        "check": "Check",
+        "low": "Low"
+      },
+      "source": {
+        "whatsapp": "WhatsApp",
+        "scan": "Register scan",
+        "upload": "Sheet",
+        "form": "Form",
+        "portal": "Portal"
+      },
+      "itemTitle": "{source} report from {sender}",
+      "received": "Received {at}",
+      "panes": "Source or draft",
+      "pane": {
+        "source": "Source",
+        "draft": "Draft"
+      },
+      "sourceKind": {
+        "thread": "WhatsApp thread",
+        "text": "Message",
+        "image": "Scanned page",
+        "pdf": "PDF",
+        "spreadsheet": "Sheet",
+        "voice": "Voice note"
+      },
+      "toCheck": "{n, plural, one {# field to check} other {# fields to check}}",
+      "nothingToCheck": "Nothing flagged",
+      "match": {
+        "label": "Matched event",
+        "hint": "Suggested from samithi, date and wording. Change it if it is wrong.",
+        "create": "Not listed? Plan a new event",
+        "needed": "Pick the event this report belongs to. The form for that event then shows here.",
+        "approveHint": "Match an event before you approve."
+      },
+      "fixErrors": "{n, plural, one {# field needs fixing} other {# fields need fixing}}",
+      "fixErrorsBody": "Correct the fields marked below, then approve again.",
+      "action": {
+        "approve": "Approve into event",
+        "save": "Save edits",
+        "ask": "Ask sender",
+        "escalate": "Send to state team",
+        "reject": "Reject"
+      },
+      "done": {
+        "approved": "Approved into the event.",
+        "saved": "Edits saved.",
+        "rejected": "Rejected. The reason was sent to the sender.",
+        "asked": "Question sent on WhatsApp.",
+        "escalated": "Sent to the state team."
+      },
+      "mark": {
+        "check": "Check this field",
+        "low": "Low confidence, check this field"
+      },
+      "why": "Why?",
+      "footer": "AI drafted this on {at} ({model}). A person must approve it before it counts.",
+      "footerPlain": "A person must approve this before it counts.",
+      "history": {
+        "title": "History",
+        "ai_drafted": "AI drafted the entry",
+        "edited": "Edited the draft",
+        "matched": "Matched an event",
+        "approved": "Approved",
+        "escalated": "Sent to the state team",
+        "rejected": "Rejected",
+        "asked": "Asked the sender",
+        "sender_replied": "Sender replied"
+      },
+      "reject": {
+        "title": "Reject this report?",
+        "body": "The reason is sent to the sender on WhatsApp. Say what to fix so they can send it again.",
+        "label": "Reason",
+        "confirm": "Reject and tell sender"
+      },
+      "ask": {
+        "title": "Ask the sender",
+        "body": "Your question goes to the sender on WhatsApp. Their reply appears in the thread.",
+        "label": "Your question",
+        "confirm": "Send question"
+      },
+      "escalate": {
+        "title": "Send to the state team?",
+        "body": "The state data team will review this item. You can add a note for them.",
+        "label": "Note for the state team",
+        "confirm": "Send to state team"
+      },
+      "viewer": {
+        "tools": "Image tools",
+        "zoomOut": "Zoom out",
+        "zoomIn": "Zoom in",
+        "rotate": "Rotate",
+        "idNote": "ID numbers are not read or stored.",
+        "fromUs": "Sent by us",
+        "thread": "WhatsApp thread",
+        "scanAlt": "Scanned register page",
+        "openPdf": "Open the PDF",
+        "openSheet": "Open the sheet",
+        "noPreview": "No preview available. Open the file to read it.",
+        "private": "This file is private and never published. It is deleted after 12 months."
+      }
+    },
+    "whatsapp": {
+      "title": "WhatsApp",
+      "sub": "One business number for the whole of Delhi NCR. Messages we start use templates approved by Meta.",
+      "tabsLabel": "WhatsApp sections",
+      "tab": {
+        "templates": "Templates",
+        "reminders": "Reminders",
+        "broadcasts": "Broadcasts",
+        "log": "Conversation log",
+        "status": "Number status"
+      },
+      "forbidden": "You don't have access to this part of WhatsApp.",
+      "loadError": "This did not load.",
+      "retry": "Try again",
+      "category": {
+        "otp": "Sign-in code",
+        "reminder": "Reminder",
+        "approval": "Approval",
+        "broadcast": "Broadcast",
+        "link": "Form link",
+        "general": "General"
+      },
+      "meta": {
+        "approved": "Approved",
+        "pending": "In review",
+        "rejected": "Rejected",
+        "not_required": "No approval needed"
+      },
+      "templates": {
+        "note": "Meta must approve a template before we can use it to start a conversation. Replies within 24 hours do not need one.",
+        "noHindi": "No Hindi version yet."
+      },
+      "reminders": {
+        "title": "Reminder rules",
+        "saved": "Reminder updated.",
+        "copyDistrict": "Also copied to the district coordinator.",
+        "quiet": "Reminders are not sent between 9 PM and 8 AM."
+      },
+      "broadcasts": {
+        "title": "New broadcast",
+        "optInNote": "Only people who chose to get updates will receive this. They can reply STOP at any time.",
+        "districts": "Districts",
+        "districtsHelp": "Leave empty to include every district.",
+        "seva": "Seva interests",
+        "sevaHelp": "Leave empty to include every seva type.",
+        "textEn": "Message in English",
+        "textHi": "Message in Hindi",
+        "textHiHelp": "People who chose Hindi get this one. Others get the English message.",
+        "textRequired": "Write the English message first.",
+        "estimateBtn": "Estimate",
+        "estimateFirst": "Press Estimate to see how many people this reaches and what it costs. You cannot send before that.",
+        "estimate": "About {n, plural, one {# message} other {# messages}} · about ₹{cost}",
+        "estimateNote": "Estimated from Meta's India rates for opted-in people who match. Nothing has been sent.",
+        "estimateNone": "Nobody who opted in matches these choices. Widen the districts or seva interests.",
+        "send": "Send",
+        "sendN": "{n, plural, one {Send # message} other {Send # messages}}",
+        "sentTitle": "Broadcast sent",
+        "sentBody": "{n, plural, one {# message was queued.} other {# messages were queued.}}",
+        "preview": "Preview",
+        "previewBadge": "Meta template",
+        "previewEmpty": "Your message shows here.",
+        "confirmTitle": "{n, plural, one {Send to # person?} other {Send to # people?}}",
+        "confirmBody": "About ₹{cost}. Messages go out now and cannot be recalled.",
+        "confirmSend": "{n, plural, one {Send # message} other {Send # messages}}"
+      },
+      "log": {
+        "search": "Search by number or message",
+        "searchBtn": "Search",
+        "privacy": "Numbers are masked. Message text is kept for 30 days.",
+        "empty": "No conversations match.",
+        "messages": "{n, plural, one {# message} other {# messages}}",
+        "thread": "Conversation",
+        "threadError": "This conversation did not load."
+      },
+      "status": {
+        "noNumber": "No number connected",
+        "connected": "Connected",
+        "console": "Dev console",
+        "provider": "Provider",
+        "providers": {
+          "cloud": "WhatsApp Cloud API",
+          "console": "Console log (development)"
+        },
+        "coexistence": "Coexistence mode",
+        "on": "On",
+        "off": "Off",
+        "optedIn": "People opted in",
+        "coexistenceNote": "The number works in the WhatsApp Business app and through the API at the same time. Replies sent from the app show in the conversation log.",
+        "consoleNote": "Messages are only printed to the server log. Nothing reaches a phone until the Cloud API is connected.",
+        "month": "This month so far",
+        "messages": "Messages sent",
+        "cost": "Estimated cost",
+        "costNote": "Estimates from Meta's India rates. The provider's invoice is the final figure."
+      }
     }
   }
 }

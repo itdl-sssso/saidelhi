@@ -52,3 +52,11 @@
 .tick { display: inline-flex; width: 56px; height: 56px; align-items: center; justify-content: center; border-radius: 50%; background: var(--surface-truth); color: var(--green-700, #2f6b4f); }
 
 .sectionTitle:focus, .title:focus { outline: none; }
+
+/* Review inbox: AI-flagged fields (icon + text + left rule, not colour alone) */
+.marked { border-left: 4px solid var(--signal-alert); padding-left: 12px; margin-left: -16px; }
+.markNote { font-size: var(--text-small); color: var(--signal-alert-text); }
+.markNote summary { display: flex; align-items: center; gap: 8px; min-height: 32px; cursor: pointer; list-style: none; font-weight: 500; }
+.markNote summary::-webkit-details-marker { display: none; }
+.markWhy { margin-left: auto; text-decoration: underline; text-underline-offset: 3px; font-weight: 400; }
+.markNote p { margin: 4px 0 0; padding-left: 24px; color: var(--slate-700); }

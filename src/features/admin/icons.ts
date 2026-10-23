@@ -13,6 +13,7 @@ export {
   Download,
   Ellipsis,
   FileText,
+  RotateCw,
   GitMerge,
   HandHeart,
   Handshake,
@@ -43,4 +44,6 @@ export {
   UserCog,
   UserX,
   Users,
+  ZoomIn,
+  ZoomOut,
 } from "lucide-react";
