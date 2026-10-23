@@ -1,7 +1,7 @@
 import { Suspense, type ReactNode } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { LanguageToggle, EMBLEM_SRC } from "@/features/shell";
+import { LanguageToggle, EMBLEM_SRC, SkipLink } from "@/features/shell";
 import { LanguageToggleView } from "@/features/shell/LanguageToggle";
 import { DharmaRule } from "@/ui/DharmaRule";
 import styles from "./formlink.module.css";
@@ -11,6 +11,7 @@ export function FormChrome({ children }: { children: ReactNode }) {
   const t = useTranslations("meta");
   return (
     <div className={styles.frame}>
+      <SkipLink />
       <header className={styles.header}>
         <div className={styles.headerRow}>
           <span className={styles.brand}>

@@ -274,3 +274,4 @@
 .involveWarm { background: var(--surface-warm); border-color: var(--border-warm); border-top: 6px solid var(--dharma-rule); }
 .involveCalm { background: var(--surface-calm); border-color: var(--border-calm); }
 .waSteps { margin: 12px 0 0; padding-left: 20px; font-size: var(--text-small); color: var(--slate-700); display: flex; flex-direction: column; gap: 4px; }
+.fine a { text-decoration: underline; text-underline-offset: 2px; }

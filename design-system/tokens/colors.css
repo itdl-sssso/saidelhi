@@ -14,7 +14,7 @@
   /* --- Purity / neutrals --- */
   --white:#FFFFFF;--cream:#FAFAFA;--sand:#F5F3EF;
   --slate-100:#F3F4F6;--slate-200:#E5E7EB;--slate-300:#D1D5DB;
-  --slate-400:#9CA3AF;--slate-500:#6B7280;--slate-600:#4B5563;
+  --slate-400:#9CA3AF;--slate-500:#656C79;--slate-600:#4B5563;
   --slate-700:#374151;--slate-800:#1F2937;--slate-900:#111827;
 
   /* --- Semantic surfaces --- */
@@ -48,7 +48,7 @@
   --action-primary:var(--pink-200);
   --action-primary-hover:var(--pink-300);
   --action-primary-active:var(--pink-400);
-  --action-primary-text:var(--pink-700);
+  --action-primary-text:#6E2640; /* 4.8:1 on pink-200 (a11y) */
   --action-secondary:var(--blue-100);
   --action-secondary-hover:var(--blue-200);
   --action-secondary-text:var(--blue-700);

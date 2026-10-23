@@ -138,7 +138,7 @@ function Signups({ eventId, deleteOn }: { eventId: string; deleteOn: string }) {
           <EmptyState icon="users" title={t("noSignups")} />
         ) : (
           <>
-            <div className={styles.tblScroll}>
+            <div className={styles.tblScroll} tabIndex={0}>
               <table className={styles.tbl}>
                 <thead>
                   <tr>

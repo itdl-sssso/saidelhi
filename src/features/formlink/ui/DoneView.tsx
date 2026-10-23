@@ -48,10 +48,11 @@ export function DoneView({ token }: { token: string }) {
     };
   }, [api, store, linkKey, locale, router, paths.verify]);
 
-  if (state.k === "loading") return <div className={styles.page} aria-busy="true" aria-label={t("loading")}><SkeletonCard /></div>;
+  if (state.k === "loading") return <div className={styles.page} aria-busy="true" aria-label={t("loading")}><h1 className="sr-only">{t("doneTitle")}</h1><SkeletonCard /></div>;
   if (state.k === "none") {
     return (
       <div className={styles.page}>
+        <h1 className="sr-only">{t("doneTitle")}</h1>
         <Alert tone="note">{t("noDraft")}</Alert>
         <Button href={paths.form} fullWidth>
           {t("openForm")}

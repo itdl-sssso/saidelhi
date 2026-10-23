@@ -86,9 +86,9 @@ export function OrgManager({ tree, canManage, isState, canAudit }: { tree: OrgTr
       <li key={n.id} role="none">
         <div className={styles.row} style={{ gap: 0, flexWrap: "nowrap" }}>
           {hasKids ? (
-            <button type="button" className={o.chev} aria-label={expanded ? t("collapse") : t("expand")} aria-expanded={expanded} onClick={() => toggle(n.id)}>
+            <span className={o.chev} aria-hidden="true" onClick={() => toggle(n.id)}>
               <Icon name={expanded ? "chevron-down" : "chevron-right"} size={16} />
-            </button>
+            </span>
           ) : (
             <span className={o.chevSp} />
           )}
@@ -100,6 +100,11 @@ export function OrgManager({ tree, canManage, isState, canAudit }: { tree: OrgTr
             data-inactive={!n.active}
             className={`${o.row} ${depth === 0 ? o.depth0 : ""}`}
             onClick={() => select(n.id)}
+            onKeyDown={(e) => {
+              if (!hasKids) return;
+              if (e.key === "ArrowRight" && !expanded) toggle(n.id);
+              else if (e.key === "ArrowLeft" && expanded) toggle(n.id);
+            }}
           >
             <Icon name={n.kind === "ncr" ? "globe" : n.kind === "district" ? "map" : "house"} size={16} />
             <span className={o.name}>{tx(n.name, locale)}</span>

@@ -75,7 +75,7 @@ export async function AuditPage({ locale, rows, total, query, sp }: { locale: Ap
           </div>
         ) : (
           <>
-            <div className={`${styles.tblScroll} ${styles.onlyDesk}`}>
+            <div className={`${styles.tblScroll} ${styles.onlyDesk}`} tabIndex={0}>
               <table className={styles.tbl}>
                 <thead>
                   <tr>

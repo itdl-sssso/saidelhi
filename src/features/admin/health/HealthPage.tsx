@@ -67,8 +67,10 @@ function Body({ d }: { d: HealthPayload }) {
               {fmt(tile, locale, tile.value)}
               {tile.unit === "days" && tile.value !== null ? <span className={styles.cap}> {t("days")}</span> : null}
             </dd>
-            {tile.delta !== null ? <span className={styles.cap}>{t("delta", { n: `${tile.delta > 0 ? "+" : ""}${formatNumber(Math.round(tile.delta * 10) / 10, locale)}` })}</span> : null}
-            {tile.note ? <span className={styles.cap}>{tx(tile.note, locale)}</span> : null}
+            <dd>
+              {tile.delta !== null ? <span className={styles.cap}>{t("delta", { n: `${tile.delta > 0 ? "+" : ""}${formatNumber(Math.round(tile.delta * 10) / 10, locale)}` })}</span> : null}
+              {tile.note ? <span className={styles.cap}>{tx(tile.note, locale)}</span> : null}
+            </dd>
           </div>
         ))}
       </dl>
@@ -94,7 +96,7 @@ function Body({ d }: { d: HealthPayload }) {
               <EmptyState icon="circle-check" title={t("pendingEmpty")} />
             </div>
           ) : (
-            <div className={styles.tblScroll}>
+            <div className={styles.tblScroll} tabIndex={0}>
               <table className={styles.tbl}>
                 <thead>
                   <tr>
@@ -128,7 +130,7 @@ function Body({ d }: { d: HealthPayload }) {
               <EmptyState icon="clock" title={t("lagEmpty")} />
             </div>
           ) : (
-            <div className={styles.tblScroll}>
+            <div className={styles.tblScroll} tabIndex={0}>
               <table className={styles.tbl}>
                 <thead>
                   <tr>

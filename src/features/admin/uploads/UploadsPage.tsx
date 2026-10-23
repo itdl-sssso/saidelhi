@@ -55,7 +55,7 @@ export function UploadsPage() {
                 <EmptyState icon="upload" title={status || sevaType ? t("noMatch") : t("empty")} action={!status && !sevaType ? <Button size="sm" href="/admin/uploads/new">{t("start")}</Button> : undefined} />
               </div>
             ) : (
-              <div className={styles.tblScroll}>
+              <div className={styles.tblScroll} tabIndex={0}>
                 <table className={styles.tbl}>
                   <thead>
                     <tr>

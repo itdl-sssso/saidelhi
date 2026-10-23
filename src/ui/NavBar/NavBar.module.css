@@ -18,6 +18,7 @@
 }
 
 .brand {
+  position: relative;
   display: flex;
   align-items: center;
   gap: var(--space-3);
@@ -42,7 +43,7 @@
 }
 .emblem img { width: 42px; height: 42px; object-fit: contain; }
 .brand:hover .emblem { box-shadow: var(--shadow-glow-calm); }
-.wordmark { display: none; flex-direction: column; line-height: 1.15; }
+.wordmark { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; display: flex; flex-direction: column; line-height: 1.15; }
 .org { font-family: var(--font-serif-display); font-size: 17px; color: var(--text-heading); }
 .region {
   font-size: 11px;
@@ -193,7 +194,7 @@
   }
 }
 @media (min-width: 1024px) {
-  .wordmark { display: flex; }
+  .wordmark { position: static; width: auto; height: auto; margin: 0; overflow: visible; clip-path: none; white-space: normal; }
 }
 @media (min-width: 1200px) {
   .itemLabel { position: static; width: auto; height: auto; margin: 0; overflow: visible; clip-path: none; }

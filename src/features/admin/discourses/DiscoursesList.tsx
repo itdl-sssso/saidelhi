@@ -131,7 +131,7 @@ export function DiscoursesList({ can }: { can: ListCan }) {
                 <EmptyState icon="book-open" title={q || theme || status || reviewer ? t("noMatch") : t("empty")} />
               </div>
             ) : (
-              <div className={styles.tblScroll}>
+              <div className={styles.tblScroll} tabIndex={0}>
                 <table className={styles.tbl}>
                   <thead>
                     <tr>

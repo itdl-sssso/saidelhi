@@ -207,7 +207,7 @@ function Estimates({ org, kpis }: { org: OrgOptions; kpis: Array<{ value: string
             </div>
           ) : (
             <>
-              <div className={styles.tblScroll}>
+              <div className={styles.tblScroll} tabIndex={0}>
                 <table className={styles.tbl}>
                   <thead>
                     <tr>
