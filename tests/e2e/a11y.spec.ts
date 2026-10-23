@@ -117,6 +117,8 @@ async function run(page: Page, project: string, path: string, locale: "en" | "hi
     issues = [{ check: "nav", rule: "late-navigation", impact: "moderate", detail: `navigation during audit: ${String(e).slice(0, 100)}` }];
   }
   if (COLLECT) {
+    fs.mkdirSync(CACHE_DIR, { recursive: true });
+    fs.appendFileSync(`${CACHE_DIR}/coverage.jsonl`, JSON.stringify({ project, locale, path }) + "\n");
     record(project, locale, path, issues);
     return;
   }
