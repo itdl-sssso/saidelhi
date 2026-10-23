@@ -18,6 +18,10 @@ import type {
   CentreDetail,
   CentreListItem,
   CentresQuery,
+  DiscourseDetail,
+  DiscoursesPayload,
+  DiscoursesQuery,
+  DiscourseSummary,
   DistrictPayload,
   DistrictSummary,
   JoinPayload,
@@ -74,6 +78,16 @@ export interface DistrictsService {
   bySlug(slug: string): Promise<DistrictPayload | null>;
   /** Active districts, or active samithis (optionally of one district), in display order. */
   units(q: OrgUnitsQuery): Promise<OrgUnit[]>;
+}
+
+/** Discourses (M7). Public methods return null / false while the `discourses` flag is off. */
+export interface DiscoursesService {
+  list(q: DiscoursesQuery): Promise<DiscoursesPayload | null>;
+  bySlug(slug: string): Promise<DiscourseDetail | null>;
+  /** Cheap probe for the proxy 404 check (flag on and published). */
+  exists(slug: string): Promise<boolean>;
+  /** Up to 3 published discourses for a Value page (flag is checked by the caller). */
+  forValue(slug: ValueSlug): Promise<DiscourseSummary[]>;
 }
 
 export interface ValuesService {
@@ -218,6 +232,7 @@ export interface Services {
   impact: ImpactService;
   articles: ArticlesService;
   values: ValuesService;
+  discourses: DiscoursesService;
   programs: ProgramsService;
   join: JoinService;
   redirects: RedirectsService;

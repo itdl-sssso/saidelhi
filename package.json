@@ -16,6 +16,7 @@
     "db:generate": "dotenv -e .env.local -- drizzle-kit generate",
     "db:migrate": "dotenv -e .env.local -- drizzle-kit migrate",
     "db:seed": "dotenv -e .env.local -- tsx --conditions=react-server scripts/seed.ts",
+    "db:import-discourses": "dotenv -e .env.local -- tsx --conditions=react-server scripts/import-discourses.ts",
     "db:import-legacy": "dotenv -e .env.local -- tsx --conditions=react-server scripts/import-legacy.ts",
     "db:reset": "bash scripts/db-reset.sh",
     "e2e": "playwright test",

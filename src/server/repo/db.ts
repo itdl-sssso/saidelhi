@@ -4,6 +4,7 @@ import type { ContentKind, PartnerKind } from "@/contract";
 import type { Db } from "../db/client";
 import { PUBLIC_ARTICLE_LETTERS } from "../domain/articles";
 import { DbLinksRepo } from "./links-db";
+import { DbDiscourseRepo } from "./discourse-db";
 import { DbM6Repo } from "./m6-db";
 import { DbPrivacyRepo } from "./privacy-db";
 import { toEventRec } from "./event-row";
@@ -67,6 +68,7 @@ export class DbRepo implements DataRepo {
   readonly wa: DbWaRepo;
   readonly m6: DbM6Repo;
   readonly privacy: DbPrivacyRepo;
+  readonly discourses: DbDiscourseRepo;
 
   constructor(private readonly db: Db) {
     this.links = new DbLinksRepo(db);
@@ -74,6 +76,7 @@ export class DbRepo implements DataRepo {
     this.wa = new DbWaRepo(db);
     this.m6 = new DbM6Repo(db);
     this.privacy = new DbPrivacyRepo(db);
+    this.discourses = new DbDiscourseRepo(db);
   }
 
   async orgUnits() {

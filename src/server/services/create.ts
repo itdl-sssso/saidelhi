@@ -2,6 +2,7 @@ import type { DataRepo } from "../repo/types";
 import { createArticlesService } from "./articles";
 import { createAuthService } from "./auth";
 import { createCentresService } from "./centres";
+import { createDiscoursesService } from "./discourses";
 import { createDistrictsService } from "./districts";
 import { createEventsService } from "./events";
 import { createHomeService } from "./home";
@@ -45,6 +46,7 @@ export function createServices(repo: DataRepo, deps: ServiceDeps): Services {
   const auth = createAuthService(ctx);
   const events = createEventsService(repo, deps);
   const centres = createCentresService(repo, deps);
+  const discourses = createDiscoursesService(repo, deps);
   const wa = createWaServices({ repo, deps: full, links, extractor: full.extractor, portal, auth, events, centres });
   return {
     dataSource: repo.kind,
@@ -54,7 +56,8 @@ export function createServices(repo: DataRepo, deps: ServiceDeps): Services {
     districts: createDistrictsService(repo, deps),
     impact: createImpactService(repo, deps),
     articles: createArticlesService(repo, deps),
-    values: createValuesService(repo, deps, events),
+    values: createValuesService(repo, deps, events, discourses),
+    discourses,
     programs: createProgramsService(repo, deps, events),
     join: createJoinService(repo, deps),
     redirects: createRedirectsService(repo, deps.now),

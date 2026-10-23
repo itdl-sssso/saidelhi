@@ -13,11 +13,12 @@ const intl = createMiddleware(routing);
  * ones to the localised catch-all, which answers a real 404.
  */
 const DETAIL_PATH =
-  /^(?:\/(hi))?(?:\/(events|centres|news|districts|programs|values)\/([^/]+)|\/admin\/events\/([^/]+)(?:\/edit)?)\/?$/;
+  /^(?:\/(hi))?(?:\/(events|centres|news|districts|programs|values|discourses)\/([^/]+)|\/admin\/events\/([^/]+)(?:\/edit)?)\/?$/;
+const DISCOURSE_LIST = /^(?:\/(hi))?\/discourses$/;
 const PROBE_TTL_MS = 60_000;
 const found = new Map<string, number>(); // positive probes only: a new id must 404 -> 200 immediately
 
-type ProbeKind = "event" | "adminEvent" | "centre" | "article" | "district" | "program" | "value";
+type ProbeKind = "event" | "adminEvent" | "centre" | "article" | "district" | "program" | "value" | "discourse";
 
 const PROBE_KIND: Record<string, ProbeKind> = {
   events: "event",
@@ -26,11 +27,17 @@ const PROBE_KIND: Record<string, ProbeKind> = {
   districts: "district",
   programs: "program",
   values: "value",
+  discourses: "discourse",
 };
 
 async function exists(kind: ProbeKind, key: string): Promise<boolean> {
   if (key.length > 120) return false;
   if (kind === "value") return ValueSlug.safeParse(key).success; // fixed set, no lookup
+  if (kind === "discourse") {
+    // Not cached: the flag can flip at any time and must take effect at once.
+    const { services } = await import("./server/services");
+    return services().discourses.exists(key);
+  }
   const k = `${kind}:${key}`;
   const hit = found.get(k);
   if (hit && hit > Date.now()) return true;
@@ -99,6 +106,16 @@ export default async function proxy(req: NextRequest) {
     url.search = "";
     url.searchParams.set("next", `${match[2]}${req.nextUrl.search}`);
     return NextResponse.redirect(url);
+  }
+  // The list page has no slug to probe: it only exists while the flag is on.
+  const list = DISCOURSE_LIST.exec(req.nextUrl.pathname);
+  if (list) {
+    const on = await import("./server/services").then((m) => m.services().flags.flags()).then((f) => f.discourses, () => true);
+    if (!on) {
+      const url = req.nextUrl.clone();
+      url.pathname = `/${list[1] ?? "en"}/__not-found`;
+      return NextResponse.rewrite(url);
+    }
   }
   const d = DETAIL_PATH.exec(req.nextUrl.pathname);
   if (d) {

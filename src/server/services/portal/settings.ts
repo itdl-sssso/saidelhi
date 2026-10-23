@@ -140,6 +140,7 @@ export function createSettingsService(ctx: PortalCtx): SettingsService {
         await repo.m6.setSetting("escalation", next, actor.userId);
       }
       await repo.m6.setSetting("settings_meta", { version: body.version + 1 }, actor.userId, audit);
+      if (body.flags) ctx.deps.revalidate(["discourses"]);
       return payload();
     },
 
