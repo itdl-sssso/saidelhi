@@ -182,7 +182,7 @@ Paged<T>  { data:T[], meta:{page,pageSize,total} }
 | `GET /join?district&sevaType&from&to` | `JoinPayload` (v0.6) | 11 |
 | `GET /centres?q=&district=&pincode=` · `GET /centres/:slug` | centre list (with next gathering, distance if pincode) / detail | 12, 14 |
 | `GET /districts` · `GET /districts/:slug` | `DistrictSummary[]` / `DistrictPayload` (v0.6) | 13 |
-| `GET /discourses?theme&q` · `GET /discourses/:slug` | flag-gated (404 when off) | 15–16 |
+| `GET /discourses?theme&q` · `GET /discourses/:slug` | flag-gated (404 when off); shapes §10 v0.8 | 15–16 |
 | `POST /privacy/requests` | `{ id }` · 201 · rate-limited, bot-checked | 17 |
 | `GET /redirects?path=` | legacy saidelhi.org URL → new path | 18, 41 |
 
@@ -413,3 +413,13 @@ Zod: new `src/contract/portal-admin.ts` (all M6 DTOs/bodies/queries) + `src/cont
 - Follow-up PATCH and `calls` need `followup.read` only (reveal needs `followup.reveal`). List `meta.counts` keys: open/all/referred/scheduled/done/declined/unreachable. Breach `steps` always lists all five keys, `doneAt: null` when pending.
 - `HomePayload.kpis` is exactly 4 tiles (padded server side) or null.
 - Deferred: Devanagari in monthly PDF (Helvetica only, Hindi prints `?`), centre photo EXIF strip, `RedirectsService` 5 min cache lag.
+
+### v0.8 (M7 — lead, before tracks)
+Zod: new `src/contract/discourses.ts`; edits in `enums.ts`, `content.ts`, `auth.ts`, `endpoints.ts`, `index.ts`. Plan: `docs/progress/M7-plan.md`. §5.1/§5.4 discourse rows are superseded by this list.
+1. **Enums**: `DiscourseTheme` (14 keys: character, education, discipline, ceiling_on_desires, technology, habits, parents, friendship, self_confidence, leadership, service, time, career_ethics, mental_peace; labels + catalog heading in `DISCOURSE_THEMES`), `DiscourseStatus` (not_started · ai_draft · in_review · approved · published), `DiscourseBlockStatus` (empty · ai_draft · edited · approved). Source `verse` blocks import as `poem`.
+2. **`Discourse` (breaking, unused so far)**: `themes: DiscourseTheme[]` (was string[]); `quotes[]` gain `blockId: string|null`. `DiscourseSummary` unchanged shape (themes now keys).
+3. **Public (15–16)**, flag `discourses` off → 404 (API + page, proxy probe for slugs): `GET /discourses?theme&q` (`DiscoursesQuery`) → `DiscoursesPayload {items: DiscourseCard[], themes:{key,label,count}[14], featured:{quote, discourse}|null, credit}` (published only, no paging); `GET /discourses/:slug` → `DiscourseDetail` = `Discourse` + `related: DiscourseSummary[≤3]`, `value: ValueSlug|null`, `translation {reviewedBy|null, publishedAt}`, `credit` (served from the publish snapshot). `ValuePayload.discourses` = ≤3 published on `VALUE_DISCOURSE_THEMES[slug]`. `DISCOURSE_CREDIT` text fixed.
+4. **Workspace (39)**: `GET /admin/discourses?q&theme&status&reviewer(id|none)&page` → `Paged<AdminDiscourseRow>` + meta `AdminDiscoursesMeta {counts by status + all, flagOn, published}`; `POST /admin/discourses` (`DiscourseCreate`, EN source split on blank lines) → 201 `AdminDiscourseDetail`; `GET/PATCH /admin/discourses/:id` (`DiscoursePatch`, version → 409; quote not verbatim in its block → 422 `fields.quotes.<i>`); `GET /admin/discourses/glossary` → `GlossaryTerm[]`; `POST /admin/discourses/:id/{ai-draft|send-review|approve|publish|unpublish}` (`DiscourseAiDraftBody` / `DiscourseActionBody`) → `AdminDiscourseDetail`; blockers 422 with `fields` keys `blocks|quotes|flag_off|not_approved|reviewerId`. Pure helpers shared by editor + backend: `glossaryIssues`, `quoteMatches`, `approveBlockers` (all blocks approved, 2–4 quotes), `publishBlockers` (flag on, approved).
+5. **Permissions** += `discourses.review` (approve paragraphs/discourse, assign reviewer), `discourses.publish`. RBAC: translator = edit + review; content_editor += edit, review, publish; state all.
+6. **Data**: tables `discourse`, `discourse_block` (keeps imported `hi_ai`), `discourse_glossary` (migration `0008_m7_discourses.sql`). Import `scripts/import-discourses.ts` from `DISCOURSES_DIR` (text never committed; copyrighted). "Request AI draft" restores the imported draft (no live LLM). Editing a published discourse does not change the public page until re-publish (`published_snapshot`).
+7. **Endpoint builders**: public `endpoints.discourses/discourse` (existing); `adminEndpoints.discourses/discourse/discourseAction/discourseGlossary`.

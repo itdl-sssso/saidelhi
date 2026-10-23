@@ -205,6 +205,12 @@ export const adminEndpoints = {
   settingsKpis: () => p("/admin/settings/kpis"),
   settingsKpi: (key: string) => p(`/admin/settings/kpis/${seg(key)}`),
   settingsStrings: (q?: { q?: string; missing?: boolean; ns?: string } & PageQuery) => withQuery(p("/admin/settings/strings"), q),
+  // v0.8 (M7) — discourses workspace (39)
+  discourses: (q?: { q?: string; theme?: string; status?: string; reviewer?: string } & PageQuery) => withQuery(p("/admin/discourses"), q),
+  discourse: (id: string) => p(`/admin/discourses/${seg(id)}`),
+  discourseAction: (id: string, action: "ai-draft" | "send-review" | "approve" | "publish" | "unpublish") =>
+    p(`/admin/discourses/${seg(id)}/${action}`),
+  discourseGlossary: () => p("/admin/discourses/glossary"),
 } as const;
 
 /** v0.5 dev-only bot simulator (404 unless WHATSAPP_PROVIDER=console and NODE_ENV!=production). */

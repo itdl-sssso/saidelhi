@@ -125,8 +125,36 @@ export const FormFieldKind = z.enum([
 ]);
 export type FormFieldKind = z.infer<typeof FormFieldKind>;
 
+/** Import maps the source `verse` blocks to `poem` (set apart in italics). */
 export const DiscourseBlockType = z.enum(["para", "heading", "poem", "quote"]);
 export type DiscourseBlockType = z.infer<typeof DiscourseBlockType>;
+
+/** v0.8: the 14 research themes (spec 15). Labels in `DISCOURSE_THEMES` (contract/discourses.ts). */
+export const DiscourseTheme = z.enum([
+  "character",
+  "education",
+  "discipline",
+  "ceiling_on_desires",
+  "technology",
+  "habits",
+  "parents",
+  "friendship",
+  "self_confidence",
+  "leadership",
+  "service",
+  "time",
+  "career_ethics",
+  "mental_peace",
+]);
+export type DiscourseTheme = z.infer<typeof DiscourseTheme>;
+
+/** v0.8: workflow status of one discourse (spec 39). Only `published` is public (and only with the flag on). */
+export const DiscourseStatus = z.enum(["not_started", "ai_draft", "in_review", "approved", "published"]);
+export type DiscourseStatus = z.infer<typeof DiscourseStatus>;
+
+/** v0.8: per-paragraph Hindi status. `empty` = no Hindi yet. Editing an approved block resets it to `edited`. */
+export const DiscourseBlockStatus = z.enum(["empty", "ai_draft", "edited", "approved"]);
+export type DiscourseBlockStatus = z.infer<typeof DiscourseBlockStatus>;
 
 export const ImpactPeriod = z.enum(["this_year", "last_year", "all"]);
 export type ImpactPeriod = z.infer<typeof ImpactPeriod>;

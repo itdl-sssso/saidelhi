@@ -30,6 +30,10 @@ export const Permission = z.enum([
   "content.edit",
   "impact.manage",
   "discourses.edit",
+  /** v0.8: approve paragraphs/discourses, assign reviewers. */
+  "discourses.review",
+  /** v0.8: publish/unpublish (also needs flag `discourses` on). */
+  "discourses.publish",
   "migration.run",
   "whatsapp.manage",
   "whatsapp.reminders",
