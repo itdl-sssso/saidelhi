@@ -24,15 +24,22 @@ Worktree `.claude/worktrees/agent-aa0e2d09be7795cf2`, branch `worktree-agent-aa0
 - Migration (41): `migration/MigrationPage.tsx` (Stepper source/map/preview/import/report, tabs `?tab=redirects`), `RedirectsTab.tsx`. `features/admin/download.ts` (`download`, `downloadPost`; moved out of FormsPage).
 - Reports (44): `reports/ReportsPage.tsx` (monthly panel + regenerate + auto toggle + recipient chips w/ people picker, export form -> CSV blob, recent, schedules).
 - Health (45): `health/HealthPage.tsx` + new `ui/Heatmap` (table semantics, phone shows last 3 months, in /dev/ui).
-- New TEMP fixtures: `content|impact|migration|reports|health/dev-fixtures.ts` (registered in dev-fixtures-load.ts).
+- New TEMP fixtures: `content|impact|migration|reports|health|followup|privacy/dev-fixtures.ts` (registered in dev-fixtures-load.ts).
 - Messages added (EN+HI, agent-written HI to review): `admin.content`, `admin.impact`, `admin.migration`, `admin.reports`, `admin.health`.
-- Quirk: health Period filter shows "All" (default 6 months applied); FilterBar has no default option.
+
+## Done in run 4 (typecheck + lint green; browser-checked EN/HI desktop-width pane, no overflow)
+- Filter fix: `FilterField` select got `defaultValue` (shows real default, no "All" option/chip). Used by health `range` (6) and volunteers `when` (next30).
+- Follow-up (46) `features/admin/followup/FollowUpPage.tsx`: restricted banner, filters (search, status default open, waiting 7/14/30+), table, Reveal button (only with `followup.reveal`, passed as `canReveal` from server page; number kept in component state 60 s, "Logged" pill), consent icon, late days highlight, SideSheet update panel (status, surgery date, note, history) + Log-a-call dialog, retention footnote, no export. Messages `admin.followup`.
+- Privacy (47) `features/admin/privacy/PrivacyPage.tsx` + `BreachesTab.tsx`: tabs `?tab=` requests/consents/retention/breaches with count badges; request detail panel (due countdown, status select, 4-step checklist Find/Export (download json)/Delete (dialog with match checkboxes)/Reply (dialog)), consents (opt-in stats, by-form table, withdrawals), retention (switches, locked pill, read-only pill without `privacy.manage`), breaches (Start procedure dialog, 72 h countdown, step checklist with note dialog, affected, close when all steps done, all-breaches list), DPO panel (edit dialog when `can.editDpo`). Read-only alert when `!can.manage`. Page opens with `privacy.read` or `privacy.manage`. Messages `admin.privacy`.
+- New TEMP fixtures: `followup|privacy/dev-fixtures.ts` (registered in dev-fixtures-load.ts).
+- Not visually checked: follow-up/privacy dialogs at 375px, `/hi` follow-up, erase + reply dialogs.
+- Assumed (tell lead): PATCH follow-up/call allowed with `followup.read` (no separate manage perm); export.json GET returns file; breach `steps` lists only done steps (missing = pending); privacy requests list called with `status: "all"`.
 
 ## In progress
 (none)
 
 ## Next (in order)
-Wave B left: follow-up (46: `/admin/follow-up`, restricted banner, masked phone + Reveal, update panel, call log), privacy (47: tabs requests/consents/retention/breaches + DPO). Then: `/hi` + 375px visual pass for all new pages, role matrix, i18n/request.ts loadOverrides merge, full `pnpm test` + `pnpm build`.
+Wave B pages all built. Remaining: `/hi` + 375px visual pass for all new pages, role matrix, i18n/request.ts loadOverrides merge, full `pnpm test` + `pnpm build`.
 
 ## Decisions
 - Pages client-fetched (not `services()`), so no dependency on backend services in this worktree.
@@ -42,10 +49,10 @@ Wave B left: follow-up (46: `/admin/follow-up`, restricted banner, masked phone 
 - `tests/m6-frontend.test.ts` holds frontend helper tests (tests/ dir, as M5 did).
 
 ## TEMP shims (remove at integration: `grep -rn "TEMP M6" src`)
-- `src/features/admin/dev-fixtures.ts`, `dev-fixtures-load.ts`, the `import "./dev-fixtures-load"` line in `useApi.ts` and `useAction.ts`, and per-page `settings|forms|partners|volunteers|centres|uploads|content|impact|migration|reports|health/dev-fixtures.ts` (forms imports `@/server/forms/definitions`), `features/admin/useUpload.ts` imports dev-fixtures-load.
+- `src/features/admin/dev-fixtures.ts`, `dev-fixtures-load.ts`, the `import "./dev-fixtures-load"` line in `useApi.ts` and `useAction.ts`, and per-page `settings|forms|partners|volunteers|centres|uploads|content|impact|migration|reports|health|followup|privacy/dev-fixtures.ts` (forms imports `@/server/forms/definitions`), `features/admin/useUpload.ts` imports dev-fixtures-load.
 
 ## HI review list (agent-written, needs native review)
-- `admin.common` new keys, all `admin.settings.*`, `admin.forms.*`, `admin.builder.*`, `admin.partners.*`, `admin.volunteers.*`, `admin.centres.*`, `admin.uploads.*`.
+- `admin.common` new keys, all `admin.settings.*`, `admin.forms.*`, `admin.builder.*`, `admin.partners.*`, `admin.volunteers.*`, `admin.centres.*`, `admin.uploads.*`, `admin.content|impact|migration|reports|health.*`, `admin.followup.*`, `admin.privacy.*`.
 
 ## Blockers
 none. Open questions for lead: (1) Settings seva-type PATCH 422 shape for template mismatch assumed `fields.templateId`; (2) strings list `meta` assumed `{total,page,pageSize}`; (3) `FormTemplateDetail.version` assumed returned by PATCH (builder reads `res.data.version`).
