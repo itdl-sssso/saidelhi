@@ -2,7 +2,7 @@
 // plus the settings write path and the few writes to existing tables the new
 // admin screens need. Implemented in memory (m6-mock.ts) and on MySQL (m6-db.ts).
 import type { DocTableName } from "../db/schema/m6";
-import type { AuditRec, CentreRec, GatheringRec, PartnerRec, SevaTypeRec } from "./types";
+import type { AuditRec, CentreRec, EstimateRec, GatheringRec, PartnerRec, SevaTypeRec } from "./types";
 
 export type { DocTableName };
 
@@ -66,6 +66,12 @@ export interface M6Repo {
   centreInsert(rec: CentreRec, gatherings: GatheringRec[], audit?: AuditRec[]): Promise<"ok" | "duplicate">;
   /** Patches a centre and (when given) replaces its gatherings. `duplicate` = slug taken. */
   centreUpdate(id: string, patch: Partial<Omit<CentreRec, "id" | "version" | "updatedAt">>, gatherings: GatheringRec[] | null, expectVersion: number, audit?: AuditRec[]): Promise<"ok" | "conflict" | "duplicate">;
+
+  /** Every impact estimate incl. hidden ones (admin list). */
+  estimatesAll(): Promise<EstimateRec[]>;
+  estimateInsert(rec: EstimateRec, audit?: AuditRec[]): Promise<void>;
+  estimateUpdate(id: string, patch: Partial<Omit<EstimateRec, "id">>, audit?: AuditRec[]): Promise<boolean>;
+  estimateDelete(id: string, audit?: AuditRec[]): Promise<boolean>;
 
   /** Writes a `setting` row (whole JSON value). */
   setSetting(key: string, value: unknown, userId: string | null, audit?: AuditRec[]): Promise<void>;

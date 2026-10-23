@@ -5,7 +5,8 @@ import { istDate } from "../domain/time";
 import type { ContentItemRec, DataRepo } from "../repo/types";
 import { articleContext } from "./articles";
 import { assembleEvents } from "./event-assembler";
-import { hasAnyData, loadImpactData, periodWindow, tile } from "./impact-calc";
+import { DEFAULT_HOME } from "./kpis";
+import { activeTile, hasAnyData, loadImpactData, periodWindow, tile } from "./impact-calc";
 import { i18n } from "./org-index";
 import { loadOrg, loadSettings } from "./shared";
 import type { HomeService, ServiceDeps } from "./types";
@@ -56,6 +57,11 @@ function pickThought(items: readonly ContentItemRec[], today: string): Thought |
   };
 }
 
+/** Exactly four tiles: admin picks first, padded from the defaults. */
+function homeKeys(picked: readonly string[]): string[] {
+  return [...new Set([...picked, ...DEFAULT_HOME, "volunteer_hours"])].slice(0, 4);
+}
+
 export function createHomeService(repo: DataRepo, deps: ServiceDeps): HomeService {
   return {
     async get(): Promise<HomePayload> {
@@ -75,7 +81,7 @@ export function createHomeService(repo: DataRepo, deps: ServiceDeps): HomeServic
         thought: pickThought(thoughts, istDate(now)),
         upcoming: await assembleEvents(repo, org, upcoming.rows),
         kpis: hasAnyData(year)
-          ? [ACTIVITIES, PEOPLE_SERVED, "blood.units", "eye.spectacles"].map((k) => tile(year, k, win.info))
+          ? homeKeys(settings.homeTiles).map((k) => (k === "active" ? activeTile(year, win.info) : tile(year, k, win.info)))
           : null,
         articles: latest.rows.map((r) => toArticle(r, ctx)),
         centenary: centenary.rows.map((r) => toArticle(r, ctx)),

@@ -166,6 +166,10 @@ export interface EstimateRec {
   value: number;
   note: string | null;
   visible: boolean;
+  /** 'year' estimates sit on Jan 1; default 'month'. */
+  period?: "year" | "month";
+  createdBy?: string | null;
+  createdAt?: Date;
 }
 
 export interface ArticleI18nRec {

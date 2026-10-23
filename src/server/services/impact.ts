@@ -49,13 +49,13 @@ export function createImpactService(repo: DataRepo, deps: ServiceDeps): ImpactSe
       return {
         period: { ...win.info, key: q.period },
         district: district ? org.ref(district.id) : null,
-        tiles: headlineTiles(data, win.info),
-        bySevaType: bySevaType(data, org),
+        tiles: headlineTiles(data, win.info, settings.hiddenKpis),
+        bySevaType: bySevaType(data, org, settings.hiddenKpis),
         byDistrict,
         trend: trend(trendData, win.trendMonths),
         recent: await assembleEvents(repo, org, data.events.slice(0, 5)),
         methodNote: NOTES.method,
-        estimateNote: NOTES.estimate,
+        estimateNote: settings.estimateTooltip ?? NOTES.estimate,
       };
     },
   };

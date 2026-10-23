@@ -3,11 +3,11 @@ import { and, asc, count, desc, eq, gte, isNotNull, lt, sql } from "drizzle-orm"
 import type { Db } from "../db/client";
 import { newId } from "../db/columns";
 import { M6_DOC_TABLES } from "../db/schema/m6";
-import { auditLog, centre, centreGathering, event, partner, setting, sevaType } from "../db/tables";
+import { auditLog, centre, centreGathering, event, impactEstimate, partner, setting, sevaType } from "../db/tables";
 import { affected, isDuplicateKey, type Tx } from "./links-db";
 import { partnerCols } from "./partner-cols";
 import type { DocListQuery, DocPutResult, DocRec, DocTableName, DocWrite, M6Repo } from "./m6-types";
-import type { AuditRec, CentreRec, GatheringRec, PartnerRec, SevaTypeRec } from "./types";
+import type { AuditRec, CentreRec, EstimateRec, GatheringRec, PartnerRec, SevaTypeRec } from "./types";
 
 class Conflict extends Error {}
 
@@ -245,6 +245,62 @@ export class DbM6Repo implements M6Repo {
         .values({ key, value, updatedBy: userId })
         .onDuplicateKeyUpdate({ set: { value, updatedBy: userId } });
       await this.audit(tx, audit);
+    });
+  }
+
+  async estimatesAll() {
+    const rows = await this.db.select().from(impactEstimate);
+    return rows.map((r) => ({
+      id: r.id,
+      orgUnitId: r.orgUnitId,
+      sevaType: r.sevaType,
+      kpiKey: r.kpiKey,
+      month: r.month,
+      value: r.value,
+      note: r.note,
+      visible: r.visible,
+      period: r.period,
+      createdBy: r.createdBy,
+      createdAt: r.createdAt,
+    }));
+  }
+
+  async estimateInsert(rec: EstimateRec, audit?: AuditRec[]) {
+    await this.db.transaction(async (tx) => {
+      await tx.insert(impactEstimate).values({
+        id: rec.id,
+        orgUnitId: rec.orgUnitId,
+        sevaType: rec.sevaType,
+        kpiKey: rec.kpiKey,
+        month: rec.month,
+        period: rec.period ?? "month",
+        value: rec.value,
+        note: rec.note,
+        visible: rec.visible,
+        createdBy: rec.createdBy ?? null,
+      });
+      await this.audit(tx, audit);
+    });
+  }
+
+  async estimateUpdate(id: string, patch: Partial<Omit<EstimateRec, "id">>, audit?: AuditRec[]) {
+    return this.db.transaction(async (tx) => {
+      const set: Record<string, unknown> = {};
+      for (const k of ["orgUnitId", "sevaType", "kpiKey", "month", "period", "value", "note", "visible"] as const) if (k in patch) set[k] = patch[k];
+      const [cur] = await tx.select({ id: impactEstimate.id }).from(impactEstimate).where(eq(impactEstimate.id, id)).limit(1);
+      if (!cur) return false;
+      if (Object.keys(set).length) await tx.update(impactEstimate).set(set).where(eq(impactEstimate.id, id));
+      await this.audit(tx, audit);
+      return true;
+    });
+  }
+
+  async estimateDelete(id: string, audit?: AuditRec[]) {
+    return this.db.transaction(async (tx) => {
+      const res = await tx.delete(impactEstimate).where(eq(impactEstimate.id, id));
+      if (!affected(res)) return false;
+      await this.audit(tx, audit);
+      return true;
     });
   }
 }

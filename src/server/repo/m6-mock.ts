@@ -1,6 +1,6 @@
 import type { Fixtures } from "../mock/fixtures";
 import type { DocListQuery, DocPutResult, DocRec, DocTableName, DocWrite, M6Repo } from "./m6-types";
-import type { AuditRec, CentreRec, GatheringRec, PartnerRec, SevaTypeRec } from "./types";
+import type { AuditRec, CentreRec, EstimateRec, GatheringRec, PartnerRec, SevaTypeRec } from "./types";
 
 /** In-memory M6 store (writes stay in memory). */
 export class MemoryM6Repo implements M6Repo {
@@ -146,5 +146,30 @@ export class MemoryM6Repo implements M6Repo {
   async setSetting(key: string, value: unknown, _userId: string | null, audit?: AuditRec[]) {
     this.fx.settings[key] = structuredClone(value);
     await this.audit(audit);
+  }
+
+  async estimatesAll() {
+    return this.fx.estimates.map((e) => ({ ...e }));
+  }
+
+  async estimateInsert(rec: EstimateRec, audit?: AuditRec[]) {
+    this.fx.estimates.push({ ...rec, createdAt: rec.createdAt ?? new Date() });
+    await this.audit(audit);
+  }
+
+  async estimateUpdate(id: string, patch: Partial<Omit<EstimateRec, "id">>, audit?: AuditRec[]) {
+    const e = this.fx.estimates.find((x) => x.id === id);
+    if (!e) return false;
+    Object.assign(e, patch);
+    await this.audit(audit);
+    return true;
+  }
+
+  async estimateDelete(id: string, audit?: AuditRec[]) {
+    const i = this.fx.estimates.findIndex((x) => x.id === id);
+    if (i < 0) return false;
+    this.fx.estimates.splice(i, 1);
+    await this.audit(audit);
+    return true;
   }
 }

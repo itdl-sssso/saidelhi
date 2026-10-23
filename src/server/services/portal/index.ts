@@ -4,6 +4,7 @@ import { type AdminEventsService, createAdminEventsService } from "./events";
 import { type CentresAdminService, createCentresAdminService } from "./centres";
 import { createFormsService, type FormsService } from "./forms";
 import { createPartnersAdminService, type PartnersAdminService } from "./partners";
+import { createImpactAdminService, type ImpactAdminService } from "./impact-admin";
 import { createJobsService, type JobsService } from "./jobs";
 import { reportReceived } from "./lifecycle";
 import { type AdminLinksService, createAdminLinksService } from "./links";
@@ -15,7 +16,7 @@ import { createUploadsService, type UploadsService } from "./uploads";
 import { createVolunteersService, type VolunteersService } from "./volunteers";
 import type { PortalCtx } from "./shared";
 
-export type { AdminEventsService, AdminLinksService, ApprovalsService, AttachmentsService, AuditService, JobsService, FormsService, OrgService, OverviewService, PeopleService, SettingsService, UploadsService, CentresAdminService, PartnersAdminService, VolunteersService };
+export type { AdminEventsService, AdminLinksService, ApprovalsService, AttachmentsService, AuditService, JobsService, FormsService, OrgService, OverviewService, PeopleService, SettingsService, UploadsService, CentresAdminService, PartnersAdminService, VolunteersService, ImpactAdminService };
 export type { PortalCtx, PortalDeps } from "./shared";
 
 /** Coordinator portal services (§5.4). Every method takes the acting `Actor` and enforces RBAC + scope. */
@@ -35,6 +36,7 @@ export interface PortalServices {
   centres: CentresAdminService;
   partners: PartnersAdminService;
   volunteers: VolunteersService;
+  impact: ImpactAdminService;
   /** Hook for the form-link flow after a report is received. */
   onReportSubmitted(eventId: string): Promise<void>;
 }
@@ -58,6 +60,7 @@ export function createPortalServices(ctx: PortalCtx): PortalServices {
     centres: createCentresAdminService(ctx),
     partners: createPartnersAdminService(ctx),
     volunteers: createVolunteersService(ctx),
+    impact: createImpactAdminService(ctx),
     onReportSubmitted: (eventId) => reportReceived(ctx, eventId),
   };
 }
