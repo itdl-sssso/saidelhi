@@ -2,7 +2,7 @@
 
 # SSSSO Delhi NCR platform — project state & handoff
 
-Rebuild of saidelhi.org (Sri Sathya Sai Seva Organisation, Delhi NCR): bilingual public site + coordinator portal (`/admin`) + event form links (`/f/<token>`) + WhatsApp bot. Last updated **23 Oct 2026** (M3 walkthrough closed).
+Rebuild of saidelhi.org (Sri Sathya Sai Seva Organisation, Delhi NCR): bilingual public site + coordinator portal (`/admin`) + event form links (`/f/<token>`) + WhatsApp bot. Last updated **23 Oct 2026** (M4 done).
 
 ## Read these first
 | File | What |
@@ -21,7 +21,7 @@ Rebuild of saidelhi.org (Sri Sathya Sai Seva Organisation, Delhi NCR): bilingual
 - Auth: WhatsApp OTP (console provider in dev prints codes to server log), DB sessions, `sid` + `csrf` cookies, header `x-csrf`. RBAC role + org scope (state → district → samithi).
 - i18n: next-intl, EN unprefixed, HI under `/hi`. Strings in `messages/{en,hi}.json` (portal strings under top-level `admin` key).
 - Styling: tokens + Tailwind v4 `@theme` for layout, CSS Modules for components (`src/ui`, kitchen sink at `/dev/ui`, dev only).
-- WhatsApp: real Cloud API adapter written; switch `WHATSAPP_PROVIDER=cloud` when user supplies creds. AI extraction: local small models via Ollama (M4). Discourses: 87 already translated at `~/Claude/sssso-platform/discourses/translations/*.hi.json` (import in M7, behind `discourses` flag).
+- WhatsApp: real Cloud API adapter written; switch `WHATSAPP_PROVIDER=cloud` when user supplies creds. AI extraction: rules-first + SmolLM2 (`smollm2:1.7b`, 360m on weak server) via Ollama, `EXTRACTOR_PROVIDER=rules|ollama`; prod server cannot run big LLMs. Discourses: 87 already translated at `~/Claude/sssso-platform/discourses/translations/*.hi.json` (import in M7, behind `discourses` flag).
 - Legacy content: dump at `.local-dumps/saidelhi-content.sql` (gitignored, contains personal data; `pnpm db:import-legacy`). Legacy media served from `MEDIA_ROOT` (dev: `/home/sam/Claude/saidelhi org/media`) at `/media/*`.
 - Placeholder districts (until user supplies real list): Central, East, New Delhi, North, South, West, Gurugram, Noida–Ghaziabad, Faridabad.
 - Server: `ssh <prod-server>` (user types password). Legacy Django app runs as user `<legacy-user>`; DB creds are in `../saidelhi org/saidelhiweb/settings.py` (plaintext — never echo; user advised to rotate).
@@ -41,20 +41,20 @@ Run `pnpm db:seed` before `pnpm test` if the DB was mutated by a walkthrough (li
 | M1 | Public core: Home (3D lotus), Calendar, Event, Centre, Impact, Privacy | ✅ (in M0) | ✅ | `a221548` |
 | M2 | Form links `/f/[token]` (OTP verify, generic form renderer, offline drafts/queue, done/gone) | ✅ | ✅ | `fa41031` |
 | M3 | Portal core: login, shell, Overview, Events, Event detail, Plan event, Approvals, Links, Org, People, Audit | ✅ `a19a373` | ✅ walkthrough done 23 Oct (fixes: table sr-only overflow, 375px top bar, hi plurals, overdue seed links) | see git log |
-| M4 | WhatsApp bot flows + webhook + reminders, Ollama extractor, Review inbox, WhatsApp admin, opt-in endpoint | ⬜ | ⬜ | |
+| M4 | WhatsApp bot flows + webhook + reminders, extractor (rules + SmolLM via Ollama), Review inbox, WhatsApp admin, opt-in endpoint, dev simulator `/dev/whatsapp`, proxy 404s | ✅ | ✅ walkthrough done | see git log (merges `30e2bf2`…) |
 | M5 | Public P1: Values ×5, About, Programs, Program, News/Article, Join, Map, District, redirects + legacy migration polish | ⬜ | ⬜ | |
 | M6 | Portal P1: form templates/builder, uploads (xlsx), centres, partners, content, impact controls, migration, volunteers, reports/exports, health, follow-up, privacy, settings | ⬜ | ⬜ | |
 | M7 | Discourses (flag) import + pages + workspace; a11y/perf pass; Playwright e2e | ⬜ | ⬜ | |
 
 ### Immediate next steps (in order)
-1. Clear backlogs in `docs/CONTRACT.md` (after §10): `EventPublic.approvedAt`, `EventPublic.centre`, `GET /org/units`, gatherings → calendar occurrences, 404 status for unknown ids/slugs and unbuilt `/admin/*` pages (currently 200), `FormPayload.editable` false for closed public links, seed label "Under 18 (optional)". Frontend: login OTP input → `src/ui/OtpInput` (dedupe).
-2. **Scope decided 23 Oct: full scope M4 → M5 → M6 → M7.**
-3. Dev link URLs in WhatsApp messages use `localhost:3000` (base URL env) while review server is :4100 — set app URL env for dev.
+1. **M5** (public P1 + legacy migration): contract-first by lead, then backend + frontend Sonnet tracks. Join page consumes `GET/POST /whatsapp/optin`.
+2. Then M6 → M7 (scope decided 23 Oct: full).
 
 ### Known open issues
 - In-process rate limits and bot-challenge reuse (single node only).
 - Personal answers not field-encrypted; private attachment retention purge job not written.
-- WhatsApp dev message log in memory only (simulator pending, M4).
+- M4 leftovers: chat register photos only acknowledged (bytes stored via inbox ingest only); no retention purge for `whatsapp_message`/inbox media; no per-number inbound rate limit; webhook runs in `after()` without queue (broadcasts sequential, cap 1000); seeded Meta template statuses fictional; reminder rules global.
+- Public 404s for unknown event/centre handled by existence probe in `src/proxy.ts` (60s cache) because Cache Components + Suspense layout fix status at 200.
 - Hindi hero/value copy written by an agent — needs native review.
 - Root-owned stale dir `.claude/worktrees/agent-aec2e1a718ded6454` (Docker-created) — `sudo rm -rf` it.
 
