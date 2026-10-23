@@ -1,0 +1,23 @@
+.kpis { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+@media (min-width: 900px) { .kpis { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; } }
+
+.cardHead { display: flex; align-items: center; gap: 12px; }
+.cardHead h3 { margin: 0; }
+.cardLink { color: var(--text-heading); text-decoration: none; }
+.cardLink:hover { color: var(--blue-700); }
+
+.dl { display: grid; margin: 0; }
+.dl > div { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-top: 1px solid var(--border-subtle); font-size: var(--text-small); }
+.dl dt { color: var(--slate-700); min-width: 0; }
+.dl dd { margin: 0; font-family: var(--font-serif-display); font-size: 20px; line-height: 1.2; color: var(--text-heading); text-align: right; }
+
+.bars { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.bars li { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) minmax(64px, auto); gap: 10px; align-items: center; font-size: var(--text-small); }
+.track { height: 8px; border-radius: 999px; background: var(--slate-100); overflow: hidden; }
+.track i { display: block; height: 100%; background: var(--blue-400); }
+.bars b { text-align: right; font-weight: var(--weight-medium); font-variant-numeric: tabular-nums; }
+
+.centres { list-style: none; margin: 0; padding: 0; }
+.centre { display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 48px; border-bottom: 1px solid var(--border-subtle); color: var(--slate-800); text-decoration: none; font-size: var(--text-small); }
+.centres li:last-child .centre { border-bottom: 0; }
+.centre:hover { color: var(--blue-700); }

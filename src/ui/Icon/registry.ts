@@ -92,6 +92,16 @@ import {
   Utensils,
   WifiOff,
   X,
+  Briefcase,
+  Flower2,
+  Gift,
+  Hand,
+  Languages,
+  LayoutGrid,
+  Leaf,
+  Moon,
+  Shirt,
+  Wind,
   type LucideIcon,
 } from "lucide-react";
 
@@ -190,6 +200,16 @@ export const icons = {
   utensils: Utensils,
   "wifi-off": WifiOff,
   x: X,
+  briefcase: Briefcase,
+  "flower-2": Flower2,
+  gift: Gift,
+  hand: Hand,
+  languages: Languages,
+  "layout-grid": LayoutGrid,
+  leaf: Leaf,
+  moon: Moon,
+  shirt: Shirt,
+  wind: Wind,
 } satisfies Record<string, LucideIcon>;
 
 export type IconName = keyof typeof icons;
