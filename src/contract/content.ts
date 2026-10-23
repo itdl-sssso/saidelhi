@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ArticleCategory, DiscourseBlockType, Wing } from "./enums";
+import { ArticleCategory, DiscourseBlockType, DiscourseTheme, Wing } from "./enums";
 import { EventPublic } from "./events";
 import { I18nText, ISODate, ISODateTime, Id, Media } from "./primitives";
 
@@ -70,10 +70,12 @@ export const Discourse = z.object({
   place: z.string(),
   occasion: z.string(),
   source: z.object({ coll: z.string(), url: z.string().nullable(), pdf: z.string().nullable() }),
-  themes: z.array(z.string()),
+  /** v0.8: theme keys (was free strings). */
+  themes: z.array(DiscourseTheme),
   why: I18nText,
   blocks: z.array(DiscourseBlock),
-  quotes: z.array(z.object({ en: z.string(), hi: z.string().nullable() })),
+  /** v0.8: `blockId` = paragraph the line comes from (null for legacy/imported candidates not yet matched). Public: 2–4. */
+  quotes: z.array(z.object({ en: z.string(), hi: z.string().nullable(), blockId: z.string().nullable() })),
 });
 export type Discourse = z.infer<typeof Discourse>;
 

@@ -13,6 +13,7 @@ export * from "./auth";
 export * from "./portal";
 export * from "./portal-admin";
 export * from "./form-builder";
+export * from "./discourses";
 export * from "./whatsapp";
 export * from "./queries";
 export * from "./public";
