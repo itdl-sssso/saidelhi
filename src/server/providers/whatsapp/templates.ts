@@ -90,7 +90,37 @@ export const WHATSAPP_TEMPLATES = {
     "{{1}}: {{2}} Reply STOP to stop these messages.",
     "{{1}}: {{2}} ये संदेश बंद करने के लिए STOP लिखें।",
   ),
+  optin_confirm: def(
+    "optin_confirm",
+    "utility",
+    1,
+    "Sai Seva Delhi NCR: {{1}} Reply YES to get seva updates on WhatsApp. Reply STOP any time to stop.",
+    "साई सेवा दिल्ली एनसीआर: {{1}} WhatsApp पर सेवा अपडेट पाने के लिए YES लिखें। रोकने के लिए कभी भी STOP लिखें।",
+  ),
+  plan_decision: def(
+    "plan_decision",
+    "utility",
+    2,
+    "Your plan {{1}}: {{2}}",
+    "आपकी योजना {{1}}: {{2}}",
+  ),
+  review_message: def(
+    "review_message",
+    "utility",
+    1,
+    "About the report you sent: {{1}} Reply here to answer.",
+    "आपने जो रिपोर्ट भेजी उसके बारे में: {{1}} जवाब यहीं दें।",
+  ),
 } as const satisfies Record<string, TemplateDef>;
+
+/**
+ * Estimated Meta price per delivered message in paise (India, utility and
+ * authentication ≈ ₹0.115, marketing ≈ ₹0.78). Free-form replies inside the
+ * 24-hour window are free. Adjust here when Meta changes its rate card.
+ */
+export const COST_PAISE_PER_MESSAGE = { authentication: 12, utility: 12, marketing: 78 } as const satisfies Record<TemplateCategory, number>;
+
+export const templateCostPaise = (name: TemplateName): number => COST_PAISE_PER_MESSAGE[WHATSAPP_TEMPLATES[name].category];
 
 export type TemplateName = keyof typeof WHATSAPP_TEMPLATES;
 

@@ -143,8 +143,8 @@ export interface NewSubmissionWrite {
   facts: FactInput[];
   consents: ConsentRec[];
   attachmentIds: string[];
-  /** Link whose `uses` is incremented; fails with "used_up" once max_uses is reached. */
-  linkId: string;
+  /** Link whose `uses` is incremented; fails with "used_up" once max_uses is reached. Null for chat/inbox submissions without a link. */
+  linkId: string | null;
   /** Moves the event only when its current status is one of `from` (and then opens `approval`). */
   eventStatus: { from: readonly EventStatus[]; to: EventStatus; timeline: TimelineInput; approval?: ApprovalRec } | null;
   volunteersJoinedDelta: number;

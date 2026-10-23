@@ -24,6 +24,7 @@ import type {
 } from "@/contract";
 import type { LinksRepo } from "./links-types";
 import type { PortalRepo } from "./portal-types";
+import type { WaRepo } from "./wa-types";
 
 export interface OrgUnitRec {
   id: string;
@@ -247,6 +248,8 @@ export interface DataRepo {
   readonly links: LinksRepo;
   /** People, sessions, approvals, audit and admin writes (M3). */
   readonly portal: PortalRepo;
+  /** WhatsApp bot, review inbox and opt-in (M4). */
+  readonly wa: WaRepo;
 
   orgUnits(): Promise<OrgUnitRec[]>;
   sevaTypes(): Promise<SevaTypeRec[]>;

@@ -118,8 +118,7 @@ export async function assembleEvents(repo: DataRepo, org: OrgIndex, events: read
       results: status === "approved" ? buildResults(e, factsByEvent.get(e.id) ?? []) : null,
       articleSlug: slugs.get(e.id) ?? null,
       recurring: e.recurring,
-      // TODO(M4 backend): fill from timeline (approved step).
-      approvedAt: null,
+      approvedAt: status === "approved" ? toIsoOrNull(e.approvedAt) : null,
       centre: centre ? { slug: centre.slug } : null,
     };
   });

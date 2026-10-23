@@ -4,6 +4,7 @@ import { z } from "zod";
 import { Confidence, InboxState, Role, SevaType, Source } from "./enums";
 import { FormDefinition, InboxRaw } from "./forms";
 import { I18nText, ISODateTime, Id, Locale, MaskedPhone, PageMeta } from "./primitives";
+import { opt, Pagination } from "./queries";
 
 // ── Review inbox (spec 28) ───────────────────────────────────────────────────
 
@@ -104,6 +105,10 @@ export type InboxEscalateBody = z.infer<typeof InboxEscalateBody>;
 export type InboxRejectBody = z.infer<typeof InboxRejectBody>;
 export type InboxAskBody = z.infer<typeof InboxAskBody>;
 
+export const InboxIdParams = z.object({ id: Id });
+/** GET /admin/inbox/:id/media?m=<message id> (private file, audited). */
+export const InboxMediaQuery = z.object({ m: opt(Id) });
+
 // ── WhatsApp admin (spec 42) ─────────────────────────────────────────────────
 
 export const WaTemplateCategory = z.enum(["otp", "reminder", "approval", "broadcast", "link", "general"]);
@@ -163,6 +168,9 @@ export type ConversationRow = z.infer<typeof ConversationRow>;
 export const ConversationDetail = ConversationRow.extend({ thread: z.array(ThreadMessage) });
 export type ConversationDetail = z.infer<typeof ConversationDetail>;
 
+export const WaLogQuery = Pagination.extend({ q: opt(z.string().trim().max(80)) });
+export type WaLogQuery = z.infer<typeof WaLogQuery>;
+
 /** GET /admin/whatsapp/status */
 export const WaStatus = z.object({
   provider: z.enum(["console", "cloud"]),
@@ -185,6 +193,10 @@ export const OptInBody = z.object({
   botToken: z.string(),
 });
 export type OptInBody = z.infer<typeof OptInBody>;
+
+/** GET /whatsapp/optin → the bot-check token to send back as `botToken` (valid 1.5 s – 30 min after issue). */
+export const OptInChallenge = z.object({ botToken: z.string() });
+export type OptInChallenge = z.infer<typeof OptInChallenge>;
 
 // ── Dev bot simulator (DATA/WHATSAPP_PROVIDER=console only; 404 in production) ─
 

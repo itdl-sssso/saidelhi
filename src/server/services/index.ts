@@ -4,7 +4,8 @@ import { revalidatePublic } from "../cache";
 import { appSecret, env } from "../env";
 import { DiskStorage } from "../files";
 import { email } from "../providers/email";
-import { whatsapp } from "../providers/whatsapp";
+import { createExtractor } from "../ai";
+import { LoggedWhatsApp, whatsapp } from "../providers/whatsapp";
 import { DbRepo } from "../repo/db";
 import { MockRepo } from "../repo/mock";
 import type { DataRepo } from "../repo/types";
@@ -26,11 +27,17 @@ function createRepo(): DataRepo {
  * directly; route handlers wrap the same calls in API envelopes.
  */
 export function services(): Services {
-  cached ??= createServices(createRepo(), {
-    now: () => new Date(),
+  if (cached) return cached;
+  const repo = createRepo();
+  const e = env();
+  const now = () => new Date();
+  cached = createServices(repo, {
+    now,
     mediaBase: env().MEDIA_URL,
     secret: appSecret(),
-    whatsapp: whatsapp(),
+    // Every outbound message is stored (admin log, dev simulator).
+    whatsapp: new LoggedWhatsApp(whatsapp(), repo.wa, { secret: appSecret(), now }),
+    extractor: createExtractor(e.EXTRACTOR_PROVIDER, { url: e.OLLAMA_URL, model: e.OLLAMA_MODEL }),
     email: email(),
     storage: new DiskStorage(env().MEDIA_PRIVATE_ROOT),
     appUrl: env().APP_URL,

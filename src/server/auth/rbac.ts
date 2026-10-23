@@ -29,6 +29,7 @@ export const ROLE_PERMISSIONS: Record<Role, readonly Permission[]> = {
     "people.manage",
     "reports.export",
     "health.read",
+    "whatsapp.reminders",
   ],
   samithi_coord: COORD_COMMON,
   content_editor: ["content.edit", "impact.manage", "partners.manage"],

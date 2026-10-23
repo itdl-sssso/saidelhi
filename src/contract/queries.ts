@@ -27,6 +27,13 @@ export const EventsQuery = Pagination.extend({
 });
 export type EventsQuery = z.infer<typeof EventsQuery>;
 
+/** GET /org/units (v0.5): active districts or samithis for calendar filters. */
+export const OrgUnitsQuery = z.object({
+  kind: z.enum(["district", "samithi"]),
+  district: opt(Slug),
+});
+export type OrgUnitsQuery = z.infer<typeof OrgUnitsQuery>;
+
 export const CentresQuery = z.object({
   q: opt(z.string().trim().max(80)),
   district: opt(Slug),

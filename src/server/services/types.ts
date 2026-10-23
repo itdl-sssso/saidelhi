@@ -1,5 +1,6 @@
 import type {
   AnswerMap,
+  FormDefinition,
   FormLink,
   FormPayload,
   LinkAttachment,
@@ -18,6 +19,8 @@ import type {
   CentreListItem,
   CentresQuery,
   DistrictPayload,
+  OrgUnit,
+  OrgUnitsQuery,
   EventPublic,
   EventsQuery,
   FeatureFlags,
@@ -31,7 +34,9 @@ import type { CacheTag } from "../cache";
 import type { PrivateStorage } from "../files";
 import type { EmailProvider } from "../providers/email";
 import type { WhatsAppProvider } from "../providers/whatsapp/types";
+import type { Extractor } from "../ai/types";
 import type { AuthService } from "./auth";
+import type { WaServices } from "./wa";
 import type { PortalServices } from "./portal";
 import type { LinkRec } from "../repo/links-types";
 
@@ -53,6 +58,8 @@ export interface CentresService {
 
 export interface DistrictsService {
   bySlug(slug: string): Promise<DistrictPayload | null>;
+  /** Active districts, or active samithis (optionally of one district), in display order. */
+  units(q: OrgUnitsQuery): Promise<OrgUnit[]>;
 }
 
 export interface ImpactService {
@@ -101,6 +108,18 @@ export interface NewLinkOptions {
   lang?: Locale;
 }
 
+export interface ExternalSubmission {
+  eventId: string;
+  answers: AnswerMap;
+  source: "whatsapp" | "upload" | "scan";
+  /** Shown on the timeline ("Coordinator A"). */
+  byLabel: string;
+  byHash: string | null;
+  byMasked: string;
+  locale: Locale;
+  idempotencyKey?: string | null;
+}
+
 export interface UploadedFile {
   name: string;
   bytes: Uint8Array;
@@ -131,6 +150,14 @@ export interface LinksService {
     locale: Locale,
   ): Promise<LinkAttachment>;
 
+  /** The report form locked to the event and its prefilled answers (chat report flow, inbox). */
+  reportContext(eventId: string, locale: Locale): Promise<{ definition: FormDefinition; prefill: AnswerMap }>;
+  /**
+   * Report arriving outside a form link (WhatsApp chat, inbox approval). Validated
+   * against the locked form; moves the event to report_submitted and notifies the district.
+   */
+  submitExternal(input: ExternalSubmission): Promise<Submission>;
+
   // Portal helpers (M3 wraps these with RBAC).
   /** The token is returned once, for immediate delivery; FormLink.url can be rebuilt later. */
   createLink(eventId: string, purpose: LinkPurpose, opts?: NewLinkOptions): Promise<{ link: FormLink; token: string }>;
@@ -160,6 +187,8 @@ export interface Services {
   auth: AuthService;
   /** Coordinator portal (§5.4) and jobs. */
   portal: PortalServices;
+  /** WhatsApp bot, review inbox, admin and opt-in (M4). */
+  wa: WaServices;
 }
 
 export interface ServiceDeps {
@@ -176,6 +205,8 @@ export interface ServiceDeps {
   appUrl?: string;
   /** Called after mutations that change public data. */
   revalidate?: (tags: readonly CacheTag[]) => void;
+  /** Turns chat text into draft report answers (rules by default). */
+  extractor?: Extractor;
 }
 
 export type LinkServiceDeps = Required<ServiceDeps> & {

@@ -1,7 +1,7 @@
 import type { Locale } from "@/contract";
 import type { PrivateStorage } from "@/server/files";
 import { devLinks } from "@/server/forms/seed-data";
-import type { TemplateName, WhatsAppProvider } from "@/server/providers/whatsapp";
+import type { OutboundMessage, TemplateName, WhatsAppProvider } from "@/server/providers/whatsapp";
 import { MockRepo } from "@/server/repo/mock";
 import { DEV_SESSION_SECRET } from "@/server/security/crypto";
 import { createServices } from "@/server/services/create";
@@ -17,6 +17,8 @@ export interface Sent {
 export class FakeWhatsApp implements WhatsAppProvider {
   readonly name = "console" as const;
   sent: Sent[] = [];
+  texts: { to: string; text: string }[] = [];
+  interactive: { to: string; message: OutboundMessage }[] = [];
   failNext = false;
 
   async sendTemplate(to: string, template: TemplateName, lang: Locale, params: readonly string[]) {
@@ -28,8 +30,14 @@ export class FakeWhatsApp implements WhatsAppProvider {
     return { id: `fake.${this.sent.length}` };
   }
 
-  async sendText() {
-    return { id: "fake.text" };
+  async sendText(to: string, text: string) {
+    this.texts.push({ to, text });
+    return { id: `fake.text.${this.texts.length}` };
+  }
+
+  async sendInteractive(to: string, message: OutboundMessage) {
+    this.interactive.push({ to, message });
+    return { id: `fake.int.${this.interactive.length}` };
   }
 
   lastCode(): string {

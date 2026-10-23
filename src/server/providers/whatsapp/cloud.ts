@@ -3,7 +3,7 @@ import type { Locale } from "@/contract";
 import { ApiError } from "../../http/errors";
 import { safeEqual } from "../../security/crypto";
 import { WHATSAPP_TEMPLATES, type TemplateName } from "./templates";
-import type { SendResult, WhatsAppProvider } from "./types";
+import type { OutboundMessage, SendResult, WhatsAppProvider } from "./types";
 
 export interface CloudConfig {
   phoneNumberId: string;
@@ -36,6 +36,59 @@ export class CloudWhatsApp implements WhatsAppProvider {
 
   async sendText(to: string, text: string): Promise<SendResult> {
     return this.post({ type: "text", text: { preview_url: false, body: text } }, to);
+  }
+
+  async sendInteractive(to: string, message: OutboundMessage): Promise<SendResult> {
+    if (message.kind === "buttons" && message.buttons) {
+      return this.post(
+        {
+          type: "interactive",
+          interactive: {
+            type: "button",
+            body: { text: message.text },
+            action: { buttons: message.buttons.map((b) => ({ type: "reply", reply: { id: b.id, title: b.title } })) },
+          },
+        },
+        to,
+      );
+    }
+    if (message.kind === "list" && message.list) {
+      return this.post(
+        {
+          type: "interactive",
+          interactive: {
+            type: "list",
+            body: { text: message.text },
+            action: {
+              button: message.list.button,
+              sections: message.list.sections.map((s) => ({
+                title: s.title,
+                rows: s.rows.map((r) => ({ id: r.id, title: r.title, ...(r.description ? { description: r.description } : {}) })),
+              })),
+            },
+          },
+        },
+        to,
+      );
+    }
+    return this.sendText(to, message.text);
+  }
+
+  /** Downloads inbound media (two calls: media id → URL → bytes). Null on any failure. */
+  async downloadMedia(mediaId: string): Promise<{ bytes: Uint8Array; mime: string } | null> {
+    const doFetch = this.cfg.fetch ?? fetch;
+    const headers = { authorization: `Bearer ${this.cfg.accessToken}` };
+    try {
+      const meta = await doFetch(`https://graph.facebook.com/${this.cfg.graphVersion}/${encodeURIComponent(mediaId)}`, { headers, signal: AbortSignal.timeout(this.cfg.timeoutMs ?? 10_000) });
+      const info: unknown = await meta.json();
+      if (typeof info !== "object" || info === null || !("url" in info) || typeof info.url !== "string") return null;
+      const mime = "mime_type" in info && typeof info.mime_type === "string" ? info.mime_type : "application/octet-stream";
+      const file = await doFetch(info.url, { headers, signal: AbortSignal.timeout(this.cfg.timeoutMs ?? 10_000) });
+      if (!file.ok) return null;
+      return { bytes: new Uint8Array(await file.arrayBuffer()), mime };
+    } catch {
+      return null;
+    }
   }
 
   private async post(message: Record<string, unknown>, to: string): Promise<SendResult> {
