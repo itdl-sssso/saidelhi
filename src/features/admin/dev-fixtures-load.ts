@@ -6,4 +6,5 @@ installDevFixtures([
   () => import("./forms/dev-fixtures"),
   () => import("./partners/dev-fixtures"),
   () => import("./volunteers/dev-fixtures"),
+  () => import("./centres/dev-fixtures"),
 ]);

@@ -45,7 +45,7 @@ export const NAV: Array<{ id: NavGroupId; items: NavItemDef[] }> = [
     id: "org",
     items: [
       { id: "org", href: "/admin/org", icon: I.Network, permission: "org.manage", built: true },
-      { id: "centres", href: "/admin/centres", icon: I.MapPin, permission: "centres.manage" },
+      { id: "centres", href: "/admin/centres", icon: I.MapPin, permission: "centres.manage", built: true },
       { id: "partners", href: "/admin/partners", icon: I.Handshake, permission: "partners.manage", built: true },
       { id: "people", href: "/admin/people", icon: I.UserCog, permission: "people.read", built: true },
     ],
