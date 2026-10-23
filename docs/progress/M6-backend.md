@@ -1,7 +1,7 @@
 # M6 backend progress
 
 Branch: worktree-agent-a2704c9f933d0237a. Plan: docs/progress/M6-plan.md. Contract: CONTRACT.md §10 v0.7.
-Tests: `pnpm db:seed` first if DB tests were run twice (OTP throttle / seed state); `tests/m6.db.integration.test.ts` cleans up after itself.
+Tests: DB integration tests share one MySQL: run `pnpm db:seed`, wait 30 s (OTP throttle), then `pnpm test`; back-to-back full runs can fail portal.db/m5.db spuriously. `tests/m6.db.integration.test.ts` cleans up after itself.
 
 ## Done (wave A complete)
 - 1+2 Schema/RBAC/settings plumbing + Settings API (49). Migrations `0006_m6_portal.sql` (15 doc tables + column adds on partner/impact_estimate/seva_type/privacy_request) and `0007_m6_form_rev.sql` (`form_version.published_by`, `rev`). Both applied to shared dev DB. `SettingsService` (`services/portal/settings.ts`), `services/kpis.ts`, `server/i18n/{messages,overrides}.ts` (`loadOverrides(locale)` cached, tag `ui-strings`), routes `/api/v1/admin/settings/**`. Link/OTP defaults from setting `links` (`loadLinkDefaults` in services/shared.ts; `otpPolicy` in otp.ts; link expiry in services/links.ts).
