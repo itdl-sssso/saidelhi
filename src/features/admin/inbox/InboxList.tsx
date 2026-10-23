@@ -14,7 +14,6 @@ import { Link2 } from "../icons";
 import { fmtShortDateTime } from "../time";
 import { useApi } from "../useApi";
 import { hrefWith } from "../url";
-import { fixtureList } from "./__fixtures__";
 import { ConfPill, SourceIcon, useAge } from "./parts";
 import styles from "../Admin.module.css";
 import s from "./Inbox.module.css";
@@ -31,7 +30,7 @@ export function InboxList() {
   const tab: InboxState = TABS.includes(rawTab as InboxState) ? (rawTab as InboxState) : "for_me";
   const page = Math.max(1, Number(sp.get("page")) || 1);
   const params = Object.fromEntries(sp.entries());
-  const api = useApi<InboxRow[], InboxListMeta>(adminEndpoints.inbox({ tab, page, pageSize: PAGE_SIZE }), () => fixtureList(tab));
+  const api = useApi<InboxRow[], InboxListMeta>(adminEndpoints.inbox({ tab, page, pageSize: PAGE_SIZE }));
   const counts = api.meta?.counts;
 
   return (

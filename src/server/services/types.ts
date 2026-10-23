@@ -49,6 +49,8 @@ export interface EventsService {
   list(q: EventsQuery): Promise<Paged<EventPublic>>;
   /** null when missing or not public. */
   byId(id: string): Promise<EventPublic | null>;
+  /** Cheap existence probe (proxy 404 check). `publicOnly` mirrors `byId` visibility; portal routes pass false. */
+  exists(id: string, publicOnly: boolean): Promise<boolean>;
 }
 
 export interface CentresService {

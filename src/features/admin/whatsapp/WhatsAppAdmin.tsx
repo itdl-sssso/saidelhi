@@ -14,7 +14,6 @@ import { PageHead, Panel, Pill, type Tone } from "../kit";
 import { useAction } from "../useAction";
 import { type UseApi, useApi } from "../useApi";
 import { hrefWith } from "../url";
-import { FIXTURE_REMINDERS, FIXTURE_STATUS, FIXTURE_TEMPLATES } from "./__fixtures__";
 import { Broadcasts } from "./Broadcasts";
 import { ConversationLog } from "./ConversationLog";
 import styles from "../Admin.module.css";
@@ -80,7 +79,7 @@ const META: Record<WaTemplate["metaStatus"], [Tone, "badge-check" | "hourglass" 
 
 function Templates() {
   const t = useTranslations("admin.whatsapp");
-  const api = useApi<WaTemplate[]>(adminEndpoints.waTemplates(), () => ({ data: FIXTURE_TEMPLATES }));
+  const api = useApi<WaTemplate[]>(adminEndpoints.waTemplates());
   return (
     <Loadable api={api}>
       {(rows) => (
@@ -120,13 +119,13 @@ function Templates() {
 function Reminders() {
   const t = useTranslations("admin.whatsapp");
   const locale = useLocale() as AppLocale;
-  const api = useApi<ReminderRule[]>(adminEndpoints.waReminders(), () => ({ data: FIXTURE_REMINDERS }));
+  const api = useApi<ReminderRule[]>(adminEndpoints.waReminders());
   const { run } = useAction();
   // Optimistic only for toggles (CONTRACT §6): the switch flips at once and flips back on failure.
   const [over, setOver] = useState<Record<string, boolean>>({});
   const toggle = async (r: ReminderRule, enabled: boolean) => {
     setOver((o) => ({ ...o, [r.id]: enabled }));
-    const res = await run(adminEndpoints.waReminder(r.id), { method: "PATCH", body: { enabled } }, { key: r.id, refresh: false, devFixture: true, success: t("reminders.saved") });
+    const res = await run(adminEndpoints.waReminder(r.id), { method: "PATCH", body: { enabled } }, { key: r.id, refresh: false, success: t("reminders.saved") });
     if (!res.ok)
       setOver((o) => {
         const rest = { ...o };
@@ -160,7 +159,7 @@ function Reminders() {
 function Status() {
   const t = useTranslations("admin.whatsapp");
   const locale = useLocale() as AppLocale;
-  const api = useApi<WaStatus>(adminEndpoints.waStatus(), () => ({ data: FIXTURE_STATUS }));
+  const api = useApi<WaStatus>(adminEndpoints.waStatus());
   const nf = new Intl.NumberFormat(locale === "hi" ? "hi-IN" : "en-IN");
   return (
     <Loadable api={api}>
