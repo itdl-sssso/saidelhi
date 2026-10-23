@@ -95,7 +95,7 @@ export const articles: ArticleRec[] = [
 ];
 
 export const settings: Record<string, unknown> = {
-  flags: { discourses: false, offline_mode: false, ai_extraction: false },
+  flags: { offline_mode: false, ai_extraction: false },
   impact: { showEstimates: true },
   links: { reportLinkDays: 14, deskLink: "event_day", otpMaxAttempts: 5, otpLockMinutes: 10 },
   escalation: { approvalDays: 3, reminderDay: 2, reportDueDays: 3, reportReminderDays: [1, 3, 7] },

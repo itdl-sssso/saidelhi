@@ -3,6 +3,7 @@ import { PUBLIC_ARTICLE_LETTERS } from "../domain/articles";
 import { type Fixtures, loadFixtures, portalFixtures, waFixtures } from "../mock/fixtures";
 import { DEV_SESSION_SECRET } from "../security/crypto";
 import { MemoryLinksRepo } from "./links-mock";
+import { MemoryDiscourseRepo } from "./discourse-mock";
 import { MemoryM6Repo } from "./m6-mock";
 import { MemoryPrivacyRepo } from "./privacy-mock";
 import { MemoryPortalRepo } from "./portal-mock";
@@ -25,6 +26,7 @@ export class MockRepo implements DataRepo {
   readonly wa: MemoryWaRepo;
   readonly m6: MemoryM6Repo;
   readonly privacy: MemoryPrivacyRepo;
+  readonly discourses = new MemoryDiscourseRepo();
 
   constructor(
     private readonly fx: Fixtures = loadFixtures(),

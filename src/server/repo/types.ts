@@ -23,6 +23,7 @@ import type {
   Wing,
 } from "@/contract";
 import type { LinksRepo } from "./links-types";
+import type { DiscourseRepo } from "./discourse-types";
 import type { M6Repo } from "./m6-types";
 import type { PrivacyRepo } from "./privacy-types";
 import type { PortalRepo } from "./portal-types";
@@ -286,6 +287,8 @@ export interface DataRepo {
   /** Portal P1 documents and settings writes (M6). */
   readonly m6: M6Repo;
   readonly privacy: PrivacyRepo;
+  /** Discourses: public reads (B1) and workspace (B2) (M7). */
+  readonly discourses: DiscourseRepo;
 
   orgUnits(): Promise<OrgUnitRec[]>;
   sevaTypes(): Promise<SevaTypeRec[]>;

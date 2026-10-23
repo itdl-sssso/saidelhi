@@ -9,7 +9,8 @@ export async function loadOrg(repo: DataRepo): Promise<OrgIndex> {
   return new OrgIndex(units, sevaTypes);
 }
 
-export const DEFAULT_FLAGS: FeatureFlags = { discourses: false, offline_mode: false, ai_extraction: false };
+// discourses: on in `next dev` for local work, off everywhere else until the Trust grants permission.
+export const DEFAULT_FLAGS: FeatureFlags = { discourses: process.env.NODE_ENV === "development", offline_mode: false, ai_extraction: false };
 
 export interface PublicSettings {
   flags: FeatureFlags;
