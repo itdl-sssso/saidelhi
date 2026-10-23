@@ -26,7 +26,7 @@ export class MockRepo implements DataRepo {
   readonly wa: MemoryWaRepo;
   readonly m6: MemoryM6Repo;
   readonly privacy: MemoryPrivacyRepo;
-  readonly discourses = new MemoryDiscourseRepo();
+  readonly discourses: MemoryDiscourseRepo;
 
   constructor(
     private readonly fx: Fixtures = loadFixtures(),
@@ -36,6 +36,7 @@ export class MockRepo implements DataRepo {
     this.portal = new MemoryPortalRepo(fx, this.links, portalFixtures(secret));
     this.wa = new MemoryWaRepo(waFixtures(secret));
     this.privacy = new MemoryPrivacyRepo(this.privacyRequests, this.links, this.wa, (rec) => this.portal.insertAudit(rec));
+    this.discourses = new MemoryDiscourseRepo((rec) => this.portal.insertAudit(rec));
     this.m6 = new MemoryM6Repo(fx, (rec) => this.portal.insertAudit(rec), this.redirects);
   }
 
