@@ -16,7 +16,7 @@ import { PageHead, Pill } from "../kit";
 import { useAction } from "../useAction";
 import { useApi } from "../useApi";
 import { useUpload } from "../useUpload";
-import { download } from "../forms/FormsPage";
+import { download } from "../download";
 import { Loadable } from "../parts";
 import styles from "../Admin.module.css";
 import u from "./Uploads.module.css";

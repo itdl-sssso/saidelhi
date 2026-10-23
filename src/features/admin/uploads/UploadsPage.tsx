@@ -14,7 +14,7 @@ import { PageHead, Pill, type Tone } from "../kit";
 import { RowMenu } from "../Menu";
 import { hrefWith } from "../url";
 import { useApi } from "../useApi";
-import { download } from "../forms/FormsPage";
+import { download } from "../download";
 import { Loadable } from "../parts";
 import styles from "../Admin.module.css";
 

@@ -29,6 +29,7 @@ import { RowMenu } from "../Menu";
 import { IconDot, Lang, Loadable } from "../parts";
 import { useAction } from "../useAction";
 import { type UseApi, useApi } from "../useApi";
+import { download } from "../download";
 import { PreviewDialog } from "./FormPreview";
 import styles from "../Admin.module.css";
 import p from "../Parts.module.css";
@@ -199,20 +200,6 @@ function versionText(r: FormTemplateRow, t: Tr, locale: AppLocale) {
   return t("unpublished");
 }
 
-/** Authenticated file download through fetch (the portal cookies are same-origin). */
-export async function download(url: string, name: string) {
-  const res = await fetch(url, { credentials: "same-origin" });
-  if (!res.ok) return false;
-  const blob = await res.blob();
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = name;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
-  return true;
-}
 
 function NewTemplate({ templates, onClose, onCreated }: { templates: FormTemplateRow[]; onClose: () => void; onCreated: (id: string) => void }) {
   const t = useTranslations("admin.forms");
