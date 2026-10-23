@@ -68,3 +68,4 @@ export {
   ZoomIn,
   ZoomOut,
 } from "lucide-react";
+export { Bold, Italic, ListOrdered, Link } from "lucide-react";
