@@ -4,7 +4,5 @@
 // envelope) is never masked. Remove with the __fixtures__ folders after integration:
 // grep for "devFixture".
 
-type Failure = { ok: false; status: number; error: { code: string } };
-
-export const isMissingRoute = (res: { ok: boolean; status: number; error?: { code: string } }): res is Failure =>
+export const isMissingRoute = (res: { ok: boolean; status: number; error?: { code: string } }): boolean =>
   process.env.NODE_ENV === "development" && !res.ok && (res.status === 501 || (res.status === 404 && res.error?.code === "INTERNAL"));
