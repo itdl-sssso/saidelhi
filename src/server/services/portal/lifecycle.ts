@@ -1,6 +1,7 @@
 // Applies a lifecycle transition atomically (event + timeline + approval +
 // facts + audit), then runs its side effects: form links, WhatsApp notices and
 // public cache revalidation.
+import { populateFollowup } from "./followup";
 import type { ApprovalKind, FormLink, TimelineChannel } from "@/contract";
 import { newId } from "../../db/columns";
 import { type AuditActor, auditRec } from "../../audit";
@@ -175,6 +176,13 @@ async function sideEffects(ctx: PortalCtx, before: EventRec, ev: EventRec, input
       break;
     case "approve-report":
       deps.revalidate([...PUBLIC_TAGS, "impact"]);
+      if (ev.sevaType === "eye") {
+        try {
+          await populateFollowup(ctx, ev);
+        } catch (err) {
+          console.error("[followup] import failed", err instanceof Error ? err.message : err);
+        }
+      }
       break;
     case "escalate": {
       const admins = await holders(ctx, "state_admin", null);
