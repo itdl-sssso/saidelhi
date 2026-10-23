@@ -134,6 +134,8 @@ export function labelFor(key: string): I18nText {
   return kpiDef(key)?.label ?? { en: key, hi: null };
 }
 
+export const kpiLabel = labelFor;
+
 export function tile(data: ImpactData, key: string, period: PeriodInfo): KpiTile {
   const t: KpiTile = { key, label: labelFor(key), figure: figureFor(data, key), period };
   if (key === PEOPLE_SERVED) t.note = NOTES.peopleServed;

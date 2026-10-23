@@ -1,10 +1,10 @@
-import type { ContentKind } from "@/contract";
+import type { ContentKind, PartnerKind } from "@/contract";
 import { type Fixtures, loadFixtures, portalFixtures, waFixtures } from "../mock/fixtures";
 import { DEV_SESSION_SECRET } from "../security/crypto";
 import { MemoryLinksRepo } from "./links-mock";
 import { MemoryPortalRepo } from "./portal-mock";
 import { MemoryWaRepo } from "./wa-mock";
-import type { ArticleFilter, ArticleRec, AuditRec, DataRepo, EventFilter, PrivacyRequestRec } from "./types";
+import type { ArticleFilter, ArticleRec, AuditRec, DataRepo, EventFilter, PrivacyRequestRec, RedirectRec } from "./types";
 
 const isPublished = (a: ArticleRec) => !a.i18n || a.i18n.status === "published";
 const byNewest = (a: ArticleRec, b: ArticleRec) => b.createdAt.getTime() - a.createdAt.getTime() || b.id - a.id;
@@ -14,6 +14,8 @@ export class MockRepo implements DataRepo {
   readonly kind = "mock" as const;
   readonly privacyRequests: PrivacyRequestRec[] = [];
   readonly audit: AuditRec[] = [];
+  /** Manual / migration redirect rows (tests push into this). */
+  readonly redirects: RedirectRec[] = [];
 
   readonly links: MemoryLinksRepo;
   readonly portal: MemoryPortalRepo;
@@ -40,6 +42,27 @@ export class MockRepo implements DataRepo {
     return this.fx.partners.filter((p) => ids.includes(p.id));
   }
 
+  async partnersByKind(kinds: readonly PartnerKind[]) {
+    return this.fx.partners.filter((p) => p.active && kinds.includes(p.kind)).sort((a, b) => a.name.localeCompare(b.name));
+  }
+
+  async articlesForEvents(eventIds: readonly string[], limit: number) {
+    return this.fx.articles
+      .filter(isPublished)
+      .filter((a) => a.i18n?.eventId && eventIds.includes(a.i18n.eventId))
+      .sort(byNewest)
+      .slice(0, limit);
+  }
+
+  async redirectByPath(path: string) {
+    return this.redirects.find((r) => r.fromPath === path) ?? null;
+  }
+
+  async redirectHit(path: string) {
+    const r = this.redirects.find((x) => x.fromPath === path);
+    if (r) r.hits += 1;
+  }
+
   async settings(keys: readonly string[]) {
     return new Map(keys.filter((k) => k in this.fx.settings).map((k) => [k, this.fx.settings[k]]));
   }
@@ -64,6 +87,7 @@ export class MockRepo implements DataRepo {
       .filter((e) => !f.districtId || e.districtId === f.districtId)
       .filter((e) => !f.samithiId || e.samithiId === f.samithiId)
       .filter((e) => !f.sevaType || e.sevaType === f.sevaType)
+      .filter((e) => f.recurring === undefined || e.recurring === f.recurring)
       .filter((e) => f.needsVolunteers === undefined || (e.volunteersNeeded !== null && e.volunteersNeeded > e.volunteersJoined) === f.needsVolunteers)
       .sort((a, b) => (f.order === "asc" ? 1 : -1) * (a.startsAt.getTime() - b.startsAt.getTime()) || a.id.localeCompare(b.id));
     return { rows: rows.slice(f.offset, f.offset + f.limit), total: rows.length };

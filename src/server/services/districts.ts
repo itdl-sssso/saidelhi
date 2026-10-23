@@ -1,11 +1,25 @@
-import type { DistrictPayload, OrgUnit, OrgUnitsQuery } from "@/contract";
+import type { DemographicSplit, DistrictPayload, DistrictSummary, OrgUnit, OrgUnitsQuery } from "@/contract";
 import type { DataRepo } from "../repo/types";
 import { toCentreListItem } from "./centres";
 import { assembleEvents } from "./event-assembler";
-import { bySevaType, hasAnyData, headlineTiles, loadImpactData, periodWindow } from "./impact-calc";
+import { bySevaType, figureFor, hasAnyData, headlineTiles, kpiLabel, loadImpactData, periodWindow, type ImpactData } from "./impact-calc";
 import { i18n } from "./org-index";
 import { loadOrg, loadSettings } from "./shared";
 import type { DistrictsService, ServiceDeps } from "./types";
+
+const DEMOGRAPHICS: { key: DemographicSplit["key"]; label: DemographicSplit["label"]; bars: { key: string; kpi: string }[] }[] = [
+  { key: "gender", label: { en: "Gender", hi: "लिंग" }, bars: [{ key: "male", kpi: "people.male" }, { key: "female", kpi: "people.female" }] },
+  { key: "age", label: { en: "Age", hi: "आयु" }, bars: [{ key: "under_18", kpi: "people.under_18" }] },
+];
+
+/** Age / gender bars from the people.* KPIs; splits with nothing reported are dropped. */
+export function demographicsFor(data: ImpactData): DemographicSplit[] {
+  return DEMOGRAPHICS.map((d) => ({
+    key: d.key,
+    label: d.label,
+    bars: d.bars.map((b) => ({ key: b.key, label: kpiLabel(b.kpi), figure: figureFor(data, b.kpi) })),
+  })).filter((d) => d.bars.some((b) => b.figure.value !== null));
+}
 
 export function createDistrictsService(repo: DataRepo, deps: ServiceDeps): DistrictsService {
   return {
@@ -17,6 +31,18 @@ export function createDistrictsService(repo: DataRepo, deps: ServiceDeps): Distr
         .flatMap((d) => org.samithisOf(d.id))
         .sort((a, b) => a.nameEn.localeCompare(b.nameEn))
         .map((u) => org.toOrgUnit(u));
+    },
+
+    async list(): Promise<DistrictSummary[]> {
+      const [org, centres] = await Promise.all([loadOrg(repo), repo.centres()]);
+      return org.districts().map((d) => {
+        const samithis = new Set(org.samithisOf(d.id).map((x) => x.id));
+        return {
+          district: org.ref(d.id),
+          samithiCount: samithis.size,
+          centreCount: centres.filter((c) => c.active && samithis.has(c.samithiId)).length,
+        };
+      });
     },
 
     async bySlug(slug: string): Promise<DistrictPayload | null> {
@@ -43,7 +69,7 @@ export function createDistrictsService(repo: DataRepo, deps: ServiceDeps): Distr
         intro: district.introEn ? i18n(district.introEn, district.introHi) : null,
         kpis: hasAnyData(data) ? headlineTiles(data, win.info) : null,
         bySevaType: bySevaType(data, org),
-        demographics: [], // M5 backend: fill from age/gender KPI dims (spec 13)
+        demographics: demographicsFor(data),
         upcoming: await assembleEvents(repo, org, upcoming.rows),
         centres: districtCentres.map((c) => toCentreListItem(c, gatherings.filter((g) => g.centreId === c.id), org, now)),
       };

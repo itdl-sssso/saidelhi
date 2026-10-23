@@ -16,6 +16,9 @@ export type * from "./types";
 
 // Module-level (not globalThis) so dev HMR picks up service changes; the DB pool
 // itself is the HMR-safe singleton.
+/** Obviously fake number so /join shows the full UI in dev; production shows "coming soon" until configured. */
+const DEV_PLACEHOLDER_NUMBER = "+91 98100 00000";
+
 let cached: Services | undefined;
 
 function createRepo(): DataRepo {
@@ -42,6 +45,10 @@ export function services(): Services {
     storage: new DiskStorage(env().MEDIA_PRIVATE_ROOT),
     appUrl: env().APP_URL,
     revalidate: revalidatePublic,
+    whatsappPublic: {
+      number: e.WHATSAPP_PUBLIC_NUMBER ?? e.WA_DISPLAY_NUMBER ?? (e.NODE_ENV === "production" ? null : DEV_PLACEHOLDER_NUMBER),
+      keyword: e.WHATSAPP_PUBLIC_KEYWORD,
+    },
   });
   return cached;
 }

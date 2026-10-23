@@ -231,6 +231,8 @@ export interface EventFilter {
   samithiId?: string;
   sevaType?: SevaType;
   needsVolunteers?: boolean;
+  /** true = only recurring rows, false = only one-off rows. */
+  recurring?: boolean;
   order: "asc" | "desc";
   limit: number;
   offset: number;
@@ -240,6 +242,14 @@ export interface ArticleFilter {
   categories?: readonly string[];
   limit: number;
   offset: number;
+}
+
+export interface RedirectRec {
+  fromPath: string;
+  toPath: string;
+  permanent: boolean;
+  source: "rule" | "manual" | "migration";
+  hits: number;
 }
 
 export interface DataRepo {
@@ -254,6 +264,8 @@ export interface DataRepo {
   orgUnits(): Promise<OrgUnitRec[]>;
   sevaTypes(): Promise<SevaTypeRec[]>;
   partners(ids: readonly string[]): Promise<PartnerRec[]>;
+  /** Active partners of the given kinds, name order. */
+  partnersByKind(kinds: readonly PartnerKind[]): Promise<PartnerRec[]>;
   settings(keys: readonly string[]): Promise<Map<string, unknown>>;
 
   centres(): Promise<CentreRec[]>;
@@ -267,6 +279,13 @@ export interface DataRepo {
   estimates(filter: { fromMonth?: string; toMonth?: string }): Promise<EstimateRec[]>;
   /** Article slugs linked to events via article_i18n.event_id. */
   articleSlugsForEvents(eventIds: readonly string[]): Promise<Map<string, string>>;
+
+  /** Published articles linked (article_i18n.event_id) to any of the events, newest first. */
+  articlesForEvents(eventIds: readonly string[], limit: number): Promise<ArticleRec[]>;
+  /** Redirect row by normalised path (no trailing slash). */
+  redirectByPath(path: string): Promise<RedirectRec | null>;
+  /** Fire-and-forget hit counter. */
+  redirectHit(path: string): Promise<void>;
 
   listArticles(filter: ArticleFilter): Promise<{ rows: ArticleRec[]; total: number }>;
   articleBySlug(slug: string): Promise<ArticleRec | null>;

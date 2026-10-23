@@ -10,6 +10,10 @@ import { ConsoleEmail } from "../providers/email";
 import { ConsoleWhatsApp } from "../providers/whatsapp/console";
 import { DEV_SESSION_SECRET } from "../security/crypto";
 import { createImpactService } from "./impact";
+import { createJoinService } from "./join";
+import { createProgramsService } from "./programs";
+import { createRedirectsService } from "./redirects";
+import { createValuesService } from "./values";
 import { RulesExtractor } from "../ai";
 import { createLinksService } from "./links";
 import { createWaServices } from "./wa";
@@ -28,6 +32,7 @@ export function createServices(repo: DataRepo, deps: ServiceDeps): Services {
     revalidate: () => {},
     email: new ConsoleEmail(),
     extractor: new RulesExtractor(),
+    whatsappPublic: { number: null, keyword: "JOIN" },
     ...deps,
     // `portal` is created below; the hook only runs after a request, never during wiring.
     onReportSubmitted: (eventId) => portal.onReportSubmitted(eventId),
@@ -47,6 +52,10 @@ export function createServices(repo: DataRepo, deps: ServiceDeps): Services {
     districts: createDistrictsService(repo, deps),
     impact: createImpactService(repo, deps),
     articles: createArticlesService(repo, deps),
+    values: createValuesService(repo, deps, events),
+    programs: createProgramsService(repo, deps, events),
+    join: createJoinService(repo, deps),
+    redirects: createRedirectsService(repo, deps.now),
     privacy: createPrivacyService(repo, deps),
     flags: { flags: async () => (await loadSettings(repo)).flags },
     links,

@@ -26,6 +26,10 @@ const EnvSchema = z
     /** Public number shown on /admin/whatsapp (E.164); display only. */
     WA_DISPLAY_NUMBER: optStr,
     /** Note on the status tab: the number also runs in the WhatsApp Business app. */
+    /** Public bot number shown on /join (display format ok). Falls back to WA_DISPLAY_NUMBER, then a dev placeholder. */
+    WHATSAPP_PUBLIC_NUMBER: optStr,
+    /** Word visitors send to start the join flow. */
+    WHATSAPP_PUBLIC_KEYWORD: z.preprocess(blank, z.string().default("JOIN")),
     WA_COEXISTENCE: z.preprocess(blank, z.enum(["true", "false"]).default("false").transform((v) => v === "true")),
     WA_GRAPH_VERSION: z.preprocess(blank, z.string().default("v23.0")),
     EXTRACTOR_PROVIDER: z.preprocess(blank, z.enum(["rules", "ollama"]).default("rules")),

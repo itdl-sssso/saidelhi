@@ -1,4 +1,5 @@
 import type { CentreDetail, CentreListItem, CentresQuery, Gathering, Paged } from "@/contract";
+import { distanceKm, pincodeCentroid } from "../domain/geo";
 import { nextWeekly, toIso } from "../domain/time";
 import type { CentreRec, DataRepo, GatheringRec } from "../repo/types";
 import { assembleEvents } from "./event-assembler";
@@ -61,11 +62,27 @@ export function createCentresService(repo: DataRepo, deps: ServiceDeps): Centres
         .filter((c) => !district || org.districtIdOf(c.samithiId) === district.id)
         .filter((c) => !q.q || matches(c, org, q.q))
         .sort((a, b) => a.nameEn.localeCompare(b.nameEn));
+
+      // Known pincode: nearest first (centres without coordinates fall back to their own pincode
+      // centroid, then sink to the end). Unknown pincode: name order, no distances.
+      const origin = q.pincode ? pincodeCentroid(q.pincode) : null;
+      const dist = new Map<string, number>();
+      if (origin) {
+        for (const c of all) {
+          const at = c.lat !== null && c.lng !== null ? { lat: c.lat, lng: c.lng } : pincodeCentroid(c.pincode);
+          if (at) dist.set(c.id, distanceKm(origin, at));
+        }
+        all.sort((a, b) => (dist.get(a.id) ?? Infinity) - (dist.get(b.id) ?? Infinity) || a.nameEn.localeCompare(b.nameEn));
+      }
+
       const page = all.slice(pageOffset(q.page, q.pageSize), pageOffset(q.page, q.pageSize) + q.pageSize);
       const gatherings = page.length ? await repo.gatherings(page.map((c) => c.id)) : [];
       const now = deps.now();
       return {
-        data: page.map((c) => toCentreListItem(c, gatherings.filter((g) => g.centreId === c.id), org, now)),
+        data: page.map((c) => ({
+          ...toCentreListItem(c, gatherings.filter((g) => g.centreId === c.id), org, now),
+          distanceKm: dist.get(c.id) ?? null,
+        })),
         meta: { ...meta, total: all.length },
       };
     },
