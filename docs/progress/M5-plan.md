@@ -80,3 +80,8 @@ Order:
 - Q7 Native Hindi review of value/about/programme copy.
 - Q8 Keep `llms.txt` on the new site?
 - Q9 Any legacy content intentionally not migrated (needs "Older news on the previous site" note)?
+
+## User decisions (23 Oct 2026, lead)
+1. Join: BOTH — WhatsApp number + copy + QR as primary, plus a small optional "get updates on WhatsApp" phone opt-in form using existing `GET/POST /whatsapp/optin` (bot token, 202 neutral, district + seva types, locale).
+2. Map: OpenStreetMap tiles + Leaflet (no key), attribution visible.
+3. Placeholders: public WhatsApp number from env `WHATSAPP_PUBLIC_NUMBER` (+ keyword), placeholder districts/centre coords; swap when user supplies real data. Other open questions (contact details, auditorium, founder text, llms.txt, unmigrated news): use defaults in this plan, mark TODO(user).
