@@ -33,6 +33,11 @@ async function audit(page: Page, path: string, locale: "en" | "hi", mobile: bool
   const res = await page.goto(url, { waitUntil: "load" });
   await page.waitForLoadState("networkidle", { timeout: 8000 }).catch(() => {});
   await page.waitForTimeout(400);
+  // A page that navigates itself after load (client redirect) would destroy the context mid-audit.
+  const finalUrl = page.url();
+  await page.waitForTimeout(600);
+  if (page.url() !== finalUrl) add("nav", "late-navigation", "moderate", `URL changed after load: ${finalUrl} -> ${page.url()}`);
+  await page.waitForLoadState("load");
   if (!res || res.status() >= 400) add("status", "http-status", "serious", `HTTP ${res?.status()}`);
 
   // html[lang]
@@ -50,6 +55,8 @@ async function audit(page: Page, path: string, locale: "en" | "hi", mobile: bool
   // skip link: first Tab lands on an in-page anchor
   await page.evaluate(() => (document.activeElement as HTMLElement | null)?.blur());
   await page.keyboard.press("Tab");
+  // Next dev overlay (<nextjs-portal>) can take the first Tab in dev: step past it.
+  if (await page.evaluate(() => document.activeElement?.tagName === "NEXTJS-PORTAL")) await page.keyboard.press("Tab");
   const first = await page.evaluate(() => {
     const a = document.activeElement as HTMLAnchorElement | null;
     return a ? { tag: a.tagName, href: a.getAttribute("href") ?? "", text: (a.textContent ?? "").trim().slice(0, 40) } : null;
@@ -95,7 +102,13 @@ function record(project: string, locale: string, path: string, issues: Issue[]) 
 
 async function run(page: Page, project: string, path: string, locale: "en" | "hi") {
   const mobile = project === "mobile";
-  const issues = await audit(page, path, locale, mobile);
+  let issues: Issue[];
+  try {
+    issues = await audit(page, path, locale, mobile);
+  } catch (e) {
+    if (!/context was destroyed|navigation/i.test(String(e))) throw e;
+    issues = [{ check: "nav", rule: "late-navigation", impact: "moderate", detail: `navigation during audit: ${String(e).slice(0, 100)}` }];
+  }
   if (COLLECT) {
     record(project, locale, path, issues);
     return;

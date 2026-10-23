@@ -35,7 +35,7 @@ export default async function globalSetup(config: FullConfig) {
   const first = async (url: string, key = "id") => firstId(api, url, key);
   const data: E2EData = {
     tokens,
-    eventId: (await first("/api/v1/events"))!,
+    eventId: (await realEventId(api))!,
     centreSlug: (await first("/api/v1/centres", "slug"))!,
     articleSlug: (await first("/api/v1/articles", "slug"))!,
     districtSlug: await districtSlug(api),
@@ -63,4 +63,11 @@ async function districtSlug(api: Awaited<ReturnType<typeof pwRequest.newContext>
   const r = await api.get("/api/v1/districts");
   const rows = ((await r.json()) as { data: { district: { slug: string } }[] }).data;
   return rows[0]!.district.slug;
+}
+
+/** First real event: recurring gathering rows (`gath_…`) are not routable event ids. */
+async function realEventId(api: Awaited<ReturnType<typeof pwRequest.newContext>>): Promise<string | undefined> {
+  const r = await api.get("/api/v1/events", { params: { limit: "100" } });
+  const rows = ((await r.json()) as { data: { id: string }[] }).data;
+  return rows.find((e) => !e.id.startsWith("gath_"))?.id;
 }
