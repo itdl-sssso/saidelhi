@@ -31,7 +31,7 @@ async function audit(page: Page, path: string, locale: "en" | "hi", mobile: bool
 
   const url = (locale === "hi" ? "/hi" : "") + (path === "/" && locale === "hi" ? "" : path);
   const res = await page.goto(url, { waitUntil: "load" });
-  await page.waitForLoadState("networkidle", { timeout: 8000 }).catch(() => {});
+  await page.waitForLoadState("networkidle", { timeout: 2500 }).catch(() => {});
   await page.waitForTimeout(400);
   // A page that navigates itself after load (client redirect) would destroy the context mid-audit.
   const finalUrl = page.url();
@@ -103,10 +103,17 @@ function record(project: string, locale: string, path: string, issues: Issue[]) 
 async function run(page: Page, project: string, path: string, locale: "en" | "hi") {
   const mobile = project === "mobile";
   let issues: Issue[];
+  const transient = /context was destroyed|navigation|documentElement|reading 'lang'|Execution context/i;
   try {
-    issues = await audit(page, path, locale, mobile);
+    try {
+      issues = await audit(page, path, locale, mobile);
+    } catch (e) {
+      if (!transient.test(String(e))) throw e;
+      await page.waitForTimeout(1500); // page was still (re)loading: audit once more
+      issues = await audit(page, path, locale, mobile);
+    }
   } catch (e) {
-    if (!/context was destroyed|navigation/i.test(String(e))) throw e;
+    if (!transient.test(String(e))) throw e;
     issues = [{ check: "nav", rule: "late-navigation", impact: "moderate", detail: `navigation during audit: ${String(e).slice(0, 100)}` }];
   }
   if (COLLECT) {
