@@ -41,7 +41,8 @@ export default async function globalSetup(config: FullConfig) {
     districtSlug: await districtSlug(api),
     programType: (await first("/api/v1/programs", "sevaType"))!,
   };
-  for (const [k, v] of Object.entries(data)) if (!v) throw new Error(`global-setup: missing sample ${k}`);
+  data.discourseSlug = await first("/api/v1/discourses", "slug"); // flag may be off -> undefined
+  for (const [k, v] of Object.entries(data).filter(([k]) => k !== "discourseSlug")) if (!v) throw new Error(`global-setup: missing sample ${k}`);
 
   if (!perf) {
     // State admin session saved for all admin specs (one OTP, avoids the rate limit).

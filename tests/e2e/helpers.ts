@@ -25,6 +25,7 @@ export type E2EData = {
   articleSlug: string;
   districtSlug: string;
   programType: string;
+  discourseSlug?: string;
   admin?: { eventId?: string; centreId?: string; contentId?: string; inboxId?: string; formId?: string };
 };
 export function readData(): E2EData {

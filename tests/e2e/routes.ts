@@ -4,7 +4,7 @@ import type { E2EData } from "./helpers";
 export type RouteDef = { path: string; area: "public" | "admin" };
 
 export function publicRoutes(d: E2EData): RouteDef[] {
-  const p = [
+  const p: (string | undefined)[] = [
     "/",
     "/about",
     "/calendar",
@@ -13,6 +13,8 @@ export function publicRoutes(d: E2EData): RouteDef[] {
     "/join",
     "/news",
     "/privacy",
+    "/discourses",
+    d.discourseSlug && `/discourses/${d.discourseSlug}`,
     "/programs",
     `/programs/${d.programType}`,
     `/events/${d.eventId}`,
@@ -20,8 +22,8 @@ export function publicRoutes(d: E2EData): RouteDef[] {
     `/news/${d.articleSlug}`,
     `/districts/${d.districtSlug}`,
     ...ValueSlug.options.map((v) => `/values/${v}`),
-  ];
-  return p.map((path) => ({ path, area: "public" }));
+  ].filter((x): x is string => !!x);
+  return p.filter((x): x is string => !!x).map((path) => ({ path, area: "public" }));
 }
 
 /** All /admin pages (state admin). Detail pages use ids resolved by global-setup. */
