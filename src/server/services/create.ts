@@ -37,6 +37,7 @@ export function createServices(repo: DataRepo, deps: ServiceDeps): Services {
     ...deps,
     // `portal` is created below; the hook only runs after a request, never during wiring.
     onReportSubmitted: (eventId) => portal.onReportSubmitted(eventId),
+    onVolunteerSignup: (eventId) => portal.volunteers.onSignup(eventId),
   };
   const links = createLinksService(repo, full);
   const ctx: PortalCtx = { repo, deps: full, links };

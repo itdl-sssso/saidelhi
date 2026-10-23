@@ -88,6 +88,13 @@ export const WHATSAPP_TEMPLATES = {
     "You're down for {{1}} tomorrow at {{2}}. Thank you.",
     "आप कल {{2}} में {{1}} के लिए शामिल हैं। धन्यवाद।",
   ),
+  volunteer_signup_alert: def(
+    "volunteer_signup_alert",
+    "utility",
+    3,
+    "New volunteer for {{1}}: {{2}} of {{3}} spots filled. See names in the portal.",
+    "{{1}} के लिए नया स्वयंसेवक: {{3}} में से {{2}} स्थान भरे। नाम पोर्टल में देखें।",
+  ),
   seva_broadcast: def(
     "seva_broadcast",
     "marketing",

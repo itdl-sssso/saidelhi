@@ -363,6 +363,14 @@ export function createLinksService(repo: DataRepo, deps: LinkServiceDeps): Links
     }
   }
 
+  async function afterSignup(eventId: string) {
+    try {
+      await deps.onVolunteerSignup(eventId);
+    } catch (err) {
+      console.error("[links] sign-up alert failed", err instanceof Error ? err.message : err);
+    }
+  }
+
   async function sendLink(l: LinkRec, phone: string, lang: Locale) {
     const ev = await eventOf(l);
     const title = loc(i18n(ev.titleEn, ev.titleHi), lang);
@@ -488,6 +496,7 @@ export function createLinksService(repo: DataRepo, deps: LinkServiceDeps): Links
       }
       deps.revalidate(isReport ? ["events", "home"] : ["events"]);
       if (isReport) await afterReport(ctx.ev.id);
+      else if (ctx.link.purpose === "public") await afterSignup(ctx.ev.id);
       return { submission: toDto(rec, true), replayed: false };
     },
 

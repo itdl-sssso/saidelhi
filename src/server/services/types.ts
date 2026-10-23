@@ -257,4 +257,6 @@ export interface ServiceDeps {
 export type LinkServiceDeps = Required<ServiceDeps> & {
   /** Called after a report is received or corrected (portal notifies the district). */
   onReportSubmitted: (eventId: string) => Promise<void>;
+  /** Called after a public sign-up (portal alerts opted-in coordinators). */
+  onVolunteerSignup: (eventId: string) => Promise<void>;
 };
