@@ -2006,7 +2006,7 @@
       "contact": "Internal contact",
       "contactHint": "A role or office, for example \"Eye OPD in-charge\". Not a personal number.",
       "showPublic": "Show name on public event pages",
-      "showPublicDesc": "Shows \"With <partner>\" on event and programme pages.",
+      "showPublicDesc": "Shows \"With\" and the partner name on event and programme pages.",
       "errName": "Enter the partner name.",
       "errCity": "Enter the city.",
       "deactivate": "Deactivate",
