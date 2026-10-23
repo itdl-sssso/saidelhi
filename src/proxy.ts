@@ -125,8 +125,10 @@ export default async function proxy(req: NextRequest) {
     } catch {
       /* malformed escape: probe the raw value, it will not exist */
     }
-    // `/centres/map` is the map page, not a centre.
-    const kind: ProbeKind | null = d[4] ? "adminEvent" : d[2] === "centres" && d[3] === "map" ? null : PROBE_KIND[d[2]];
+    // Static siblings of a dynamic segment are pages, not ids: `/centres/map`, `/admin/events/new`.
+    const kind: ProbeKind | null = d[4]
+      ? key === "new" && !d[0].endsWith("/edit") ? null : "adminEvent"
+      : d[2] === "centres" && d[3] === "map" ? null : PROBE_KIND[d[2]];
     // A probe failure (DB down) falls through to the page, which reports its own error.
     const ok = kind === null || (await exists(kind, key).catch(() => true));
     if (!ok) {

@@ -1,6 +1,10 @@
+import os from "node:os";
+import path from "node:path";
 import { defineConfig, devices } from "@playwright/test";
 
 const PORT = Number(process.env.E2E_PORT ?? 4400);
+/** Outside the project dir: Turbopack watches it, and every log line would trigger a rebuild + page reload loop. */
+const SERVER_LOG = process.env.E2E_SERVER_LOG ?? path.join(os.tmpdir(), `saidelhi-e2e-${PORT}.log`);
 const PERF = process.env.E2E_PERF === "1";
 const baseURL = process.env.E2E_BASE_URL ?? `http://localhost:${PORT}`;
 
@@ -24,7 +28,7 @@ export default defineConfig({
   webServer: process.env.E2E_BASE_URL
     ? undefined
     : {
-        command: `mkdir -p tests/e2e/.cache && ${PERF ? "pnpm start" : "pnpm dev"} --port ${PORT} 2>&1 | tee tests/e2e/.cache/server.log`,
+        command: `mkdir -p tests/e2e/.cache && ${PERF ? "pnpm start" : "pnpm dev"} --port ${PORT} 2>&1 | tee ${SERVER_LOG}`,
         url: `${baseURL}/api/v1/health`,
         reuseExistingServer: true,
         timeout: 180_000,
@@ -34,6 +38,6 @@ export default defineConfig({
     ? [{ name: "perf", testMatch: "**/perf.spec.ts", use: { ...devices["Desktop Chrome"], viewport: { width: 1280, height: 800 } } }]
     : [
         { name: "chromium-desktop", testIgnore: "**/perf.spec.ts", use: { ...devices["Desktop Chrome"], viewport: { width: 1280, height: 800 } } },
-        { name: "mobile", testIgnore: "**/perf.spec.ts", use: { ...devices["Desktop Chrome"], viewport: { width: 375, height: 812 }, hasTouch: true } },
+        { name: "mobile", testIgnore: ["**/perf.spec.ts", "**/portal.spec.ts"] /* portal journeys: desktop only */, use: { ...devices["Desktop Chrome"], viewport: { width: 375, height: 812 }, hasTouch: true } },
       ],
 });
