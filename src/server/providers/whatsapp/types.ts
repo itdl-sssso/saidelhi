@@ -12,6 +12,8 @@ export type OutboundMessage = Pick<WaOutbound, "text" | "buttons" | "list"> & { 
 /** Context the logging layer attaches to a sent message. Providers ignore it. */
 export interface SendMeta {
   inboxItemId?: string;
+  /** Event id carried in quick-reply button ids of approval templates (`ap:<verb>:<ref>`). */
+  buttonRef?: string;
 }
 
 /** Outgoing WhatsApp. `to` is E.164. Failures throw ApiError PROVIDER_UNAVAILABLE. */

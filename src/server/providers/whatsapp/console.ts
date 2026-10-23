@@ -1,7 +1,7 @@
 import { ulid } from "ulidx";
 import type { Locale } from "@/contract";
-import { renderTemplate, type TemplateName } from "./templates";
-import type { OutboundMessage, SendResult, WhatsAppProvider } from "./types";
+import { renderTemplate, templateButtons, type TemplateName } from "./templates";
+import type { OutboundMessage, SendMeta, SendResult, WhatsAppProvider } from "./types";
 
 /**
  * Dev provider: prints every message (OTP codes included) to the server log.
@@ -12,8 +12,9 @@ export class ConsoleWhatsApp implements WhatsAppProvider {
 
   constructor(private readonly log: (line: string) => void = (l) => console.info(l)) {}
 
-  async sendTemplate(to: string, template: TemplateName, lang: Locale, params: readonly string[]): Promise<SendResult> {
-    return this.record(to, `${template}/${lang}`, renderTemplate(template, lang, params));
+  async sendTemplate(to: string, template: TemplateName, lang: Locale, params: readonly string[], meta?: SendMeta): Promise<SendResult> {
+    const btns = templateButtons(template, lang, meta?.buttonRef);
+    return this.record(to, `${template}/${lang}`, renderTemplate(template, lang, params) + (btns ? ` [${btns.map((b) => b.title).join(" | ")}]` : ""));
   }
 
   async sendText(to: string, text: string): Promise<SendResult> {

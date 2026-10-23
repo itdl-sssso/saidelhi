@@ -124,7 +124,7 @@ async function create(t: Turn): Promise<void> {
       actor,
       {
         sevaType: d.seva,
-        title: { en: `${en} - ${d.venue}`.slice(0, 200), hi: `${hi} - ${d.venue}`.slice(0, 200) },
+        title: { en: `${en} – ${shortName(samithi?.nameEn)}`.slice(0, 200), hi: `${hi} – ${shortName(samithi?.nameHi ?? samithi?.nameEn)}`.slice(0, 200) },
         startsAt: istInstant(d.date, d.time).toISOString(),
         endsAt: null,
         samithiId: d.samithiId,
@@ -166,6 +166,9 @@ async function create(t: Turn): Promise<void> {
     throw err;
   }
 }
+
+/** Samithi name without its generic prefix ("Sai Centre Mayur Vihar" -> "Mayur Vihar"), so titles stay short and don't repeat the venue. */
+const shortName = (name: string | null | undefined): string => (name ?? "").replace(/^(sai\s+(centre|center|samithi)|samithi|साई\s+(केंद्र|समिति)|समिति)\s+/i, "").trim() || (name ?? "");
 
 async function sevaNameLocale(t: Turn, code: SevaType, loc: Locale): Promise<string> {
   const s = (await t.deps.repo.sevaTypes()).find((x) => x.code === code);
@@ -229,7 +232,7 @@ export const planFlow: Flow = {
       if (rid === "skip" || isSkip(text)) d.volunteers = null;
       else {
         const n = parseWholeNumber(text);
-        if (n === null || n > 10_000) return say(t, COPY.planVolunteersBad);
+        if (n === null || n > 10_000) return buttons(t, COPY.planVolunteersBad, [{ id: "skip", label: LABEL.skip }]);
         d.volunteers = n;
       }
       return ask(t);

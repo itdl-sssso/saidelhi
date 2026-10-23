@@ -1,7 +1,7 @@
 import type { Locale } from "@/contract";
 import type { WaRepo } from "../../repo/wa-types";
 import { ensureConversation, recordMessage, type WaEnv } from "../../whatsapp/conversations";
-import { renderTemplate, templateCostPaise, type TemplateName } from "./templates";
+import { renderTemplate, templateButtons, templateCostPaise, type TemplateName } from "./templates";
 import type { OutboundMessage, SendMeta, SendResult, WhatsAppProvider } from "./types";
 
 /**
@@ -61,7 +61,7 @@ export class LoggedWhatsApp implements WhatsAppProvider {
     return this.log(
       to,
       () => this.inner.sendTemplate(to, template, lang, params, meta),
-      { kind: "template", text, payload: { kind: "template", text, template, lang }, template, costPaise: templateCostPaise(template) },
+      { kind: "template", text, payload: { kind: "template", text, template, lang, buttons: templateButtons(template, lang, meta?.buttonRef) }, template, costPaise: templateCostPaise(template) },
       meta,
     );
   }

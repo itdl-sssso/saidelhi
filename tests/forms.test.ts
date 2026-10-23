@@ -54,9 +54,11 @@ describe("validation engine", () => {
     expect(r.ok).toBe(false);
     expect(paths(r.errors)).toEqual(["spectacles_total"]);
     expect(r.errors[0].message.hi).toMatch(/[ऀ-ॿ]/);
-    // Total given but no breakdown at all is also an error.
+    // Total given but breakdown unknown (all blank) is fine: the check only applies once any power is entered.
     const blank = validateAnswers(eyeCampReport, { ...EYE_ANSWERS, p_1_0: null, p_1_5: null, p_2_0: null, p_2_5: null, p_3_0: null });
-    expect(paths(blank.errors)).toEqual(["spectacles_total"]);
+    expect(paths(blank.errors)).toEqual([]);
+    const partial = validateAnswers(eyeCampReport, { ...EYE_ANSWERS, p_1_0: 5, p_1_5: null, p_2_0: null, p_2_5: null, p_3_0: null });
+    expect(paths(partial.errors)).toEqual(["spectacles_total"]);
   });
 
   it("cataract: referred ≤ found; hidden when none found", () => {

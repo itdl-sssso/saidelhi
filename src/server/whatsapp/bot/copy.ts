@@ -57,7 +57,14 @@ export const COPY = {
     "नमस्ते। यह श्री सत्य साई सेवा संगठन, दिल्ली एनसीआर है। हम कैसे मदद करें?",
   ),
   menuButton: b("Open menu", "मेनू खोलें"),
+  /** Short prompt after a flow ends; the full help text is only for the Help button. */
+  menuNext: b("What would you like to do next?", "अब आप आगे क्या करना चाहेंगे?"),
+  /** Help for a coordinator who cannot approve (samithi coordinator). */
   help: b(
+    "I can help you plan an activity, send its report and see your events. Send \"menu\" any time to start again.",
+    "मैं गतिविधि की योजना बनाने, उसकी रिपोर्ट भेजने और आपके कार्यक्रम देखने में मदद कर सकता हूँ। दोबारा शुरू करने के लिए कभी भी \"menu\" लिखें।",
+  ),
+  helpApprover: b(
     "I can help you plan an activity, send its report, see your events and approve plans. Send \"menu\" any time to start again.",
     "मैं गतिविधि की योजना बनाने, उसकी रिपोर्ट भेजने, आपके कार्यक्रम देखने और योजनाएँ स्वीकृत करने में मदद कर सकता हूँ। दोबारा शुरू करने के लिए कभी भी \"menu\" लिखें।",
   ),

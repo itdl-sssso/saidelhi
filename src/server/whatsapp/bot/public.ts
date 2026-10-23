@@ -6,7 +6,7 @@ import { ApiError } from "../../http/errors";
 import type { OptInRec } from "../../repo/wa-types";
 import { COPY, LABEL, pick, STATUS_LABEL } from "./copy";
 import { fmtWhen } from "./approvals";
-import { isCoordinator, showMenu } from "./menu";
+import { canApprove, isCoordinator, showMenu } from "./menu";
 import { fold, isSkip } from "./parse";
 import { buttons, resetFlow, say, setStep } from "./reply";
 import type { Flow, Turn } from "./types";
@@ -167,7 +167,7 @@ export async function myEvents(t: Turn): Promise<void> {
 
 export async function help(t: Turn): Promise<void> {
   resetFlow(t);
-  buttons(t, isCoordinator(t) ? COPY.help : COPY.helpPublic, [
+  buttons(t, isCoordinator(t) ? (canApprove(t) ? COPY.helpApprover : COPY.help) : COPY.helpPublic, [
     { id: "h:human", label: LABEL.human },
     { id: "m:menu", label: LABEL.menu },
   ]);

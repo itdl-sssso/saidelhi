@@ -33,9 +33,9 @@ export interface WaFixtures {
 /** Meta approval states shown on the templates tab (fictional until the account is connected). */
 const META_STATUS: Record<string, WaTemplateRec["metaStatus"]> = {
   login_code: "approved",
-  plan_approval_request: "approved",
+  plan_approval_request: "pending", // has quick-reply buttons: needs (re)approval by Meta
   form_link_sent: "approved",
-  report_approval_request: "approved",
+  report_approval_request: "pending",
   seva_broadcast: "rejected",
 };
 

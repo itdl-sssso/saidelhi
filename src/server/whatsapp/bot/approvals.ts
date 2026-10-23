@@ -11,8 +11,16 @@ import { reachUser } from "./reach";
 import { buttons, list, resetFlow, say, setStep } from "./reply";
 import type { BotDeps, Turn } from "./types";
 
+/** Hindi day-part word for an hour 0-23 (सुबह 4-11, दोपहर 12-15, शाम 16-19, रात otherwise). */
+const hiPeriod = (h: number) => (h >= 4 && h < 12 ? "सुबह" : h >= 12 && h < 16 ? "दोपहर" : h >= 16 && h < 20 ? "शाम" : "रात");
+
 export function fmtWhen(d: Date, l: Locale): string {
-  return new Intl.DateTimeFormat(l === "hi" ? "hi-IN" : "en-GB", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit", hour12: true, timeZone: "Asia/Kolkata" }).format(d);
+  if (l !== "hi") return new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit", hour12: true, timeZone: "Asia/Kolkata" }).format(d);
+  const day = new Intl.DateTimeFormat("hi-IN", { day: "numeric", month: "short", timeZone: "Asia/Kolkata" }).format(d);
+  const parts = new Intl.DateTimeFormat("en-GB", { hour: "numeric", minute: "2-digit", hourCycle: "h23", timeZone: "Asia/Kolkata" }).formatToParts(d);
+  const h = Number(parts.find((p) => p.type === "hour")?.value ?? 0) % 24;
+  const m = parts.find((p) => p.type === "minute")?.value ?? "00";
+  return `${day}, ${hiPeriod(h)} ${h % 12 || 12}:${m}`;
 }
 
 const titleOf = (ev: EventRec, l: Locale) => (l === "hi" ? ev.titleHi : null) ?? ev.titleEn;

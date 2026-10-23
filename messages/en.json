@@ -791,6 +791,7 @@
     "common": {
       "actions": "Actions",
       "cancel": "Cancel",
+      "reasonShort": "Enter at least {n} characters.",
       "reasonRequired": "Please say what needs to change.",
       "all": "All",
       "removeFilter": "Remove filter",
@@ -1474,6 +1475,7 @@
         "title": "Reminder rules",
         "saved": "Reminder updated.",
         "copyDistrict": "Also copied to the district coordinator.",
+        "global": "These rules apply to every district.",
         "quiet": "Reminders are not sent between 9 PM and 8 AM."
       },
       "broadcasts": {

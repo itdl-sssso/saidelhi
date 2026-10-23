@@ -56,8 +56,8 @@ export function createJobsService(ctx: PortalCtx): JobsService {
         const title = (l: "en" | "hi") => (l === "hi" ? ev.titleHi : null) ?? ev.titleEn;
         out.notified +=
           a.kind === "plan"
-            ? await notify(ctx, coords, "plan_approval_request", (l) => [title(l), fmtDate(ev.startsAt, l), ev.venueName])
-            : await notify(ctx, coords, "report_approval_request", (l) => [title(l), portalUrl(ctx, `/events/${ev.id}`)]);
+            ? await notify(ctx, coords, "plan_approval_request", (l) => [title(l), fmtDate(ev.startsAt, l), ev.venueName], ev.id)
+            : await notify(ctx, coords, "report_approval_request", (l) => [title(l), portalUrl(ctx, `/events/${ev.id}`)], ev.id);
         out.ids.push(ev.id);
       }
     }

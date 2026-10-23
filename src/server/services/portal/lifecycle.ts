@@ -165,7 +165,7 @@ async function sideEffects(ctx: PortalCtx, before: EventRec, ev: EventRec, input
   switch (input.action) {
     case "submit": {
       const coords = await holders(ctx, "district_coord", ev.districtId);
-      out.notified += await notify(ctx, coords, "plan_approval_request", (l) => [title(l), fmtDate(ev.startsAt, l), ev.venueName]);
+      out.notified += await notify(ctx, coords, "plan_approval_request", (l) => [title(l), fmtDate(ev.startsAt, l), ev.venueName], ev.id);
       break;
     }
     case "self-approve":
@@ -254,7 +254,7 @@ export async function reportReceived(ctx: PortalCtx, eventId: string): Promise<v
       .filter(Boolean)
       .join(", ") || "-";
   const coords = await holders(ctx, "district_coord", ev.districtId);
-  await notify(ctx, coords, "report_approval_request", (l) => [(l === "hi" ? ev.titleHi : null) ?? ev.titleEn, summary(l)]);
+  await notify(ctx, coords, "report_approval_request", (l) => [(l === "hi" ? ev.titleHi : null) ?? ev.titleEn, summary(l)], eventId);
   await ctx.repo.portal.insertAudit(
     auditRec({ kind: "public" }, { action: "event.report-received", entity: "event", entityId: ev.id, scopeId: ev.samithiId, data: { to: "report_submitted" } }),
   );
