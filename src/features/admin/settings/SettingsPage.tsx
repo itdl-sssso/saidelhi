@@ -21,7 +21,6 @@ import { Button } from "@/ui/Button";
 import { Dialog } from "@/ui/Dialog";
 import { EmptyState } from "@/ui/EmptyState";
 import { icons } from "@/ui/Icon";
-import { Input } from "@/ui/Input";
 import { Pagination } from "@/ui/Pagination";
 import { Select } from "@/ui/Select";
 import { Switch } from "@/ui/Switch";

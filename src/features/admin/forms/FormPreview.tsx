@@ -14,11 +14,8 @@ import s from "./Forms.module.css";
 
 const NO_FILES = { items: () => [], add: () => {}, reject: () => {}, remove: () => {}, retry: () => {} };
 
-export function PhonePreview({ def, initialLang }: { def: FormDefinition; initialLang?: Lang }) {
-  const t = useTranslations("admin.forms");
-  const locale = useLocale() as AppLocale;
-  const [lang, setLang] = useState<Lang>(initialLang ?? locale);
-  const [answers, setAnswers] = useState<Record<string, unknown>>({});
+/** The form as a coordinator sees it, driven by local answers (no network). */
+export function FormFill({ def, lang, answers, setAnswers }: { def: FormDefinition; lang: Lang; answers: Record<string, unknown>; setAnswers: (fn: (a: Record<string, unknown>) => Record<string, unknown>) => void }) {
   const validation = useMemo(() => validateLocal(def, answers), [def, answers]);
   const issues = useMemo(() => groupIssues(def, validation), [def, validation]);
   const ctx: RenderCtx = {
@@ -37,6 +34,23 @@ export function PhonePreview({ def, initialLang }: { def: FormDefinition; initia
     locale: lang,
   };
   return (
+    <>
+      {def.sections.map((sec) => (
+        <section key={sec.id} className={s.phoneSec}>
+          <h3 className={s.phoneSecT}>{pick(sec.title, lang) || "—"}</h3>
+          <SectionFields section={sec} ctx={ctx} />
+        </section>
+      ))}
+    </>
+  );
+}
+
+export function PhonePreview({ def, initialLang }: { def: FormDefinition; initialLang?: Lang }) {
+  const t = useTranslations("admin.forms");
+  const locale = useLocale() as AppLocale;
+  const [lang, setLang] = useState<Lang>(initialLang ?? locale);
+  const [answers, setAnswers] = useState<Record<string, unknown>>({});
+  return (
     <div className={s.phoneWrap}>
       <div className={s.langSwitch} role="group" aria-label={t("previewLang")}>
         {(["en", "hi"] as const).map((l) => (
@@ -48,12 +62,7 @@ export function PhonePreview({ def, initialLang }: { def: FormDefinition; initia
       <div className={s.phone} lang={lang}>
         <div className={s.phoneBar}>{pick(def.title, lang)}</div>
         <div className={s.phoneBody}>
-          {def.sections.map((sec) => (
-            <section key={sec.id} className={s.phoneSec}>
-              <h3 className={s.phoneSecT}>{pick(sec.title, lang)}</h3>
-              <SectionFields section={sec} ctx={ctx} />
-            </section>
-          ))}
+          <FormFill def={def} lang={lang} answers={answers} setAnswers={setAnswers} />
         </div>
       </div>
       <p className={s.cap}>{t("previewNote")}</p>
