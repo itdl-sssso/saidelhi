@@ -5,7 +5,7 @@ import { builderChecks, excelColumns, type FormDefinition, LINK_DEFAULTS } from 
 import { permissionsFor } from "@/server/auth/rbac";
 import { FORM_IDS } from "@/server/forms/definitions";
 import { EVENT, USER } from "@/server/mock/fixtures";
-import { apiErr, errCode, m6Setup } from "./support/m6";
+import { apiErr, errCode, m6Setup, numField } from "./support/m6";
 
 const EYE = FORM_IDS.templates.eye;
 
@@ -118,8 +118,7 @@ describe("forms", () => {
     const lockedVersion = (await t.repo.links.linkById(link.id))!.formVersionId;
 
     // new draft with a field missing Hindi
-    const added = { id: "extra_note", kind: "number" as const, label: { en: "Extra", hi: null }, required: false, locked: false, min: 0, max: 10 };
-    def.sections[1].fields.push(added as never);
+    def.sections[1].fields.push(numField("extra_note", "Extra", null));
     const created = await t.svc.portal.forms.patchDraft(state, EYE, { definition: def, version: null });
     expect(created.draft?.version).toBe(2);
     expect(created.version).toBe(1);

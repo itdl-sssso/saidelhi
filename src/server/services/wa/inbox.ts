@@ -389,7 +389,7 @@ export function createInboxService(ctx: WaCtx): InboxService {
       }
       if (!path) throw new ApiError("NOT_FOUND");
       await repo.portal.insertAudit(auditRec(actor, { action: "inbox.view_media", entity: "inbox_item", entityId: id, scopeId: item.scopeId ?? item.districtId, data: { name } }));
-      const mime = path.endsWith(".pdf") ? "application/pdf" : path.endsWith(".png") ? "image/png" : path.endsWith(".webp") ? "image/webp" : "image/jpeg";
+      const mime = path.endsWith(".pdf") ? "application/pdf" : path.endsWith(".png") ? "image/png" : path.endsWith(".webp") ? "image/webp" : path.endsWith(".xlsx") ? "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" : path.endsWith(".csv") ? "text/csv" : "image/jpeg";
       return { path, mime, name: name ?? "file" };
     },
 

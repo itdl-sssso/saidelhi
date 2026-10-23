@@ -5,7 +5,7 @@ import {
   type ChangeRequestCreate,
   type ChangeRequestDecision,
   type FormChangeRequest,
-  type FormDefinition,
+  FormDefinition,
   type FormDraftPatch,
   type FormDuplicateBody,
   type FormField,
@@ -30,6 +30,7 @@ import { newId } from "../../db/columns";
 import { aboutSection, section, t } from "../../forms/definitions";
 import { istYear, toIso, toIsoOrNull } from "../../domain/time";
 import { ApiError } from "../../http/errors";
+import { issuesToFields } from "../../http/messages";
 import type { FormVersionRec, TemplateRec } from "../../repo/links-types";
 import { buildTemplateXlsx } from "../../xlsx/template";
 import { loadKpiDefinitions } from "../kpis";
@@ -271,8 +272,11 @@ export function createFormsService(ctx: PortalCtx): FormsService {
       return toDetail(actor, await templateOr404(id));
     },
 
-    async patchDraft(actor, id, body) {
+    async patchDraft(actor, id, rawBody) {
       await assertEditable(actor);
+      const parsed = FormDefinition.safeParse(rawBody.definition);
+      if (!parsed.success) throw new ApiError("VALIDATION_FAILED", { fields: issuesToFields(parsed.error.issues, "en") });
+      const body = { ...rawBody, definition: parsed.data };
       const tpl = await templateOr404(id);
       const versions = await repo.links.versionsOf(id);
       const { published, draft } = split(versions);
