@@ -34,8 +34,8 @@ export const ROLE_PERMISSIONS: Record<Role, readonly Permission[]> = {
     "whatsapp.reminders",
   ],
   samithi_coord: COORD_COMMON,
-  content_editor: ["content.edit", "impact.manage", "partners.manage", "centres.manage"],
-  translator: ["discourses.edit"],
+  content_editor: ["content.edit", "impact.manage", "partners.manage", "centres.manage", "discourses.edit", "discourses.review", "discourses.publish"],
+  translator: ["discourses.edit", "discourses.review"],
   pii_officer: ["followup.read", "followup.reveal", "privacy.manage", "audit.read"],
 };
 
