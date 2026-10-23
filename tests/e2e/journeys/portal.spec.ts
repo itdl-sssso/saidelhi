@@ -1,6 +1,6 @@
 import ExcelJS from "exceljs";
 import { expect, test } from "@playwright/test";
-import { AUTH_FILE, DEV_PHONES, latestOtp, logOffset, readData } from "../helpers";
+import { AUTH_FILE, DEV_PHONES, latestOtp, logOffset } from "../helpers";
 
 
 const stamp = Date.now().toString(36);
@@ -156,5 +156,37 @@ test.describe("portal work", () => {
     expect(res.status()).toBe(301);
     expect(res.headers()["location"]).toMatch(/\/about$/);
     await anon.dispose();
+  });
+
+  test("discourse workspace: unpublish, edit Hindi, send to review, approve, publish", async ({ page }) => {
+    const list = await page.request.get("/api/v1/admin/discourses?pageSize=3");
+    expect(list.ok()).toBe(true);
+    const rows = ((await list.json()) as { data: { id: string; slug?: string }[] }).data;
+    const id = rows[2]!.id;
+    await page.goto(`/admin/discourses/${id}`);
+    await page.waitForLoadState("networkidle");
+    await page.getByRole("button", { name: "Unpublish" }).click();
+    const confirm = page.getByRole("dialog").getByRole("button", { name: "Unpublish" });
+    if (await confirm.isVisible().catch(() => false)) await confirm.click();
+    const para = page.getByRole("textbox", { name: "Hindi · Paragraph 1", exact: true });
+    await expect(para).toBeEnabled({ timeout: 15_000 });
+    await para.fill(`समीक्षा संपादन ${stamp}`);
+    await expect(page.getByText("All changes saved")).toBeVisible({ timeout: 15_000 });
+    // Every paragraph must be approved by a person before the discourse can be (the edit reset paragraph 1).
+    const approveP = page.getByRole("button", { name: "Approve paragraph" });
+    for (let i = 0; i < 40 && (await approveP.count()) > 0; i++) {
+      await approveP.first().click();
+      await page.waitForTimeout(300);
+    }
+    const send = page.getByRole("button", { name: "Send to review" });
+    if (await send.isEnabled()) await send.click();
+    await expect(page.getByRole("button", { name: "Approve discourse" })).toBeEnabled({ timeout: 15_000 });
+    await page.getByRole("button", { name: "Approve discourse" }).click();
+    const approveDlg = page.getByRole("dialog").getByRole("button", { name: /Approve/ });
+    if (await approveDlg.isVisible().catch(() => false)) await approveDlg.click();
+    await page.getByRole("button", { name: "Publish", exact: true }).click();
+    const pub = page.getByRole("dialog").getByRole("button", { name: "Publish", exact: true });
+    if (await pub.isVisible().catch(() => false)) await pub.click();
+    await expect(page.getByRole("button", { name: "Unpublish" })).toBeVisible({ timeout: 15_000 });
   });
 });
