@@ -73,7 +73,7 @@ function RequestsTab({ can }: { can: boolean }) {
   const page = Math.max(1, Number(sp.get("page")) || 1);
   const params = Object.fromEntries(sp.entries());
   const [sel, setSel] = useState<string | null>(null);
-  const api = useApi<PrivacyRequestRow[], { total: number; page: number; pageSize: number }>(adminEndpoints.privacyRequests({ status: "all", page, pageSize: 15 }));
+  const api = useApi<PrivacyRequestRow[], { total: number; page: number; pageSize: number }>(adminEndpoints.privacyRequests({ page, pageSize: 15 }));
   return (
     <div className={styles.stack}>
       <Restricted title={t("restrictedTitle")}>{t("restricted")}</Restricted>
