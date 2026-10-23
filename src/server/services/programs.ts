@@ -101,6 +101,10 @@ export function createProgramsService(repo: DataRepo, deps: ServiceDeps, events:
       });
     },
 
+    async exists(type: string): Promise<boolean> {
+      return (await repo.sevaTypes()).some((s) => s.active && s.code === type);
+    },
+
     async byType(type: SevaType): Promise<ProgramDetail | null> {
       const { org, settings, win, types } = await context();
       const rec = types.find((s) => s.code === type);

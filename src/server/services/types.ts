@@ -84,6 +84,8 @@ export interface ProgramsService {
   list(q: ProgramsQuery): Promise<ProgramCard[]>;
   /** null for unknown or inactive types. */
   byType(type: SevaType): Promise<ProgramDetail | null>;
+  /** Cheap probe: is this an active seva type (proxy 404 check). */
+  exists(type: string): Promise<boolean>;
 }
 
 export interface JoinService {
@@ -103,6 +105,8 @@ export interface ImpactService {
 export interface ArticlesService {
   list(q: ArticlesQuery): Promise<Paged<Article>>;
   bySlug(slug: string): Promise<ArticleDetail | null>;
+  /** Cheap existence probe for public visibility (proxy 404 check). */
+  exists(slug: string): Promise<boolean>;
 }
 
 export interface PrivacyRequestMeta {

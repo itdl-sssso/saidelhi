@@ -24,6 +24,11 @@ export function createArticlesService(repo: DataRepo, deps: ServiceDeps): Articl
       return { data: rows.map((r) => toArticle(r, ctx)), meta: { page: q.page, pageSize: q.pageSize, total } };
     },
 
+    async exists(slug: string): Promise<boolean> {
+      const rec = await repo.articleBySlug(slug);
+      return !!rec && (!rec.i18n || rec.i18n.status === "published");
+    },
+
     async bySlug(slug: string): Promise<ArticleDetail | null> {
       const rec = await repo.articleBySlug(slug);
       if (!rec || (rec.i18n && rec.i18n.status !== "published")) return null;
