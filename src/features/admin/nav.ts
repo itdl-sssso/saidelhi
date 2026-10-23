@@ -36,7 +36,7 @@ export const NAV: Array<{ id: NavGroupId; items: NavItemDef[] }> = [
     id: "collect",
     items: [
       { id: "links", href: "/admin/links", icon: I.Link2, permission: "links.read", built: true },
-      { id: "forms", href: "/admin/forms", icon: I.FileText, permission: "forms.manage" },
+      { id: "forms", href: "/admin/forms", icon: I.FileText, permission: "forms.read", built: true },
       { id: "uploads", href: "/admin/uploads", icon: I.Upload, permission: "uploads.manage" },
       { id: "volunteers", href: "/admin/volunteers", icon: I.Users, permission: "volunteers.read" },
     ],
@@ -70,10 +70,10 @@ export const NAV: Array<{ id: NavGroupId; items: NavItemDef[] }> = [
     items: [
       { id: "health", href: "/admin/health", icon: I.Activity, permission: "health.read" },
       { id: "followup", href: "/admin/follow-up", icon: I.HeartPulse, permission: "followup.read", restricted: true },
-      { id: "privacy", href: "/admin/privacy", icon: I.Shield, permission: "privacy.manage", restricted: true },
+      { id: "privacy", href: "/admin/privacy", icon: I.Shield, permission: "privacy.read", alsoFor: ["privacy.manage"], restricted: true },
       { id: "audit", href: "/admin/audit", icon: I.ScrollText, permission: "audit.read", built: true },
       { id: "migration", href: "/admin/migration", icon: I.ArrowRightLeft, permission: "migration.run" },
-      { id: "settings", href: "/admin/settings", icon: I.Settings, permission: "settings.manage" },
+      { id: "settings", href: "/admin/settings", icon: I.Settings, permission: "settings.manage", built: true },
     ],
   },
 ];

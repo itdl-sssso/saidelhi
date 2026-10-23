@@ -1,6 +1,22 @@
 // Lucide glyphs used by the portal that are not in the shared src/ui/Icon registry.
 // Pass them to <Icon icon={...} /> (stroke 1.75 comes from Icon).
 export {
+  Archive,
+  ArchiveRestore,
+  ArrowDown,
+  ArrowUp,
+  Copy,
+  ExternalLink,
+  Eye,
+  EyeOff,
+  FileSpreadsheet,
+  GripVertical,
+  History,
+  Lock,
+  Pencil,
+  Phone,
+  Send,
+  Trash2,
   Activity,
   ArrowRightLeft,
   Ban,

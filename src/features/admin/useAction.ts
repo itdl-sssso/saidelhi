@@ -2,6 +2,7 @@
 
 // Runs a portal mutation and reacts per CONTRACT §6: 401 → login, 409 → reload prompt,
 // 403/423/429/503/network → toast; 422 and success are returned to the caller.
+import "./dev-fixtures-load"; // TEMP M6 until backend merge
 import { useLocale, useTranslations } from "next-intl";
 import { useCallback, useState } from "react";
 import type { ApiErrorBody } from "@/contract";
