@@ -1,4 +1,5 @@
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import AxeBuilder from "@axe-core/playwright";
 import type { APIRequestContext, Browser, BrowserContext, Page } from "@playwright/test";
@@ -32,7 +33,7 @@ export function readData(): E2EData {
   return JSON.parse(fs.readFileSync(DATA_FILE, "utf8")) as E2EData;
 }
 
-export const SERVER_LOG = process.env.E2E_SERVER_LOG ?? path.join(CACHE_DIR, "server.log");
+export const SERVER_LOG = process.env.E2E_SERVER_LOG ?? path.join(os.tmpdir(), `saidelhi-e2e-${process.env.E2E_PORT ?? 4400}.log`);
 
 /**
  * The dev messages endpoint masks login codes (LoggedWhatsApp stores "••••••"), so the code is read from the
