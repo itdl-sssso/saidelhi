@@ -17,7 +17,6 @@ import { ThreadView } from "../inbox/SourcePane";
 import { fmtShortDateTime } from "../time";
 import { useApi } from "../useApi";
 import { hrefWith } from "../url";
-import { FIXTURE_LOG, fixtureConversation } from "./__fixtures__";
 import { Loadable } from "./WhatsAppAdmin";
 import styles from "../Admin.module.css";
 import s from "./WhatsApp.module.css";
@@ -34,10 +33,7 @@ export function ConversationLog() {
   const page = Math.max(1, Number(sp.get("page")) || 1);
   const [draft, setDraft] = useState(q);
   const [open, setOpen] = useState<string | null>(null);
-  const api = useApi<ConversationRow[], PageMeta>(adminEndpoints.waLog({ q: q || undefined, page, pageSize: PAGE_SIZE }), () => ({
-    data: FIXTURE_LOG.filter((c) => !q || c.lastText.toLowerCase().includes(q.toLowerCase()) || c.who.label.toLowerCase().includes(q.toLowerCase())),
-    meta: { page: 1, pageSize: PAGE_SIZE, total: FIXTURE_LOG.length },
-  }));
+  const api = useApi<ConversationRow[], PageMeta>(adminEndpoints.waLog({ q: q || undefined, page, pageSize: PAGE_SIZE }));
 
   return (
     <div className={styles.page}>
@@ -92,7 +88,7 @@ export function ConversationLog() {
 
 function Thread({ id, onClose }: { id: string | null; onClose: () => void }) {
   const t = useTranslations("admin.whatsapp.log");
-  const api = useApi<ConversationDetail>(id ? adminEndpoints.waConversation(id) : null, () => ({ data: fixtureConversation(id ?? "") }));
+  const api = useApi<ConversationDetail>(id ? adminEndpoints.waConversation(id) : null);
   return (
     <SideSheet open={id !== null} onClose={onClose} title={api.status === "ready" ? api.data.phone : t("thread")}>
       {api.status === "loading" || !id ? <SkeletonRows /> : api.status === "ready" ? <ThreadView messages={api.data.thread} /> : <EmptyState icon="cloud-off" title={t("threadError")} />}

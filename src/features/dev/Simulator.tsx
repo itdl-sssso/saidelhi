@@ -1,12 +1,10 @@
 "use client";
 
 // Dev-only WhatsApp bot simulator (English only). Talks to /api/v1/dev/whatsapp/* (404 unless
-// WHATSAPP_PROVIDER=console and not production). While the backend route is missing in development it
-// falls back to a canned local reply so the UI can be reviewed (DEV-ONLY, see features/admin/devFixture.ts).
+// WHATSAPP_PROVIDER=console and not production).
 import { useCallback, useEffect, useRef, useState } from "react";
 import { type SimInboundBody, type SimMessage, type WaOutbound, devWhatsappEndpoints } from "@/contract";
 import { type ApiResult, apiRequest } from "@/lib/api";
-import { isMissingRoute } from "@/features/admin/devFixture";
 import { Icon } from "@/ui/Icon";
 import { Button } from "@/ui/Button";
 import { SideSheet } from "@/ui/SideSheet";
@@ -27,8 +25,6 @@ const PHONES: Array<{ phone: string; label: string }> = [
 ];
 
 const time = (at: string) => new Date(at).toLocaleTimeString("en-IN", { hour: "numeric", minute: "2-digit", timeZone: "Asia/Kolkata" });
-const fakeOut = (to: string, over: Partial<WaOutbound>): WaOutbound => ({ id: `loc_${Math.random().toString(36).slice(2, 8)}`, to, at: new Date().toISOString(), kind: "text", text: "", buttons: null, list: null, template: null, ...over });
-
 export function Simulator() {
   const [phone, setPhone] = useState(PHONES[0].phone);
   const [messages, setMessages] = useState<SimMessage[]>([]);
@@ -36,18 +32,12 @@ export function Simulator() {
   const [busy, setBusy] = useState(false);
   const [note, setNote] = useState<string | null>(null);
   const [list, setList] = useState<WaOutbound | null>(null);
-  const local = useRef(false);
   const endRef = useRef<HTMLDivElement>(null);
 
   const apply = useCallback((res: ApiResult<SimMessage[]>) => {
     if (res.ok) {
-      local.current = false;
       setNote(null);
       setMessages(res.data);
-    } else if (isMissingRoute(res)) {
-      local.current = true;
-      setNote("Dev bot API not found (backend not merged). Showing canned local replies.");
-      setMessages([]);
     } else setNote(`Could not load messages (${res.status}).`);
   }, []);
   const load = useCallback(async (p: string) => apply(await apiRequest<SimMessage[]>(devWhatsappEndpoints.messages(p))), [apply]);
@@ -63,29 +53,9 @@ export function Simulator() {
     endRef.current?.scrollIntoView({ block: "end" });
   }, [messages]);
 
-  const send = async (body: Omit<SimInboundBody, "from">, shown: string | null) => {
+  const send = async (body: Omit<SimInboundBody, "from">) => {
     setBusy(true);
     const full: SimInboundBody = { from: phone, ...body };
-    const now = new Date().toISOString();
-    if (local.current) {
-      const reply = fakeOut(phone, {
-        kind: "buttons",
-        text: "Sai Ram. What would you like to do?",
-        buttons: [
-          { id: "report", title: "Send a report" },
-          { id: "plan", title: "Plan an event" },
-          { id: "events", title: "This week" },
-        ],
-      });
-      const sheet = fakeOut(phone, {
-        kind: "list",
-        text: "Pick the event this report is for.",
-        list: { button: "Choose event", sections: [{ title: "Your samithi", rows: [{ id: "e1", title: "Medical camp", description: "Shakarpur · 12 Oct" }, { id: "e2", title: "Bal Vikas class", description: "Laxmi Nagar · 11 Oct" }] }] },
-      });
-      setMessages((m) => [...m, { dir: "in", at: now, text: shown, out: null }, { dir: "out", at: now, text: reply.text, out: reply }, { dir: "out", at: now, text: sheet.text, out: sheet }]);
-      setBusy(false);
-      return;
-    }
     const res = await apiRequest<WaOutbound[]>(devWhatsappEndpoints.inbound(), { method: "POST", body: full });
     if (!res.ok) setNote(`Send failed (${res.status}): ${res.error.message}`);
     await load(phone);
@@ -96,14 +66,14 @@ export function Simulator() {
     const v = text.trim();
     if (!v) return;
     setText("");
-    void send({ text: v, replyId: null, media: null }, v);
+    void send({ text: v, replyId: null, media: null });
   };
 
   const reset = async () => {
-    if (!local.current) await apiRequest(devWhatsappEndpoints.reset(), { method: "POST", body: {} });
+    await apiRequest(devWhatsappEndpoints.reset(), { method: "POST", body: { phone } });
     setMessages([]);
-    setNote(local.current ? note : null);
-    if (!local.current) await load(phone);
+    setNote(null);
+    await load(phone);
   };
 
   return (
@@ -155,7 +125,7 @@ export function Simulator() {
                 {o?.buttons?.length ? (
                   <span className={s.btns}>
                     {o.buttons.map((b) => (
-                      <button key={b.id} type="button" className={s.qr} disabled={busy} onClick={() => void send({ text: b.title, replyId: b.id, media: null }, b.title)}>
+                      <button key={b.id} type="button" className={s.qr} disabled={busy} onClick={() => void send({ text: b.title, replyId: b.id, media: null })}>
                         {b.title}
                       </button>
                     ))}
@@ -180,7 +150,7 @@ export function Simulator() {
             submit();
           }}
         >
-          <button type="button" className={s.round} aria-label="Attach a fake photo" disabled={busy} onClick={() => void send({ text: null, replyId: null, media: { kind: "image", name: "register-photo.jpg" } }, null)}>
+          <button type="button" className={s.round} aria-label="Attach a fake photo" disabled={busy} onClick={() => void send({ text: null, replyId: null, media: { kind: "image", name: "register-photo.jpg" } })}>
             <Icon name="camera" size={20} />
           </button>
           <input value={text} onChange={(e) => setText(e.target.value)} placeholder="Message" aria-label="Message" />
@@ -201,7 +171,7 @@ export function Simulator() {
                 className={s.row}
                 onClick={() => {
                   setList(null);
-                  void send({ text: r.title, replyId: r.id, media: null }, r.title);
+                  void send({ text: r.title, replyId: r.id, media: null });
                 }}
               >
                 <b>{r.title}</b>

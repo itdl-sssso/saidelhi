@@ -13,7 +13,6 @@ import { ConfirmDialog } from "../Dialogs";
 import { Panel } from "../kit";
 import { useAction } from "../useAction";
 import { useApi } from "../useApi";
-import { FIXTURE_DISTRICTS, FIXTURE_ESTIMATE } from "./__fixtures__";
 import styles from "../Admin.module.css";
 import s from "./WhatsApp.module.css";
 
@@ -24,7 +23,7 @@ export function Broadcasts() {
   const tSeva = useTranslations("seva");
   const locale = useLocale() as AppLocale;
   const { run, pending } = useAction();
-  const districts = useApi<OrgUnit[]>(endpoints.orgUnits({ kind: "district" }), () => ({ data: FIXTURE_DISTRICTS }));
+  const districts = useApi<OrgUnit[]>(endpoints.orgUnits({ kind: "district" }));
   const [districtIds, setDistrictIds] = useState<string[]>([]);
   const [sevaTypes, setSevaTypes] = useState<string[]>([]);
   const [en, setEn] = useState("");
@@ -50,14 +49,14 @@ export function Broadcasts() {
   const doEstimate = async () => {
     if (!en.trim()) return setEnError(t("textRequired"));
     reset();
-    const res = await run<BroadcastResult>(adminEndpoints.waBroadcasts(), { body: body(true) }, { key: "estimate", refresh: false, devFixture: true });
-    if (res.ok) setEstimate({ key, res: res.data ?? FIXTURE_ESTIMATE });
+    const res = await run<BroadcastResult>(adminEndpoints.waBroadcasts(), { body: body(true) }, { key: "estimate", refresh: false });
+    if (res.ok) setEstimate({ key, res: res.data });
   };
 
   const send = async () => {
-    const res = await run<BroadcastResult>(adminEndpoints.waBroadcasts(), { body: body(false) }, { key: "send", refresh: false, devFixture: true });
+    const res = await run<BroadcastResult>(adminEndpoints.waBroadcasts(), { body: body(false) }, { key: "send", refresh: false });
     if (!res.ok) return false;
-    setSentMsg((res.data ?? FIXTURE_ESTIMATE).recipients);
+    setSentMsg(res.data.recipients);
     setEstimate(null);
     setEn("");
     setHi("");

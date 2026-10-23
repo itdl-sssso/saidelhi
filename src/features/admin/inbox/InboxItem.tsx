@@ -18,7 +18,6 @@ import { PageHead } from "../kit";
 import { fmtDateTime, fmtShortDateTime } from "../time";
 import { useAction } from "../useAction";
 import { useApi } from "../useApi";
-import { fixtureDetail } from "./__fixtures__";
 import { ConfPill } from "./parts";
 import { SourcePane } from "./SourcePane";
 import styles from "../Admin.module.css";
@@ -28,7 +27,7 @@ const NO_FILES = { items: () => [], add: () => {}, reject: () => {}, remove: () 
 
 export function InboxItem({ id }: { id: string }) {
   const t = useTranslations("admin.inbox");
-  const api = useApi<InboxDetail>(adminEndpoints.inboxItem(id), () => ({ data: fixtureDetail(id) }));
+  const api = useApi<InboxDetail>(adminEndpoints.inboxItem(id));
   if (api.status === "loading") return <SkeletonCard />;
   if (api.status === "forbidden") return <EmptyState icon="lock" title={t("forbidden")} />;
   if (api.status === "notFound") return <EmptyState icon="search-x" title={t("notFound")} action={<Button href="/admin/inbox" variant="outline">{t("backToList")}</Button>} />;
@@ -92,7 +91,7 @@ function Loaded({ d, reload }: { d: InboxDetail; reload: () => void }) {
       }
     : null;
 
-  const opts = (key: string, success?: string) => ({ key, success, refresh: false, quiet422: true, devFixture: true, onReload: reload });
+  const opts = (key: string, success?: string) => ({ key, success, refresh: false, quiet422: true, onReload: reload });
 
   const patch = async (body: Omit<InboxPatchBody, "version">, key: string, success?: string) => {
     const res = await run(adminEndpoints.inboxItem(d.id), { method: "PATCH", body: { version: d.version, ...body } }, opts(key, success));

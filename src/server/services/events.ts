@@ -50,6 +50,11 @@ export function createEventsService(repo: DataRepo, deps: ServiceDeps): EventsSe
       return { data: merged.slice(offset, offset + q.pageSize), meta: { ...meta, total: total + recurring.length } };
     },
 
+    async exists(id: string, publicOnly: boolean): Promise<boolean> {
+      const ev = await repo.eventById(id);
+      return !!ev && (!publicOnly || isPublicStatus(ev.status));
+    },
+
     async byId(id: string): Promise<EventPublic | null> {
       const ev = await repo.eventById(id);
       if (!ev || !isPublicStatus(ev.status)) return null;

@@ -3,11 +3,9 @@
 // Client read for portal pages whose data comes straight from /api/v1 (CONTRACT §2): loading, error,
 // reload, and the `meta` of list envelopes (src/lib/api.ts drops it). 401 → login.
 import { useLocale } from "next-intl";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { isErrorEnvelope } from "@/contract";
+import { useCallback, useEffect, useState } from "react";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import type { AppLocale } from "@/lib/format";
-import { isMissingRoute } from "./devFixture";
 
 export type ApiState<T, M> =
   | { status: "loading"; data: null; meta: null }
@@ -18,17 +16,12 @@ export type ApiState<T, M> =
 
 export type UseApi<T, M> = ApiState<T, M> & { reload: () => void };
 
-/** `fixture` is the development fallback while the route is missing (see devFixture.ts). */
-export function useApi<T, M = undefined>(url: string | null, fixture?: () => { data: T; meta?: M }): UseApi<T, M> {
+export function useApi<T, M = undefined>(url: string | null): UseApi<T, M> {
   const locale = useLocale() as AppLocale;
   const router = useRouter();
   const pathname = usePathname();
   const [state, setState] = useState<ApiState<T, M>>({ status: "loading", data: null, meta: null });
   const [tick, setTick] = useState(0);
-  const fixtureRef = useRef(fixture);
-  useEffect(() => {
-    fixtureRef.current = fixture;
-  });
 
   useEffect(() => {
     if (!url) return;
@@ -47,11 +40,6 @@ export function useApi<T, M = undefined>(url: string | null, fixture?: () => { d
       if (status >= 200 && status < 300 && json && typeof json === "object" && "data" in json) {
         const body = json as { data: T; meta?: M };
         return setState({ status: "ready", data: body.data, meta: body.meta ?? null });
-      }
-      const code = isErrorEnvelope(json) ? json.error.code : "INTERNAL";
-      if (fixtureRef.current && isMissingRoute({ ok: false, status, error: { code } })) {
-        const f = fixtureRef.current();
-        return setState({ status: "ready", data: f.data, meta: f.meta ?? null });
       }
       if (status === 401) router.push({ pathname: "/admin/login", query: { next: pathname } });
       else if (status === 403) setState({ status: "forbidden", data: null, meta: null });

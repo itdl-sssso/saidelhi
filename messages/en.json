@@ -839,7 +839,6 @@
       "codeTitle": "Enter the code",
       "neutral": "If {phone} is registered, a 6-digit code is on its way on WhatsApp.",
       "neutralEmail": "If there is an email on file for this number, a 6-digit code is on its way.",
-      "codeLabel": "6-digit code",
       "verify": "Sign in",
       "resendIn": "Send again in {time}",
       "resend": "Send the code again",
