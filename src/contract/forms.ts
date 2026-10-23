@@ -56,6 +56,8 @@ export type FormField = {
   /** yes/no that records consent for the personal fields in its row or section. */
   consent?: boolean;
   format?: FieldFormat;
+  /** v0.7: days personal answers are kept (personal fields only; default per data kind). */
+  retentionDays?: number;
 };
 export const FormField: z.ZodType<FormField> = z.object({
   id: z.string(),
@@ -79,6 +81,7 @@ export const FormField: z.ZodType<FormField> = z.object({
   readOnly: z.boolean().optional(),
   consent: z.boolean().optional(),
   format: FieldFormat.optional(),
+  retentionDays: z.number().int().min(1).max(3650).optional(),
 });
 
 /** Splits "key:dim" into its parts (dim '' = total). */

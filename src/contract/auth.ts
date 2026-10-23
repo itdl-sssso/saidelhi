@@ -16,6 +16,8 @@ export const Permission = z.enum([
   "approvals.decide",
   "approvals.escalated",
   "inbox.review",
+  /** v0.7: view templates + request changes (district). */
+  "forms.read",
   "forms.manage",
   "uploads.manage",
   "org.read",
@@ -36,6 +38,8 @@ export const Permission = z.enum([
   "health.read",
   "followup.read",
   "followup.reveal",
+  /** v0.7: read-only privacy tabs (state admin; spec 47). */
+  "privacy.read",
   "privacy.manage",
   "audit.read",
   "settings.manage",

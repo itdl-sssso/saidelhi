@@ -417,7 +417,8 @@ export type AuditQuery = z.infer<typeof AuditQuery>;
 
 // ---- Jobs -------------------------------------------------------------------
 
-export const CronJob = z.enum(["escalations", "report-reminders", "event-status", "reminders"]);
+/** v0.7 adds `monthly-report` (7th, 06:00 IST), `retention` (nightly purge), `publish-scheduled` (content schedule). */
+export const CronJob = z.enum(["escalations", "report-reminders", "event-status", "reminders", "monthly-report", "retention", "publish-scheduled"]);
 export type CronJob = z.infer<typeof CronJob>;
 
 export const JobResult = z.object({
