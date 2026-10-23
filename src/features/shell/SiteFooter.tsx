@@ -36,6 +36,21 @@ export function SiteFooter() {
               </h2>
               <ul className={styles.links}>
                 <li>
+                  <Link href="/about" className={styles.link}>
+                    {t("about")}
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/programs" className={styles.link}>
+                    {t("programs")}
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/news" className={styles.link}>
+                    {t("news")}
+                  </Link>
+                </li>
+                <li>
                   <Link href="/calendar" className={styles.link}>
                     {t("calendar")}
                   </Link>

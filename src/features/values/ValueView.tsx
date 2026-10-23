@@ -2,7 +2,7 @@ import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import type { EventPublic, ValuePayload } from "@/contract";
 import { Link } from "@/i18n/navigation";
-import { type AppLocale, formatTime, istParts, monthName, pickText } from "@/lib/format";
+import { type AppLocale, formatTime, istParts, monthName } from "@/lib/format";
 import { VALUE_ICON, VALUE_KEYS, type ValueKey, valueEmblem, valuePhoto } from "@/features/home/values";
 import { EnglishOnlyBar } from "@/features/public/p1";
 import { LocalText, pub } from "@/features/public/parts";

@@ -65,11 +65,20 @@ export default function CentreMap({ pins, labels }: { pins: Pin[]; labels: MapLa
         marker.bindPopup(box);
       }
 
-      if (pins.length > 1) map.fitBounds(L.latLngBounds(pins.map((p) => [p.lat, p.lng] as [number, number])), { padding: [40, 40], maxZoom: 14 });
-      else if (pins.length === 1) map.setView([pins[0].lat, pins[0].lng], 14);
-
-      // The pane is hidden on phones until "Show map": re-measure whenever its size changes.
-      observer = new ResizeObserver(() => map.invalidateSize());
+      const fit = () => {
+        if (pins.length > 1) map.fitBounds(L.latLngBounds(pins.map((p) => [p.lat, p.lng] as [number, number])), { padding: [40, 40], maxZoom: 14 });
+        else if (pins.length === 1) map.setView([pins[0].lat, pins[0].lng], 14);
+      };
+      // The pane is hidden on phones until "Show map" (zero size): fit the pins once it has a size,
+      // and re-measure whenever its size changes.
+      let fitted = false;
+      observer = new ResizeObserver(() => {
+        map.invalidateSize();
+        if (!fitted && host.current && host.current.clientWidth > 0) {
+          fitted = true;
+          fit();
+        }
+      });
       observer.observe(host.current);
     })();
     return () => {
