@@ -10,8 +10,8 @@ import { Alert } from "@/ui/Alert";
 import { Button } from "@/ui/Button";
 import { Input } from "@/ui/Input";
 import { Icon } from "@/ui/Icon";
+import { OtpInput } from "@/ui/OtpInput";
 import { Timer } from "../icons";
-import { OtpBoxes } from "./OtpBoxes";
 import styles from "./Login.module.css";
 
 type Step = "phone" | "code";
@@ -170,7 +170,12 @@ export function LoginForm({ next }: { next: string }) {
             {t("codeTitle")}
           </h1>
           <Alert tone="info">{channel === "email" ? t("neutralEmail") : t("neutral", { phone: masked })}</Alert>
-          <OtpBoxes value={code} onChange={setCode} onComplete={verify} label={t("codeLabel")} error={codeError ?? undefined} disabled={busy || locked} autoFocus />
+          <OtpInput id="code" value={code} onChange={setCode} onComplete={(c) => void verify(c)} error={!!codeError} disabled={busy || locked} autoFocus describedBy={codeError ? "code-error" : undefined} />
+          {codeError ? (
+            <span id="code-error" className={styles.err} role="alert">
+              {codeError}
+            </span>
+          ) : null}
           {banner ? (
             <Alert tone={banner.tone}>
               {banner.text}

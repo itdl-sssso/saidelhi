@@ -1,0 +1,41 @@
+/* WhatsApp admin (spec 42). Mobile first. */
+
+.muted { color: var(--text-muted); }
+
+/* Templates */
+.cards { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.tcard { background: var(--white); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.tHead { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+.tName { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.tTexts { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
+.tTexts p { margin: 2px 0 0; font-size: var(--text-small); line-height: 1.5; overflow-wrap: anywhere; color: var(--slate-800); }
+.tTexts p.muted { color: var(--text-muted); }
+.tLang { font-size: 12px; font-weight: 600; letter-spacing: 0.04em; color: var(--slate-600); }
+@media (min-width: 768px) { .tTexts { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; } }
+
+/* Reminders */
+.rules { list-style: none; margin: 0; padding: 0; }
+.rule { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 14px 16px; border-bottom: 1px solid var(--border-subtle); min-height: 64px; }
+.ruleT { display: flex; flex-direction: column; gap: 2px; min-width: 0; font-size: var(--text-portal-body); }
+.foot { margin: 0; padding: 12px 16px; font-size: var(--text-small); color: var(--slate-600); }
+
+/* Broadcasts */
+.cost { display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; border-radius: var(--radius-md); border: 1px solid var(--blue-300); background: var(--blue-50); color: var(--blue-700); }
+.costBody { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.costBig { font-size: 18px; font-weight: 600; color: var(--slate-900); }
+.preview { display: flex; flex-direction: column; gap: 8px; padding: 12px; background: var(--sand); border-radius: var(--radius-md); }
+.tmpl { align-self: flex-start; display: inline-flex; gap: 6px; align-items: center; font-size: var(--text-caption); color: var(--blue-700); }
+.pbub { align-self: flex-start; max-width: 92%; background: var(--white); border: 1px solid var(--border-subtle); border-radius: 12px; border-top-left-radius: 4px; padding: 8px 12px; font-size: var(--text-portal-body); line-height: 1.45; white-space: pre-wrap; overflow-wrap: anywhere; }
+
+/* Conversation log */
+.search { display: flex; gap: 8px; align-items: flex-end; flex-wrap: wrap; }
+.search > :first-child { flex: 1 1 220px; min-width: 0; }
+.privacy { display: flex; gap: 8px; align-items: flex-start; margin: 0; font-size: var(--text-caption); color: var(--text-muted); line-height: 1.45; }
+.logList { list-style: none; margin: 0; padding: 0; background: var(--white); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); overflow: hidden; }
+.logList li + li { border-top: 1px solid var(--border-subtle); }
+.logRow { all: unset; box-sizing: border-box; width: 100%; display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px; padding: 12px 16px; min-height: 64px; cursor: pointer; }
+.logRow:hover { background: var(--cream); }
+.logRow:focus-visible { box-shadow: inset var(--ring-focus); }
+.logWho { display: flex; flex-direction: column; }
+.logText { font-size: var(--text-small); color: var(--slate-800); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+@media (min-width: 900px) { .logRow { grid-template-columns: 200px minmax(0, 1fr) auto; align-items: center; gap: 16px; } }

@@ -1,9 +1,11 @@
 "use client";
 
-import { useState, useTransition } from "react";
-import { useTranslations } from "next-intl";
-import type { SevaType } from "@/contract";
+import { useEffect, useState, useTransition } from "react";
+import { useLocale, useTranslations } from "next-intl";
+import { type OrgUnit, type SevaType, endpoints } from "@/contract";
 import { useRouter } from "@/i18n/navigation";
+import { apiRequest } from "@/lib/api";
+import { type AppLocale, tx } from "@/lib/format";
 import { useHydrated } from "@/lib/useHydrated";
 import { Button } from "@/ui/Button";
 import { cx } from "@/ui/cx";
@@ -18,11 +20,35 @@ export type SamithiOption = Option & { district: string };
 
 type Filters = Pick<CalendarState, "district" | "sevaType" | "samithi" | "volunteers">;
 
+/** Filter options from the public org-units API (CONTRACT v0.5); the server-rendered options stay until it answers. */
+function useOrgOptions(locale: AppLocale): { districts: Option[]; samithis: SamithiOption[] } | null {
+  const [units, setUnits] = useState<{ districts: Option[]; samithis: SamithiOption[] } | null>(null);
+  useEffect(() => {
+    let live = true;
+    Promise.all([apiRequest<OrgUnit[]>(endpoints.orgUnits({ kind: "district" }), { locale }), apiRequest<OrgUnit[]>(endpoints.orgUnits({ kind: "samithi" }), { locale })]).then(([d, sm]) => {
+      if (!live || !d.ok || !sm.ok) return;
+      const slugById = new Map(d.data.map((x) => [x.id, x.slug]));
+      const byLabel = (a: Option, b: Option) => a.label.localeCompare(b.label, locale);
+      setUnits({
+        districts: d.data.map((x) => ({ value: x.slug, label: tx(x.name, locale) })).sort(byLabel),
+        samithis: sm.data
+          .filter((x) => x.parentId && slugById.has(x.parentId))
+          .map((x) => ({ value: x.slug, label: tx(x.name, locale), district: slugById.get(x.parentId as string) as string }))
+          .sort(byLabel),
+      });
+    });
+    return () => {
+      live = false;
+    };
+  }, [locale]);
+  return units;
+}
+
 export function CalendarFilters({
   state,
   today,
-  districts,
-  samithis,
+  districts: serverDistricts,
+  samithis: serverSamithis,
   sevaTypes,
 }: {
   state: CalendarState;
@@ -32,6 +58,10 @@ export function CalendarFilters({
   sevaTypes: Option[];
 }) {
   const t = useTranslations("calendar");
+  const locale = useLocale() as AppLocale;
+  const units = useOrgOptions(locale);
+  const districts = units?.districts ?? serverDistricts;
+  const samithis = units?.samithis ?? serverSamithis;
   const router = useRouter();
   const hydrated = useHydrated();
   const [pending, startTransition] = useTransition();

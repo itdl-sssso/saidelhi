@@ -14,6 +14,8 @@ export interface NavItemDef {
   href: string;
   icon: LucideIcon;
   permission: Permission;
+  /** Any of these also shows the item (e.g. district coordinators get WhatsApp reminders only). */
+  alsoFor?: Permission[];
   /** Lock glyph: restricted screens (personal data). */
   restricted?: boolean;
   /** Built in this milestone; the rest show a placeholder page. */
@@ -26,7 +28,7 @@ export const NAV: Array<{ id: NavGroupId; items: NavItemDef[] }> = [
     items: [
       { id: "overview", href: "/admin", icon: I.LayoutDashboard, permission: "overview.read", built: true },
       { id: "events", href: "/admin/events", icon: I.CalendarPlus, permission: "events.read", built: true },
-      { id: "inbox", href: "/admin/inbox", icon: I.Inbox, permission: "inbox.review" },
+      { id: "inbox", href: "/admin/inbox", icon: I.Inbox, permission: "inbox.review", built: true },
       { id: "approvals", href: "/admin/approvals", icon: I.CheckCheck, permission: "approvals.read", built: true },
     ],
   },
@@ -59,7 +61,7 @@ export const NAV: Array<{ id: NavGroupId; items: NavItemDef[] }> = [
   {
     id: "comms",
     items: [
-      { id: "whatsapp", href: "/admin/whatsapp", icon: I.MessageCircle, permission: "whatsapp.manage" },
+      { id: "whatsapp", href: "/admin/whatsapp", icon: I.MessageCircle, permission: "whatsapp.manage", alsoFor: ["whatsapp.reminders"], built: true },
       { id: "reports", href: "/admin/reports", icon: I.Download, permission: "reports.export" },
     ],
   },
@@ -81,7 +83,7 @@ export const ALL_ITEMS: NavItemDef[] = NAV.flatMap((g) => g.items);
 /** Groups and items visible to a permission set. */
 export function navFor(perms: ReadonlySet<Permission> | readonly Permission[]) {
   const has = (p: Permission) => (perms instanceof Set ? perms.has(p) : (perms as readonly Permission[]).includes(p));
-  return NAV.map((g) => ({ ...g, items: g.items.filter((i) => has(i.permission)) })).filter((g) => g.items.length);
+  return NAV.map((g) => ({ ...g, items: g.items.filter((i) => has(i.permission) || i.alsoFor?.some(has)) })).filter((g) => g.items.length);
 }
 
 export function firstAllowedHref(perms: readonly Permission[]): string | null {

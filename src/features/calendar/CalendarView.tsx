@@ -201,7 +201,8 @@ function EventRow({ event, today, compact }: { event: EventPublic; today: string
   return (
     <li>
       <Link
-        href={`/events/${event.id}`}
+        // Weekly gatherings (id gath_*) have no event page: they link to the centre.
+        href={event.recurring ? `/centres/${event.centre?.slug ?? event.samithi.slug}` : `/events/${event.id}`}
         className={cx(
           styles.row,
           compact && styles.rowCompact,
