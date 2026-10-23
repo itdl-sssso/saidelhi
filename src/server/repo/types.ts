@@ -24,6 +24,7 @@ import type {
 } from "@/contract";
 import type { LinksRepo } from "./links-types";
 import type { M6Repo } from "./m6-types";
+import type { PrivacyRepo } from "./privacy-types";
 import type { PortalRepo } from "./portal-types";
 import type { WaRepo } from "./wa-types";
 
@@ -284,6 +285,7 @@ export interface DataRepo {
   readonly wa: WaRepo;
   /** Portal P1 documents and settings writes (M6). */
   readonly m6: M6Repo;
+  readonly privacy: PrivacyRepo;
 
   orgUnits(): Promise<OrgUnitRec[]>;
   sevaTypes(): Promise<SevaTypeRec[]>;

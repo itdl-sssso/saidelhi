@@ -95,6 +95,20 @@ export const WHATSAPP_TEMPLATES = {
     "New volunteer for {{1}}: {{2}} of {{3}} spots filled. See names in the portal.",
     "{{1}} के लिए नया स्वयंसेवक: {{3}} में से {{2}} स्थान भरे। नाम पोर्टल में देखें।",
   ),
+  privacy_reply: def(
+    "privacy_reply",
+    "utility",
+    1,
+    "Sai Seva Delhi NCR, about your privacy request: {{1}}",
+    "साई सेवा दिल्ली एनसीआर, आपके गोपनीयता अनुरोध के बारे में: {{1}}",
+  ),
+  monthly_report_ready: def(
+    "monthly_report_ready",
+    "utility",
+    2,
+    "The {{1}} seva report is ready: {{2}}",
+    "{{1}} की सेवा रिपोर्ट तैयार है: {{2}}",
+  ),
   seva_broadcast: def(
     "seva_broadcast",
     "marketing",

@@ -5,6 +5,7 @@ import { type CentresAdminService, createCentresAdminService } from "./centres";
 import { type ContentAdminService, createContentAdminService } from "./content";
 import { createFollowUpService, type FollowUpService } from "./followup";
 import { createFormsService, type FormsService } from "./forms";
+import { createPrivacyService, type PrivacyService } from "./privacy";
 import { createPartnersAdminService, type PartnersAdminService } from "./partners";
 import { createImpactAdminService, type ImpactAdminService } from "./impact-admin";
 import { createJobsService, type JobsService } from "./jobs";
@@ -19,7 +20,7 @@ import { createUploadsService, type UploadsService } from "./uploads";
 import { createVolunteersService, type VolunteersService } from "./volunteers";
 import type { PortalCtx } from "./shared";
 
-export type { AdminEventsService, AdminLinksService, ApprovalsService, AttachmentsService, AuditService, JobsService, FormsService, OrgService, OverviewService, PeopleService, SettingsService, UploadsService, CentresAdminService, PartnersAdminService, VolunteersService, ImpactAdminService, ContentAdminService, MigrationService, FollowUpService };
+export type { AdminEventsService, AdminLinksService, ApprovalsService, AttachmentsService, AuditService, JobsService, FormsService, OrgService, OverviewService, PeopleService, SettingsService, UploadsService, CentresAdminService, PartnersAdminService, VolunteersService, ImpactAdminService, ContentAdminService, MigrationService, FollowUpService, PrivacyService };
 export type { PortalCtx, PortalDeps } from "./shared";
 
 /** Coordinator portal services (§5.4). Every method takes the acting `Actor` and enforces RBAC + scope. */
@@ -43,6 +44,7 @@ export interface PortalServices {
   content: ContentAdminService;
   migration: MigrationService;
   followUp: FollowUpService;
+  privacy: PrivacyService;
   /** Hook for the form-link flow after a report is received. */
   onReportSubmitted(eventId: string): Promise<void>;
 }
@@ -70,6 +72,7 @@ export function createPortalServices(ctx: PortalCtx): PortalServices {
     content: createContentAdminService(ctx),
     migration: createMigrationService(ctx),
     followUp: createFollowUpService(ctx),
+    privacy: createPrivacyService(ctx),
     onReportSubmitted: (eventId) => reportReceived(ctx, eventId),
   };
 }

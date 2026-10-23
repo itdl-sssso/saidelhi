@@ -4,6 +4,7 @@ import { type Fixtures, loadFixtures, portalFixtures, waFixtures } from "../mock
 import { DEV_SESSION_SECRET } from "../security/crypto";
 import { MemoryLinksRepo } from "./links-mock";
 import { MemoryM6Repo } from "./m6-mock";
+import { MemoryPrivacyRepo } from "./privacy-mock";
 import { MemoryPortalRepo } from "./portal-mock";
 import { MemoryWaRepo } from "./wa-mock";
 import type { ArticleFilter, ArticleRec, AuditRec, DataRepo, EventFilter, PrivacyRequestRec, RedirectRec } from "./types";
@@ -23,6 +24,7 @@ export class MockRepo implements DataRepo {
   readonly portal: MemoryPortalRepo;
   readonly wa: MemoryWaRepo;
   readonly m6: MemoryM6Repo;
+  readonly privacy: MemoryPrivacyRepo;
 
   constructor(
     private readonly fx: Fixtures = loadFixtures(),
@@ -31,6 +33,7 @@ export class MockRepo implements DataRepo {
     this.links = new MemoryLinksRepo(fx, secret);
     this.portal = new MemoryPortalRepo(fx, this.links, portalFixtures(secret));
     this.wa = new MemoryWaRepo(waFixtures(secret));
+    this.privacy = new MemoryPrivacyRepo(this.privacyRequests, this.links, this.wa, (rec) => this.portal.insertAudit(rec));
     this.m6 = new MemoryM6Repo(fx, (rec) => this.portal.insertAudit(rec), this.redirects);
   }
 

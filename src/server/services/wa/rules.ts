@@ -39,6 +39,8 @@ export const TEMPLATE_CATEGORY: Record<TemplateName, WaTemplateCategory> = {
   report_reminder: "reminder",
   volunteer_reminder: "reminder",
   volunteer_signup_alert: "general",
+  privacy_reply: "general",
+  monthly_report_ready: "general",
   seva_broadcast: "broadcast",
   invite_coordinator: "general",
   optin_confirm: "general",

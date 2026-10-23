@@ -1,7 +1,7 @@
 // Follow-up list (spec 46, restricted): people referred at eye camps who agreed to be
 // contacted. Populated when a report is approved; phones masked everywhere except the
 // logged reveal; every read of names writes an audit row. NCR-wide roles only.
-import type { FollowUpCall, FollowUpDetail, FollowUpLogEntry, FollowUpPatch, FollowUpQuery, FollowUpRow, FollowUpStatus, Paged, RevealedPhone } from "@/contract";
+import type { CountsMeta, FollowUpCall, FollowUpDetail, FollowUpLogEntry, FollowUpPatch, FollowUpQuery, FollowUpRow, FollowUpStatus, RevealedPhone } from "@/contract";
 import { auditRec } from "../../audit";
 import { type Actor, assertCan } from "../../auth/rbac";
 import { newId } from "../../db/columns";
@@ -15,7 +15,7 @@ import { i18n } from "../org-index";
 import { DAY_MS, loadOrg, pageOf, type PortalCtx } from "./shared";
 
 export interface FollowUpService {
-  list(actor: Actor, q: FollowUpQuery): Promise<Paged<FollowUpRow>>;
+  list(actor: Actor, q: FollowUpQuery): Promise<{ data: FollowUpRow[]; meta: CountsMeta }>;
   get(actor: Actor, id: string): Promise<FollowUpDetail>;
   revealPhone(actor: Actor, id: string): Promise<RevealedPhone>;
   patch(actor: Actor, id: string, body: FollowUpPatch): Promise<FollowUpDetail>;
@@ -185,7 +185,13 @@ export function createFollowUpService(ctx: PortalCtx): FollowUpService {
       const org = await loadOrg(repo);
       const status = q.status ?? "open";
       const needle = q.q?.trim().toLowerCase();
-      const recs = (await repo.m6.docList<FollowUpData>("followup_person", { order: "asc" }))
+      const all = await repo.m6.docList<FollowUpData>("followup_person", { order: "asc" });
+      const counts: Record<string, number> = { open: 0, all: all.length, referred: 0, scheduled: 0, done: 0, declined: 0, unreachable: 0 };
+      for (const r of all) {
+        counts[r.data.status]++;
+        if (OPEN.includes(r.data.status)) counts.open++;
+      }
+      const recs = all
         .filter((r) => (status === "all" ? true : status === "open" ? OPEN.includes(r.data.status) : r.data.status === status))
         .filter((r) => !q.event || r.data.eventId === q.event)
         .filter((r) => !needle || r.data.name.toLowerCase().includes(needle) || (r.data.locality ?? "").toLowerCase().includes(needle));
@@ -193,12 +199,12 @@ export function createFollowUpService(ctx: PortalCtx): FollowUpService {
       let rows = await Promise.all(recs.map((r) => row(r, org, events)));
       if (q.waitingMin !== undefined) rows = rows.filter((r) => r.daysWaiting >= q.waitingMin!);
       rows.sort((a, b) => b.daysWaiting - a.daysWaiting || a.name.localeCompare(b.name));
-      const page = pageOf(rows, q.page, q.pageSize);
+      const page = { ...pageOf(rows, q.page, q.pageSize), counts };
       // Names were read: one audit row per list view (ids only, never the names).
       await repo.portal.insertAudit(
         auditRec(actor, { action: "followup.list", entity: "followup_person", entityId: null, data: { count: page.data.length, status, event: q.event ?? null } }),
       );
-      return page;
+      return { data: page.data, meta: { ...page.meta, counts } };
     },
 
     async get(actor, id) {

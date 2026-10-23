@@ -5,6 +5,7 @@ import type { Db } from "../db/client";
 import { PUBLIC_ARTICLE_LETTERS } from "../domain/articles";
 import { DbLinksRepo } from "./links-db";
 import { DbM6Repo } from "./m6-db";
+import { DbPrivacyRepo } from "./privacy-db";
 import { toEventRec } from "./event-row";
 import { partnerCols } from "./partner-cols";
 import { DbPortalRepo } from "./portal-db";
@@ -65,12 +66,14 @@ export class DbRepo implements DataRepo {
   readonly portal: DbPortalRepo;
   readonly wa: DbWaRepo;
   readonly m6: DbM6Repo;
+  readonly privacy: DbPrivacyRepo;
 
   constructor(private readonly db: Db) {
     this.links = new DbLinksRepo(db);
     this.portal = new DbPortalRepo(db);
     this.wa = new DbWaRepo(db);
     this.m6 = new DbM6Repo(db);
+    this.privacy = new DbPrivacyRepo(db);
   }
 
   async orgUnits() {
