@@ -11,7 +11,7 @@ import { Button } from "@/ui/Button";
 import styles from "./Admin.module.css";
 
 export type FilterField =
-  | { kind: "select"; key: string; label: string; options: Array<{ value: string; label: string }> }
+  | { kind: "select"; key: string; label: string; options: Array<{ value: string; label: string }>; /** Value applied when the param is absent: shown selected, no "All" option, no chip. */ defaultValue?: string }
   | { kind: "date"; key: string; label: string }
   | { kind: "search"; key: string; label: string };
 
@@ -49,8 +49,8 @@ export function FilterBar({ fields }: { fields: FilterField[] }) {
       <div className={styles.filters}>
         {fields.map((f) =>
           f.kind === "select" ? (
-            <select key={f.key} className={styles.nativeSel} aria-label={f.label} value={sp.get(f.key) ?? ""} onChange={(e) => set({ [f.key]: e.target.value || null })}>
-              <option value="">{f.label}: {t("all")}</option>
+            <select key={f.key} className={styles.nativeSel} aria-label={f.label} value={sp.get(f.key) ?? f.defaultValue ?? ""} onChange={(e) => set({ [f.key]: e.target.value && e.target.value !== f.defaultValue ? e.target.value : null })}>
+              {f.defaultValue ? null : <option value="">{f.label}: {t("all")}</option>}
               {f.options.map((o) => (
                 <option key={o.value} value={o.value}>
                   {o.label}

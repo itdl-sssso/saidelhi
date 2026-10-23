@@ -1,7 +1,28 @@
-import { SectionPlaceholder, sectionMetadata } from "@/features/admin/SectionPlaceholder";
+import { getTranslations } from "next-intl/server";
+import { initLocale } from "@/i18n/server";
+import { NoAccess } from "@/features/admin/kit";
+import { orgOptions, requirePortal } from "@/features/admin/server";
+import { Streamed } from "@/features/admin/Streamed";
+import { ImpactPage } from "@/features/admin/impact/ImpactPage";
 
-export const generateMetadata = () => sectionMetadata("impact");
+export async function generateMetadata() {
+  const locale = await initLocale();
+  const t = await getTranslations({ locale, namespace: "admin.impact" });
+  return { title: t("title") };
+}
+
+async function Content() {
+
+  const { allowed, session, locale } = await requirePortal("/admin/impact", "impact.manage");
+  if (!allowed) return <NoAccess />;
+  const org = await orgOptions(session, locale);
+  return <ImpactPage org={org} />;
+}
 
 export default function Page() {
-  return <SectionPlaceholder slug="impact" />;
+  return (
+    <Streamed>
+      <Content />
+    </Streamed>
+  );
 }

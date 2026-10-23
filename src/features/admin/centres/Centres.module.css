@@ -1,0 +1,19 @@
+.pinBox { display: flex; flex-direction: column; gap: 10px; }
+.pinMap { height: 280px; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); overflow: hidden; z-index: 0; }
+.pinWrap { background: none; border: 0; }
+.pin { display: block; width: 28px; height: 28px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); background: var(--pink-400); border: 3px solid var(--white); box-shadow: var(--shadow-md); }
+.hint { margin: 0; font-size: var(--text-caption); color: var(--text-muted); }
+.latlng { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.linkBtn { align-self: flex-start; background: none; border: 0; padding: 0; font: inherit; font-size: var(--text-small); color: var(--blue-700); text-decoration: underline; cursor: pointer; min-height: 32px; }
+.layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; align-items: start; }
+@media (min-width: 1000px) { .layout { grid-template-columns: minmax(0, 1fr) 340px; } .aside { position: sticky; top: 16px; } }
+.aside { display: flex; flex-direction: column; gap: 12px; }
+.sched { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; align-items: end; padding: 12px; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); background: var(--surface-subtle, var(--slate-50)); }
+@media (min-width: 640px) { .sched { grid-template-columns: repeat(4, minmax(0, 1fr)) auto; } }
+.photos { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; list-style: none; margin: 0; padding: 0; }
+.photo { display: flex; flex-direction: column; gap: 6px; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 8px; background: var(--white); }
+.photo img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--radius-sm); background: var(--slate-100); }
+.prev { border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); background: var(--white); padding: 16px; display: flex; flex-direction: column; gap: 6px; box-shadow: var(--shadow-sm); }
+.prevT { font-family: var(--font-serif-display); font-size: 20px; color: var(--text-heading); margin: 0; }
+.prevRow { font-size: var(--text-small); color: var(--slate-700); margin: 0; }
+.prevImg { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: var(--radius-md); background: var(--slate-100); }

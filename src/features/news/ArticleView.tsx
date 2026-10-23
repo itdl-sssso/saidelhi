@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Fragment } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import type { ArticleDetail, ArticleRef } from "@/contract";
 import { Link } from "@/i18n/navigation";
@@ -20,6 +21,9 @@ export function ArticleView({ article }: { article: ArticleDetail }) {
   // The server sanitises `bodyHtml`; the Hindi body is optional and falls back to English.
   const body = pickText(article.bodyHtml, locale);
   const englishOnly = locale === "hi" && (body.fallback || title.fallback);
+  // Editor-inserted results card: <div data-event-results="…"></div> (CONTRACT §6). Rendered in place; the aside is then skipped.
+  const bodyParts = body.text.split(/<div[^>]*data-event-results[^>]*>\s*<\/div>/i);
+  const inlineCard = bodyParts.length > 1 && !!article.event;
   const tiles = article.event?.results?.tiles.filter((x) => x.figure.value !== null).slice(0, 3) ?? [];
 
   return (
@@ -71,12 +75,19 @@ export function ArticleView({ article }: { article: ArticleDetail }) {
                   />
                 </figure>
               ) : null}
-              <div
-                className={styles.prose}
-                lang={body.fallback ? "en" : undefined}
-                // Sanitised on the server (CONTRACT §6); legacy inline styles are stripped there.
-                dangerouslySetInnerHTML={{ __html: body.text }}
-              />
+              {bodyParts.map((html, i) => (
+                <Fragment key={i}>
+                  {i > 0 && article.event ? <ResultsCard article={article} tiles={tiles} inline /> : null}
+                  {html.trim() ? (
+                    <div
+                      className={styles.prose}
+                      lang={body.fallback ? "en" : undefined}
+                      // Sanitised on the server (CONTRACT §6); legacy inline styles are stripped there.
+                      dangerouslySetInnerHTML={{ __html: html }}
+                    />
+                  ) : null}
+                </Fragment>
+              ))}
               {article.gallery.length ? (
                 <div className={pub.photos}>
                   {article.gallery.map((p) => (
@@ -87,32 +98,9 @@ export function ArticleView({ article }: { article: ArticleDetail }) {
                 </div>
               ) : null}
             </div>
-            {article.event ? (
+            {article.event && !inlineCard ? (
               <aside className={styles.aside}>
-                <div className={styles.results}>
-                  <span className={styles.eb}>{t("fromEvent")}</span>
-                  <h2 className={styles.resultsTitle}>
-                    <LocalText value={article.event.title} />
-                  </h2>
-                  {tiles.length ? (
-                    <dl className={styles.tiles}>
-                      {tiles.map((x) => (
-                        <div key={x.key}>
-                          <dt>
-                            <LocalText value={x.label} />
-                          </dt>
-                          <dd>
-                            <FigureValue value={x.figure.value} inline />
-                          </dd>
-                        </div>
-                      ))}
-                    </dl>
-                  ) : null}
-                  <Link href={`/events/${article.event.id}`} className={p1.moreLink}>
-                    {t("seeEvent")}
-                    <Icon name="arrow-right" size={16} />
-                  </Link>
-                </div>
+                <ResultsCard article={article} tiles={tiles} />
               </aside>
             ) : null}
           </div>
@@ -163,5 +151,36 @@ function PagerLink({ ref_, dir }: { ref_: ArticleRef; dir: "prev" | "next" }) {
       </span>
       <LocalText value={ref_.title} className={styles.pagerTitle} />
     </Link>
+  );
+}
+
+function ResultsCard({ article, tiles, inline }: { article: ArticleDetail; tiles: NonNullable<ArticleDetail["event"]>["results"] extends infer R ? (R extends { tiles: infer T } ? T : never) : never; inline?: boolean }) {
+  const t = useTranslations("news");
+  if (!article.event) return null;
+  return (
+    <div className={inline ? styles.results + " " + styles.resultsInline : styles.results}>
+      <span className={styles.eb}>{t("fromEvent")}</span>
+      <h2 className={styles.resultsTitle}>
+        <LocalText value={article.event.title} />
+      </h2>
+      {tiles.length ? (
+        <dl className={styles.tiles}>
+          {tiles.map((x) => (
+            <div key={x.key}>
+              <dt>
+                <LocalText value={x.label} />
+              </dt>
+              <dd>
+                <FigureValue value={x.figure.value} inline />
+              </dd>
+            </div>
+          ))}
+        </dl>
+      ) : null}
+      <Link href={`/events/${article.event.id}`} className={p1.moreLink}>
+        {t("seeEvent")}
+        <Icon name="arrow-right" size={16} />
+      </Link>
+    </div>
   );
 }

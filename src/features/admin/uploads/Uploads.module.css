@@ -1,0 +1,19 @@
+.actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.own { display: flex; flex-direction: column; gap: 12px; padding: 12px; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); }
+.drop { display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; padding: 32px 16px; border: 2px dashed var(--border-strong, var(--slate-300)); border-radius: var(--radius-lg); background: var(--slate-50); cursor: pointer; position: relative; color: var(--slate-700); }
+.drop:focus-within { box-shadow: var(--ring-focus); }
+.over { background: var(--blue-50); border-color: var(--blue-300); }
+.dropInput { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+.sum { display: flex; gap: 8px; flex-wrap: wrap; }
+.prevTbl { display: none; }
+.cards { list-style: none; margin: 0; padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+.card { border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 10px 12px; background: var(--white); }
+.cardBad { border-color: var(--signal-error); background: var(--signal-error-surface, #fff5f5); }
+@media (min-width: 900px) { .prevTbl { display: table; } .cards { display: none; } }
+.cellErr { background: var(--signal-error-surface, #fde8e8); color: var(--signal-error-text, #8a1f1f); font-weight: 600; }
+.cellWarn { background: var(--yellow-50); color: var(--yellow-500); }
+.msgErr { color: var(--signal-error-text, #8a1f1f); font-size: var(--text-caption); margin: 4px 0 0; }
+.msgWarn { color: var(--yellow-500); font-size: var(--text-caption); margin: 4px 0 0; }
+.tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.tile { background: var(--white); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 14px 16px; display: flex; flex-direction: column; gap: 4px; }
+.tileN { font-family: var(--font-serif-display); font-size: 32px; line-height: 1.1; color: var(--text-heading); }
