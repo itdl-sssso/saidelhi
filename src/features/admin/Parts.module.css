@@ -37,3 +37,14 @@
 .volT { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .volMeter { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
 .volBody { border-top: 1px solid var(--border-subtle); padding: 12px 16px; display: flex; flex-direction: column; gap: 8px; }
+
+/* impact (40) */
+.impactGrid { display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr); align-items: start; }
+@media (min-width: 1000px) { .impactGrid { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); } }
+.impactList { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 18px; }
+.impactRow { display: flex; flex-direction: column; gap: 8px; padding-bottom: 18px; border-bottom: 1px solid var(--color-border, #e3dfd6); }
+.impactRow:last-child { border-bottom: 0; padding-bottom: 0; }
+.impactHead { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+.impactSide { display: flex; flex-direction: column; gap: 16px; }
+.previewTiles { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+.stickySave { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
