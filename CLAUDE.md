@@ -49,6 +49,7 @@ Run `pnpm db:seed` before `pnpm test` if the DB was mutated by a walkthrough (li
 ### Immediate next steps (in order)
 1. **M6** (portal P1): contract-first (Opus planning agent), then backend + frontend Sonnet tracks, integration, walkthrough.
 2. Then M7 (scope decided 23 Oct: full). Run straight through without pausing between milestones.
+3. After M7: **UI feedback session with user** (user 23 Oct: UI mismatches vs design, at least Home page).
 
 ### Known open issues
 - In-process rate limits and bot-challenge reuse (single node only).
