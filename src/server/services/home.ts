@@ -1,6 +1,5 @@
 import type { HomePayload, Thought, WingCard } from "@/contract";
 import { CENTENARY_LETTERS, toArticle } from "../domain/articles";
-import { ACTIVITIES, PEOPLE_SERVED } from "../domain/kpi";
 import { istDate } from "../domain/time";
 import type { ContentItemRec, DataRepo } from "../repo/types";
 import { articleContext } from "./articles";
