@@ -15,12 +15,13 @@ import { createMigrationService, type MigrationService } from "./migration";
 import { createOrgService, type OrgService } from "./org";
 import { createOverviewService, type OverviewService } from "./overview";
 import { createPeopleService, type PeopleService } from "./people";
+import { createReportsService, type ReportsService } from "./reports";
 import { createSettingsService, type SettingsService } from "./settings";
 import { createUploadsService, type UploadsService } from "./uploads";
 import { createVolunteersService, type VolunteersService } from "./volunteers";
 import type { PortalCtx } from "./shared";
 
-export type { AdminEventsService, AdminLinksService, ApprovalsService, AttachmentsService, AuditService, JobsService, FormsService, OrgService, OverviewService, PeopleService, SettingsService, UploadsService, CentresAdminService, PartnersAdminService, VolunteersService, ImpactAdminService, ContentAdminService, MigrationService, FollowUpService, PrivacyService };
+export type { AdminEventsService, AdminLinksService, ApprovalsService, AttachmentsService, AuditService, JobsService, FormsService, OrgService, OverviewService, PeopleService, SettingsService, UploadsService, CentresAdminService, PartnersAdminService, VolunteersService, ImpactAdminService, ContentAdminService, MigrationService, FollowUpService, PrivacyService, ReportsService };
 export type { PortalCtx, PortalDeps } from "./shared";
 
 /** Coordinator portal services (§5.4). Every method takes the acting `Actor` and enforces RBAC + scope. */
@@ -45,6 +46,7 @@ export interface PortalServices {
   migration: MigrationService;
   followUp: FollowUpService;
   privacy: PrivacyService;
+  reports: ReportsService;
   /** Hook for the form-link flow after a report is received. */
   onReportSubmitted(eventId: string): Promise<void>;
 }
@@ -73,6 +75,7 @@ export function createPortalServices(ctx: PortalCtx): PortalServices {
     migration: createMigrationService(ctx),
     followUp: createFollowUpService(ctx),
     privacy: createPrivacyService(ctx),
+    reports: createReportsService(ctx),
     onReportSubmitted: (eventId) => reportReceived(ctx, eventId),
   };
 }
