@@ -25,6 +25,7 @@ import { Select } from "@/ui/Select";
 import { SevaCard } from "@/ui/SevaCard";
 import { SkeletonCard, SkeletonKpi, SkeletonRows } from "@/ui/Skeleton";
 import { StatusPill } from "@/ui/StatusPill";
+import { Heatmap } from "@/ui/Heatmap";
 import { Meter } from "@/ui/Meter";
 import { Stepper } from "@/ui/Stepper";
 import { Switch } from "@/ui/Switch";
@@ -323,6 +324,17 @@ export default async function KitchenSink() {
         <Stepper label="Plan an event" steps={["Event", "Volunteers", "Form links", "Review"]} current={2} />
         <Meter value={5} max={6} label="5 of 6 volunteers" />
         <Meter value={12} max={10} label="12 of 10 volunteers" tone="green" />
+        <Heatmap
+          caption="Reports within 7 days, by samithi"
+          rowHeader="Samithi"
+          columns={["Jul", "Aug", "Sep", "Oct"]}
+          rows={[
+            { id: "a", label: "Rohini", cells: [100, 92, 75, 40] },
+            { id: "b", label: "Saket", cells: [60, null, 30, 95] },
+          ]}
+          emptyText="No events"
+          legend={{ good: "90% or more", ok: "70 to 89%", low: "40 to 69%", poor: "Under 40%" }}
+        />
         <Pagination page={3} pageSize={25} total={132} href={(p) => `/dev/ui?page=${p}`} />
         <Pagination page={1} pageSize={25} total={20} href={(p) => `/dev/ui?page=${p}`} />
       </Section>

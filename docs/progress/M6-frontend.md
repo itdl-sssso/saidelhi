@@ -18,14 +18,21 @@ Worktree `.claude/worktrees/agent-aa0e2d09be7795cf2`, branch `worktree-agent-aa0
 - Checked in browser (dev, :4300): partners (EN), volunteers (375px, no overflow), centres editor (leaflet mounts, 375px ok), wizard step 1. NOT visually checked: uploads preview/done steps, centres list, `/hi` of new pages. Dev session cookie kept dropping to login on full reloads; re-login with phone 9000000003 and OTP from log.
 - Fixed ICU bug: no `<tag>` text in messages (partners.showPublicDesc).
 
+## Done in run 3 (wave B; typecheck + eslint green; per-page commits; browser-checked EN desktop-width pane, no overflow: content list+editor, impact, migration (map step), health)
+- Content (38): `features/admin/content/` `ContentPage.tsx` (tabs w/ counts, filters, New dialog, Create-from-event dialog, hide/unhide via GET+PATCH version, delete draft), `ArticleEditor.tsx` (`ContentEditorPage` switches article/item; EN/HI tabs, tiptap `RichEditor.tsx` with results-card node `div[data-event-results]`, image upload via `useUpload`, details panel, cover, schedule dialog, preview links, dirty guard), `ItemEditor.tsx`, `ThoughtsPage.tsx` (14-day grid, add/edit dialog, CSV import). Routes `/admin/content`, `/admin/content/[id]`, `/admin/content/thoughts`. Public `features/news/ArticleView.tsx` now renders `data-event-results` inline (`ResultsCard`), aside skipped when marker present.
+- Impact (40): `impact/ImpactPage.tsx` (toggles, max-4 home, notes, estimates switch + tooltip, preview via KpiTile, estimates table + dialog + delete). Shared `features/admin/num.ts` (`formatNumber`).
+- Migration (41): `migration/MigrationPage.tsx` (Stepper source/map/preview/import/report, tabs `?tab=redirects`), `RedirectsTab.tsx`. `features/admin/download.ts` (`download`, `downloadPost`; moved out of FormsPage).
+- Reports (44): `reports/ReportsPage.tsx` (monthly panel + regenerate + auto toggle + recipient chips w/ people picker, export form -> CSV blob, recent, schedules).
+- Health (45): `health/HealthPage.tsx` + new `ui/Heatmap` (table semantics, phone shows last 3 months, in /dev/ui).
+- New TEMP fixtures: `content|impact|migration|reports|health/dev-fixtures.ts` (registered in dev-fixtures-load.ts).
+- Messages added (EN+HI, agent-written HI to review): `admin.content`, `admin.impact`, `admin.migration`, `admin.reports`, `admin.health`.
+- Quirk: health Period filter shows "All" (default 6 months applied); FilterBar has no default option.
+
 ## In progress
 (none)
 
 ## Next (in order)
-Wave A leftover: `Heatmap` for /dev/ui (build with Health). Visual pass for uploads preview + `/hi` on partners/centres/uploads/volunteers.
-Wave B: content (38) tiptap editor + list + thoughts calendar + public article results-card render (`div[data-event-results]` in features/news); impact (40); migration (41); reports (44); health (45, Heatmap + `ui/Meter` reuse); follow-up (46); privacy (47). Pattern: server page.tsx (`requirePortal(path, perm)`, `NoAccess`, `Streamed`, `generateMetadata`) + client page w/ `useApi`/`useAction`/`Loadable`; fixtures `<x>/dev-fixtures.ts` registered in `dev-fixtures-load.ts`; messages via `admin.<ns>` (add EN+HI; avoid `<`/`{` literals); nav `built: true`.
-Also: `i18n/request.ts` loadOverrides merge (backend helper), 375px + `/hi` pass for every page, role matrix, full `pnpm test` + `pnpm build`.
-Tips: scratch helper to merge messages: build JSON {ns,en,hi} then merge into `messages/{en,hi}.json` under `admin`; never read console messages unfiltered (huge stack traces); Button `icon` prop accepts only registry names (use `<Icon icon={Lucide}/>` otherwise); Alert tones: note|info|success|attention|error.
+Wave B left: follow-up (46: `/admin/follow-up`, restricted banner, masked phone + Reveal, update panel, call log), privacy (47: tabs requests/consents/retention/breaches + DPO). Then: `/hi` + 375px visual pass for all new pages, role matrix, i18n/request.ts loadOverrides merge, full `pnpm test` + `pnpm build`.
 
 ## Decisions
 - Pages client-fetched (not `services()`), so no dependency on backend services in this worktree.
@@ -35,7 +42,7 @@ Tips: scratch helper to merge messages: build JSON {ns,en,hi} then merge into `m
 - `tests/m6-frontend.test.ts` holds frontend helper tests (tests/ dir, as M5 did).
 
 ## TEMP shims (remove at integration: `grep -rn "TEMP M6" src`)
-- `src/features/admin/dev-fixtures.ts`, `dev-fixtures-load.ts`, the `import "./dev-fixtures-load"` line in `useApi.ts` and `useAction.ts`, and per-page `settings|forms|partners|volunteers|centres|uploads/dev-fixtures.ts` (forms imports `@/server/forms/definitions`), `features/admin/useUpload.ts` imports dev-fixtures-load.
+- `src/features/admin/dev-fixtures.ts`, `dev-fixtures-load.ts`, the `import "./dev-fixtures-load"` line in `useApi.ts` and `useAction.ts`, and per-page `settings|forms|partners|volunteers|centres|uploads|content|impact|migration|reports|health/dev-fixtures.ts` (forms imports `@/server/forms/definitions`), `features/admin/useUpload.ts` imports dev-fixtures-load.
 
 ## HI review list (agent-written, needs native review)
 - `admin.common` new keys, all `admin.settings.*`, `admin.forms.*`, `admin.builder.*`, `admin.partners.*`, `admin.volunteers.*`, `admin.centres.*`, `admin.uploads.*`.
