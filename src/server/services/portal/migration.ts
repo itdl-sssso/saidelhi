@@ -262,8 +262,7 @@ export function createMigrationService(ctx: PortalCtx): MigrationService {
           out.counts.skipped++;
           continue;
         }
-        // The contract has no "unmatched" problem: slug_clash = no page on the new site answers this address.
-        out.issues.push({ ref: path, title: path, problem: "slug_clash", fixPath: null });
+        out.issues.push({ ref: path, title: path, problem: "unmatched_url", fixPath: null });
         out.counts.needsFix++;
       }
     }

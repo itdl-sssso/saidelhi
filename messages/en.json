@@ -2477,7 +2477,8 @@
         "hindi_only": "Hindi title only",
         "personal_data": "Phone or email in text",
         "empty_body": "Empty text",
-        "slug_clash": "Address already used"
+        "slug_clash": "Address already used",
+        "unmatched_url": "No page answers this address"
       },
       "reportTitle": "Report",
       "runStatus": {
