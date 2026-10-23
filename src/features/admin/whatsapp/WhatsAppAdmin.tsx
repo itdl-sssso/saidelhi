@@ -149,7 +149,7 @@ function Reminders() {
               </li>
             ))}
           </ul>
-          <p className={s.foot}>{t("reminders.quiet")}</p>
+          <p className={s.foot}>{t("reminders.global")} {t("reminders.quiet")}</p>
         </Panel>
       )}
     </Loadable>

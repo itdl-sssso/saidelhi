@@ -42,6 +42,8 @@ Messages the bot *starts* (outside a 24-hour reply window) must be approved temp
 | `volunteer_reminder` | Utility | "You're down for this seva" |
 | `seva_broadcast` | Marketing | opted-in volunteer broadcasts (costs most; opt-in required) |
 
+`plan_approval_request` (Approve / Reject / Ask) and `report_approval_request` (Approve / Request changes) are submitted with **quick-reply buttons**; each send passes payloads `ap:<yes|no|ask>:<eventId>`, which the bot already handles. Re-submit them to Meta if they were approved as plain text.
+
 The repo seeds these definitions in `whatsapp_template` so they can be submitted from Admin → WhatsApp once credentials exist.
 
 ## 6. Cost

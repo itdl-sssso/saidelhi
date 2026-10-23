@@ -64,6 +64,7 @@ export function ReasonDialog({
   label,
   confirmLabel,
   required,
+  minLength,
   pending,
   onSubmit,
 }: {
@@ -74,6 +75,8 @@ export function ReasonDialog({
   label: string;
   confirmLabel: string;
   required?: boolean;
+  /** Shortest accepted text (checked when the field is required or not empty). */
+  minLength?: number;
   pending?: boolean;
   onSubmit: (reason: string) => Promise<boolean | void>;
 }) {
@@ -99,7 +102,8 @@ export function ReasonDialog({
             pending={pending}
             onClick={async () => {
               const r = reason.trim();
-              if (required && !r) return setError(t("reasonRequired"));
+              if (required && !r) return setError(minLength ? t("reasonShort", { n: minLength }) : t("reasonRequired"));
+              if (minLength && r.length > 0 && r.length < minLength) return setError(t("reasonShort", { n: minLength }));
               if ((await onSubmit(r)) !== false) close();
             }}
           >

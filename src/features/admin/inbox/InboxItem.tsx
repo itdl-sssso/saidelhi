@@ -1,17 +1,18 @@
 "use client";
 
 import { useLocale, useTranslations } from "next-intl";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { type InboxDetail, type InboxPatchBody, adminEndpoints } from "@/contract";
 import { Link, useRouter } from "@/i18n/navigation";
 import { type AppLocale, tx } from "@/lib/format";
-import { type FieldMark, SectionFields, type RenderCtx } from "@/features/formlink/ui/FieldRenderer";
+import { type FieldMark, fieldDomId, SectionFields, type RenderCtx } from "@/features/formlink/ui/FieldRenderer";
 import { groupIssues, scopeOf, validateLocal } from "@/features/formlink/model";
 import { Alert } from "@/ui/Alert";
 import { Button } from "@/ui/Button";
 import { EmptyState } from "@/ui/EmptyState";
 import { Icon } from "@/ui/Icon";
 import { Select } from "@/ui/Select";
+import { useToast } from "@/ui/Toast";
 import { SkeletonCard } from "@/ui/Skeleton";
 import { ReasonDialog } from "../Dialogs";
 import { PageHead } from "../kit";
@@ -42,6 +43,8 @@ function Loaded({ d, reload }: { d: InboxDetail; reload: () => void }) {
   const locale = useLocale() as AppLocale;
   const router = useRouter();
   const { run, pending } = useAction();
+  const toast = useToast();
+  const [focusPath, setFocusPath] = useState<string | null>(null);
   const [answers, setAnswers] = useState<Record<string, unknown>>(d.draft.answers);
   const [pane, setPane] = useState<"source" | "draft">("source");
   const [dialog, setDialog] = useState<Dialog>(null);
@@ -101,11 +104,35 @@ function Loaded({ d, reload }: { d: InboxDetail; reload: () => void }) {
 
   const approve = async () => {
     setAttempted(true);
-    if (!eventId || !validation || validation.errors.length > 0) return;
+    if (!eventId) {
+      toast.show({ tone: "error", message: t("match.approveHint") });
+      return;
+    }
+    if (!validation) return;
+    if (validation.errors.length > 0) {
+      // Errors sit in the form pane, away from the action bar: say so here and jump to the first one.
+      toast.show({ tone: "error", message: t("fixErrors", { n: validation.errors.length }) });
+      setPane("draft");
+      setFocusPath(validation.errors[0].path);
+      return;
+    }
     const res = await run(adminEndpoints.inboxAction(d.id, "approve"), { body: { version: d.version, eventId, answers } }, opts("approve", t("done.approved")));
     if (res.ok) router.push("/admin/inbox");
     else if (res.status === 422 && res.error.fields) setServerErrors(res.error.fields);
   };
+
+  useEffect(() => {
+    if (!focusPath) return;
+    const raf = requestAnimationFrame(() => {
+      const dom = fieldDomId(focusPath);
+      const el = document.getElementById(dom) ?? document.querySelector<HTMLElement>(`[data-field="${dom}"]`);
+      const target = el?.matches("input,select,textarea,button") ? el : el?.querySelector<HTMLElement>("input,select,textarea,button");
+      (target ?? el)?.focus({ preventScroll: true });
+      (target ?? el)?.scrollIntoView({ block: "center", behavior: "smooth" });
+      setFocusPath(null);
+    });
+    return () => cancelAnimationFrame(raf);
+  }, [focusPath]);
 
   const decide = (action: "reject" | "escalate" | "ask", field: "reason" | "note" | "question", success: string, leave: boolean) => async (text: string) => {
     const res = await run(adminEndpoints.inboxAction(d.id, action), { body: { version: d.version, [field]: text || undefined } }, opts(action, success));
@@ -259,6 +286,7 @@ function Loaded({ d, reload }: { d: InboxDetail; reload: () => void }) {
         label={t("reject.label")}
         confirmLabel={t("reject.confirm")}
         required
+        minLength={3}
         pending={pending === "reject"}
         onSubmit={decide("reject", "reason", t("done.rejected"), true)}
       />
@@ -270,6 +298,7 @@ function Loaded({ d, reload }: { d: InboxDetail; reload: () => void }) {
         label={t("ask.label")}
         confirmLabel={t("ask.confirm")}
         required
+        minLength={3}
         pending={pending === "ask"}
         onSubmit={decide("ask", "question", t("done.asked"), false)}
       />

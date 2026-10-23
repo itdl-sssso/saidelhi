@@ -2,8 +2,8 @@ import { createHmac } from "node:crypto";
 import type { Locale } from "@/contract";
 import { ApiError } from "../../http/errors";
 import { safeEqual } from "../../security/crypto";
-import { WHATSAPP_TEMPLATES, type TemplateName } from "./templates";
-import type { OutboundMessage, SendResult, WhatsAppProvider } from "./types";
+import { WHATSAPP_TEMPLATES, templateButtons, type TemplateName } from "./templates";
+import type { OutboundMessage, SendMeta, SendResult, WhatsAppProvider } from "./types";
 
 export interface CloudConfig {
   phoneNumberId: string;
@@ -16,6 +16,7 @@ export interface CloudConfig {
 
 type Component =
   | { type: "body"; parameters: { type: "text"; text: string }[] }
+  | { type: "button"; sub_type: "quick_reply"; index: string; parameters: { type: "payload"; payload: string }[] }
   | { type: "button"; sub_type: "url"; index: string; parameters: { type: "text"; text: string }[] };
 
 /** Meta WhatsApp Cloud API (graph.facebook.com/{version}/{phone-number-id}/messages). */
@@ -24,12 +25,15 @@ export class CloudWhatsApp implements WhatsAppProvider {
 
   constructor(private readonly cfg: CloudConfig) {}
 
-  async sendTemplate(to: string, template: TemplateName, lang: Locale, params: readonly string[]): Promise<SendResult> {
+  async sendTemplate(to: string, template: TemplateName, lang: Locale, params: readonly string[], meta?: SendMeta): Promise<SendResult> {
     const text = params.map((p) => ({ type: "text" as const, text: p }));
     const components: Component[] = [{ type: "body", parameters: text }];
     // Authentication templates carry the code again on their copy-code button.
     if (WHATSAPP_TEMPLATES[template].category === "authentication") {
       components.push({ type: "button", sub_type: "url", index: "0", parameters: [text[0]] });
+    }
+    for (const [i, b] of (templateButtons(template, lang, meta?.buttonRef) ?? []).entries()) {
+      components.push({ type: "button", sub_type: "quick_reply", index: String(i), parameters: [{ type: "payload", payload: b.id }] });
     }
     return this.post({ type: "template", template: { name: template, language: { code: lang }, components } }, to);
   }

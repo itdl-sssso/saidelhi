@@ -2,6 +2,8 @@
 // approvals, report-by-chat, errors, timeout, hand-off, near me.
 import { describe, expect, it } from "vitest";
 import { SAMITHI } from "@/server/mock/fixtures";
+import { templateButtons } from "@/server/providers/whatsapp/templates";
+import { fmtWhen } from "@/server/whatsapp/bot/approvals";
 import { COPY, pick } from "@/server/whatsapp/bot/copy";
 import { buttonIds, EVENT, PUBLIC_PHONE, phone, rowIds, texts, waSetup } from "./support/wa";
 
@@ -40,6 +42,37 @@ describe("language and menus", () => {
   });
 });
 
+describe("approval template buttons and copy", () => {
+  it("plan and report approval templates carry quick-reply buttons whose ids the bot handles", () => {
+    expect(templateButtons("plan_approval_request", "en", "E1")).toEqual([
+      { id: "ap:yes:E1", title: "Approve" },
+      { id: "ap:no:E1", title: "Reject" },
+      { id: "ap:ask:E1", title: "Ask" },
+    ]);
+    expect(templateButtons("report_approval_request", "hi", "E1")?.map((b) => b.id)).toEqual(["ap:yes:E1", "ap:no:E1"]);
+    expect(templateButtons("report_approval_request", "en", "E1")?.[1].title).toBe("Request changes");
+    expect(templateButtons("login_code", "en", "E1")).toBeNull();
+    expect(templateButtons("plan_approval_request", "en", undefined)).toBeNull();
+  });
+
+  it("formats times in Hindi without am/pm", () => {
+    const d = new Date("2026-10-23T03:30:00.000Z"); // 9:00 IST
+    expect(fmtWhen(d, "hi")).toMatch(/सुबह 9:00$/);
+    expect(fmtWhen(new Date("2026-10-23T12:00:00.000Z"), "hi")).toMatch(/शाम 5:30$/);
+    expect(fmtWhen(new Date("2026-10-23T16:00:00.000Z"), "hi")).toMatch(/रात 9:30$/);
+    expect(fmtWhen(d, "hi")).not.toMatch(/am|pm/i);
+  });
+
+  it("after a flow the menu is offered, and help is role-specific", async () => {
+    const t = waSetup();
+    const samithi = await t.say(phone(1), "help");
+    expect(samithi[0].text).toBe(pick("hi", COPY.help));
+    expect(samithi[0].text).not.toMatch(/approve|स्वीकृत/i);
+    const district = await t.say(phone(2), "help");
+    expect(district[0].text).toBe(pick("en", COPY.helpApprover));
+  });
+});
+
 describe("plan an activity", () => {
   async function planAsCoordA(t: ReturnType<typeof waSetup>) {
     const from = phone(1);
@@ -64,6 +97,10 @@ describe("plan an activity", () => {
     expect(ev.sevaType).toBe("eye");
     expect(ev.startsAt.toISOString()).toBe("2026-10-23T03:30:00.000Z"); // 9:00 IST tomorrow
     expect(ev.volunteersNeeded).toBe(20);
+    // title is seva + samithi, not the venue; approval template carries the event id for its buttons
+    expect(ev.titleEn).not.toContain("Hall 5");
+    expect(ev.titleEn).toMatch(/^Eye camp – /i);
+    expect(t.whatsapp.sent.find((s) => s.template === "plan_approval_request")?.buttonRef).toBe(ev.id);
     expect(ev.descriptionHi).toBeTruthy();
     // district notified by template, and by card because they chatted today
     expect(t.whatsapp.sent.some((s) => s.template === "plan_approval_request" && s.to === phone(2))).toBe(true);
@@ -83,7 +120,10 @@ describe("plan an activity", () => {
     expect(texts(await t.say(from, "whenever"))).toBe(pick("hi", COPY.planTimeBad));
     await t.say(from, "17:30");
     await t.say(from, "Community hall");
-    expect(texts(await t.say(from, "twenty"))).toBe(pick("hi", COPY.planVolunteersBad));
+    // the re-prompt keeps the Skip button
+    const bad = await t.say(from, "twenty");
+    expect(texts(bad)).toBe(pick("hi", COPY.planVolunteersBad));
+    expect(buttonIds(bad)).toEqual(["skip"]);
     expect(texts(await t.say(from, "99999"))).toBe(pick("hi", COPY.planVolunteersBad));
   });
 

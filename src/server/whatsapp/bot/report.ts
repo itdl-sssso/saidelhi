@@ -204,7 +204,10 @@ export const reportFlow: Flow = {
       }
       const n = parseWholeNumber(text);
       const min = q.min ?? 0;
-      if (n === null || n < min || (q.max !== null && n > q.max)) return say(t, COPY.reportNumberBad(min, q.max));
+      if (n === null || n < min || (q.max !== null && n > q.max)) {
+        const bad = COPY.reportNumberBad(min, q.max);
+        return q.required ? say(t, bad) : buttons(t, bad, [{ id: "skip", label: LABEL.skip }]);
+      }
       (d.answers ??= {})[q.id] = n;
       (d.done ??= []).push(q.id);
       // A "yes, there were some" answer may reveal follow-up questions; askNext recomputes the list.

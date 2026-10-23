@@ -22,10 +22,10 @@ export function showMenu(t: Turn, withIntro = true): void {
       ...(canApprove(t) ? [{ id: "m:approvals", title: LABEL.approvals }] : []),
       { id: "m:help", title: LABEL.help },
     ];
-    list(t, withIntro ? COPY.menuCoordinator(t.actor.name) : COPY.help, LABEL.menu, rows, LABEL.menu);
+    list(t, withIntro ? COPY.menuCoordinator(t.actor.name) : COPY.menuNext, LABEL.menu, rows, LABEL.menu);
     return;
   }
-  buttons(t, withIntro ? COPY.menuPublic : COPY.helpPublic, [
+  buttons(t, withIntro ? COPY.menuPublic : COPY.menuNext, [
     { id: "m:near", label: LABEL.near },
     { id: "m:join", label: LABEL.join },
     { id: "m:contact", label: LABEL.contact },

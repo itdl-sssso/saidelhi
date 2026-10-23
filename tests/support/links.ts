@@ -12,6 +12,7 @@ export interface Sent {
   template: TemplateName;
   lang: Locale;
   params: readonly string[];
+  buttonRef?: string;
 }
 
 export class FakeWhatsApp implements WhatsAppProvider {
@@ -21,12 +22,12 @@ export class FakeWhatsApp implements WhatsAppProvider {
   interactive: { to: string; message: OutboundMessage }[] = [];
   failNext = false;
 
-  async sendTemplate(to: string, template: TemplateName, lang: Locale, params: readonly string[]) {
+  async sendTemplate(to: string, template: TemplateName, lang: Locale, params: readonly string[], meta?: { buttonRef?: string }) {
     if (this.failNext) {
       this.failNext = false;
       throw new Error("network down");
     }
-    this.sent.push({ to, template, lang, params });
+    this.sent.push({ to, template, lang, params, buttonRef: meta?.buttonRef });
     return { id: `fake.${this.sent.length}` };
   }
 

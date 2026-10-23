@@ -113,13 +113,13 @@ export async function holders(ctx: PortalCtx, role: Role, unitId: string | null)
 }
 
 /** Sends a template to people; failures are logged, never thrown (the change already happened). */
-export async function notify(ctx: PortalCtx, people: readonly PersonRec[], template: TemplateName, params: (locale: Locale) => string[]): Promise<number> {
+export async function notify(ctx: PortalCtx, people: readonly PersonRec[], template: TemplateName, params: (locale: Locale) => string[], buttonRef?: string): Promise<number> {
   let sent = 0;
   for (const p of people) {
     const phone = decryptField(ctx.deps.secret, p.user.phoneEnc);
     if (!phone) continue;
     try {
-      await ctx.deps.whatsapp.sendTemplate(phone, template, p.user.locale, params(p.user.locale));
+      await ctx.deps.whatsapp.sendTemplate(phone, template, p.user.locale, params(p.user.locale), buttonRef ? { buttonRef } : undefined);
       sent++;
     } catch (err) {
       console.error(`[portal] WhatsApp ${template} to user ${p.user.id} failed`, err instanceof Error ? err.message : err);

@@ -10,6 +10,11 @@ export interface TemplateDef {
   category: TemplateCategory;
   params: number;
   body: I18nText & { hi: string };
+  /**
+   * Quick-reply buttons (need Meta approval together with the body). The tap
+   * returns `ap:<verb>:<ref>`, where `ref` is passed at send time (SendMeta.buttonRef).
+   */
+  quickReplies?: readonly { verb: "yes" | "no" | "ask"; title: I18nText & { hi: string } }[];
 }
 
 const def = (name: string, category: TemplateCategory, params: number, en: string, hi: string): TemplateDef => ({
@@ -31,15 +36,15 @@ export const WHATSAPP_TEMPLATES = {
     "plan_approval_request",
     "utility",
     3,
-    "New plan for approval: {{1}} on {{2}} at {{3}}. Reply Approve, Reject or Ask.",
-    "स्वीकृति के लिए नई योजना: {{1}}, {{2}} को {{3}} में। स्वीकृत करें, अस्वीकार करें या पूछें का जवाब दें।",
+    "New plan for approval: {{1}} on {{2}} at {{3}}. Tap a button below.",
+    "स्वीकृति के लिए नई योजना: {{1}}, {{2}} को {{3}} में। नीचे दिया बटन दबाएँ।",
   ),
   report_approval_request: def(
     "report_approval_request",
     "utility",
     2,
-    "Report received for {{1}}: {{2}}. Approve or request changes.",
-    "{{1}} की रिपोर्ट मिली: {{2}}। स्वीकृत करें या बदलाव माँगें।",
+    "Report received for {{1}}: {{2}}. Tap a button below.",
+    "{{1}} की रिपोर्ट मिली: {{2}}। नीचे दिया बटन दबाएँ।",
   ),
   form_link_sent: def(
     "form_link_sent",
@@ -112,6 +117,24 @@ export const WHATSAPP_TEMPLATES = {
     "आपने जो रिपोर्ट भेजी उसके बारे में: {{1}} जवाब यहीं दें।",
   ),
 } as const satisfies Record<string, TemplateDef>;
+
+const yes = { verb: "yes", title: { en: "Approve", hi: "स्वीकृत करें" } } as const;
+const no = { verb: "no", title: { en: "Reject", hi: "अस्वीकार करें" } } as const;
+const ask = { verb: "ask", title: { en: "Ask", hi: "पूछें" } } as const;
+const changes = { verb: "no", title: { en: "Request changes", hi: "बदलाव माँगें" } } as const;
+
+/** Quick-reply buttons per template (kept apart so the catalogue above stays plain data). */
+const QUICK_REPLIES: Partial<Record<keyof typeof WHATSAPP_TEMPLATES, NonNullable<TemplateDef["quickReplies"]>>> = {
+  plan_approval_request: [yes, no, ask],
+  report_approval_request: [yes, changes],
+};
+
+/** Buttons a template carries for one send, as the simulator and log show them. `ref` is the event id. */
+export function templateButtons(name: TemplateName, lang: "en" | "hi", ref: string | undefined): { id: string; title: string }[] | null {
+  const q = QUICK_REPLIES[name];
+  if (!q || !ref) return null;
+  return q.map((b) => ({ id: `ap:${b.verb}:${ref}`, title: b.title[lang].slice(0, 20) }));
+}
 
 /**
  * Estimated Meta price per delivered message in paise (India, utility and

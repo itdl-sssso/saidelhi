@@ -284,7 +284,8 @@ class Run {
     for (const rule of f.checks ?? []) {
       const left = operand(rule.left, scope);
       const right = operand(rule.right, scope);
-      if (left.blank && right.blank) continue;
+      // Nothing entered on the left (e.g. optional breakdown) means nothing to cross-check.
+      if (left.blank) continue;
       if (compare(rule.op, left.value, right.value)) continue;
       const issue: FormIssue = { path, code: "cross", message: rule.message };
       if (rule.level === "error") this.errors.push(issue);
