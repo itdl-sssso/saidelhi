@@ -2,7 +2,7 @@
 
 # SSSSO Delhi NCR platform — project state & handoff
 
-Rebuild of saidelhi.org (Sri Sathya Sai Seva Organisation, Delhi NCR): bilingual public site + coordinator portal (`/admin`) + event form links (`/f/<token>`) + WhatsApp bot. Last updated **23 Oct 2026** (M4 done).
+Rebuild of saidelhi.org (Sri Sathya Sai Seva Organisation, Delhi NCR): bilingual public site + coordinator portal (`/admin`) + event form links (`/f/<token>`) + WhatsApp bot. Last updated **23 Oct 2026** (M5 done).
 
 ## Read these first
 | File | What |
@@ -42,20 +42,22 @@ Run `pnpm db:seed` before `pnpm test` if the DB was mutated by a walkthrough (li
 | M2 | Form links `/f/[token]` (OTP verify, generic form renderer, offline drafts/queue, done/gone) | ✅ | ✅ | `fa41031` |
 | M3 | Portal core: login, shell, Overview, Events, Event detail, Plan event, Approvals, Links, Org, People, Audit | ✅ `a19a373` | ✅ walkthrough done 23 Oct (fixes: table sr-only overflow, 375px top bar, hi plurals, overdue seed links) | see git log |
 | M4 | WhatsApp bot flows + webhook + reminders, extractor (rules + SmolLM via Ollama), Review inbox, WhatsApp admin, opt-in endpoint, dev simulator `/dev/whatsapp`, proxy 404s | ✅ | ✅ walkthrough done | see git log (merges `30e2bf2`…) |
-| M5 | Public P1: Values ×5, About, Programs, Program, News/Article, Join, Map, District, redirects + legacy migration polish | ⬜ | ⬜ | |
+| M5 | Public P1: Values ×5, About, Programs, Program, News/Article, Join (number+QR+opt-in form), Map (Leaflet+OSM), District, legacy 301 redirects (`redirect` table, migration 0005), sitemap/robots, legacy polish | ✅ | ✅ | merges `08e80b2`…`4127b36` + integration |
 | M6 | Portal P1: form templates/builder, uploads (xlsx), centres, partners, content, impact controls, migration, volunteers, reports/exports, health, follow-up, privacy, settings | ⬜ | ⬜ | |
 | M7 | Discourses (flag) import + pages + workspace; a11y/perf pass; Playwright e2e | ⬜ | ⬜ | |
 
 ### Immediate next steps (in order)
-1. **M5** (public P1 + legacy migration): contract-first by lead, then backend + frontend Sonnet tracks. Join page consumes `GET/POST /whatsapp/optin`.
-2. Then M6 → M7 (scope decided 23 Oct: full).
+1. **M6** (portal P1): contract-first (Opus planning agent), then backend + frontend Sonnet tracks, integration, walkthrough.
+2. Then M7 (scope decided 23 Oct: full). Run straight through without pausing between milestones.
 
 ### Known open issues
 - In-process rate limits and bot-challenge reuse (single node only).
 - Personal answers not field-encrypted; private attachment retention purge job not written.
 - M4 leftovers: chat register photos only acknowledged (bytes stored via inbox ingest only); no retention purge for `whatsapp_message`/inbox media; no per-number inbound rate limit; webhook runs in `after()` without queue (broadcasts sequential, cap 1000); seeded Meta template statuses fictional; reminder rules global.
 - Public 404s for unknown event/centre handled by existence probe in `src/proxy.ts` (60s cache) because Cache Components + Suspense layout fix status at 200.
-- Hindi hero/value copy written by an agent — needs native review.
+- Hindi hero/value copy + all M5 HI strings written by an agent — needs native review (value prose shows EN with notice until `HI_PROSE_READY`).
+- M5 TODO(user): `WHATSAPP_PUBLIC_NUMBER`, real districts + centre coords, NCR pincode table (approx, `src/server/data/ncr-pincodes.json`), About contact/auditorium/founder text+photo, llms.txt.
+- Dev: if `next dev` hangs on "Compiling" after merges/new deps → `rm -rf .next/dev` and restart.
 - Root-owned stale dir `.claude/worktrees/agent-aec2e1a718ded6454` (Docker-created) — `sudo rm -rf` it.
 
 ## How work is run (process the user asked for)
