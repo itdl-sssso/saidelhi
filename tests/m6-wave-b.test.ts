@@ -180,3 +180,128 @@ describe("content", () => {
     expect(await errCode(t.svc.portal.content.uploadMedia(ed, { name: "x.jpg", bytes: new Uint8Array([1, 2, 3]) }, { alt: "x" }))).toBe("VALIDATION_FAILED");
   });
 });
+
+describe("migration + redirects", () => {
+  const post = (id: number, slug: string, category: string, title: string, content: string, over: object = {}) => ({
+    id,
+    slug,
+    category,
+    title,
+    shortDescription: "",
+    content,
+    featuredImage: "",
+    createdAt: new Date("2024-03-01T05:00:00Z"),
+    updatedAt: new Date("2024-03-01T05:00:00Z"),
+    i18n: null,
+    gallery: [],
+    ...over,
+  });
+
+  function setup() {
+    const t = m6Setup();
+    (t.repo as unknown as { fx: { articles: unknown[] } }).fx.articles.push(
+      post(910001, "phone-in-body", "N", "Camp report", "<p>Call 9811122233 for details</p>"),
+      post(910002, "empty-one", "N", "Empty post", "<p>&nbsp;</p>"),
+      post(910003, "hindi-title", "N", "सेवा शिविर", "<p>Body</p>"),
+      post(910004, "missing-image", "N", "Image camp", '<p>x</p><img src="https://saidelhi.org/media/gone.jpg">'),
+      post(910005, "other-cat", "O", "Internal", "<p>Internal note</p>"),
+      post(910006, "old-date", "N", "No date", "<p>Body</p>", { createdAt: new Date("1970-01-01T00:00:00Z") }),
+    );
+    return t;
+  }
+  const slugsOf = async (t: ReturnType<typeof setup>) => (await t.svc.articles.list({ c: "all", page: 1, pageSize: 100 } as never)).data.map((a) => a.slug);
+
+  it("flags issues, maps types, imports idempotently", async () => {
+    const t = setup();
+    const st = await t.actor(USER.stateC);
+    const run = await t.svc.portal.migration.create(st, "legacy_db");
+    expect(run.status).toBe("mapping");
+    const by = (p: string) => run.issues.filter((i) => i.problem === p).map((i) => i.ref);
+    expect(by("personal_data")).toEqual(["910001"]);
+    expect(by("empty_body")).toEqual(["910002"]);
+    expect(by("hindi_only")).toEqual(["910003"]);
+    expect(by("broken_images")).toEqual(["910004"]);
+    expect(by("no_date")).toEqual(["910006"]);
+    expect(run.types.find((x) => x.sourceType === "post:O")).toMatchObject({ becomes: "hidden", risky: true });
+    expect(run.types.find((x) => x.sourceType === "post:N")).toMatchObject({ becomes: "news", risky: true });
+    expect(run.types.find((x) => x.sourceType === "page:about-us")).toMatchObject({ becomes: "redirect_only" });
+    expect(run.issues.find((i) => i.ref === "910001")?.fixPath).toBe("/admin/content/legacy-910001");
+
+    expect(await errCode(t.svc.portal.migration.patch(st, run.id, { version: 99, types: [] }))).toBe("CONFLICT");
+    expect(await errCode(t.svc.portal.migration.patch(st, run.id, { version: run.version, types: [{ sourceType: "post:Z", becomes: "news" }] }))).toBe("VALIDATION_FAILED");
+    expect(await errCode(t.svc.portal.migration.patch(st, run.id, { version: run.version, types: [{ sourceType: "page:about-us", becomes: "news" }] }))).toBe("VALIDATION_FAILED");
+    const mapped = await t.svc.portal.migration.patch(st, run.id, { version: run.version, types: [{ sourceType: "post:A", becomes: "stories" }, { sourceType: "page:wings", becomes: "skip" }] });
+    expect(mapped.types.find((x) => x.sourceType === "post:A")?.becomes).toBe("stories");
+    expect(mapped.counts.skipped).toBe(1);
+
+    expect(await slugsOf(t)).toContain("phone-in-body");
+    const done = await t.svc.portal.migration.runImport(st, run.id, { version: mapped.version });
+    expect(done.status).toBe("done");
+    expect(done.finishedAt).not.toBeNull();
+    // Personal data / empty body leave the public site; remapped A posts become stories copies.
+    const slugs = await slugsOf(t);
+    expect(slugs).not.toContain("phone-in-body");
+    expect(slugs).not.toContain("empty-one");
+    expect(slugs).toContain("hindi-title");
+    const eye = await t.svc.articles.bySlug("eye-camp-mayur-vihar-oct-2026");
+    expect(eye?.category).toBe("stories");
+    expect(slugs.filter((s) => s === "eye-camp-mayur-vihar-oct-2026")).toHaveLength(1);
+
+    // Second import changes nothing.
+    const writes = async () => (await t.repo.portal.listAudit({ limit: 500, offset: 0 })).rows.filter((r) => /^migration\.(article|redirect)$/.test(r.action)).length;
+    const before = await writes();
+    expect(before).toBeGreaterThan(0);
+    const again = await t.svc.portal.migration.runImport(st, run.id, { version: (await t.svc.portal.migration.get(st, run.id)).version });
+    expect(again.counts).toEqual(done.counts);
+    expect(await writes()).toBe(before);
+    expect(await slugsOf(t)).toEqual(slugs);
+
+    const csv = await t.svc.portal.migration.reportCsv(st, run.id);
+    expect(csv.split("\r\n")[0]).toBe("ref,title,problem,fix_path");
+    expect(csv).toContain("910001,Camp report,personal_data,/admin/content/legacy-910001");
+    expect(csv).not.toContain("9811122233");
+    expect((await t.svc.portal.migration.list(st))[0].id).toBe(run.id);
+    expect(await errCode(t.svc.portal.migration.create(await t.actor(USER.coordA), "legacy_db"))).toBe("FORBIDDEN");
+  });
+
+  it("redirect_only hides posts and adds a redirect row; sitemap runs harvest redirects", async () => {
+    const t = setup();
+    const st = await t.actor(USER.stateC);
+    const run = await t.svc.portal.migration.create(st, "legacy_db");
+    const m = await t.svc.portal.migration.patch(st, run.id, { version: run.version, types: [{ sourceType: "post:N", becomes: "redirect_only" }] });
+    await t.svc.portal.migration.runImport(st, run.id, { version: m.version });
+    expect(await slugsOf(t)).not.toContain("hindi-title");
+    const rows = (await t.svc.portal.migration.redirects.list(st, { page: 1, pageSize: 100, source: "migration" } as never)).data;
+    expect(rows).toContainEqual(expect.objectContaining({ from: "/content/hindi-title", to: "/news", source: "migration" }));
+
+    const xml = `<?xml version="1.0"?><urlset><url><loc>https://saidelhi.org/old/phone-in-body/</loc></url><url><loc>https://saidelhi.org/about-us</loc></url><url><loc>https://saidelhi.org/nowhere/page</loc></url></urlset>`;
+    const sm = await t.svc.portal.migration.create(st, "sitemap", { name: "sitemap.xml", bytes: new TextEncoder().encode(xml) });
+    expect(sm).toMatchObject({ source: "sitemap", fileName: "sitemap.xml", counts: { items: 3, needsFix: 1 } });
+    expect(sm.issues).toEqual([{ ref: "/nowhere/page", title: "/nowhere/page", problem: "slug_clash", fixPath: null }]);
+    await t.svc.portal.migration.runImport(st, sm.id, { version: sm.version });
+    const all = (await t.svc.portal.migration.redirects.list(st, { page: 1, pageSize: 100 } as never)).data;
+    expect(all).toContainEqual(expect.objectContaining({ from: "/old/phone-in-body", to: "/news/phone-in-body", source: "migration" }));
+    expect(await errCode(t.svc.portal.migration.create(st, "sitemap", { name: "x.xml", bytes: new TextEncoder().encode("nope") }))).toBe("VALIDATION_FAILED");
+  });
+
+  it("redirect CRUD: normalises, refuses live routes and rules, deletes", async () => {
+    const t = setup();
+    const st = await t.actor(USER.stateC);
+    const r = await t.svc.portal.migration.redirects.upsert(st, { from: "/old-camp/?utm=1", to: "/news", permanent: false });
+    expect(r).toMatchObject({ from: "/old-camp", to: "/news", permanent: false, source: "manual", hits: 0 });
+    expect(await t.svc.redirects.resolve("/old-camp")).toEqual({ to: "/news", permanent: false });
+    const r2 = await t.svc.portal.migration.redirects.upsert(st, { from: "/old-camp", to: "/events" });
+    expect(r2.permanent).toBe(true);
+    expect((await t.svc.portal.migration.redirects.list(st, { page: 1, pageSize: 100, source: "manual" } as never)).data).toHaveLength(1);
+    expect(await errCode(t.svc.portal.migration.redirects.upsert(st, { from: "/events/x", to: "/news" }))).toBe("VALIDATION_FAILED");
+    expect(await errCode(t.svc.portal.migration.redirects.upsert(st, { from: "/about-us", to: "/news" }))).toBe("VALIDATION_FAILED");
+    expect(await errCode(t.svc.portal.migration.redirects.upsert(st, { from: "/same", to: "/same/" }))).toBe("VALIDATION_FAILED");
+    const rules = (await t.svc.portal.migration.redirects.list(st, { page: 1, pageSize: 100, source: "rule" } as never)).data;
+    expect(rules.map((x) => x.from)).toContain("/about-us");
+    expect(await errCode(t.svc.portal.migration.redirects.remove(st, "/about-us"))).toBe("VALIDATION_FAILED");
+    await t.svc.portal.migration.redirects.remove(st, "/old-camp/");
+    expect(await errCode(t.svc.portal.migration.redirects.remove(st, "/old-camp"))).toBe("NOT_FOUND");
+    const q = await t.svc.portal.migration.redirects.list(st, { page: 1, pageSize: 100, q: "about" } as never);
+    expect(q.data.every((x) => x.from.includes("about") || x.to.includes("about"))).toBe(true);
+  });
+});

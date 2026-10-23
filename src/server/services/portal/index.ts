@@ -9,6 +9,7 @@ import { createImpactAdminService, type ImpactAdminService } from "./impact-admi
 import { createJobsService, type JobsService } from "./jobs";
 import { reportReceived } from "./lifecycle";
 import { type AdminLinksService, createAdminLinksService } from "./links";
+import { createMigrationService, type MigrationService } from "./migration";
 import { createOrgService, type OrgService } from "./org";
 import { createOverviewService, type OverviewService } from "./overview";
 import { createPeopleService, type PeopleService } from "./people";
@@ -17,7 +18,7 @@ import { createUploadsService, type UploadsService } from "./uploads";
 import { createVolunteersService, type VolunteersService } from "./volunteers";
 import type { PortalCtx } from "./shared";
 
-export type { AdminEventsService, AdminLinksService, ApprovalsService, AttachmentsService, AuditService, JobsService, FormsService, OrgService, OverviewService, PeopleService, SettingsService, UploadsService, CentresAdminService, PartnersAdminService, VolunteersService, ImpactAdminService, ContentAdminService };
+export type { AdminEventsService, AdminLinksService, ApprovalsService, AttachmentsService, AuditService, JobsService, FormsService, OrgService, OverviewService, PeopleService, SettingsService, UploadsService, CentresAdminService, PartnersAdminService, VolunteersService, ImpactAdminService, ContentAdminService, MigrationService };
 export type { PortalCtx, PortalDeps } from "./shared";
 
 /** Coordinator portal services (§5.4). Every method takes the acting `Actor` and enforces RBAC + scope. */
@@ -39,6 +40,7 @@ export interface PortalServices {
   volunteers: VolunteersService;
   impact: ImpactAdminService;
   content: ContentAdminService;
+  migration: MigrationService;
   /** Hook for the form-link flow after a report is received. */
   onReportSubmitted(eventId: string): Promise<void>;
 }
@@ -64,6 +66,7 @@ export function createPortalServices(ctx: PortalCtx): PortalServices {
     volunteers: createVolunteersService(ctx),
     impact: createImpactAdminService(ctx),
     content: createContentAdminService(ctx),
+    migration: createMigrationService(ctx),
     onReportSubmitted: (eventId) => reportReceived(ctx, eventId),
   };
 }

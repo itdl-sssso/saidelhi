@@ -1,5 +1,5 @@
 // Media files: legacy public media under MEDIA_ROOT, private uploads under MEDIA_PRIVATE_ROOT.
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 const CONTENT_TYPES: Record<string, string> = {
@@ -40,6 +40,8 @@ export interface PrivateStorage {
   put(relPath: string, bytes: Uint8Array): Promise<void>;
   /** Reads a stored file; null when it does not exist. */
   get(relPath: string): Promise<Uint8Array | null>;
+  /** Cheap existence check (falls back to `get` when absent). */
+  exists?(relPath: string): Promise<boolean>;
 }
 
 export class DiskStorage implements PrivateStorage {
@@ -50,6 +52,16 @@ export class DiskStorage implements PrivateStorage {
     if (!target) throw new Error("Invalid storage path");
     await mkdir(path.dirname(target), { recursive: true, mode: 0o700 });
     await writeFile(target, bytes, { flag: "wx", mode: 0o600 });
+  }
+
+  async exists(relPath: string): Promise<boolean> {
+    const target = resolveUnder(this.root, relPath.split("/"));
+    if (!target) return false;
+    try {
+      return (await stat(target)).isFile();
+    } catch {
+      return false;
+    }
   }
 
   async get(relPath: string): Promise<Uint8Array | null> {

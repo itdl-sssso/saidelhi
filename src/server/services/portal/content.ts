@@ -13,7 +13,6 @@ import {
   type ContentStatus,
   type ContentTab,
   type I18nText,
-  LEGACY_ARTICLE_CATEGORY,
   type Media,
   type PhotoUploadForm,
   type ThoughtDay,
@@ -25,7 +24,7 @@ import type { z } from "zod";
 import { auditRec, type SystemActor } from "../../audit";
 import { type Actor, assertCan } from "../../auth/rbac";
 import { newId } from "../../db/columns";
-import { mapLegacyCategory, sanitizeBody } from "../../domain/articles";
+import { sanitizeBody } from "../../domain/articles";
 import { addDays, toIso, toIsoOrNull } from "../../domain/time";
 import { ApiError } from "../../http/errors";
 import { sniffImage } from "../../images";
@@ -34,7 +33,7 @@ import { sniffSheet } from "../../xlsx/sniff";
 import { readSheet, SheetError } from "../../xlsx/sheet";
 import { parseSheetDate } from "./uploads";
 import { buildResults } from "../event-assembler";
-import { type NativeArticle, type NativeDoc, nativeAll } from "../native-articles";
+import { legacyCategoryOf, legacyMediaOf, legacyStatusOf, type NativeArticle, type NativeDoc, nativeAll, nativeFromLegacy } from "../native-articles";
 import { i18n, type OrgIndex } from "../org-index";
 import { loadOrg, type PortalCtx } from "./shared";
 
@@ -102,13 +101,8 @@ export function createContentAdminService(ctx: PortalCtx): ContentAdminService {
 
   const districtRef = (org: OrgIndex, id: string | null) => (id && org.get(id)?.kind === "district" ? org.ref(id) : null);
 
-  function legacyStatus(rec: ArticleRec): ContentStatus {
-    const s = rec.i18n?.status ?? "published";
-    // Legacy category 'O' (and unknown letters) was never shown publicly.
-    if (s === "published" && !(rec.category in LEGACY_ARTICLE_CATEGORY)) return "hidden";
-    return s;
-  }
-  const legacyCategory = (rec: ArticleRec): ArticleCategory | null => (rec.category in LEGACY_ARTICLE_CATEGORY ? mapLegacyCategory(rec.category) : null);
+  const legacyStatus = legacyStatusOf;
+  const legacyCategory = legacyCategoryOf;
 
   function nativeRow(d: NativeDoc, org: OrgIndex): ContentRow {
     const a = d.data;
@@ -198,7 +192,7 @@ export function createContentAdminService(ctx: PortalCtx): ContentAdminService {
     };
   }
 
-  const legacyMedia = (path: string, alt: string): Media => ({ url: /^(https?:\/\/|\/)/.test(path) ? path : `${deps.mediaBase.replace(/\/$/, "")}/${path}`, width: null, height: null, alt: { en: alt, hi: null } });
+  const legacyMedia = (path: string, alt: string): Media => legacyMediaOf(deps.mediaBase, path, alt);
 
   async function legacyEditor(rec: ArticleRec, org: OrgIndex): Promise<ArticleEditor> {
     return {
@@ -306,23 +300,7 @@ export function createContentAdminService(ctx: PortalCtx): ContentAdminService {
   async function copyLegacy(rec: ArticleRec): Promise<NativeDoc> {
     const existing = (await nativeAll(repo)).find((d) => d.data.legacyId === rec.id);
     if (existing) throw new ApiError("CONFLICT");
-    const s = legacyStatus(rec);
-    const data: NativeArticle = {
-      slug: rec.slug,
-      category: legacyCategory(rec) ?? "news",
-      title: i18n(rec.title, rec.i18n?.titleHi ?? null),
-      summary: i18n(rec.shortDescription, rec.i18n?.summaryHi ?? null),
-      bodyHtml: cleanBody({ en: rec.content ?? "", hi: rec.i18n?.bodyHi ?? null }),
-      cover: rec.featuredImage ? legacyMedia(rec.featuredImage, rec.title) : null,
-      gallery: [...rec.gallery].sort((a, b) => a.order - b.order).map((g) => legacyMedia(g.image, g.caption ?? rec.title)),
-      districtId: rec.i18n?.districtId ?? null,
-      eventId: rec.i18n?.eventId ?? null,
-      status: s,
-      publishAt: null,
-      publishedAt: toIso(rec.createdAt),
-      legacyId: rec.id,
-      createdBy: null,
-    };
+    const data = nativeFromLegacy(rec, deps.mediaBase);
     return { id: newId(), k1: data.slug, k2: data.status, version: 1, data, createdAt: rec.createdAt, updatedAt: now() };
   }
 

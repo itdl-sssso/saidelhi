@@ -15,11 +15,15 @@ Tests: vitest has two projects (`vitest.config.mts`): `unit` (parallel) and `db`
 - 9 Impact controls (40): `services/portal/impact-admin.ts` (`portal.impact`), routes `/admin/impact`, `/admin/impact/estimates[/:id]`; `M6Repo.estimates*` (insert/update/delete/all; `EstimateRec.period/createdBy/createdAt`). `services/kpis.ts`: `DEFAULT_HOME` (activities, people_served, blood.units, eye.spectacles = old Home tiles; `homeTile` seed true for those), `SYNTHETIC_KPIS` (activities/people_served/active toggles stored as `kpi_definition` rows), `loadKpiVisibility`. `loadSettings` now returns `hiddenKpis`, `homeTiles`, `estimateTooltip`; Home pads to exactly 4 tiles; `/impact` tiles + seva-type figures drop hidden keys; `estimateNote` uses tooltip. Impact setting version lives in setting `impact.version`. Tests in `tests/m6-wave-b.test.ts`.
 - Test isolation: db project serial + OTP throttle cleanup (m5.db passes alone and in full runs).
 
+- 8 Content (38): `services/portal/content.ts` (`portal.content`), `services/native-articles.ts` (NativeArticle doc shape in `article` table k1=slug k2=status; `nativeFromLegacy`, live/shadow helpers), routes `/admin/content/**` (list+counts, CRUD, from-event, media, thoughts, thoughts/import). Legacy copy-on-write on first PATCH (version 0); copy shadows the Django post everywhere (public list/bySlug/exists, home via `listMerged`, event `articleSlug`). Scheduled: reads treat `publishAt<=now` as live; cron `publish-scheduled` flips status. Items use `content_item` (archived=hidden; `scheduled` unsupported for items -> 422). Sanitiser now keeps `div[data-event-results=<id>]`. New repo methods on `M6Repo`: legacyPosts/legacyPost/legacySlugs/articleI18nUpsert, contentItems*, redirects*; `ArticleFilter.excludeIds`; `PrivateStorage.exists?`. CSV reader no longer converts dates (TZ shift bug) - upload dates parse from text.
+- 10 Migration (41): `services/portal/migration.ts` (`portal.migration`), routes `/admin/migration/runs[/:id[/import|/report.csv]]`, `/admin/redirects`. Analysis recomputed on get/patch while `mapping`; import snapshots types/counts/issues. Import: skip=no-op; hidden/redirect_only -> article_i18n hidden (+redirect `/content/<slug>` -> `/news` for redirect_only); category target = native copy when it differs from the legacy letter; posts with personal_data/empty_body/slug_clash that are published become draft; hidden/draft editor decisions never re-published. Redirect rows only when missing/different (idempotent). Sitemap: `<loc>` paths; slug matches -> `/news/<slug>` migration row; unmatched listed with problem `slug_clash` (no `unmatched` member in contract).
+- Tests: `tests/m6-wave-b.test.ts` (content x5, migration x3) + m6.db.integration (content/redirect/migration preview, cleans up).
+
 ## In progress
 -
 
 ## Next (wave B, remaining)
-- 8 Content (38; native `article` doc table exists in m6 schema, legacy copy-on-write, thoughts), 10 Migration (41), 11 Follow-up (46), 12 Privacy (47), 13 Reports+exports (44), 14 Health (45), tests for each in `tests/m6-wave-b.test.ts`; cron jobs (`publish-scheduled`, `monthly-report`, `retention`) in `services/portal/jobs.ts` + `/api/v1/jobs`.
+- 11 Follow-up (46), 12 Privacy (47), 13 Reports+exports (44), 14 Health (45), tests for each in `tests/m6-wave-b.test.ts`; cron jobs (`publish-scheduled`, `monthly-report`, `retention`) in `services/portal/jobs.ts` + `/api/v1/jobs`.
 
 ## Decisions
 - M6 tables = generic JSON document tables (`id,k1,k2,version,data,created_at,updated_at`), accessed through `repo.m6` (`docGet/docList/docInsert/docUpdate/docUpsert/docDelete`, optional audit rows in same txn). Lookup-key meaning per table in `repo/m6-types.ts`. Columns only added to existing tables.
@@ -35,5 +39,7 @@ Tests: vitest has two projects (`vitest.config.mts`): `unit` (parallel) and `db`
 - Volunteer notify preference default off (opt-in); `user_pref` doc id = user id.
 
 ## Blockers / contract proposals
+- Proposal: add `unmatched_url` to `MigrationProblem` (sitemap URLs with no target currently use `slug_clash`).
+- Gaps: home sections (`content_item` home_section) are editable but the public Home does not read them yet; `programs.ts` stories still use legacy-only `articlesForEvents`; `RedirectsService` caches 5 min so new rows can lag; `monthly-report`/`retention` cron names fall through to report reminders until tasks 13/12 add branches.
 - Proposal: document in CONTRACT.md that `FormTemplateDetail.version` is the draft revision counter (see decision above).
 - Proposal: `VolunteerEventRow.event` is `EventCard` (no status) — fine; frontend may want `status` later.

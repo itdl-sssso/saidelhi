@@ -1,7 +1,8 @@
 // Native `article` documents (M6, spec 38): editor-written articles and copy-on-write
 // copies of legacy posts. Public reads overlay these on the Django posts.
 import { type Article, type ArticleCategory, type I18nText, LEGACY_ARTICLE_CATEGORY, type Media, type UnitRef } from "@/contract";
-import { type ArticleContext, readingMinutes, sanitizeBody, toArticle } from "../domain/articles";
+import { type ArticleContext, mapLegacyCategory, readingMinutes, sanitizeBody, toArticle } from "../domain/articles";
+import { toIso } from "../domain/time";
 import type { DocRec } from "../repo/m6-types";
 import type { ArticleRec, DataRepo } from "../repo/types";
 
@@ -84,4 +85,46 @@ export async function nativeSlugsForEvents(repo: DataRepo, eventIds: readonly st
   const out = new Map<string, string>();
   for (const d of await nativeLive(repo, now)) if (d.data.eventId && eventIds.includes(d.data.eventId) && !out.has(d.data.eventId)) out.set(d.data.eventId, d.data.slug);
   return out;
+}
+
+// ---- legacy posts -> native copies ---------------------------------------------
+
+const isPublicLetter = (c: string) => c in LEGACY_ARTICLE_CATEGORY;
+
+/** Category of a legacy post; null for the never-public letter `O` and unknown ones. */
+export const legacyCategoryOf = (rec: ArticleRec): ArticleCategory | null => (isPublicLetter(rec.category) ? mapLegacyCategory(rec.category) : null);
+
+/** Effective status of a legacy post: letter `O` is hidden even without a side row. */
+export function legacyStatusOf(rec: ArticleRec): NativeStatus {
+  const s = rec.i18n?.status ?? "published";
+  return s === "published" && !isPublicLetter(rec.category) ? "hidden" : s;
+}
+
+const fallbackI18n = (en: string, hi: string | null | undefined): I18nText => ({ en, hi: hi ?? null });
+
+export function legacyMediaOf(mediaBase: string, path: string, alt: string): Media {
+  const url = /^(https?:\/\/|\/)/.test(path) ? path : `${mediaBase.replace(/\/$/, "")}/${path}`;
+  return { url, width: null, height: null, alt: { en: alt, hi: null } };
+}
+
+/** Native copy of a legacy post (same slug, date and visibility). */
+export function nativeFromLegacy(rec: ArticleRec, mediaBase: string, over: Partial<NativeArticle> = {}): NativeArticle {
+  const hi = rec.i18n?.bodyHi ?? null;
+  return {
+    slug: rec.slug,
+    category: legacyCategoryOf(rec) ?? "news",
+    title: fallbackI18n(rec.title, rec.i18n?.titleHi),
+    summary: fallbackI18n(rec.shortDescription, rec.i18n?.summaryHi),
+    bodyHtml: { en: sanitizeBody(rec.content ?? "", mediaBase), hi: hi?.trim() ? sanitizeBody(hi, mediaBase) || null : null },
+    cover: rec.featuredImage ? legacyMediaOf(mediaBase, rec.featuredImage, rec.title) : null,
+    gallery: [...rec.gallery].sort((a, b) => a.order - b.order).map((g) => legacyMediaOf(mediaBase, g.image, g.caption ?? rec.title)),
+    districtId: rec.i18n?.districtId ?? null,
+    eventId: rec.i18n?.eventId ?? null,
+    status: legacyStatusOf(rec),
+    publishAt: null,
+    publishedAt: toIso(rec.createdAt),
+    legacyId: rec.id,
+    createdBy: null,
+    ...over,
+  };
 }

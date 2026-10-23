@@ -137,4 +137,65 @@ describe.skipIf(!pool)("M6 on MySQL (integration)", () => {
     expect(again.status).toBe("no_changes");
     void EVENT;
   });
+
+  it("content: native articles, legacy copy-on-write, thoughts and redirects on MySQL; migration preview", async () => {
+    const s = svc!;
+    const ed = (await s.auth.actorFor(USER.contentD, rc))!;
+    const state = (await s.auth.actorFor(USER.stateC, rc))!;
+    const cleanup: (() => Promise<unknown>)[] = [];
+    try {
+      const a = await s.portal.content.create(ed, { kind: "article", category: "news", title: { en: "Integration story", hi: null }, bodyHtml: { en: "<p>Hi</p><div data-event-results=\"abc\"></div>", hi: null } } as never);
+      cleanup.push(() => repo!.m6.docDelete("article", a.id));
+      if (a.kind !== "article") throw new Error("article");
+      expect(a.bodyHtml.en).toContain('data-event-results="abc"');
+      const pub = await s.portal.content.patch(ed, a.id, { status: "published", version: a.version });
+      expect(pub).toMatchObject({ status: "published", version: 2 });
+      expect((await s.articles.bySlug(a.slug))?.title.en).toBe("Integration story");
+      expect((await s.articles.list({ c: "all", page: 1, pageSize: 3 } as never)).data[0].slug).toBe(a.slug);
+      const tab = await s.portal.content.list(ed, { page: 1, pageSize: 5, tab: "news", q: "Integration story" } as never);
+      expect(tab.data.map((r) => r.id)).toContain(a.id);
+      expect(tab.meta.counts.all).toBeGreaterThan(0);
+
+      // Legacy post: first PATCH copies it, then the public site shows the edit once.
+      const legacy = (await s.portal.content.list(ed, { page: 1, pageSize: 5, tab: "activities" } as never)).data.find((r) => r.legacy && r.id.startsWith("legacy-"));
+      if (legacy) {
+        const g = await s.portal.content.get(ed, legacy.id);
+        if (g.kind !== "article") throw new Error("article");
+        const p = await s.portal.content.patch(ed, legacy.id, { title: { en: "IT edited legacy", hi: null }, version: 0 });
+        cleanup.push(() => repo!.m6.docDelete("article", p.id));
+        expect(p).toMatchObject({ legacyId: g.legacyId, slug: g.slug });
+        const all = await s.articles.list({ c: "activities", page: 1, pageSize: 100 } as never);
+        expect(all.data.filter((x) => x.slug === g.slug).map((x) => x.title.en)).toEqual(["IT edited legacy"]);
+        expect((await s.portal.content.get(ed, legacy.id)).id).toBe(p.id);
+      }
+
+      const th = await s.portal.content.create(ed, { kind: "item", type: "thought_for_day", date: "2099-01-05", body: { en: "IT thought", hi: null } } as never);
+      cleanup.push(() => repo!.m6.contentItemDelete(th.id));
+      const imp = await s.portal.content.importThoughts(ed, { name: "t.csv", bytes: new TextEncoder().encode("date,text_en,text_hi,source_en,source_hi\n2099-01-05,IT updated,,,\n2099-01-06,IT new,,,\n") });
+      expect(imp).toMatchObject({ created: 1, updated: 1, errors: [] });
+      const row = (await repo!.m6.contentItemsAll("thought_for_day")).find((c) => c.date === "2099-01-06");
+      if (row) cleanup.push(() => repo!.m6.contentItemDelete(row.id));
+      const days = await s.portal.content.thoughts(ed, { from: "2099-01-05", to: "2099-01-07" });
+      expect(days.map((d) => d.item?.body?.en ?? null)).toEqual(["IT updated", "IT new", null]);
+      expect(days[2].shown?.repeated).toBe(true);
+
+      const r = await s.portal.migration.redirects.upsert(state, { from: "/it-old-page/", to: "/news", permanent: false });
+      cleanup.push(() => repo!.m6.redirectDelete("/it-old-page"));
+      expect(r).toMatchObject({ from: "/it-old-page", source: "manual", permanent: false });
+      expect((await s.portal.migration.redirects.list(state, { page: 1, pageSize: 50, q: "it-old" } as never)).data).toHaveLength(1);
+      await s.portal.migration.redirects.upsert(state, { from: "/it-old-page", to: "/events" });
+      expect((await s.redirects.resolve("/it-old-page"))?.to).toBeDefined();
+      await s.portal.migration.redirects.remove(state, "/it-old-page");
+
+      // Preview only: never import on the shared dev DB.
+      const run = await s.portal.migration.create(state, "legacy_db");
+      cleanup.push(() => repo!.m6.docDelete("migration_run", run.id));
+      expect(run.status).toBe("mapping");
+      expect(run.types.some((t) => t.sourceType.startsWith("post:"))).toBe(true);
+      expect(run.counts.items).toBeGreaterThan(0);
+      expect((await s.portal.migration.reportCsv(state, run.id)).startsWith("ref,title,problem,fix_path")).toBe(true);
+    } finally {
+      for (const fn of cleanup.reverse()) await fn().catch(() => {});
+    }
+  });
 });
