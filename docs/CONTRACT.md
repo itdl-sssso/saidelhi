@@ -374,3 +374,12 @@ Zod: new `src/contract/public.ts` + `src/contract/redirects.ts`; edits in `conte
 8. Redirects: `legacyRedirect(path)` / `isLegacyPath(path)` pure rules from Django `urls.py` (about-us, contact-us, get-involved, wings/<name>, content/<Name>/getallposts, content/<slug>, book-auditorium, saidelhi-backend). `GET /redirects?path=` (`RedirectQuery`) → `RedirectTarget {to, permanent}` | 404. New `redirect` table (manual/migration rows) checked before rules. `src/proxy.ts` answers legacy paths with 301 (localised to unprefixed EN).
 9. Public routes (unlocalised): `/values/[slug]`, `/about`, `/programs`, `/programs/[type]`, `/news`, `/news/[slug]`, `/join`, `/centres/map`, `/districts/[slug]`. Proxy 404 probes extend to `news/[slug]`, `districts/[slug]`, `programs/[type]`, `values/[slug]`; `centres/map` must be excluded from the centre probe.
 10. Endpoint builders: `endpoints.districts()`, `centres({pincode})`, `join({…page})`.
+
+### v0.6.1 (M5 integration)
+1. Env: `WHATSAPP_PUBLIC_NUMBER` (preferred) > `WA_DISPLAY_NUMBER` > dev-only placeholder; `WHATSAPP_PUBLIC_KEYWORD` (default `JOIN`) feed `JoinPayload.whatsapp`. Absent in production → `number:null, waMeUrl:null`.
+2. Migration `0005_m5_public.sql`: `redirect` table (`from_path` PK, `to_path`, `permanent`, `source` rule|manual|migration, `hits`). `RedirectsService.resolve` = table row first, then `legacyRedirect()`; `GET /redirects?path=`.
+3. `src/app/sitemap.ts` + `src/app/robots.ts` (robots disallow `/admin`, `/f/`, `/api`, `/dev`).
+4. `next.config.ts` `skipTrailingSlashRedirect: true`: legacy paths (`/about-us/`) 301 once via the proxy; any other trailing-slash path gets a single 308 to the slash-less URL from `src/proxy.ts`.
+5. Unmatched legacy path rewrite (`/en/__not-found?moved=1`) now carries HTTP 404 (`NextResponse.rewrite(url, { status: 404 })`).
+6. Proxy 404 probes cover `news/[slug]`, `districts/[slug]`, `programs/[type]`, `values/[slug]`; `centres/map` excluded from the centre probe.
+7. Frontend TEMP fixtures removed; `features/public/data.ts` calls `services().values|programs|join|districts.list`.
