@@ -76,7 +76,8 @@ async function legacy(req: NextRequest): Promise<NextResponse> {
   const url = req.nextUrl.clone();
   url.pathname = "/en/__not-found";
   url.search = "?moved=1";
-  return NextResponse.rewrite(url);
+  // Rewrite keeps the page's 200; the explicit status makes the moved page a real 404.
+  return NextResponse.rewrite(url, { status: 404 });
 }
 
 /** `/admin/...` or `/hi/admin/...`, excluding the login page itself. */
@@ -84,6 +85,11 @@ const PORTAL_PATH = /^(\/hi)?(\/admin(?:\/.*)?)$/;
 
 export default async function proxy(req: NextRequest) {
   if (isLegacyPath(req.nextUrl.pathname)) return legacy(req);
+  // skipTrailingSlashRedirect is on (legacy URLs must 301 once), so normalise other trailing slashes here.
+  if (req.nextUrl.pathname.length > 1 && req.nextUrl.pathname.endsWith("/")) {
+    const url = new URL(req.nextUrl.pathname.replace(/\/+$/, "") + req.nextUrl.search, req.nextUrl.origin);
+    return NextResponse.redirect(url, 308);
+  }
   const match = PORTAL_PATH.exec(req.nextUrl.pathname);
   // Visitors with no session cookie go straight to the login page (a real 307, not a streamed redirect).
   // An expired or revoked cookie is caught by the page itself, which checks the session in the database.

@@ -6,21 +6,14 @@ import type {
   ArticleCategoryFilter,
   CentreListItem,
   CentresQuery,
-  DistrictSummary,
   EventsQuery,
   ImpactPeriod,
-  JoinPayload,
   JoinQuery,
-  ProgramCard,
-  ProgramDetail,
-  ProgramsQuery,
   SevaType,
-  ValuePayload,
   ValueSlug,
   Wing,
 } from "@/contract";
 import { services } from "@/server/services";
-import { fixtureDistricts, fixtureJoin, fixtureProgram, fixturePrograms, fixtureValue } from "./dev-fixtures"; // TEMP M5 until backend merge
 
 export const TAGS = {
   home: "home",
@@ -105,52 +98,37 @@ export async function getCentresSearch(q: Pick<CentresQuery, "q" | "district" | 
   return (await services().centres.list({ ...q, page: 1, pageSize: 100 })).data;
 }
 
-// The calls below use the backend's M5 services once they exist on `services()`;
-// until then the TEMP fixtures answer (CONTRACT v0.6 shapes).
-type M5Services = {
-  values?: { bySlug(slug: ValueSlug): Promise<ValuePayload | null> };
-  programs?: { list(q: ProgramsQuery): Promise<ProgramCard[]>; byType(type: SevaType): Promise<ProgramDetail | null> };
-  join?: { get(q: JoinQuery): Promise<JoinPayload> };
-  districts: { list?: () => Promise<DistrictSummary[]> };
-};
-const m5 = (): M5Services => services() as unknown as M5Services;
-
 export async function getValue(slug: ValueSlug) {
   "use cache";
   cacheLife("hours");
   cacheTag(TAGS.events, TAGS.centres, TAGS.impact);
-  const s = m5().values;
-  return s ? s.bySlug(slug) : fixtureValue(slug);
+  return services().values.bySlug(slug);
 }
 
 export async function getPrograms(wing?: Wing) {
   "use cache";
   cacheLife("hours");
   cacheTag(TAGS.events, TAGS.impact);
-  const s = m5().programs;
-  return s ? s.list({ wing }) : fixturePrograms(wing);
+  return services().programs.list({ wing });
 }
 
 export async function getProgram(type: SevaType) {
   "use cache";
   cacheLife("hours");
   cacheTag(TAGS.events, TAGS.impact, TAGS.articles);
-  const s = m5().programs;
-  return s ? s.byType(type) : fixtureProgram(type);
+  return services().programs.byType(type);
 }
 
 export async function getJoin(q: JoinQuery) {
   "use cache";
   cacheLife("hours");
   cacheTag(TAGS.events);
-  const s = m5().join;
-  return s ? s.get(q) : fixtureJoin(q);
+  return services().join.get(q);
 }
 
 export async function getDistricts() {
   "use cache";
   cacheLife("hours");
   cacheTag(TAGS.centres);
-  const d = m5().districts;
-  return d.list ? d.list() : fixtureDistricts();
+  return services().districts.list();
 }

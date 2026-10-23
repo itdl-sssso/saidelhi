@@ -6,6 +6,8 @@ const withNextIntl = createNextIntlPlugin();
 const nextConfig: NextConfig = {
   cacheComponents: true,
   partialPrefetching: true,
+  // Legacy URLs like /about-us/ must 301 once (proxy); other trailing slashes are normalised in the proxy.
+  skipTrailingSlashRedirect: true,
   experimental: {
     // The root layout sits under [locale], so unmatched non-locale URLs need a standalone 404.
     globalNotFound: true,
