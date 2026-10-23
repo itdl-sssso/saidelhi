@@ -141,15 +141,15 @@ export const CENTRE = { mayurVihar: fx("CEN", 1) } as const;
 export const centres: CentreRec[] = [
   centre(1, SAMITHI.mayurVihar, "mayur-vihar", "Sai Centre Mayur Vihar", "साई केंद्र मयूर विहार", "Community hall, Pocket 2, Mayur Vihar Phase-1, Delhi", "सामुदायिक भवन, पॉकेट 2, मयूर विहार फ़ेज़-1, दिल्ली", "110091", [28.6043, 77.2947]),
   centre(2, SAMITHI.laxmiNagar, "laxmi-nagar", "Sai Centre Laxmi Nagar", "साई केंद्र लक्ष्मी नगर", "First floor, Block C, Laxmi Nagar, Delhi", "पहली मंज़िल, ब्लॉक सी, लक्ष्मी नगर, दिल्ली", "110092", [28.6304, 77.2777]),
-  centre(3, SAMITHI.preetVihar, "preet-vihar", "Sai Centre Preet Vihar", "साई केंद्र प्रीत विहार", "Library room, Preet Vihar, Delhi", "पुस्तकालय कक्ष, प्रीत विहार, दिल्ली", "110092", null),
+  centre(3, SAMITHI.preetVihar, "preet-vihar", "Sai Centre Preet Vihar", "साई केंद्र प्रीत विहार", "Library room, Preet Vihar, Delhi", "पुस्तकालय कक्ष, प्रीत विहार, दिल्ली", "110092", [28.6414, 77.2967]),
   centre(4, SAMITHI.karolBagh, "karol-bagh", "Sai Centre Karol Bagh", "साई केंद्र करोल बाग", "Main hall, Karol Bagh, Delhi", "मुख्य हॉल, करोल बाग, दिल्ली", "110005", [28.6519, 77.1909]),
-  centre(5, SAMITHI.lodhiRoad, "lodhi-road", "Sai Centre Lodhi Road", "साई केंद्र लोधी रोड", "Lodhi Road, New Delhi", "लोधी रोड, नई दिल्ली", "110003", null),
+  centre(5, SAMITHI.lodhiRoad, "lodhi-road", "Sai Centre Lodhi Road", "साई केंद्र लोधी रोड", "Lodhi Road, New Delhi", "लोधी रोड, नई दिल्ली", "110003", [28.5918, 77.2273]),
   centre(6, SAMITHI.rohini, "rohini", "Sai Centre Rohini", "साई केंद्र रोहिणी", "Sector 9, Rohini, Delhi", "सेक्टर 9, रोहिणी, दिल्ली", "110085", [28.7158, 77.1135]),
   centre(7, SAMITHI.saket, "saket", "Sai Centre Saket", "साई केंद्र साकेत", "Block J, Saket, New Delhi", "ब्लॉक जे, साकेत, नई दिल्ली", "110017", [28.5245, 77.2066]),
   centre(8, SAMITHI.dwarka, "dwarka", "Sai Centre Dwarka", "साई केंद्र द्वारका", "Sector 10, Dwarka, New Delhi", "सेक्टर 10, द्वारका, नई दिल्ली", "110075", [28.5815, 77.0590]),
   centre(9, SAMITHI.gurugram31, "gurugram-sector-31", "Sai Centre Gurugram", "साई केंद्र गुरुग्राम", "Sector 31, Gurugram, Haryana", "सेक्टर 31, गुरुग्राम, हरियाणा", "122001", [28.4520, 77.0490]),
   centre(10, SAMITHI.noida62, "noida-sector-62", "Sai Centre Noida", "साई केंद्र नोएडा", "Sector 62, Noida, Uttar Pradesh", "सेक्टर 62, नोएडा, उत्तर प्रदेश", "201309", [28.6270, 77.3650]),
-  centre(11, SAMITHI.faridabad, "faridabad-sector-15", "Sai Centre Faridabad", "साई केंद्र फ़रीदाबाद", "Sector 15, Faridabad, Haryana", "सेक्टर 15, फ़रीदाबाद, हरियाणा", "121007", null),
+  centre(11, SAMITHI.faridabad, "faridabad-sector-15", "Sai Centre Faridabad", "साई केंद्र फ़रीदाबाद", "Sector 15, Faridabad, Haryana", "सेक्टर 15, फ़रीदाबाद, हरियाणा", "121007", [28.4010, 77.3150]),
 ];
 
 let g = 0;

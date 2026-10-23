@@ -12,6 +12,7 @@ import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import mysql from "mysql2/promise";
+import { logPolish, polishLegacy } from "./legacy-polish";
 
 const FILE = "saidelhi-content.sql";
 const ALLOWED = new Set([
@@ -75,6 +76,12 @@ async function main() {
       if (!tables.has(t)) continue;
       const [rows] = await conn.query<mysql.RowDataPacket[]>(`SELECT COUNT(*) AS n FROM \`${t}\``);
       console.log(`  ${t.padEnd(30)} ${rows[0].n}`);
+    }
+    // Redirect rows now; district tags too when the districts are already seeded (else db:seed does it).
+    try {
+      logPolish(await polishLegacy(conn));
+    } catch (err) {
+      console.warn(`Legacy polish skipped: ${err instanceof Error ? err.message : err}`);
     }
   } finally {
     await conn.end();

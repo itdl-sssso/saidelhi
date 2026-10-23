@@ -36,6 +36,13 @@
       "when": 1792748809418,
       "tag": "0004_m4_whatsapp_msg_index",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1792751693755,
+      "tag": "0005_m5_public",
+      "breakpoints": true
     }
   ]
 }

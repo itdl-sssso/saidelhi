@@ -121,6 +121,13 @@ describe("endpoint map", () => {
     );
     expect(endpoints.impact()).toBe("/api/v1/impact");
     expect(endpoints.centre("mayur vihar")).toBe("/api/v1/centres/mayur%20vihar");
+    expect(endpoints.districts()).toBe("/api/v1/districts");
+    expect(endpoints.centres({ pincode: "110091", q: "" })).toBe("/api/v1/centres?pincode=110091");
+    expect(endpoints.join({ district: "east", sevaType: "blood", page: 2 })).toBe("/api/v1/join?district=east&sevaType=blood&page=2");
+    expect(endpoints.value("sathya")).toBe("/api/v1/values/sathya");
+    expect(endpoints.programs({ wing: "service" })).toBe("/api/v1/programs?wing=service");
+    expect(endpoints.program("eye")).toBe("/api/v1/programs/eye");
+    expect(endpoints.redirects("/about-us/")).toBe("/api/v1/redirects?path=%2Fabout-us%2F");
     expect(withQuery("/x", { a: "", b: null, c: 0 })).toBe("/x?c=0");
   });
 });

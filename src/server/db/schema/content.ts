@@ -1,11 +1,13 @@
 import {
   bigint,
+  boolean,
   date,
   datetime,
   index,
   int,
   json,
   longtext,
+  mysqlEnum,
   mysqlTable,
   smallint,
   text,
@@ -75,4 +77,19 @@ export const setting = mysqlTable("setting", {
   updatedBy: idRef("updated_by"),
   updatedAt: timestamp("updated_at", { mode: "date" }).notNull().defaultNow().onUpdateNow(),
   note: text("note"),
+});
+
+export type RedirectSource = "rule" | "manual" | "migration";
+
+/**
+ * Old path -> new path (spec 41). Manual and migration rows are checked before the
+ * built-in Django URL rules. `from_path` is the normalised path (no trailing slash, no query).
+ */
+export const redirect = mysqlTable("redirect", {
+  fromPath: varchar("from_path", { length: 500 }).primaryKey(),
+  toPath: varchar("to_path", { length: 500 }).notNull(),
+  permanent: boolean("permanent").notNull().default(true),
+  source: mysqlEnum("source", ["rule", "manual", "migration"]).$type<RedirectSource>().notNull().default("manual"),
+  hits: int("hits").notNull().default(0),
+  ...timestamps(),
 });

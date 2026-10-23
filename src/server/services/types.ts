@@ -19,6 +19,16 @@ import type {
   CentreListItem,
   CentresQuery,
   DistrictPayload,
+  DistrictSummary,
+  JoinPayload,
+  JoinQuery,
+  ProgramCard,
+  ProgramDetail,
+  ProgramsQuery,
+  RedirectTarget,
+  SevaType,
+  ValuePayload,
+  ValueSlug,
   OrgUnit,
   OrgUnitsQuery,
   EventPublic,
@@ -59,9 +69,32 @@ export interface CentresService {
 }
 
 export interface DistrictsService {
+  /** Active districts with samithi/centre counts, display order (About page). */
+  list(): Promise<DistrictSummary[]>;
   bySlug(slug: string): Promise<DistrictPayload | null>;
   /** Active districts, or active samithis (optionally of one district), in display order. */
   units(q: OrgUnitsQuery): Promise<OrgUnit[]>;
+}
+
+export interface ValuesService {
+  bySlug(slug: ValueSlug): Promise<ValuePayload>;
+}
+
+export interface ProgramsService {
+  list(q: ProgramsQuery): Promise<ProgramCard[]>;
+  /** null for unknown or inactive types. */
+  byType(type: SevaType): Promise<ProgramDetail | null>;
+  /** Cheap probe: is this an active seva type (proxy 404 check). */
+  exists(type: string): Promise<boolean>;
+}
+
+export interface JoinService {
+  get(q: JoinQuery): Promise<JoinPayload>;
+}
+
+export interface RedirectsService {
+  /** Table row first, then the built-in legacy rules; null when neither matches. Counts a hit. */
+  resolve(path: string): Promise<RedirectTarget | null>;
 }
 
 export interface ImpactService {
@@ -72,6 +105,8 @@ export interface ImpactService {
 export interface ArticlesService {
   list(q: ArticlesQuery): Promise<Paged<Article>>;
   bySlug(slug: string): Promise<ArticleDetail | null>;
+  /** Cheap existence probe for public visibility (proxy 404 check). */
+  exists(slug: string): Promise<boolean>;
 }
 
 export interface PrivacyRequestMeta {
@@ -182,6 +217,10 @@ export interface Services {
   districts: DistrictsService;
   impact: ImpactService;
   articles: ArticlesService;
+  values: ValuesService;
+  programs: ProgramsService;
+  join: JoinService;
+  redirects: RedirectsService;
   privacy: PrivacyService;
   flags: FlagsService;
   links: LinksService;
@@ -205,6 +244,8 @@ export interface ServiceDeps {
   storage?: PrivateStorage;
   /** Origin for form-link URLs. */
   appUrl?: string;
+  /** Public bot contact shown on /join (WHATSAPP_PUBLIC_NUMBER / _KEYWORD); absent -> "coming soon". */
+  whatsappPublic?: { number: string | null; keyword: string };
   /** Called after mutations that change public data. */
   revalidate?: (tags: readonly CacheTag[]) => void;
   /** Turns chat text into draft report answers (rules by default). */

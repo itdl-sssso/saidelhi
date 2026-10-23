@@ -1,7 +1,8 @@
 import "server-only";
 import { and, asc, count, desc, eq, gt, gte, inArray, isNotNull, isNull, lt, lte, or, type SQL, sql } from "drizzle-orm";
-import type { ContentKind } from "@/contract";
+import type { ContentKind, PartnerKind } from "@/contract";
 import type { Db } from "../db/client";
+import { PUBLIC_ARTICLE_LETTERS } from "../domain/articles";
 import { DbLinksRepo } from "./links-db";
 import { toEventRec } from "./event-row";
 import { DbPortalRepo } from "./portal-db";
@@ -17,6 +18,7 @@ import {
   impactEstimate,
   orgUnit,
   partner,
+  redirect,
   privacyRequest,
   setting,
   sevaType,
@@ -48,7 +50,11 @@ const toI18n = (r: I18nRow | null): ArticleI18nRec | null =>
     : null;
 
 /** Legacy posts without a side row, or with status 'published'. */
-const articlePublished = or(isNull(articleI18n.status), eq(articleI18n.status, "published"));
+const articlePublished = and(
+  or(isNull(articleI18n.status), eq(articleI18n.status, "published")),
+  // Legacy category 'O' (and anything unknown) is never public.
+  inArray(post.category, PUBLIC_ARTICLE_LETTERS),
+);
 
 export class DbRepo implements DataRepo {
   readonly kind = "db" as const;
@@ -106,6 +112,36 @@ export class DbRepo implements DataRepo {
       .where(inArray(partner.id, [...ids]));
   }
 
+  async partnersByKind(kinds: readonly PartnerKind[]) {
+    if (kinds.length === 0) return [];
+    return this.db
+      .select({ id: partner.id, name: partner.name, kind: partner.kind, city: partner.city, active: partner.active })
+      .from(partner)
+      .where(and(eq(partner.active, true), inArray(partner.kind, [...kinds])))
+      .orderBy(asc(partner.name));
+  }
+
+  async articlesForEvents(eventIds: readonly string[], limit: number) {
+    if (eventIds.length === 0) return [];
+    const rows = await this.db
+      .select({ post, i18n: articleI18n })
+      .from(articleI18n)
+      .innerJoin(post, eq(post.id, articleI18n.legacyId))
+      .where(and(inArray(articleI18n.eventId, [...eventIds]), eq(articleI18n.status, "published"), inArray(post.category, PUBLIC_ARTICLE_LETTERS)))
+      .orderBy(desc(post.createdAt), desc(post.id))
+      .limit(limit);
+    return this.withGallery(rows);
+  }
+
+  async redirectByPath(path: string) {
+    const [row] = await this.db.select().from(redirect).where(eq(redirect.fromPath, path)).limit(1);
+    return row ? { fromPath: row.fromPath, toPath: row.toPath, permanent: row.permanent, source: row.source, hits: row.hits } : null;
+  }
+
+  async redirectHit(path: string) {
+    await this.db.update(redirect).set({ hits: sql`${redirect.hits} + 1` }).where(eq(redirect.fromPath, path));
+  }
+
   async settings(keys: readonly string[]) {
     if (keys.length === 0) return new Map<string, unknown>();
     const rows = await this.db.select({ key: setting.key, value: setting.value }).from(setting).where(inArray(setting.key, [...keys]));
@@ -161,6 +197,7 @@ export class DbRepo implements DataRepo {
       f.districtId ? eq(event.districtId, f.districtId) : undefined,
       f.samithiId ? eq(event.samithiId, f.samithiId) : undefined,
       f.sevaType ? eq(event.sevaType, f.sevaType) : undefined,
+      f.recurring === undefined ? undefined : eq(event.recurring, f.recurring),
     ];
     if (f.needsVolunteers === true) {
       conds.push(and(isNotNull(event.volunteersNeeded), gt(event.volunteersNeeded, event.volunteersJoined)));
@@ -237,7 +274,7 @@ export class DbRepo implements DataRepo {
       .select({ eventId: articleI18n.eventId, slug: post.slug })
       .from(articleI18n)
       .innerJoin(post, eq(post.id, articleI18n.legacyId))
-      .where(and(inArray(articleI18n.eventId, [...eventIds]), eq(articleI18n.status, "published")))
+      .where(and(inArray(articleI18n.eventId, [...eventIds]), eq(articleI18n.status, "published"), inArray(post.category, PUBLIC_ARTICLE_LETTERS)))
       .orderBy(desc(post.createdAt));
     for (const r of rows) if (r.eventId && !out.has(r.eventId)) out.set(r.eventId, r.slug);
     return out;
@@ -287,7 +324,7 @@ export class DbRepo implements DataRepo {
       .select({ post, i18n: articleI18n })
       .from(post)
       .leftJoin(articleI18n, eq(articleI18n.legacyId, post.id))
-      .where(eq(post.slug, slug))
+      .where(and(eq(post.slug, slug), inArray(post.category, PUBLIC_ARTICLE_LETTERS)))
       .limit(1);
     const [rec] = await this.withGallery(rows);
     return rec ?? null;
