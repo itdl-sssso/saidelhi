@@ -2,7 +2,6 @@
 
 // Client read for portal pages whose data comes straight from /api/v1 (CONTRACT §2): loading, error,
 // reload, and the `meta` of list envelopes (src/lib/api.ts drops it). 401 → login.
-import "./dev-fixtures-load"; // TEMP M6 until backend merge
 import { useLocale } from "next-intl";
 import { useCallback, useEffect, useState } from "react";
 import { usePathname, useRouter } from "@/i18n/navigation";

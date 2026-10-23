@@ -2,7 +2,6 @@
 
 // Multipart POST for the portal (uploads, photos, sitemap). Same CSRF header and failure envelope as useAction;
 // 422 is returned to the caller, everything else toasts. 401 → login.
-import "./dev-fixtures-load"; // TEMP M6 until backend merge
 import { useLocale, useTranslations } from "next-intl";
 import { useCallback, useState } from "react";
 import { PORTAL_HEADERS } from "@/contract";

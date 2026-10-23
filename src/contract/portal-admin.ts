@@ -701,7 +701,7 @@ export const MigrationTypeRow = z.object({
 });
 export type MigrationTypeRow = z.infer<typeof MigrationTypeRow>;
 
-export const MigrationProblem = z.enum(["broken_images", "no_date", "hindi_only", "personal_data", "empty_body", "slug_clash"]);
+export const MigrationProblem = z.enum(["broken_images", "no_date", "hindi_only", "personal_data", "empty_body", "slug_clash", "unmatched_url"]);
 export type MigrationProblem = z.infer<typeof MigrationProblem>;
 
 export const MigrationIssue = z.object({

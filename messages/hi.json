@@ -2477,7 +2477,8 @@
         "hindi_only": "केवल हिंदी शीर्षक",
         "personal_data": "पाठ में फ़ोन या ईमेल",
         "empty_body": "खाली पाठ",
-        "slug_clash": "पता पहले से इस्तेमाल में"
+        "slug_clash": "पता पहले से इस्तेमाल में",
+        "unmatched_url": "इस पते पर कोई पेज नहीं"
       },
       "reportTitle": "रिपोर्ट",
       "runStatus": {

@@ -277,7 +277,7 @@ describe("migration + redirects", () => {
     const xml = `<?xml version="1.0"?><urlset><url><loc>https://saidelhi.org/old/phone-in-body/</loc></url><url><loc>https://saidelhi.org/about-us</loc></url><url><loc>https://saidelhi.org/nowhere/page</loc></url></urlset>`;
     const sm = await t.svc.portal.migration.create(st, "sitemap", { name: "sitemap.xml", bytes: new TextEncoder().encode(xml) });
     expect(sm).toMatchObject({ source: "sitemap", fileName: "sitemap.xml", counts: { items: 3, needsFix: 1 } });
-    expect(sm.issues).toEqual([{ ref: "/nowhere/page", title: "/nowhere/page", problem: "slug_clash", fixPath: null }]);
+    expect(sm.issues).toEqual([{ ref: "/nowhere/page", title: "/nowhere/page", problem: "unmatched_url", fixPath: null }]);
     await t.svc.portal.migration.runImport(st, sm.id, { version: sm.version });
     const all = (await t.svc.portal.migration.redirects.list(st, { page: 1, pageSize: 100 } as never)).data;
     expect(all).toContainEqual(expect.objectContaining({ from: "/old/phone-in-body", to: "/news/phone-in-body", source: "migration" }));
