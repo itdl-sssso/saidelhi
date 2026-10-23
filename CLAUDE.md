@@ -2,7 +2,7 @@
 
 # SSSSO Delhi NCR platform — project state & handoff
 
-Rebuild of saidelhi.org (Sri Sathya Sai Seva Organisation, Delhi NCR): bilingual public site + coordinator portal (`/admin`) + event form links (`/f/<token>`) + WhatsApp bot. Last updated **23 Oct 2026** (M5 done).
+Rebuild of saidelhi.org (Sri Sathya Sai Seva Organisation, Delhi NCR): bilingual public site + coordinator portal (`/admin`) + event form links (`/f/<token>`) + WhatsApp bot. Last updated **23 Oct 2026** (M6 done).
 
 ## Read these first
 | File | What |
@@ -43,13 +43,12 @@ Run `pnpm db:seed` before `pnpm test` if the DB was mutated by a walkthrough (li
 | M3 | Portal core: login, shell, Overview, Events, Event detail, Plan event, Approvals, Links, Org, People, Audit | ✅ `a19a373` | ✅ walkthrough done 23 Oct (fixes: table sr-only overflow, 375px top bar, hi plurals, overdue seed links) | see git log |
 | M4 | WhatsApp bot flows + webhook + reminders, extractor (rules + SmolLM via Ollama), Review inbox, WhatsApp admin, opt-in endpoint, dev simulator `/dev/whatsapp`, proxy 404s | ✅ | ✅ walkthrough done | see git log (merges `30e2bf2`…) |
 | M5 | Public P1: Values ×5, About, Programs, Program, News/Article, Join (number+QR+opt-in form), Map (Leaflet+OSM), District, legacy 301 redirects (`redirect` table, migration 0005), sitemap/robots, legacy polish | ✅ | ✅ | merges `08e80b2`…`4127b36` + integration |
-| M6 | Portal P1: form templates/builder, uploads (xlsx), centres, partners, content, impact controls, migration, volunteers, reports/exports, health, follow-up, privacy, settings | ⬜ | ⬜ | |
+| M6 | Portal P1: form templates/builder, uploads (xlsx), centres, partners, content (native `article`, tiptap), impact controls, migration, volunteers, reports/exports, health, follow-up, privacy, settings; crons publish-scheduled/monthly-report/retention | ✅ | ✅ | merges `556cd5e` + integration |
 | M7 | Discourses (flag) import + pages + workspace; a11y/perf pass; Playwright e2e | ⬜ | ⬜ | |
 
 ### Immediate next steps (in order)
-1. **M6** (portal P1): contract-first (Opus planning agent), then backend + frontend Sonnet tracks, integration, walkthrough.
-2. Then M7 (scope decided 23 Oct: full). Run straight through without pausing between milestones.
-3. After M7: **UI feedback session with user** (user 23 Oct: UI mismatches vs design, at least Home page).
+1. **M7** (scope decided 23 Oct: full). Run straight through without pausing between milestones.
+2. After M7: **UI feedback session with user** (user 23 Oct: UI mismatches vs design, at least Home page).
 
 ### Known open issues
 - In-process rate limits and bot-challenge reuse (single node only).
@@ -58,6 +57,7 @@ Run `pnpm db:seed` before `pnpm test` if the DB was mutated by a walkthrough (li
 - Public 404s for unknown event/centre handled by existence probe in `src/proxy.ts` (60s cache) because Cache Components + Suspense layout fix status at 200.
 - Hindi hero/value copy + all M5 HI strings written by an agent — needs native review (value prose shows EN with notice until `HI_PROSE_READY`).
 - M5 TODO(user): `WHATSAPP_PUBLIC_NUMBER`, real districts + centre coords, NCR pincode table (approx, `src/server/data/ncr-pincodes.json`), About contact/auditorium/founder text+photo, llms.txt.
+- M6 leftovers: new entities stored as JSON doc tables (`repo.m6`, migrations 0006/0007); monthly PDF ASCII-only (Hindi → `?`, needs Devanagari font); centre photo EXIF not stripped; privacy `PR-nnnn` ref derived by order (unstable if deleted); redirects cache 5 min; retention purge only tested on mock repo; 375px/`/hi` not fully browser-checked on all M6 pages (cover in M7 a11y pass).
 - Dev: if `next dev` hangs on "Compiling" after merges/new deps → `rm -rf .next/dev` and restart.
 - Root-owned stale dir `.claude/worktrees/agent-aec2e1a718ded6454` (Docker-created) — `sudo rm -rf` it.
 
