@@ -47,6 +47,10 @@ export const EventPublic = z.object({
   results: EventResults.nullable(),
   articleSlug: z.string().nullable(),
   recurring: z.boolean(),
+  /** When the report was approved (status = approved), else null. v0.5 */
+  approvedAt: ISODateTime.nullable(),
+  /** Centre hosting the event (samithi → centre), null when none. v0.5 */
+  centre: z.object({ slug: z.string() }).nullable(),
 });
 export type EventPublic = z.infer<typeof EventPublic>;
 

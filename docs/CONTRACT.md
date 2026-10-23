@@ -336,3 +336,15 @@ Definition of done per milestone: `pnpm typecheck && pnpm lint && pnpm test && p
 ### Backlog from M2 frontend
 - `FormPayload.editable` must be false for public links when the event is not `planned`/`postponed` (today send fails 409).
 - Seed label "Under 18 (optional)" duplicates the kit's optional marker — fix data.
+
+### v0.5 (M4 — lead, before tracks)
+Zod lives in `src/contract/whatsapp.ts` (+ `events.ts`, `endpoints.ts`, `auth.ts`). Summary:
+1. `EventPublic.approvedAt: ISODateTime|null`, `EventPublic.centre: {slug}|null` (assembler fills `centre`; `approvedAt` TODO backend from timeline).
+2. `GET /org/units?kind=district|samithi[&district=slug]` → `OrgUnit[]` (public, active only).
+3. Calendar: centre weekly gatherings expand into `GET /events` rows with `recurring:true`, id `gath_<gatheringId>_<YYYYMMDD>`, status `planned`, `centre.slug` set; `GET /events/:id` for such ids → 404 (UI links recurring rows to the centre page).
+4. Inbox: `GET /admin/inbox?tab` → `InboxRow[]` + `meta.counts`; `GET /admin/inbox/:id` → `InboxDetail` (thread, candidates, definition, history, `can`, version); `PATCH` `InboxPatchBody`; `POST …/approve|escalate|reject|ask` (bodies in zod; optimistic `version`, 409 `CONFLICT` on stale). Approve creates a submission and moves event → `report_submitted`. Reject/ask message the sender.
+5. WhatsApp admin: templates, reminders (+PATCH enabled), broadcasts (`dryRun` estimate; opted-in only), log + thread, status. Permissions: `whatsapp.manage` (state admin, all tabs), new `whatsapp.reminders` (district coord: Reminders tab only).
+6. `POST /whatsapp/optin` (`OptInBody`, bot-checked, 202 neutral). Consent recorded when user replies YES.
+7. Dev simulator: `POST /dev/whatsapp/inbound` (`SimInboundBody` → `WaOutbound[]`), `GET /dev/whatsapp/messages?phone` → `SimMessage[]`, `POST /dev/whatsapp/reset`. 404 unless console provider and non-production. Page `/dev/whatsapp` (frontend, dev only).
+8. AI extractor: `AI_PROVIDER=rules|ollama` (default `rules`), `OLLAMA_URL`, `OLLAMA_MODEL=smollm2:1.7b` (360m on weak servers). Rules-first (numbers, dates, Hinglish keywords), SmolLM fills gaps; every extraction is a draft in the inbox — never counts until a person approves. Server cannot run big LLMs (user, 23 Oct).
+9. Backlog fixes in M4: `FormPayload.editable=false` for public links when event not planned/postponed; seed label "Under 18 (optional)" → "Under 18"; HTTP 404 status for unknown public ids/slugs and unbuilt `/admin/*` routes.

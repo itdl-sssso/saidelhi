@@ -11,5 +11,6 @@ export * from "./impact";
 export * from "./system";
 export * from "./auth";
 export * from "./portal";
+export * from "./whatsapp";
 export * from "./queries";
 export * from "./endpoints";

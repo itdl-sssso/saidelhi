@@ -30,6 +30,7 @@ export const Permission = z.enum([
   "discourses.edit",
   "migration.run",
   "whatsapp.manage",
+  "whatsapp.reminders",
   "volunteers.read",
   "reports.export",
   "health.read",

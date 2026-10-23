@@ -53,6 +53,10 @@ export const endpoints = {
   discourse: (slug: string) => p(`/discourses/${seg(slug)}`),
   privacyRequests: () => p("/privacy/requests"),
   redirects: (path: string) => withQuery(p("/redirects"), { path }),
+  /** v0.5: OrgUnit[] for filters (active units only). */
+  orgUnits: (q: { kind: "district" | "samithi"; district?: string }) => withQuery(p("/org/units"), q),
+  /** v0.5: public WhatsApp opt-in (OptInBody) → 202. */
+  whatsappOptIn: () => p("/whatsapp/optin"),
 } as const;
 
 export type EndpointName = keyof typeof endpoints;
@@ -110,4 +114,22 @@ export const adminEndpoints = {
   deactivatePerson: (id: string) => p(`/admin/people/${seg(id)}/deactivate`),
   audit: (q?: object) => withQuery(p("/admin/audit"), q),
   attachment: (id: string) => p(`/admin/attachments/${seg(id)}`),
+  // v0.5 (M4)
+  inbox: (q?: { tab?: "for_me" | "escalated" | "done" } & PageQuery) => withQuery(p("/admin/inbox"), q),
+  inboxItem: (id: string) => p(`/admin/inbox/${seg(id)}`),
+  inboxAction: (id: string, action: "approve" | "escalate" | "reject" | "ask") => p(`/admin/inbox/${seg(id)}/${action}`),
+  waTemplates: () => p("/admin/whatsapp/templates"),
+  waReminders: () => p("/admin/whatsapp/reminders"),
+  waReminder: (id: string) => p(`/admin/whatsapp/reminders/${seg(id)}`),
+  waBroadcasts: () => p("/admin/whatsapp/broadcasts"),
+  waLog: (q?: { q?: string } & PageQuery) => withQuery(p("/admin/whatsapp/log"), q),
+  waConversation: (id: string) => p(`/admin/whatsapp/log/${seg(id)}`),
+  waStatus: () => p("/admin/whatsapp/status"),
+} as const;
+
+/** v0.5 dev-only bot simulator (404 unless WHATSAPP_PROVIDER=console and NODE_ENV!=production). */
+export const devWhatsappEndpoints = {
+  inbound: () => p("/dev/whatsapp/inbound"),
+  messages: (phone: string) => withQuery(p("/dev/whatsapp/messages"), { phone }),
+  reset: () => p("/dev/whatsapp/reset"),
 } as const;
