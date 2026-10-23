@@ -2,7 +2,7 @@
 
 import { useLocale, useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   DISCOURSE_THEMES,
   DiscourseStatus as StatusEnum,
@@ -67,14 +67,13 @@ export function DiscoursesList({ can }: { can: ListCan }) {
   const [assign, setAssign] = useState<AdminDiscourseRow | null>(null);
   const [seen, setSeen] = useState<DiscourseReviewer[]>([]);
 
-  useEffect(() => {
-    if (api.status !== "ready") return;
-    setSeen((prev) => {
-      const map = new Map(prev.map((r) => [r.id, r]));
-      for (const r of api.data) if (r.reviewer) map.set(r.reviewer.id, r.reviewer);
-      return map.size === prev.length ? prev : [...map.values()];
-    });
-  }, [api.status, api.data]);
+  const [seenFrom, setSeenFrom] = useState<unknown>(null);
+  if (api.status === "ready" && api.data !== seenFrom) {
+    setSeenFrom(api.data);
+    const map = new Map(seen.map((r) => [r.id, r]));
+    for (const r of api.data) if (r.reviewer) map.set(r.reviewer.id, r.reviewer);
+    if (map.size !== seen.length) setSeen([...map.values()]);
+  }
 
   const meta = api.status === "ready" ? (api.meta as (AdminDiscoursesMeta & { pageSize: number }) | null) : null;
 
