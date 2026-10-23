@@ -35,7 +35,7 @@ export function VolunteersPage({ org }: { org: OrgOptions }) {
   const params = Object.fromEntries(sp.entries());
   const api = useApi<VolunteerEventRow[], VolunteersMeta>(adminEndpoints.volunteers({ when, samithi, page, pageSize: 12 }));
   const fields: FilterField[] = [
-    { kind: "select", key: "when", label: t("when"), options: WHEN.map((w) => ({ value: w, label: t(`when_${w}`) })) },
+    { kind: "select", key: "when", label: t("when"), defaultValue: "next30", options: WHEN.map((w) => ({ value: w, label: t(`when_${w}`) })) },
     ...(org.samithis.length > 1 ? [{ kind: "select" as const, key: "samithi", label: t("samithi"), options: org.samithis }] : []),
   ];
   return (

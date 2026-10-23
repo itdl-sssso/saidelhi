@@ -33,7 +33,7 @@ export function HealthPage({ org }: { org: OrgOptions }) {
       <PageHead title={t("title")} sub={t("sub")} />
       <FilterBar
         fields={[
-          { kind: "select", key: "range", label: t("period"), options: RANGES.map((r) => ({ value: r, label: t("lastMonths", { n: Number(r) }) })) },
+          { kind: "select", key: "range", label: t("period"), defaultValue: "6", options: RANGES.map((r) => ({ value: r, label: t("lastMonths", { n: Number(r) }) })) },
           ...(org.districts.length > 1 ? [{ kind: "select" as const, key: "scope", label: t("scope"), options: org.districts }] : []),
         ]}
       />
