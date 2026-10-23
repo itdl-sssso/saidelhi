@@ -21,6 +21,10 @@ export interface FormVersionRec {
   status: FormVersionStatus;
   definition: FormDefinition;
   publishedAt: Date | null;
+  publishedBy?: string | null;
+  /** Draft revision (builder concurrency); 1 for seeded rows. */
+  rev?: number;
+  updatedAt?: Date;
 }
 
 export interface LinkRec {
@@ -179,6 +183,16 @@ export interface LinksRepo {
   versionById(id: string): Promise<FormVersionRec | null>;
   /** Highest published version of a template. */
   publishedVersion(templateId: string): Promise<FormVersionRec | null>;
+  /** Every version of a template (drafts included), oldest first. */
+  versionsOf(templateId: string): Promise<FormVersionRec[]>;
+  /** Active (not revoked, not expired) links per form version id. */
+  activeLinkCounts(now: Date): Promise<Map<string, number>>;
+  insertTemplate(t: TemplateRec, first: FormVersionRec, createdBy: string | null): Promise<"ok" | "duplicate">;
+  updateTemplate(id: string, patch: Partial<Pick<TemplateRec, "titleEn" | "titleHi" | "active">>): Promise<void>;
+  insertVersion(v: FormVersionRec, createdBy: string | null): Promise<"ok" | "duplicate">;
+  /** Draft rows only; `conflict` when the revision differs or the row is no longer a draft. */
+  updateDraft(id: string, definition: FormDefinition, expectRev: number): Promise<"ok" | "conflict">;
+  publishDraft(id: string, expectRev: number, at: Date, by: string | null): Promise<"ok" | "conflict">;
   eventFormVersionId(eventId: string): Promise<string | null>;
   /** Sets event.form_version_id if still null; returns the locked id. */
   lockEventFormVersion(eventId: string, versionId: string): Promise<string>;

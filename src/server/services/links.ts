@@ -334,11 +334,19 @@ export function createLinksService(repo: DataRepo, deps: LinkServiceDeps): Links
     };
   }
 
+  /** Active report template for a seva type: the one pinned in settings, else the first match. */
+  async function reportTemplate(sevaType: EventRec["sevaType"]) {
+    const [all, types] = await Promise.all([links.templates(), repo.sevaTypes()]);
+    const pinned = types.find((s) => s.code === sevaType)?.templateId;
+    const active = all.filter((x) => x.active && x.purpose === "report");
+    return active.find((x) => x.id === pinned) ?? active.find((x) => x.sevaType === sevaType);
+  }
+
   /** The report form version locked to the event (locks the seva type's published one on first use). */
   async function reportVersion(ev: EventRec) {
     let versionId = await links.eventFormVersionId(ev.id);
     if (!versionId) {
-      const t = (await links.templates()).find((x) => x.active && x.purpose === "report" && x.sevaType === ev.sevaType);
+      const t = await reportTemplate(ev.sevaType);
       const v = t ? await links.publishedVersion(t.id) : null;
       versionId = v ? await links.lockEventFormVersion(ev.id, v.id) : null;
     }
@@ -623,7 +631,7 @@ export function createLinksService(repo: DataRepo, deps: LinkServiceDeps): Links
       } else {
         versionId = await links.eventFormVersionId(eventId);
         if (!versionId) {
-          const t = templates.find((x) => x.sevaType === ev.sevaType);
+          const t = await reportTemplate(ev.sevaType);
           const v = t ? await links.publishedVersion(t.id) : null;
           versionId = v ? await links.lockEventFormVersion(eventId, v.id) : null;
         }

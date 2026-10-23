@@ -48,6 +48,9 @@ export const formVersion = mysqlTable(
     /** Validated with the contract FormDefinition schema before every write. */
     definition: json("definition").$type<FormDefinition>().notNull(),
     publishedAt: datetime("published_at", { mode: "date" }),
+    publishedBy: idRef("published_by"),
+    /** Draft revision counter (optimistic concurrency for the builder). */
+    rev: int("rev").notNull().default(1),
     createdBy: idRef("created_by"),
     ...timestamps(),
   },
