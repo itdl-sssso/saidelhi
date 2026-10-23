@@ -11,6 +11,7 @@ import path from "node:path";
 import { eq, sql } from "drizzle-orm";
 import mysql from "mysql2/promise";
 import { logPolish, polishLegacy } from "./legacy-polish";
+import { runImport as importDiscourses } from "./import-discourses";
 import { closeDb, getDb } from "../src/server/db/client";
 import { postcontentPostcontent } from "../src/server/db/legacy";
 import {
@@ -197,6 +198,8 @@ async function main() {
     console.log(`\nDEV form links (tokens derive from SESSION_SECRET; coordinator phone ${DEV_COORDINATOR_PHONE}, OTP codes print in the server log):`);
     for (const l of links) console.log(`  ${l.key.padEnd(14)} ${l.rec.purpose.padEnd(7)} ${base}/f/${l.token}`);
     console.log("\nDEV WhatsApp bot: POST /api/v1/dev/whatsapp/inbound { from, text, replyId, media }; try +91 90000 00001 (coordinator, hi), 00002 (district), 00003 (state admin), +91 98765 43210 (public).");
+    // Discourses (M7): import the offline translations (if present) and publish 3 samples; the flag follows NODE_ENV (on in dev).
+    await importDiscourses({ publish: 3 }).catch((e) => console.warn("discourse import skipped:", e instanceof Error ? e.message : e));
     console.log("\nDEV portal logins (OTP prints in the server log):");
     const byId = new Map(portal.users.map((u) => [u.id, u]));
     for (const [i, r] of portal.roles.entries()) {

@@ -3,14 +3,14 @@ import type { DataRepo } from "../repo/types";
 import { loadImpactData, periodWindow } from "./impact-calc";
 import { headlineFigure, sliceOfType } from "./programs";
 import { loadOrg, loadSettings } from "./shared";
-import type { EventsService, ServiceDeps, ValuesService } from "./types";
+import type { DiscoursesService, EventsService, ServiceDeps, ValuesService } from "./types";
 
 const GATHERING_LABEL = {
   en: "Centres holding it every week",
   hi: "हर सप्ताह आयोजित करने वाले केंद्र",
 };
 
-export function createValuesService(repo: DataRepo, deps: ServiceDeps, events: EventsService): ValuesService {
+export function createValuesService(repo: DataRepo, deps: ServiceDeps, events: EventsService, discourses?: DiscoursesService): ValuesService {
   return {
     async bySlug(slug: ValueSlug): Promise<ValuePayload> {
       const i = VALUE_ORDER.indexOf(slug);
@@ -51,8 +51,8 @@ export function createValuesService(repo: DataRepo, deps: ServiceDeps, events: E
         lived: { sevaType: link.sevaType, wing: link.wing },
         facts,
         upcoming,
-        // Discourses arrive in M7; until then the section is empty (flag on) or hidden (flag off).
-        discourses: settings.flags.discourses ? [] : null,
+        // Hidden while the flag is off; up to 3 published matches (VALUE_DISCOURSE_THEMES) when on.
+        discourses: settings.flags.discourses ? ((await discourses?.forValue(slug)) ?? []) : null,
       };
     },
   };

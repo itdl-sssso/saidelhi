@@ -7,6 +7,7 @@ export const CACHE_TAGS = {
   impact: "impact",
   articles: "articles",
   centres: "centres",
+  discourses: "discourses",
   home: "home",
   uiStrings: "ui-strings",
 } as const;
