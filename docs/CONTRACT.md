@@ -348,3 +348,15 @@ Zod lives in `src/contract/whatsapp.ts` (+ `events.ts`, `endpoints.ts`, `auth.ts
 7. Dev simulator: `POST /dev/whatsapp/inbound` (`SimInboundBody` → `WaOutbound[]`), `GET /dev/whatsapp/messages?phone` → `SimMessage[]`, `POST /dev/whatsapp/reset`. 404 unless console provider and non-production. Page `/dev/whatsapp` (frontend, dev only).
 8. AI extractor: `EXTRACTOR_PROVIDER=rules|ollama` (existing env name; default `rules`), `OLLAMA_URL`, `OLLAMA_MODEL=smollm2:1.7b` (360m on weak servers). Rules-first (numbers, dates, Hinglish keywords), SmolLM fills gaps; every extraction is a draft in the inbox — never counts until a person approves. Server cannot run big LLMs (user, 23 Oct).
 9. Backlog fixes in M4: `FormPayload.editable=false` for public links when event not planned/postponed; seed label "Under 18 (optional)" → "Under 18"; HTTP 404 status for unknown public ids/slugs and unbuilt `/admin/*` routes.
+
+### v0.5.1 (M4 backend additions, logged by lead)
+1. `GET /whatsapp/optin` → `{botToken, minAgeMs}` (`OptInChallenge`); POST → 202 `{accepted:true}`. Opt-in state in new `whatsapp_optin` table (pending → opted_in on YES → stopped on STOP); `consent_record` stays submission-bound.
+2. New zod: `OrgUnitsQuery`, `OptInChallenge`, `InboxIdParams`, `InboxMediaQuery`, `WaLogQuery`.
+3. `CronJob` += `reminders` (day-before checklist + report reminders); `report-reminders` kept.
+4. `GET /admin/inbox/:id/media?m=<msgId>` serves private inbox photos (audited); `ThreadMessage.media.url` points there. In WhatsApp log threads `media.url` is `""`.
+5. `NewSubmissionWrite.linkId` nullable; `links.submitExternal` / `links.reportContext` for chat/inbox reports. Provider interface += `sendInteractive`.
+6. Templates needing Meta approval added: `optin_confirm`, `plan_decision`, `review_message`.
+7. Inbox RBAC: samithi coord view-only; district acts on first-review; state on escalated or any open.
+8. Reminder rules are global (district toggle affects all).
+9. `GET /events` gathering rows: 28-day horizon when `to` absent.
+10. Env: `EXTRACTOR_PROVIDER=rules|ollama`, `OLLAMA_MODEL=smollm2:1.7b`, new `WA_DISPLAY_NUMBER`, `WA_COEXISTENCE`. Migrations `0003_m4_whatsapp`, `0004_m4_whatsapp_msg_index`.
