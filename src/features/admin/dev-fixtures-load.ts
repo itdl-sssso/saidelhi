@@ -3,4 +3,5 @@ import { installDevFixtures } from "./dev-fixtures";
 
 installDevFixtures([
   () => import("./settings/dev-fixtures"),
+  () => import("./forms/dev-fixtures"),
 ]);
