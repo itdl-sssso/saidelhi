@@ -6,3 +6,4 @@ export * from "./schema/forms";
 export * from "./schema/auth";
 export * from "./schema/whatsapp";
 export * from "./schema/m6";
+export * from "./schema/discourses";
