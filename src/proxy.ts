@@ -11,7 +11,7 @@ const intl = createMiddleware(routing);
  * (Next docs: guides/streaming, "The HTTP contract"), so it probes existence and rewrites unknown
  * ones to the localised catch-all, which answers a real 404.
  */
-const DETAIL_PATH = /^(?:\/(hi))?(?:\/(events|centres)\/([^/]+)|\/admin\/events\/([^/]+)(?:\/edit)?)\/?$/;
+const DETAIL_PATH = /^(?:\/(hi))?(?:\/(events|centres)\/(?!map\/?$)([^/]+)|\/admin\/events\/([^/]+)(?:\/edit)?)\/?$/;
 const PROBE_TTL_MS = 60_000;
 const found = new Map<string, number>(); // positive probes only: a new id must 404 -> 200 immediately
 
