@@ -72,6 +72,9 @@ export const sevaType = mysqlTable(
     wing: varchar("wing", { length: 16 }).$type<Wing>().notNull(),
     sortOrder: smallint("sort_order").notNull().default(0),
     active: boolean("active").notNull().default(true),
+    /** Published form template used for this seva type's reports. */
+    templateId: idRef("template_id"),
+    version: int("version").notNull().default(1),
     ...timestamps(),
   },
   (t) => [uniqueIndex("seva_type_code_uq").on(t.code)],
@@ -83,6 +86,11 @@ export const partner = mysqlTable("partner", {
   kind: varchar("kind", { length: 16 }).$type<PartnerKind>().notNull(),
   city: varchar("city", { length: 80 }).notNull(),
   active: boolean("active").notNull().default(true),
+  nameHi: varchar("name_hi", { length: 160 }),
+  /** Internal contact note, never public. */
+  contact: varchar("contact", { length: 300 }),
+  showPublicly: boolean("show_publicly").notNull().default(true),
+  version: int("version").notNull().default(1),
   ...timestamps(),
 });
 

@@ -11,6 +11,9 @@ import { decryptField } from "../../security/crypto";
 import { linkState } from "../../security/link-token";
 import type { ReminderRuleRec } from "../../repo/wa-types";
 import { loadReminderRules } from "../wa/rules";
+import { publishScheduled } from "./content";
+import { createPrivacyService } from "./privacy";
+import { createReportsService } from "./reports";
 import { transition } from "./lifecycle";
 import { DAY_MS, escalationSettings, fmtDate, holders, notify, type PortalCtx, portalUrl } from "./shared";
 
@@ -149,13 +152,44 @@ export function createJobsService(ctx: PortalCtx): JobsService {
     async run(job, requestId = null) {
       const by: SystemActor = { kind: "system", requestId };
       const out: JobResult = { job, at: toIso(deps.now()), changed: 0, notified: 0, ids: [] };
-      if (job === "escalations") await escalations(by, out);
-      else if (job === "event-status") await eventStatus(by, out);
-      else if (job === "reminders") {
-        await dayBefore(out);
-        await reportReminders(out);
-      } else await reportReminders(out);
+      switch (job) {
+        case "escalations":
+          await escalations(by, out);
+          break;
+        case "event-status":
+          await eventStatus(by, out);
+          break;
+        case "publish-scheduled":
+          out.ids.push(...(await publishScheduled(ctx, by)));
+          break;
+        case "reminders":
+          await dayBefore(out);
+          await reportReminders(out);
+          break;
+        case "report-reminders":
+          await reportReminders(out);
+          break;
+        case "monthly-report": {
+          const res = await createReportsService(ctx).runMonthly(by);
+          out.ids.push(...res.ids);
+          out.changed = res.ids.length;
+          out.notified += res.notified;
+          break;
+        }
+        case "retention": {
+          const res = await createPrivacyService(ctx).runRetention(by);
+          out.changed = res.reduce((n, r) => n + r.deleted, 0);
+          out.ids.push(...res.filter((r) => r.deleted > 0).map((r) => r.key));
+          break;
+        }
+        default: {
+          // Unknown names never fall through to another job.
+          const unknown: never = job;
+          throw new ApiError("NOT_FOUND", { message: `Unknown job ${String(unknown)}` });
+        }
+      }
       out.ids = [...new Set(out.ids)];
+      if (job === "publish-scheduled") out.changed = out.ids.length;
       return out;
     },
   };

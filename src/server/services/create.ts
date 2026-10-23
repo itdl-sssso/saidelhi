@@ -28,6 +28,7 @@ export function createServices(repo: DataRepo, deps: ServiceDeps): Services {
     secret: DEV_SESSION_SECRET,
     whatsapp: new ConsoleWhatsApp(),
     storage: new DiskStorage("./media-private"),
+    publicMedia: new DiskStorage("./media"),
     appUrl: "http://localhost:3000",
     revalidate: () => {},
     email: new ConsoleEmail(),
@@ -36,6 +37,7 @@ export function createServices(repo: DataRepo, deps: ServiceDeps): Services {
     ...deps,
     // `portal` is created below; the hook only runs after a request, never during wiring.
     onReportSubmitted: (eventId) => portal.onReportSubmitted(eventId),
+    onVolunteerSignup: (eventId) => portal.volunteers.onSignup(eventId),
   };
   const links = createLinksService(repo, full);
   const ctx: PortalCtx = { repo, deps: full, links };

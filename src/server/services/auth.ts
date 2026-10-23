@@ -9,7 +9,7 @@ import { sha256Hex } from "../security/crypto";
 import { csrfFor, newSessionToken } from "../security/link-token";
 import { normalisePhone, phoneHash } from "../security/phone";
 import { i18n } from "./org-index";
-import { sendOtp, verifyOtp } from "./otp";
+import { otpPolicy, sendOtp, verifyOtp } from "./otp";
 import { loadOrg } from "./shared";
 import type { PortalCtx } from "./portal/shared";
 
@@ -59,7 +59,7 @@ export interface AuthService {
 export function createAuthService(ctx: PortalCtx): AuthService {
   const { repo, deps } = ctx;
   const now = () => deps.now();
-  const otpDeps = { repo: repo.links, whatsapp: deps.whatsapp, secret: deps.secret, now };
+  const otpDeps = { repo: repo.links, whatsapp: deps.whatsapp, secret: deps.secret, now, policy: () => otpPolicy(repo) };
 
   const grantFor = (token: string): PortalGrant => ({ token, csrf: csrfFor(deps.secret, token), maxAgeSeconds: Math.floor(SESSION_TTL_MS / 1000) });
 

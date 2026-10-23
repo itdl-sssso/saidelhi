@@ -154,17 +154,17 @@ export function activeTile(data: ImpactData, period: PeriodInfo): KpiTile {
   };
 }
 
-export function headlineTiles(data: ImpactData, period: PeriodInfo): KpiTile[] {
-  return [tile(data, ACTIVITIES, period), tile(data, PEOPLE_SERVED, period), tile(data, "volunteer_hours", period), activeTile(data, period)];
+export function headlineTiles(data: ImpactData, period: PeriodInfo, hidden: ReadonlySet<string> = new Set()): KpiTile[] {
+  return [tile(data, ACTIVITIES, period), tile(data, PEOPLE_SERVED, period), tile(data, "volunteer_hours", period), activeTile(data, period)].filter((t) => !hidden.has(t.key));
 }
 
 export const hasAnyData = (data: ImpactData) => data.events.length > 0 || data.estimates.length > 0;
 
-export function bySevaType(data: ImpactData, org: OrgIndex): SevaTypeImpact[] {
+export function bySevaType(data: ImpactData, org: OrgIndex, hidden: ReadonlySet<string> = new Set()): SevaTypeImpact[] {
   return SEVA_TYPE_CARDS.map(({ sevaType, keys }) => {
     const slice = filterData(data, (e) => e.sevaType === sevaType, (e) => e.sevaType === sevaType || (e.sevaType === null && kpiDef(e.kpiKey)?.sevaType === sevaType));
     const info = org.sevaType(sevaType);
-    const figures: LabelledFigure[] = keys.map((key) => ({ key, label: labelFor(key), figure: figureFor(slice, key) }));
+    const figures: LabelledFigure[] = keys.filter((k) => !hidden.has(k)).map((key) => ({ key, label: labelFor(key), figure: figureFor(slice, key) }));
     return { sevaType, label: info.label, icon: info.icon, figures, href: `/programs/${sevaType}` };
   });
 }

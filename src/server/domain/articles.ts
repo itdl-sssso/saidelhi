@@ -52,6 +52,7 @@ function sanitizeOptions(mediaBase: string): sanitizeHtml.IOptions {
     allowedAttributes: {
       a: ["href", "title", "target", "rel"],
       img: ["src", "alt", "width", "height", "loading"],
+      div: ["data-event-results"],
       td: ["colspan", "rowspan"],
       th: ["colspan", "rowspan"],
     },
@@ -61,6 +62,8 @@ function sanitizeOptions(mediaBase: string): sanitizeHtml.IOptions {
     // Legacy CKEditor h1s would compete with the page title.
     transformTags: {
       h1: "h2",
+      // Results card placeholder: only a plain event id survives.
+      div: (tagName, attribs) => ({ tagName, attribs: /^[A-Za-z0-9_-]{1,64}$/.test(attribs["data-event-results"] ?? "") ? { "data-event-results": attribs["data-event-results"] as string } : ({} as Record<string, string>) }),
       a: (tagName, attribs) => {
         const href = rewriteLegacyMedia(attribs.href, mediaBase);
         return {

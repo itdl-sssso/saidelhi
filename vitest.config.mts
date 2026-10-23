@@ -1,7 +1,7 @@
 import path from "node:path";
 import { defineConfig } from "vitest/config";
 
-export default defineConfig({
+const common = {
   resolve: {
     alias: {
       "@": path.resolve(import.meta.dirname, "src"),
@@ -9,9 +9,28 @@ export default defineConfig({
       "server-only": path.resolve(import.meta.dirname, "tests/support/server-only.ts"),
     },
   },
+};
+
+export default defineConfig({
   test: {
-    environment: "node",
-    include: ["tests/**/*.test.ts"],
-    testTimeout: 20_000,
+    projects: [
+      // Pure/in-memory tests run in parallel.
+      {
+        ...common,
+        test: { name: "unit", environment: "node", include: ["tests/**/*.test.ts"], exclude: ["tests/**/*.db.integration.test.ts"], testTimeout: 20_000 },
+      },
+      // Tests sharing the one dev MySQL run one file at a time (they mutate the same rows).
+      {
+        ...common,
+        test: {
+          name: "db",
+          environment: "node",
+          include: ["tests/**/*.db.integration.test.ts"],
+          fileParallelism: false,
+          testTimeout: 30_000,
+          globalSetup: ["tests/support/db-global-setup.ts"],
+        },
+      },
+    ],
   },
 });

@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { datetime, index, json, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
+import { datetime, index, int, json, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
 import type { Locale, PrivacyRequestStatus, PrivacyRequestType, Role } from "@/contract";
 import { idPk, idRef, timestamps } from "../columns";
 
@@ -19,6 +19,10 @@ export const privacyRequest = mysqlTable(
     ipHash: varchar("ip_hash", { length: 64 }),
     handledBy: idRef("handled_by"),
     closedAt: datetime("closed_at", { mode: "date" }),
+    assigneeId: idRef("assignee_id"),
+    /** Completed steps (PrivacyStep[]). */
+    steps: json("steps").$type<string[]>().notNull().default([]),
+    version: int("version").notNull().default(1),
     ...timestamps(),
   },
   (t) => [index("privacy_request_status_idx").on(t.status, t.dueAt)],

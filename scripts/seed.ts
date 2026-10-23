@@ -49,6 +49,7 @@ import {
   whatsappOptin,
   whatsappTemplate,
 } from "../src/server/db/tables";
+import { M6_DOC_TABLES } from "../src/server/db/schema/m6";
 import { appSecret, env } from "../src/server/env";
 import { lintDefinition } from "../src/contract";
 import { DEV_COORDINATOR_PHONE, devAllowedPhones, devLinks, SEED_EVENT_FORM_LOCKS, seedTemplates } from "../src/server/forms/seed-data";
@@ -97,6 +98,7 @@ async function main() {
     for (const t of [approval, portalSession, roleAssignment, appUser, auditLog, articleI18n, submissionAnswerKpi, eventTimeline, impactEstimate, event, centreGathering, centre, partner, orgClosure, orgUnit, sevaType, contentItem, setting]) {
       await tx.delete(t);
     }
+    for (const t of Object.values(M6_DOC_TABLES)) await tx.delete(t);
     await tx.execute(sql`SET FOREIGN_KEY_CHECKS = 1`);
 
     await tx.insert(orgUnit).values(f.orgUnits);

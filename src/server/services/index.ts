@@ -43,6 +43,7 @@ export function services(): Services {
     extractor: createExtractor(e.EXTRACTOR_PROVIDER, { url: e.OLLAMA_URL, model: e.OLLAMA_MODEL }),
     email: email(),
     storage: new DiskStorage(env().MEDIA_PRIVATE_ROOT),
+    publicMedia: new DiskStorage(env().MEDIA_ROOT),
     appUrl: env().APP_URL,
     revalidate: revalidatePublic,
     whatsappPublic: {

@@ -8,6 +8,7 @@ export const CACHE_TAGS = {
   articles: "articles",
   centres: "centres",
   home: "home",
+  uiStrings: "ui-strings",
 } as const;
 
 export type CacheTag = (typeof CACHE_TAGS)[keyof typeof CACHE_TAGS];

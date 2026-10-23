@@ -23,6 +23,8 @@ import type {
   Wing,
 } from "@/contract";
 import type { LinksRepo } from "./links-types";
+import type { M6Repo } from "./m6-types";
+import type { PrivacyRepo } from "./privacy-types";
 import type { PortalRepo } from "./portal-types";
 import type { WaRepo } from "./wa-types";
 
@@ -50,6 +52,9 @@ export interface SevaTypeRec {
   wing: Wing;
   sortOrder: number;
   active: boolean;
+  /** Published form template for this seva type (M6). */
+  templateId?: string | null;
+  version?: number;
 }
 
 export interface PartnerRec {
@@ -58,6 +63,11 @@ export interface PartnerRec {
   kind: PartnerKind;
   city: string;
   active: boolean;
+  /** M6 admin fields (absent in fixtures = defaults). */
+  nameHi?: string | null;
+  contact?: string | null;
+  showPublicly?: boolean;
+  version?: number;
 }
 
 export interface GatheringRec {
@@ -84,6 +94,8 @@ export interface CentreRec {
   contactPhone: string | null;
   photos: Media[];
   active: boolean;
+  version?: number;
+  updatedAt?: Date;
 }
 
 export interface EventRec {
@@ -155,6 +167,10 @@ export interface EstimateRec {
   value: number;
   note: string | null;
   visible: boolean;
+  /** 'year' estimates sit on Jan 1; default 'month'. */
+  period?: "year" | "month";
+  createdBy?: string | null;
+  createdAt?: Date;
 }
 
 export interface ArticleI18nRec {
@@ -196,6 +212,11 @@ export interface ContentItemRec {
   date: string | null;
   status: ContentStatus;
   sortOrder: number;
+  /** Admin fields (not selected by the public read). */
+  startsAt?: Date | null;
+  endsAt?: Date | null;
+  version?: number;
+  updatedAt?: Date;
 }
 
 export interface PrivacyRequestRec {
@@ -240,6 +261,8 @@ export interface EventFilter {
 
 export interface ArticleFilter {
   categories?: readonly string[];
+  /** Legacy post ids shadowed by a native article copy. */
+  excludeIds?: readonly number[];
   limit: number;
   offset: number;
 }
@@ -260,6 +283,9 @@ export interface DataRepo {
   readonly portal: PortalRepo;
   /** WhatsApp bot, review inbox and opt-in (M4). */
   readonly wa: WaRepo;
+  /** Portal P1 documents and settings writes (M6). */
+  readonly m6: M6Repo;
+  readonly privacy: PrivacyRepo;
 
   orgUnits(): Promise<OrgUnitRec[]>;
   sevaTypes(): Promise<SevaTypeRec[]>;

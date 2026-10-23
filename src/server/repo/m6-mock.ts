@@ -1,0 +1,245 @@
+import type { Fixtures } from "../mock/fixtures";
+import type { DocListQuery, DocPutResult, DocRec, DocTableName, DocWrite, M6Repo } from "./m6-types";
+import type { ContentKind } from "@/contract";
+import type { ArticleI18nRec, ArticleRec, AuditRec, CentreRec, ContentItemRec, RedirectRec, EstimateRec, GatheringRec, PartnerRec, SevaTypeRec } from "./types";
+
+/** In-memory M6 store (writes stay in memory). */
+export class MemoryM6Repo implements M6Repo {
+  private readonly tables = new Map<DocTableName, Map<string, DocRec>>();
+  /** Insert order stands in for created_at (timestamps can tie inside one test). */
+  private readonly order = new Map<string, number>();
+  private seq = 0;
+
+  constructor(
+    private readonly fx: Fixtures,
+    private readonly pushAudit: (rec: AuditRec) => Promise<void>,
+    private readonly redirects: RedirectRec[] = [],
+  ) {}
+
+  private t(name: DocTableName) {
+    let m = this.tables.get(name);
+    if (!m) this.tables.set(name, (m = new Map()));
+    return m;
+  }
+
+  private async audit(audit?: AuditRec[]) {
+    for (const a of audit ?? []) await this.pushAudit(a);
+  }
+
+  async docGet<T>(table: DocTableName, id: string) {
+    const r = this.t(table).get(id);
+    return r ? (structuredClone(r) as DocRec<T>) : null;
+  }
+
+  async docList<T>(table: DocTableName, q: DocListQuery = {}) {
+    let rows = [...this.t(table).values()].filter((r) => (q.k1 === undefined || r.k1 === q.k1) && (q.k2 === undefined || r.k2 === q.k2));
+    const seq = (r: DocRec) => this.order.get(`${table}:${r.id}`) ?? 0;
+    rows.sort((a, b) => seq(a) - seq(b));
+    if ((q.order ?? "desc") === "desc") rows.reverse();
+    if (q.limit) rows = rows.slice(0, q.limit);
+    return structuredClone(rows) as DocRec<T>[];
+  }
+
+  private put<T>(table: DocTableName, prev: DocRec | undefined, w: DocWrite<T>, version: number) {
+    this.t(table).set(w.id, {
+      id: w.id,
+      k1: w.k1 ?? null,
+      k2: w.k2 ?? null,
+      version,
+      data: structuredClone(w.data),
+      createdAt: prev?.createdAt ?? new Date(),
+      updatedAt: new Date(),
+    });
+    if (!prev) this.order.set(`${table}:${w.id}`, ++this.seq);
+  }
+
+  async docInsert<T>(table: DocTableName, w: DocWrite<T>, audit?: AuditRec[]): Promise<DocPutResult> {
+    if (this.t(table).has(w.id)) return { ok: false, reason: "duplicate" };
+    this.put(table, undefined, w, 1);
+    await this.audit(audit);
+    return { ok: true, version: 1 };
+  }
+
+  async docUpdate<T>(table: DocTableName, w: DocWrite<T>, expectVersion?: number, audit?: AuditRec[]): Promise<DocPutResult> {
+    const prev = this.t(table).get(w.id);
+    if (!prev || (expectVersion !== undefined && prev.version !== expectVersion)) return { ok: false, reason: "conflict" };
+    this.put(table, prev, w, prev.version + 1);
+    await this.audit(audit);
+    return { ok: true, version: prev.version + 1 };
+  }
+
+  async docUpsert<T>(table: DocTableName, w: DocWrite<T>, audit?: AuditRec[]): Promise<DocPutResult> {
+    const prev = this.t(table).get(w.id);
+    const version = (prev?.version ?? 0) + 1;
+    this.put(table, prev, w, version);
+    await this.audit(audit);
+    return { ok: true, version };
+  }
+
+  async docDelete(table: DocTableName, id: string, audit?: AuditRec[]) {
+    const had = this.t(table).delete(id);
+    if (had) await this.audit(audit);
+    return had;
+  }
+
+  async sevaTypeInsert(rec: SevaTypeRec, audit?: AuditRec[]) {
+    if (this.fx.sevaTypes.some((s) => s.code === rec.code)) return "duplicate" as const;
+    this.fx.sevaTypes.push({ ...rec, version: 1 });
+    await this.audit(audit);
+    return "ok" as const;
+  }
+
+  async sevaTypeUpdate(code: string, patch: Partial<Omit<SevaTypeRec, "code">>, expectVersion: number, audit?: AuditRec[]) {
+    const s = this.fx.sevaTypes.find((x) => x.code === code);
+    if (!s || (s.version ?? 1) !== expectVersion) return "conflict" as const;
+    Object.assign(s, patch, { version: expectVersion + 1 });
+    await this.audit(audit);
+    return "ok" as const;
+  }
+
+  async partnersAll() {
+    return [...this.fx.partners].sort((a, b) => a.name.localeCompare(b.name));
+  }
+
+  async partnerInsert(rec: PartnerRec, audit?: AuditRec[]) {
+    this.fx.partners.push({ ...rec, version: 1 });
+    await this.audit(audit);
+  }
+
+  async partnerUpdate(id: string, patch: Partial<Omit<PartnerRec, "id">>, expectVersion: number, audit?: AuditRec[]) {
+    const p = this.fx.partners.find((x) => x.id === id);
+    if (!p || (p.version ?? 1) !== expectVersion) return "conflict" as const;
+    Object.assign(p, patch, { version: expectVersion + 1 });
+    await this.audit(audit);
+    return "ok" as const;
+  }
+
+  async eventCountsByPartner(from: Date, to: Date) {
+    const out = new Map<string, number>();
+    for (const e of this.fx.events) {
+      if (!e.partnerId || e.startsAt < from || e.startsAt >= to) continue;
+      out.set(e.partnerId, (out.get(e.partnerId) ?? 0) + 1);
+    }
+    return out;
+  }
+
+  async centreInsert(rec: CentreRec, gatherings: GatheringRec[], audit?: AuditRec[]) {
+    if (this.fx.centres.some((c) => c.slug === rec.slug)) return "duplicate" as const;
+    this.fx.centres.push({ ...rec, version: 1, updatedAt: new Date() });
+    this.fx.gatherings.push(...gatherings);
+    await this.audit(audit);
+    return "ok" as const;
+  }
+
+  async centreUpdate(id: string, patch: Partial<Omit<CentreRec, "id" | "version" | "updatedAt">>, gatherings: GatheringRec[] | null, expectVersion: number, audit?: AuditRec[]) {
+    const c = this.fx.centres.find((x) => x.id === id);
+    if (!c || (c.version ?? 1) !== expectVersion) return "conflict" as const;
+    if (patch.slug && this.fx.centres.some((x) => x.slug === patch.slug && x.id !== id)) return "duplicate" as const;
+    Object.assign(c, patch, { version: expectVersion + 1, updatedAt: new Date() });
+    if (gatherings) {
+      const keep = this.fx.gatherings.filter((g) => g.centreId !== id);
+      this.fx.gatherings.length = 0;
+      this.fx.gatherings.push(...keep, ...gatherings);
+    }
+    await this.audit(audit);
+    return "ok" as const;
+  }
+
+  async setSetting(key: string, value: unknown, _userId: string | null, audit?: AuditRec[]) {
+    this.fx.settings[key] = structuredClone(value);
+    await this.audit(audit);
+  }
+
+  async estimatesAll() {
+    return this.fx.estimates.map((e) => ({ ...e }));
+  }
+
+  async estimateInsert(rec: EstimateRec, audit?: AuditRec[]) {
+    this.fx.estimates.push({ ...rec, createdAt: rec.createdAt ?? new Date() });
+    await this.audit(audit);
+  }
+
+  async estimateUpdate(id: string, patch: Partial<Omit<EstimateRec, "id">>, audit?: AuditRec[]) {
+    const e = this.fx.estimates.find((x) => x.id === id);
+    if (!e) return false;
+    Object.assign(e, patch);
+    await this.audit(audit);
+    return true;
+  }
+
+  async estimateDelete(id: string, audit?: AuditRec[]) {
+    const i = this.fx.estimates.findIndex((x) => x.id === id);
+    if (i < 0) return false;
+    this.fx.estimates.splice(i, 1);
+    await this.audit(audit);
+    return true;
+  }
+
+  async legacyPosts(opts: { withContent?: boolean } = {}): Promise<ArticleRec[]> {
+    return [...this.fx.articles]
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime() || b.id - a.id)
+      .map((a) => structuredClone({ ...a, content: opts.withContent ? a.content : null, gallery: [] }));
+  }
+
+  async legacyPost(id: number) {
+    const a = this.fx.articles.find((x) => x.id === id);
+    return a ? structuredClone(a) : null;
+  }
+
+  async articleI18nUpsert(rec: ArticleI18nRec, audit?: AuditRec[]) {
+    const a = this.fx.articles.find((x) => x.id === rec.legacyId);
+    if (a) a.i18n = structuredClone(rec);
+    await this.audit(audit);
+  }
+
+  async legacySlugs() {
+    return this.fx.articles.map((a) => a.slug);
+  }
+
+  async contentItemsAll(kind?: ContentKind) {
+    return structuredClone(this.fx.contentItems.filter((c) => !kind || c.kind === kind)).map((c) => ({ version: 1, updatedAt: new Date(0), ...c }));
+  }
+
+  async contentItemInsert(rec: ContentItemRec, audit?: AuditRec[]) {
+    this.fx.contentItems.push({ ...structuredClone(rec), version: 1, updatedAt: new Date() });
+    await this.audit(audit);
+  }
+
+  async contentItemUpdate(id: string, patch: Partial<Omit<ContentItemRec, "id" | "kind">>, expectVersion: number, audit?: AuditRec[]) {
+    const c = this.fx.contentItems.find((x) => x.id === id);
+    if (!c || (c.version ?? 1) !== expectVersion) return "conflict" as const;
+    Object.assign(c, structuredClone(patch), { version: expectVersion + 1, updatedAt: new Date() });
+    await this.audit(audit);
+    return "ok" as const;
+  }
+
+  async contentItemDelete(id: string, audit?: AuditRec[]) {
+    const i = this.fx.contentItems.findIndex((x) => x.id === id);
+    if (i < 0) return false;
+    this.fx.contentItems.splice(i, 1);
+    await this.audit(audit);
+    return true;
+  }
+
+  private readonly redirectStamp = new Map<string, Date>();
+
+  async redirectsAll() {
+    return this.redirects.map((r) => ({ ...r, updatedAt: this.redirectStamp.get(r.fromPath) ?? new Date(0) })).reverse();
+  }
+
+  async redirectUpsert(rec: Omit<RedirectRec, "hits">, audit?: AuditRec[]) {
+    const cur = this.redirects.find((r) => r.fromPath === rec.fromPath);
+    if (cur) Object.assign(cur, rec);
+    else this.redirects.push({ ...rec, hits: 0 });
+    this.redirectStamp.set(rec.fromPath, new Date());
+    await this.audit(audit);
+  }
+
+  async redirectDelete(from: string, audit?: AuditRec[]) {
+    const i = this.redirects.findIndex((r) => r.fromPath === from);
+    if (i < 0) return false;
+    this.redirects.splice(i, 1);
+    await this.audit(audit);
+    return true;
+  }
+}

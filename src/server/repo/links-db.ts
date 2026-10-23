@@ -1,5 +1,5 @@
 import "server-only";
-import { and, desc, eq, gte, inArray, isNull, lt, or, sql } from "drizzle-orm";
+import { and, asc, count, desc, eq, gt, gte, inArray, isNull, lt, or, sql } from "drizzle-orm";
 import type { Db } from "../db/client";
 import { newId } from "../db/columns";
 import {
@@ -33,6 +33,7 @@ import type {
   SubmissionRec,
   SubmissionScope,
   SubmissionUpdateWrite,
+  TemplateRec,
 } from "./links-types";
 
 export type Tx = Parameters<Parameters<Db["transaction"]>[0]>[0];
@@ -133,6 +134,9 @@ const versionCols = {
   status: formVersion.status,
   definition: formVersion.definition,
   publishedAt: formVersion.publishedAt,
+  publishedBy: formVersion.publishedBy,
+  rev: formVersion.rev,
+  updatedAt: formVersion.updatedAt,
 };
 
 /** Stored JSON is re-validated so a bad row can never reach the form app. */
@@ -168,6 +172,81 @@ export class DbLinksRepo implements LinksRepo {
       .orderBy(desc(formVersion.version))
       .limit(1);
     return r ? toVersion(r) : null;
+  }
+
+  async versionsOf(templateId: string) {
+    const rows = await this.db.select(versionCols).from(formVersion).where(eq(formVersion.templateId, templateId)).orderBy(asc(formVersion.version));
+    return rows.map(toVersion);
+  }
+
+  async activeLinkCounts(now: Date) {
+    const rows = await this.db
+      .select({ id: formLink.formVersionId, n: count() })
+      .from(formLink)
+      .where(and(isNull(formLink.revokedAt), gt(formLink.expiresAt, now)))
+      .groupBy(formLink.formVersionId);
+    return new Map(rows.map((r) => [r.id, Number(r.n)]));
+  }
+
+  async insertTemplate(t: TemplateRec, first: FormVersionRec, createdBy: string | null) {
+    try {
+      await this.db.transaction(async (tx) => {
+        await tx.insert(formTemplate).values({ ...t });
+        await tx.insert(formVersion).values({
+          id: first.id,
+          templateId: first.templateId,
+          version: first.version,
+          status: first.status,
+          definition: first.definition,
+          publishedAt: first.publishedAt,
+          publishedBy: first.publishedBy ?? null,
+          createdBy,
+        });
+      });
+      return "ok" as const;
+    } catch (err) {
+      if (isDuplicateKey(err)) return "duplicate" as const;
+      throw err;
+    }
+  }
+
+  async updateTemplate(id: string, patch: Partial<Pick<TemplateRec, "titleEn" | "titleHi" | "active">>) {
+    await this.db.update(formTemplate).set(patch).where(eq(formTemplate.id, id));
+  }
+
+  async insertVersion(v: FormVersionRec, createdBy: string | null) {
+    try {
+      await this.db.insert(formVersion).values({
+        id: v.id,
+        templateId: v.templateId,
+        version: v.version,
+        status: v.status,
+        definition: v.definition,
+        publishedAt: v.publishedAt,
+        publishedBy: v.publishedBy ?? null,
+        createdBy,
+      });
+      return "ok" as const;
+    } catch (err) {
+      if (isDuplicateKey(err)) return "duplicate" as const;
+      throw err;
+    }
+  }
+
+  async updateDraft(id: string, definition: FormDefinition, expectRev: number) {
+    const res = await this.db
+      .update(formVersion)
+      .set({ definition, rev: sql`${formVersion.rev} + 1` })
+      .where(and(eq(formVersion.id, id), eq(formVersion.status, "draft"), eq(formVersion.rev, expectRev)));
+    return affected(res) === 0 ? ("conflict" as const) : ("ok" as const);
+  }
+
+  async publishDraft(id: string, expectRev: number, at: Date, by: string | null) {
+    const res = await this.db
+      .update(formVersion)
+      .set({ status: "published", publishedAt: at, publishedBy: by, rev: sql`${formVersion.rev} + 1` })
+      .where(and(eq(formVersion.id, id), eq(formVersion.status, "draft"), eq(formVersion.rev, expectRev)));
+    return affected(res) === 0 ? ("conflict" as const) : ("ok" as const);
   }
 
   async eventFormVersionId(eventId: string) {

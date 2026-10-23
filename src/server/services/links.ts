@@ -44,9 +44,9 @@ import {
   verifyBotChallenge,
 } from "../security/link-token";
 import { maskPhone, normalisePhone, phoneHash } from "../security/phone";
-import { sendOtp, verifyOtp } from "./otp";
+import { otpPolicy, sendOtp, verifyOtp } from "./otp";
 import { i18n } from "./org-index";
-import { loadOrg } from "./shared";
+import { loadLinkDefaults, loadOrg } from "./shared";
 import type { LinkServiceDeps, LinksService, NewLinkOptions, SessionGrant } from "./types";
 
 export const LINK_SESSION_TTL_MS = 4 * 60 * 60 * 1000;
@@ -92,7 +92,7 @@ interface Ctx {
 export function createLinksService(repo: DataRepo, deps: LinkServiceDeps): LinksService {
   const links = repo.links;
   const now = () => deps.now();
-  const otpDeps = { repo: links, whatsapp: deps.whatsapp, secret: deps.secret, now };
+  const otpDeps = { repo: links, whatsapp: deps.whatsapp, secret: deps.secret, now, policy: () => otpPolicy(repo) };
 
   const tokenOf = (l: LinkRec) => deriveLinkToken(deps.secret, l.tokenNonce);
   const urlOf = (l: LinkRec, locale: Locale = "en") => `${deps.appUrl.replace(/\/$/, "")}${formLinkPath(tokenOf(l), locale)}`;
@@ -334,11 +334,19 @@ export function createLinksService(repo: DataRepo, deps: LinkServiceDeps): Links
     };
   }
 
+  /** Active report template for a seva type: the one pinned in settings, else the first match. */
+  async function reportTemplate(sevaType: EventRec["sevaType"]) {
+    const [all, types] = await Promise.all([links.templates(), repo.sevaTypes()]);
+    const pinned = types.find((s) => s.code === sevaType)?.templateId;
+    const active = all.filter((x) => x.active && x.purpose === "report");
+    return active.find((x) => x.id === pinned) ?? active.find((x) => x.sevaType === sevaType);
+  }
+
   /** The report form version locked to the event (locks the seva type's published one on first use). */
   async function reportVersion(ev: EventRec) {
     let versionId = await links.eventFormVersionId(ev.id);
     if (!versionId) {
-      const t = (await links.templates()).find((x) => x.active && x.purpose === "report" && x.sevaType === ev.sevaType);
+      const t = await reportTemplate(ev.sevaType);
       const v = t ? await links.publishedVersion(t.id) : null;
       versionId = v ? await links.lockEventFormVersion(ev.id, v.id) : null;
     }
@@ -352,6 +360,14 @@ export function createLinksService(repo: DataRepo, deps: LinkServiceDeps): Links
       await deps.onReportSubmitted(eventId);
     } catch (err) {
       console.error("[links] report notification failed", err instanceof Error ? err.message : err);
+    }
+  }
+
+  async function afterSignup(eventId: string) {
+    try {
+      await deps.onVolunteerSignup(eventId);
+    } catch (err) {
+      console.error("[links] sign-up alert failed", err instanceof Error ? err.message : err);
     }
   }
 
@@ -480,6 +496,7 @@ export function createLinksService(repo: DataRepo, deps: LinkServiceDeps): Links
       }
       deps.revalidate(isReport ? ["events", "home"] : ["events"]);
       if (isReport) await afterReport(ctx.ev.id);
+      else if (ctx.link.purpose === "public") await afterSignup(ctx.ev.id);
       return { submission: toDto(rec, true), replayed: false };
     },
 
@@ -623,7 +640,7 @@ export function createLinksService(repo: DataRepo, deps: LinkServiceDeps): Links
       } else {
         versionId = await links.eventFormVersionId(eventId);
         if (!versionId) {
-          const t = templates.find((x) => x.sevaType === ev.sevaType);
+          const t = await reportTemplate(ev.sevaType);
           const v = t ? await links.publishedVersion(t.id) : null;
           versionId = v ? await links.lockEventFormVersion(eventId, v.id) : null;
         }
@@ -633,7 +650,15 @@ export function createLinksService(repo: DataRepo, deps: LinkServiceDeps): Links
       const phone = opts.sendTo && opts.sendTo !== "qr" ? normalisePhone(opts.sendTo) : null;
       if (opts.sendTo && opts.sendTo !== "qr" && !phone) throw new ApiError("VALIDATION_FAILED", { fields: { sendTo: MSG.phone.en } });
       const existing = await links.linksForEvent(eventId);
-      const defaultExpiry = new Date(ev.startsAt.getTime() + (purpose === "report" ? 14 : purpose === "desk" ? 2 : 0) * DAY);
+      const defs = await loadLinkDefaults(repo);
+      const base = ev.endsAt ?? ev.startsAt;
+      const defaultExpiry = new Date(
+        purpose === "report"
+          ? base.getTime() + defs.reportLinkDays * DAY
+          : purpose === "desk"
+            ? ev.startsAt.getTime() + (defs.deskLink === "event_day_plus_1" ? 2 : 1) * DAY
+            : ev.startsAt.getTime(),
+      );
       const nonce = newLinkNonce();
       const token = deriveLinkToken(deps.secret, nonce);
       const rec: LinkRec = {

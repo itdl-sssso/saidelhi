@@ -1,3 +1,4 @@
+import type { FormDefinition } from "@/contract";
 import { newId } from "../db/columns";
 import type { OtpPurpose } from "../db/schema/forms";
 import { devAllowedPhones, devLinks, SEED_EVENT_FORM_LOCKS, seedTemplates } from "../forms/seed-data";
@@ -62,6 +63,57 @@ export class MemoryLinksRepo implements LinksRepo {
   async publishedVersion(templateId: string) {
     const list = this.versions.filter((v) => v.templateId === templateId && v.status === "published").sort((a, b) => b.version - a.version);
     return list[0] ?? null;
+  }
+
+  async versionsOf(templateId: string) {
+    return this.versions.filter((v) => v.templateId === templateId).sort((a, b) => a.version - b.version);
+  }
+
+  async activeLinkCounts(now: Date) {
+    const out = new Map<string, number>();
+    for (const l of this.links) {
+      if (l.revokedAt || l.expiresAt <= now) continue;
+      out.set(l.formVersionId, (out.get(l.formVersionId) ?? 0) + 1);
+    }
+    return out;
+  }
+
+  async insertTemplate(t: TemplateRec, first: FormVersionRec) {
+    if (this.templateRecs.some((x) => x.code === t.code)) return "duplicate" as const;
+    this.templateRecs.push({ ...t });
+    this.versions.push(structuredClone(first));
+    return "ok" as const;
+  }
+
+  async updateTemplate(id: string, patch: Partial<Pick<TemplateRec, "titleEn" | "titleHi" | "active">>) {
+    const t = this.templateRecs.find((x) => x.id === id);
+    if (t) Object.assign(t, patch);
+  }
+
+  async insertVersion(v: FormVersionRec) {
+    if (this.versions.some((x) => x.templateId === v.templateId && x.version === v.version)) return "duplicate" as const;
+    this.versions.push(structuredClone(v));
+    return "ok" as const;
+  }
+
+  async updateDraft(id: string, definition: FormDefinition, expectRev: number) {
+    const v = this.versions.find((x) => x.id === id);
+    if (!v || v.status !== "draft" || (v.rev ?? 1) !== expectRev) return "conflict" as const;
+    v.definition = structuredClone(definition);
+    v.rev = expectRev + 1;
+    v.updatedAt = new Date();
+    return "ok" as const;
+  }
+
+  async publishDraft(id: string, expectRev: number, at: Date, by: string | null) {
+    const v = this.versions.find((x) => x.id === id);
+    if (!v || v.status !== "draft" || (v.rev ?? 1) !== expectRev) return "conflict" as const;
+    v.status = "published";
+    v.publishedAt = at;
+    v.publishedBy = by;
+    v.rev = expectRev + 1;
+    v.updatedAt = new Date();
+    return "ok" as const;
   }
 
   async eventFormVersionId(eventId: string) {

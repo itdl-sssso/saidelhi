@@ -1,11 +1,10 @@
 import type { HomePayload, Thought, WingCard } from "@/contract";
-import { CENTENARY_LETTERS, toArticle } from "../domain/articles";
-import { ACTIVITIES, PEOPLE_SERVED } from "../domain/kpi";
 import { istDate } from "../domain/time";
 import type { ContentItemRec, DataRepo } from "../repo/types";
-import { articleContext } from "./articles";
+import { listMerged } from "./articles";
 import { assembleEvents } from "./event-assembler";
-import { hasAnyData, loadImpactData, periodWindow, tile } from "./impact-calc";
+import { DEFAULT_HOME } from "./kpis";
+import { activeTile, hasAnyData, loadImpactData, periodWindow, tile } from "./impact-calc";
 import { i18n } from "./org-index";
 import { loadOrg, loadSettings } from "./shared";
 import type { HomeService, ServiceDeps } from "./types";
@@ -44,6 +43,33 @@ export const DEFAULT_WINGS: readonly WingCard[] = [
   },
 ];
 
+const WING_CODES: ReadonlySet<string> = new Set(DEFAULT_WINGS.map((w) => w.wing));
+
+/** Editable wing cards (content items kind home_section, key = wing code) over the static defaults. */
+function pickWings(items: readonly ContentItemRec[]): WingCard[] {
+  const codeOf = (i: ContentItemRec) => (i.key ?? "").replace(/^wing\./, "");
+  const mine = items.filter((i) => WING_CODES.has(codeOf(i)));
+  if (mine.length === 0) return [...DEFAULT_WINGS];
+  const order = new Map<string, number>();
+  const edited = new Map<string, WingCard>();
+  const hidden = new Set<string>();
+  for (const i of mine) {
+    const wing = codeOf(i) as WingCard["wing"];
+    if (i.status === "archived") hidden.add(wing);
+    if (i.status !== "published") continue;
+    const base = DEFAULT_WINGS.find((w) => w.wing === wing) as WingCard;
+    order.set(wing, i.sortOrder);
+    edited.set(wing, {
+      wing,
+      title: i.titleEn ? i18n(i.titleEn, i.titleHi) : base.title,
+      summary: i.bodyEn ? i18n(i.bodyEn, i.bodyHi) : base.summary,
+      href: i.href?.startsWith("/") ? i.href : base.href,
+    });
+  }
+  const cards = DEFAULT_WINGS.filter((w) => !hidden.has(w.wing)).map((w, idx) => ({ card: edited.get(w.wing) ?? w, at: order.get(w.wing) ?? 1000 + idx }));
+  return cards.sort((a, b) => a.at - b.at).map((c) => c.card);
+}
+
 function pickThought(items: readonly ContentItemRec[], today: string): Thought | null {
   const t = items
     .filter((i) => i.status === "published" && i.bodyEn && i.date && i.date <= today)
@@ -56,30 +82,34 @@ function pickThought(items: readonly ContentItemRec[], today: string): Thought |
   };
 }
 
+/** Exactly four tiles: admin picks first, padded from the defaults. */
+function homeKeys(picked: readonly string[]): string[] {
+  return [...new Set([...picked, ...DEFAULT_HOME, "volunteer_hours"])].slice(0, 4);
+}
+
 export function createHomeService(repo: DataRepo, deps: ServiceDeps): HomeService {
   return {
     async get(): Promise<HomePayload> {
       const now = deps.now();
-      const [org, settings, thoughts] = await Promise.all([loadOrg(repo), loadSettings(repo), repo.contentItems("thought_for_day")]);
+      const [org, settings, thoughts, sections] = await Promise.all([loadOrg(repo), loadSettings(repo), repo.contentItems("thought_for_day"), repo.contentItems("home_section")]);
       const win = periodWindow("this_year", now);
-      const ctx = articleContext(org, deps.mediaBase);
 
       const [upcoming, year, latest, centenary] = await Promise.all([
         repo.listEvents({ statuses: ["planned"], from: now, order: "asc", limit: 6, offset: 0 }),
         loadImpactData(repo, org, {}, win, settings.showEstimates),
-        repo.listArticles({ limit: 3, offset: 0 }),
-        repo.listArticles({ categories: CENTENARY_LETTERS, limit: 12, offset: 0 }),
+        listMerged(repo, deps, "all", 0, 3),
+        listMerged(repo, deps, "centenary", 0, 12),
       ]);
 
       return {
         thought: pickThought(thoughts, istDate(now)),
         upcoming: await assembleEvents(repo, org, upcoming.rows),
         kpis: hasAnyData(year)
-          ? [ACTIVITIES, PEOPLE_SERVED, "blood.units", "eye.spectacles"].map((k) => tile(year, k, win.info))
+          ? homeKeys(settings.homeTiles).map((k) => (k === "active" ? activeTile(year, win.info) : tile(year, k, win.info)))
           : null,
-        articles: latest.rows.map((r) => toArticle(r, ctx)),
-        centenary: centenary.rows.map((r) => toArticle(r, ctx)),
-        wings: [...DEFAULT_WINGS],
+        articles: latest.rows,
+        centenary: centenary.rows,
+        wings: pickWings(sections),
       };
     },
   };

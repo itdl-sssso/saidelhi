@@ -1,10 +1,13 @@
 import "server-only";
-import { and, asc, count, desc, eq, gt, gte, inArray, isNotNull, isNull, lt, lte, or, type SQL, sql } from "drizzle-orm";
+import { and, asc, count, desc, eq, gt, gte, inArray, isNotNull, isNull, lt, lte, notInArray, or, type SQL, sql } from "drizzle-orm";
 import type { ContentKind, PartnerKind } from "@/contract";
 import type { Db } from "../db/client";
 import { PUBLIC_ARTICLE_LETTERS } from "../domain/articles";
 import { DbLinksRepo } from "./links-db";
+import { DbM6Repo } from "./m6-db";
+import { DbPrivacyRepo } from "./privacy-db";
 import { toEventRec } from "./event-row";
+import { partnerCols } from "./partner-cols";
 import { DbPortalRepo } from "./portal-db";
 import { DbWaRepo } from "./wa-db";
 import { postcontentContentpostimage as postImage, postcontentPostcontent as post } from "../db/legacy";
@@ -62,11 +65,15 @@ export class DbRepo implements DataRepo {
   readonly links: DbLinksRepo;
   readonly portal: DbPortalRepo;
   readonly wa: DbWaRepo;
+  readonly m6: DbM6Repo;
+  readonly privacy: DbPrivacyRepo;
 
   constructor(private readonly db: Db) {
     this.links = new DbLinksRepo(db);
     this.portal = new DbPortalRepo(db);
     this.wa = new DbWaRepo(db);
+    this.m6 = new DbM6Repo(db);
+    this.privacy = new DbPrivacyRepo(db);
   }
 
   async orgUnits() {
@@ -99,6 +106,8 @@ export class DbRepo implements DataRepo {
         wing: sevaType.wing,
         sortOrder: sevaType.sortOrder,
         active: sevaType.active,
+        templateId: sevaType.templateId,
+        version: sevaType.version,
       })
       .from(sevaType)
       .orderBy(asc(sevaType.sortOrder));
@@ -107,7 +116,7 @@ export class DbRepo implements DataRepo {
   async partners(ids: readonly string[]) {
     if (ids.length === 0) return [];
     return this.db
-      .select({ id: partner.id, name: partner.name, kind: partner.kind, city: partner.city, active: partner.active })
+      .select(partnerCols)
       .from(partner)
       .where(inArray(partner.id, [...ids]));
   }
@@ -115,7 +124,7 @@ export class DbRepo implements DataRepo {
   async partnersByKind(kinds: readonly PartnerKind[]) {
     if (kinds.length === 0) return [];
     return this.db
-      .select({ id: partner.id, name: partner.name, kind: partner.kind, city: partner.city, active: partner.active })
+      .select(partnerCols)
       .from(partner)
       .where(and(eq(partner.active, true), inArray(partner.kind, [...kinds])))
       .orderBy(asc(partner.name));
@@ -162,6 +171,8 @@ export class DbRepo implements DataRepo {
     contactPhone: centre.contactPhone,
     photos: centre.photos,
     active: centre.active,
+    version: centre.version,
+    updatedAt: centre.updatedAt,
   };
 
   async centres() {
@@ -304,7 +315,11 @@ export class DbRepo implements DataRepo {
   }
 
   async listArticles(f: ArticleFilter) {
-    const where = and(articlePublished, f.categories ? inArray(post.category, [...f.categories]) : undefined);
+    const where = and(
+      articlePublished,
+      f.categories ? inArray(post.category, [...f.categories]) : undefined,
+      f.excludeIds?.length ? notInArray(post.id, [...f.excludeIds]) : undefined,
+    );
     const [rows, [{ total }]] = await Promise.all([
       this.db
         .select({ post, i18n: articleI18n })

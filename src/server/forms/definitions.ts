@@ -3,7 +3,7 @@
 import type { FormDefinition, FormField, FormSection, I18nText, LinkPurpose, SevaType } from "@/contract";
 import { fx } from "../mock/fixtures/ids";
 
-const t = (en: string, hi: string): I18nText => ({ en, hi });
+export const t = (en: string, hi: string): I18nText => ({ en, hi });
 
 type Opts = Partial<Omit<FormField, "id" | "kind" | "label">>;
 
@@ -22,7 +22,7 @@ const field = (id: string, kind: FormField["kind"], label: I18nText, o: Opts = {
 });
 
 const num = (id: string, label: I18nText, o: Opts = {}) => field(id, "number", label, { min: 0, max: 100_000, ...o });
-const section = (id: string, title: I18nText, fields: FormField[], personalData = false): FormSection => ({ id, title, fields, personalData });
+export const section = (id: string, title: I18nText, fields: FormField[], personalData = false): FormSection => ({ id, title, fields, personalData });
 
 const err = (op: "lte" | "gte" | "eq", left: string, right: string | number, message: I18nText) =>
   ({ op, left, right, level: "error", message }) as const;
@@ -30,7 +30,7 @@ const warn = (op: "lte" | "gte" | "eq", left: string, right: string | number, me
   ({ op, left, right, level: "warn", message }) as const;
 
 /** Locked core fields shared by every report form (spec 31). */
-function aboutSection(partnerLabel: I18nText): FormSection {
+export function aboutSection(partnerLabel: I18nText): FormSection {
   return section("about", t("About the camp", "शिविर के बारे में"), [
     field("samithi", "text", t("Samithi", "समिति"), { required: true, locked: true, readOnly: true, prefill: "samithi" }),
     field("date", "date", t("Date", "तारीख़"), { required: true, locked: true, prefill: "date" }),
