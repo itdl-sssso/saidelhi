@@ -1,0 +1,8 @@
+.root { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.track { height: 8px; overflow: hidden; border-radius: var(--radius-pill); background: var(--slate-100); }
+.track i { display: block; height: 100%; border-radius: var(--radius-pill); transition: width var(--duration-base) var(--ease-serene); }
+.pink { background: var(--pink-400); }
+.green { background: var(--signal-success, #2f7d4f); }
+.yellow { background: var(--yellow-300); }
+.cap { font-size: var(--text-caption); color: var(--slate-700); line-height: 1.45; }
+@media (prefers-reduced-motion: reduce) { .track i { transition: none; } }

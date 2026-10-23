@@ -38,7 +38,7 @@ export const NAV: Array<{ id: NavGroupId; items: NavItemDef[] }> = [
       { id: "links", href: "/admin/links", icon: I.Link2, permission: "links.read", built: true },
       { id: "forms", href: "/admin/forms", icon: I.FileText, permission: "forms.read", built: true },
       { id: "uploads", href: "/admin/uploads", icon: I.Upload, permission: "uploads.manage" },
-      { id: "volunteers", href: "/admin/volunteers", icon: I.Users, permission: "volunteers.read" },
+      { id: "volunteers", href: "/admin/volunteers", icon: I.Users, permission: "volunteers.read", built: true },
     ],
   },
   {
