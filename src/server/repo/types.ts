@@ -62,6 +62,11 @@ export interface PartnerRec {
   kind: PartnerKind;
   city: string;
   active: boolean;
+  /** M6 admin fields (absent in fixtures = defaults). */
+  nameHi?: string | null;
+  contact?: string | null;
+  showPublicly?: boolean;
+  version?: number;
 }
 
 export interface GatheringRec {
@@ -88,6 +93,8 @@ export interface CentreRec {
   contactPhone: string | null;
   photos: Media[];
   active: boolean;
+  version?: number;
+  updatedAt?: Date;
 }
 
 export interface EventRec {

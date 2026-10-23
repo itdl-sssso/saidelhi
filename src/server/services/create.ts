@@ -28,6 +28,7 @@ export function createServices(repo: DataRepo, deps: ServiceDeps): Services {
     secret: DEV_SESSION_SECRET,
     whatsapp: new ConsoleWhatsApp(),
     storage: new DiskStorage("./media-private"),
+    publicMedia: new DiskStorage("./media"),
     appUrl: "http://localhost:3000",
     revalidate: () => {},
     email: new ConsoleEmail(),

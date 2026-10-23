@@ -10,7 +10,7 @@ export function m6Setup(now: Date = NOW) {
   const whatsapp = new FakeWhatsApp();
   const clock = { t: now };
   const storage = new MemoryStorage();
-  const svc = createServices(repo, { now: () => clock.t, mediaBase: "/media", whatsapp, storage });
+  const svc = createServices(repo, { now: () => clock.t, mediaBase: "/media", whatsapp, storage, publicMedia: new MemoryStorage() });
   const rc = { requestId: "t", ipHash: null };
   const actor = async (userId: string) => (await svc.auth.actorFor(userId, rc))!;
   return { repo, svc, whatsapp, storage, clock, actor, rc };

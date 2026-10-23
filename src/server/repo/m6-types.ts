@@ -2,7 +2,7 @@
 // plus the settings write path and the few writes to existing tables the new
 // admin screens need. Implemented in memory (m6-mock.ts) and on MySQL (m6-db.ts).
 import type { DocTableName } from "../db/schema/m6";
-import type { AuditRec, SevaTypeRec } from "./types";
+import type { AuditRec, CentreRec, GatheringRec, PartnerRec, SevaTypeRec } from "./types";
 
 export type { DocTableName };
 
@@ -55,6 +55,17 @@ export interface M6Repo {
   sevaTypeInsert(rec: SevaTypeRec, audit?: AuditRec[]): Promise<"ok" | "duplicate">;
   /** Patches a seva type; `conflict` when `expectVersion` differs. */
   sevaTypeUpdate(code: string, patch: Partial<Omit<SevaTypeRec, "code">>, expectVersion: number, audit?: AuditRec[]): Promise<"ok" | "conflict">;
+
+  /** Every partner (inactive included), name order. */
+  partnersAll(): Promise<PartnerRec[]>;
+  partnerInsert(rec: PartnerRec, audit?: AuditRec[]): Promise<void>;
+  partnerUpdate(id: string, patch: Partial<Omit<PartnerRec, "id">>, expectVersion: number, audit?: AuditRec[]): Promise<"ok" | "conflict">;
+  /** Events per partner starting in [from, to). */
+  eventCountsByPartner(from: Date, to: Date): Promise<Map<string, number>>;
+
+  centreInsert(rec: CentreRec, gatherings: GatheringRec[], audit?: AuditRec[]): Promise<"ok" | "duplicate">;
+  /** Patches a centre and (when given) replaces its gatherings. `duplicate` = slug taken. */
+  centreUpdate(id: string, patch: Partial<Omit<CentreRec, "id" | "version" | "updatedAt">>, gatherings: GatheringRec[] | null, expectVersion: number, audit?: AuditRec[]): Promise<"ok" | "conflict" | "duplicate">;
 
   /** Writes a `setting` row (whole JSON value). */
   setSetting(key: string, value: unknown, userId: string | null, audit?: AuditRec[]): Promise<void>;

@@ -62,7 +62,7 @@ async function partnersFor(repo: DataRepo, type: SevaType, recent: readonly Even
     recs = kinds ? await repo.partnersByKind(kinds) : [];
   }
   return recs
-    .filter((p) => p.active)
+    .filter((p) => p.active && p.showPublicly !== false)
     .sort((a, b) => a.name.localeCompare(b.name))
     .map((p) => ({ id: p.id, name: p.name, kind: p.kind, city: p.city }));
 }

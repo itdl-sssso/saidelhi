@@ -1,7 +1,9 @@
 import { type ApprovalsService, createApprovalsService } from "./approvals";
 import { type AttachmentsService, type AuditService, createAttachmentsService, createAuditService } from "./audit";
 import { type AdminEventsService, createAdminEventsService } from "./events";
+import { type CentresAdminService, createCentresAdminService } from "./centres";
 import { createFormsService, type FormsService } from "./forms";
+import { createPartnersAdminService, type PartnersAdminService } from "./partners";
 import { createJobsService, type JobsService } from "./jobs";
 import { reportReceived } from "./lifecycle";
 import { type AdminLinksService, createAdminLinksService } from "./links";
@@ -12,7 +14,7 @@ import { createSettingsService, type SettingsService } from "./settings";
 import { createUploadsService, type UploadsService } from "./uploads";
 import type { PortalCtx } from "./shared";
 
-export type { AdminEventsService, AdminLinksService, ApprovalsService, AttachmentsService, AuditService, JobsService, FormsService, OrgService, OverviewService, PeopleService, SettingsService, UploadsService };
+export type { AdminEventsService, AdminLinksService, ApprovalsService, AttachmentsService, AuditService, JobsService, FormsService, OrgService, OverviewService, PeopleService, SettingsService, UploadsService, CentresAdminService, PartnersAdminService };
 export type { PortalCtx, PortalDeps } from "./shared";
 
 /** Coordinator portal services (§5.4). Every method takes the acting `Actor` and enforces RBAC + scope. */
@@ -29,6 +31,8 @@ export interface PortalServices {
   settings: SettingsService;
   forms: FormsService;
   uploads: UploadsService;
+  centres: CentresAdminService;
+  partners: PartnersAdminService;
   /** Hook for the form-link flow after a report is received. */
   onReportSubmitted(eventId: string): Promise<void>;
 }
@@ -49,6 +53,8 @@ export function createPortalServices(ctx: PortalCtx): PortalServices {
     settings: createSettingsService(ctx),
     forms: createFormsService(ctx),
     uploads: createUploadsService(ctx),
+    centres: createCentresAdminService(ctx),
+    partners: createPartnersAdminService(ctx),
     onReportSubmitted: (eventId) => reportReceived(ctx, eventId),
   };
 }

@@ -242,6 +242,8 @@ export interface ServiceDeps {
   /** Login-code fallback channel. */
   email?: EmailProvider;
   storage?: PrivateStorage;
+  /** Public media (MEDIA_ROOT): centre and content photos served at /media/*. */
+  publicMedia?: PrivateStorage;
   /** Origin for form-link URLs. */
   appUrl?: string;
   /** Public bot contact shown on /join (WHATSAPP_PUBLIC_NUMBER / _KEYWORD); absent -> "coming soon". */

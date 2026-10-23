@@ -1,12 +1,13 @@
 import "server-only";
-import { and, asc, desc, eq, sql } from "drizzle-orm";
+import { and, asc, count, desc, eq, gte, isNotNull, lt, sql } from "drizzle-orm";
 import type { Db } from "../db/client";
 import { newId } from "../db/columns";
 import { M6_DOC_TABLES } from "../db/schema/m6";
-import { auditLog, setting, sevaType } from "../db/tables";
+import { auditLog, centre, centreGathering, event, partner, setting, sevaType } from "../db/tables";
 import { affected, isDuplicateKey, type Tx } from "./links-db";
+import { partnerCols } from "./partner-cols";
 import type { DocListQuery, DocPutResult, DocRec, DocTableName, DocWrite, M6Repo } from "./m6-types";
-import type { AuditRec, SevaTypeRec } from "./types";
+import type { AuditRec, CentreRec, GatheringRec, PartnerRec, SevaTypeRec } from "./types";
 
 class Conflict extends Error {}
 
@@ -135,6 +136,104 @@ export class DbM6Repo implements M6Repo {
       return "ok" as const;
     } catch (err) {
       if (err instanceof Conflict) return "conflict" as const;
+      throw err;
+    }
+  }
+
+  async partnersAll() {
+    return this.db.select(partnerCols).from(partner).orderBy(asc(partner.name));
+  }
+
+  async partnerInsert(rec: PartnerRec, audit?: AuditRec[]) {
+    await this.db.transaction(async (tx) => {
+      await tx.insert(partner).values({
+        id: rec.id,
+        name: rec.name,
+        kind: rec.kind,
+        city: rec.city,
+        active: rec.active,
+        nameHi: rec.nameHi ?? null,
+        contact: rec.contact ?? null,
+        showPublicly: rec.showPublicly ?? true,
+      });
+      await this.audit(tx, audit);
+    });
+  }
+
+  async partnerUpdate(id: string, patch: Partial<Omit<PartnerRec, "id">>, expectVersion: number, audit?: AuditRec[]) {
+    try {
+      await this.db.transaction(async (tx) => {
+        const set = { ...patch };
+        delete set.version;
+        const res = await tx
+          .update(partner)
+          .set({ ...set, version: sql`${partner.version} + 1` })
+          .where(and(eq(partner.id, id), eq(partner.version, expectVersion)));
+        if (affected(res) === 0) throw new Conflict();
+        await this.audit(tx, audit);
+      });
+      return "ok" as const;
+    } catch (err) {
+      if (err instanceof Conflict) return "conflict" as const;
+      throw err;
+    }
+  }
+
+  async eventCountsByPartner(from: Date, to: Date) {
+    const rows = await this.db
+      .select({ id: event.partnerId, n: count() })
+      .from(event)
+      .where(and(isNotNull(event.partnerId), gte(event.startsAt, from), lt(event.startsAt, to)))
+      .groupBy(event.partnerId);
+    return new Map(rows.flatMap((r) => (r.id ? [[r.id, Number(r.n)] as const] : [])));
+  }
+
+  async centreInsert(rec: CentreRec, gatherings: GatheringRec[], audit?: AuditRec[]) {
+    try {
+      await this.db.transaction(async (tx) => {
+        await tx.insert(centre).values({
+          id: rec.id,
+          slug: rec.slug,
+          samithiId: rec.samithiId,
+          nameEn: rec.nameEn,
+          nameHi: rec.nameHi,
+          addressEn: rec.addressEn,
+          addressHi: rec.addressHi,
+          pincode: rec.pincode,
+          lat: rec.lat,
+          lng: rec.lng,
+          contactPhone: rec.contactPhone,
+          photos: rec.photos,
+          active: rec.active,
+        });
+        if (gatherings.length) await tx.insert(centreGathering).values(gatherings);
+        await this.audit(tx, audit);
+      });
+      return "ok" as const;
+    } catch (err) {
+      if (isDuplicateKey(err)) return "duplicate" as const;
+      throw err;
+    }
+  }
+
+  async centreUpdate(id: string, patch: Partial<Omit<CentreRec, "id" | "version" | "updatedAt">>, gatherings: GatheringRec[] | null, expectVersion: number, audit?: AuditRec[]) {
+    try {
+      await this.db.transaction(async (tx) => {
+        const res = await tx
+          .update(centre)
+          .set({ ...patch, version: sql`${centre.version} + 1` })
+          .where(and(eq(centre.id, id), eq(centre.version, expectVersion)));
+        if (affected(res) === 0) throw new Conflict();
+        if (gatherings) {
+          await tx.delete(centreGathering).where(eq(centreGathering.centreId, id));
+          if (gatherings.length) await tx.insert(centreGathering).values(gatherings);
+        }
+        await this.audit(tx, audit);
+      });
+      return "ok" as const;
+    } catch (err) {
+      if (err instanceof Conflict) return "conflict" as const;
+      if (isDuplicateKey(err)) return "duplicate" as const;
       throw err;
     }
   }

@@ -111,7 +111,7 @@ export async function assembleEvents(repo: DataRepo, org: OrgIndex, events: read
       volunteersNeeded: e.volunteersNeeded,
       volunteersJoined: e.volunteersJoined,
       bring: e.bring,
-      partner: partner ? { name: partner.name } : null,
+      partner: partner && partner.showPublicly !== false ? { name: partner.name } : null,
       centreContact: centre?.contactPhone ?? null,
       // Public form links arrive with M2.
       publicLinkUrl: null,

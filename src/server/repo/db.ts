@@ -6,6 +6,7 @@ import { PUBLIC_ARTICLE_LETTERS } from "../domain/articles";
 import { DbLinksRepo } from "./links-db";
 import { DbM6Repo } from "./m6-db";
 import { toEventRec } from "./event-row";
+import { partnerCols } from "./partner-cols";
 import { DbPortalRepo } from "./portal-db";
 import { DbWaRepo } from "./wa-db";
 import { postcontentContentpostimage as postImage, postcontentPostcontent as post } from "../db/legacy";
@@ -112,7 +113,7 @@ export class DbRepo implements DataRepo {
   async partners(ids: readonly string[]) {
     if (ids.length === 0) return [];
     return this.db
-      .select({ id: partner.id, name: partner.name, kind: partner.kind, city: partner.city, active: partner.active })
+      .select(partnerCols)
       .from(partner)
       .where(inArray(partner.id, [...ids]));
   }
@@ -120,7 +121,7 @@ export class DbRepo implements DataRepo {
   async partnersByKind(kinds: readonly PartnerKind[]) {
     if (kinds.length === 0) return [];
     return this.db
-      .select({ id: partner.id, name: partner.name, kind: partner.kind, city: partner.city, active: partner.active })
+      .select(partnerCols)
       .from(partner)
       .where(and(eq(partner.active, true), inArray(partner.kind, [...kinds])))
       .orderBy(asc(partner.name));
@@ -167,6 +168,8 @@ export class DbRepo implements DataRepo {
     contactPhone: centre.contactPhone,
     photos: centre.photos,
     active: centre.active,
+    version: centre.version,
+    updatedAt: centre.updatedAt,
   };
 
   async centres() {

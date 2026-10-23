@@ -1,6 +1,6 @@
 import type { Fixtures } from "../mock/fixtures";
 import type { DocListQuery, DocPutResult, DocRec, DocTableName, DocWrite, M6Repo } from "./m6-types";
-import type { AuditRec, SevaTypeRec } from "./types";
+import type { AuditRec, CentreRec, GatheringRec, PartnerRec, SevaTypeRec } from "./types";
 
 /** In-memory M6 store (writes stay in memory). */
 export class MemoryM6Repo implements M6Repo {
@@ -91,6 +91,54 @@ export class MemoryM6Repo implements M6Repo {
     const s = this.fx.sevaTypes.find((x) => x.code === code);
     if (!s || (s.version ?? 1) !== expectVersion) return "conflict" as const;
     Object.assign(s, patch, { version: expectVersion + 1 });
+    await this.audit(audit);
+    return "ok" as const;
+  }
+
+  async partnersAll() {
+    return [...this.fx.partners].sort((a, b) => a.name.localeCompare(b.name));
+  }
+
+  async partnerInsert(rec: PartnerRec, audit?: AuditRec[]) {
+    this.fx.partners.push({ ...rec, version: 1 });
+    await this.audit(audit);
+  }
+
+  async partnerUpdate(id: string, patch: Partial<Omit<PartnerRec, "id">>, expectVersion: number, audit?: AuditRec[]) {
+    const p = this.fx.partners.find((x) => x.id === id);
+    if (!p || (p.version ?? 1) !== expectVersion) return "conflict" as const;
+    Object.assign(p, patch, { version: expectVersion + 1 });
+    await this.audit(audit);
+    return "ok" as const;
+  }
+
+  async eventCountsByPartner(from: Date, to: Date) {
+    const out = new Map<string, number>();
+    for (const e of this.fx.events) {
+      if (!e.partnerId || e.startsAt < from || e.startsAt >= to) continue;
+      out.set(e.partnerId, (out.get(e.partnerId) ?? 0) + 1);
+    }
+    return out;
+  }
+
+  async centreInsert(rec: CentreRec, gatherings: GatheringRec[], audit?: AuditRec[]) {
+    if (this.fx.centres.some((c) => c.slug === rec.slug)) return "duplicate" as const;
+    this.fx.centres.push({ ...rec, version: 1, updatedAt: new Date() });
+    this.fx.gatherings.push(...gatherings);
+    await this.audit(audit);
+    return "ok" as const;
+  }
+
+  async centreUpdate(id: string, patch: Partial<Omit<CentreRec, "id" | "version" | "updatedAt">>, gatherings: GatheringRec[] | null, expectVersion: number, audit?: AuditRec[]) {
+    const c = this.fx.centres.find((x) => x.id === id);
+    if (!c || (c.version ?? 1) !== expectVersion) return "conflict" as const;
+    if (patch.slug && this.fx.centres.some((x) => x.slug === patch.slug && x.id !== id)) return "duplicate" as const;
+    Object.assign(c, patch, { version: expectVersion + 1, updatedAt: new Date() });
+    if (gatherings) {
+      const keep = this.fx.gatherings.filter((g) => g.centreId !== id);
+      this.fx.gatherings.length = 0;
+      this.fx.gatherings.push(...keep, ...gatherings);
+    }
     await this.audit(audit);
     return "ok" as const;
   }
