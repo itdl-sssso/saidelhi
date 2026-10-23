@@ -70,6 +70,8 @@ const PLANS: readonly DevLinkPlan[] = [
   { key: "blood-desk-1", eventId: EVENT.bloodPlanned, purpose: "desk", label: "Desk 1 – Karol Bagh", formVersionId: FORM_IDS.versions.blood, otpRequired: false, maxUses: null, uses: 0, expiresAt: BLOOD_EXPIRES, revokedAt: null, sentTo: "qr" },
   { key: "blood-public", eventId: EVENT.bloodPlanned, purpose: "public", label: "Join this seva", formVersionId: FORM_IDS.versions.volunteer, otpRequired: false, maxUses: 40, uses: 0, expiresAt: new Date("2026-11-08T04:30:00Z"), revokedAt: null, sentTo: "qr" },
   { key: "blood-used-up", eventId: EVENT.bloodPlanned, purpose: "public", label: "Join this seva (full)", formVersionId: FORM_IDS.versions.volunteer, otpRequired: false, maxUses: 1, uses: 1, expiresAt: new Date("2026-11-08T04:30:00Z"), revokedAt: null, sentTo: "qr" },
+  { key: "narayan-overdue-report", eventId: EVENT.narayanMayurOverdue, purpose: "report", label: "Report", formVersionId: FORM_IDS.versions.eye, otpRequired: true, maxUses: null, uses: 0, expiresAt: new Date("2026-11-06T18:29:59Z"), revokedAt: null, sentTo: "coordinator" },
+  { key: "medical-overdue-report", eventId: EVENT.medicalLaxmiOverdue, purpose: "report", label: "Report", formVersionId: FORM_IDS.versions.eye, otpRequired: true, maxUses: null, uses: 0, expiresAt: new Date("2026-11-06T18:29:59Z"), revokedAt: null, sentTo: "coordinator" },
 ];
 
 export interface DevLink {

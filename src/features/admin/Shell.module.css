@@ -58,3 +58,7 @@
 @media (max-width: 959px) {
   .hideSmall { display: none; }
 }
+@media (max-width: 420px) {
+  .scope { padding: 0 10px; min-width: 0; }
+  .scopeLabel { max-width: 112px; }
+}

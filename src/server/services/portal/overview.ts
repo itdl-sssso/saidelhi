@@ -28,13 +28,13 @@ function monthsAfter(m: string): string {
 const plural = (n: number, one: string, many: string) => (n === 1 ? one : many);
 
 const LABELS = {
-  plans: (n: number): I18nText => ({ en: `${n} ${plural(n, "plan", "plans")} to approve`, hi: `स्वीकृति के लिए ${n} योजनाएँ` }),
+  plans: (n: number): I18nText => ({ en: `${n} ${plural(n, "plan", "plans")} to approve`, hi: `स्वीकृति के लिए ${n} ${plural(n, "योजना", "योजनाएँ")}` }),
   reports: (n: number): I18nText => ({ en: `${n} ${plural(n, "report", "reports")} to approve`, hi: `स्वीकृति के लिए ${n} रिपोर्ट` }),
-  escalations: (n: number): I18nText => ({ en: `${n} ${plural(n, "approval", "approvals")} escalated to the state team`, hi: `${n} स्वीकृतियाँ राज्य टीम को भेजी गईं` }),
+  escalations: (n: number): I18nText => ({ en: `${n} ${plural(n, "approval", "approvals")} escalated to the state team`, hi: `${n} ${plural(n, "स्वीकृति राज्य टीम को भेजी गई", "स्वीकृतियाँ राज्य टीम को भेजी गईं")}` }),
   overdue: (n: number): I18nText => ({ en: `${n} ${plural(n, "report is", "reports are")} overdue`, hi: `${n} रिपोर्ट की समय-सीमा निकल गई` }),
-  awaiting: (n: number): I18nText => ({ en: `${n} ${plural(n, "event", "events")} without a report`, hi: `${n} कार्यक्रमों की रिपोर्ट बाकी` }),
+  awaiting: (n: number): I18nText => ({ en: `${n} ${plural(n, "event", "events")} without a report`, hi: `${n} ${plural(n, "कार्यक्रम", "कार्यक्रमों")} की रिपोर्ट बाकी` }),
   drafts: (n: number): I18nText => ({ en: `${n} ${plural(n, "draft", "drafts")} to send for approval`, hi: `स्वीकृति हेतु भेजने के लिए ${n} ड्राफ़्ट` }),
-  changes: (n: number): I18nText => ({ en: `${n} ${plural(n, "plan needs", "plans need")} changes`, hi: `${n} योजनाओं में बदलाव चाहिए` }),
+  changes: (n: number): I18nText => ({ en: `${n} ${plural(n, "plan needs", "plans need")} changes`, hi: `${n} ${plural(n, "योजना", "योजनाओं")} में बदलाव चाहिए` }),
 };
 
 const TILE_LABELS = {

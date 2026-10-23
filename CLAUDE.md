@@ -2,7 +2,7 @@
 
 # SSSSO Delhi NCR platform — project state & handoff
 
-Rebuild of saidelhi.org (Sri Sathya Sai Seva Organisation, Delhi NCR): bilingual public site + coordinator portal (`/admin`) + event form links (`/f/<token>`) + WhatsApp bot. Last updated **23 Oct 2026**.
+Rebuild of saidelhi.org (Sri Sathya Sai Seva Organisation, Delhi NCR): bilingual public site + coordinator portal (`/admin`) + event form links (`/f/<token>`) + WhatsApp bot. Last updated **23 Oct 2026** (M3 walkthrough closed).
 
 ## Read these first
 | File | What |
@@ -40,17 +40,16 @@ Run `pnpm db:seed` before `pnpm test` if the DB was mutated by a walkthrough (li
 | M0 | Foundation | ✅ | ✅ | `001670d` |
 | M1 | Public core: Home (3D lotus), Calendar, Event, Centre, Impact, Privacy | ✅ (in M0) | ✅ | `a221548` |
 | M2 | Form links `/f/[token]` (OTP verify, generic form renderer, offline drafts/queue, done/gone) | ✅ | ✅ | `fa41031` |
-| M3 | Portal core: login, shell, Overview, Events, Event detail, Plan event, Approvals, Links, Org, People, Audit | ✅ `a19a373` | ⚠️ built + typecheck/lint/build/tests green, **browser walkthrough NOT done** | merge after `fa41031` |
+| M3 | Portal core: login, shell, Overview, Events, Event detail, Plan event, Approvals, Links, Org, People, Audit | ✅ `a19a373` | ✅ walkthrough done 23 Oct (fixes: table sr-only overflow, 375px top bar, hi plurals, overdue seed links) | see git log |
 | M4 | WhatsApp bot flows + webhook + reminders, Ollama extractor, Review inbox, WhatsApp admin, opt-in endpoint | ⬜ | ⬜ | |
 | M5 | Public P1: Values ×5, About, Programs, Program, News/Article, Join, Map, District, redirects + legacy migration polish | ⬜ | ⬜ | |
 | M6 | Portal P1: form templates/builder, uploads (xlsx), centres, partners, content, impact controls, migration, volunteers, reports/exports, health, follow-up, privacy, settings | ⬜ | ⬜ | |
 | M7 | Discourses (flag) import + pages + workspace; a11y/perf pass; Playwright e2e | ⬜ | ⬜ | |
 
 ### Immediate next steps (in order)
-1. **M3 frontend walkthrough** (`pnpm dev`): log in as East district coord (seed prints phone; OTP in server log) → Overview → Approvals → approve a plan → Event detail shows links → Links page; log in as samithi coord → nav items hidden; check `/hi/admin` and 375px. Fix bugs, then `pnpm db:seed`.
-2. Clear backlogs in `docs/CONTRACT.md` (after §10): `EventPublic.approvedAt`, `EventPublic.centre`, `GET /org/units`, gatherings → calendar occurrences, 404 status for unknown ids/slugs (currently 200 after streaming), `FormPayload.editable` false for closed public links, seed label "Under 18 (optional)".
-3. Ask user: full scope vs stop at pilot (P0) after M5 — **undecided**. Estimate given: remaining ≈ 3.9–4.2M tokens (mostly Sonnet).
-4. Then M4 → M5 → M6 → M7.
+1. Clear backlogs in `docs/CONTRACT.md` (after §10): `EventPublic.approvedAt`, `EventPublic.centre`, `GET /org/units`, gatherings → calendar occurrences, 404 status for unknown ids/slugs and unbuilt `/admin/*` pages (currently 200), `FormPayload.editable` false for closed public links, seed label "Under 18 (optional)". Frontend: login OTP input → `src/ui/OtpInput` (dedupe).
+2. **Scope decided 23 Oct: full scope M4 → M5 → M6 → M7.**
+3. Dev link URLs in WhatsApp messages use `localhost:3000` (base URL env) while review server is :4100 — set app URL env for dev.
 
 ### Known open issues
 - In-process rate limits and bot-challenge reuse (single node only).
@@ -58,14 +57,13 @@ Run `pnpm db:seed` before `pnpm test` if the DB was mutated by a walkthrough (li
 - WhatsApp dev message log in memory only (simulator pending, M4).
 - Hindi hero/value copy written by an agent — needs native review.
 - Root-owned stale dir `.claude/worktrees/agent-aec2e1a718ded6454` (Docker-created) — `sudo rm -rf` it.
-- `M3` portal: `qr.pdf` and bulk resend not exercised end to end.
 
 ## How work is run (process the user asked for)
 - **Two tracks per milestone** (backend / frontend) as parallel subagents in git worktrees (`isolation: worktree`); lead merges, runs the definition of done, commits **one commit per milestone on `main`, local only (no push)**.
-- **Models:** Sonnet for implementation agents, Opus for planning/lead, Haiku for small atomic tasks (servers, merges/checks with explicit steps). Be credit-conscious: tight briefs, selective reading (`graft ask/skeleton`), short reports, few screenshots.
+- **Models:** Sonnet for implementation agents, Opus for planning/lead, Haiku for small atomic tasks (run tests/typecheck/lint/build, dev servers, merges with explicit steps). Lead delegates; briefs written caveman-style (agents answer terse caveman). Be credit-conscious: tight briefs, selective reading (`graft ask/skeleton`), short reports, few screenshots.
 - **Context hygiene / resumability (required for every subagent):**
   - Keep a progress log at `docs/progress/<milestone>-<track>.md` in the worktree: done / in progress / next / decisions / blockers. Update it after each sub-task.
-  - When context passes ~150k tokens, compact (or, if the agent cannot, finish the current sub-task, update the progress log, commit WIP to the worktree branch `wip: …`, and stop with a short report so the lead resumes a fresh agent from the log).
+  - When context passes ~150k tokens, run compact (or, if the agent cannot, finish the current sub-task, update the progress log, commit WIP to the worktree branch `wip: …`, and stop with a short report so the lead resumes a fresh agent from the log).
   - On interruption (rate limit), the lead commits the worktree WIP to its branch so nothing is lost, and resumes with a fresh agent pointed at the same worktree + progress log.
 - Agents never commit to `main`; never touch the other track's directories (backend: `src/server`, `src/contract`, `src/app/api`, `drizzle`, `scripts`; frontend: `src/app/[locale]`, `src/ui`, `src/features`, `messages`, `public`). Shape changes are proposed in the report and logged in `docs/CONTRACT.md` §10 by the lead.
 - Dev ports: 4100 = user review server (main checkout); agents use their own (4200/4300/4400…).
