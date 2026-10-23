@@ -6,6 +6,7 @@ import { type ContentAdminService, createContentAdminService } from "./content";
 import { createFollowUpService, type FollowUpService } from "./followup";
 import { createFormsService, type FormsService } from "./forms";
 import { createPrivacyService, type PrivacyService } from "./privacy";
+import { createDiscoursesAdminService, type DiscoursesAdminService } from "./discourses";
 import { createPartnersAdminService, type PartnersAdminService } from "./partners";
 import { createHealthService, type HealthService } from "./health";
 import { createImpactAdminService, type ImpactAdminService } from "./impact-admin";
@@ -22,7 +23,7 @@ import { createUploadsService, type UploadsService } from "./uploads";
 import { createVolunteersService, type VolunteersService } from "./volunteers";
 import type { PortalCtx } from "./shared";
 
-export type { AdminEventsService, AdminLinksService, ApprovalsService, AttachmentsService, AuditService, JobsService, FormsService, OrgService, OverviewService, PeopleService, SettingsService, UploadsService, CentresAdminService, PartnersAdminService, VolunteersService, ImpactAdminService, ContentAdminService, MigrationService, FollowUpService, PrivacyService, ReportsService, HealthService };
+export type { AdminEventsService, AdminLinksService, ApprovalsService, AttachmentsService, AuditService, JobsService, FormsService, OrgService, OverviewService, PeopleService, SettingsService, UploadsService, CentresAdminService, PartnersAdminService, DiscoursesAdminService, VolunteersService, ImpactAdminService, ContentAdminService, MigrationService, FollowUpService, PrivacyService, ReportsService, HealthService };
 export type { PortalCtx, PortalDeps } from "./shared";
 
 /** Coordinator portal services (§5.4). Every method takes the acting `Actor` and enforces RBAC + scope. */
@@ -41,6 +42,7 @@ export interface PortalServices {
   uploads: UploadsService;
   centres: CentresAdminService;
   partners: PartnersAdminService;
+  discourses: DiscoursesAdminService;
   volunteers: VolunteersService;
   impact: ImpactAdminService;
   content: ContentAdminService;
@@ -71,6 +73,7 @@ export function createPortalServices(ctx: PortalCtx): PortalServices {
     uploads: createUploadsService(ctx),
     centres: createCentresAdminService(ctx),
     partners: createPartnersAdminService(ctx),
+    discourses: createDiscoursesAdminService(ctx),
     volunteers: createVolunteersService(ctx),
     impact: createImpactAdminService(ctx),
     content: createContentAdminService(ctx),
