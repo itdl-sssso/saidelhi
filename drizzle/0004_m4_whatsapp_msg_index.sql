@@ -1,0 +1,1 @@
+CREATE INDEX `whatsapp_message_provider_idx` ON `whatsapp_message` (`provider_id`);

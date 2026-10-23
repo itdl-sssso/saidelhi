@@ -27,6 +27,26 @@ export function optInMatches(o: OptInRec, f: { districtIds?: readonly string[]; 
 
 /** In-memory implementation (DATA_SOURCE=mock and unit tests). */
 export class MemoryWaRepo implements WaRepo {
+  constructor(seed?: {
+    templates: WaTemplateRec[];
+    rules: ReminderRuleRec[];
+    conversations: ConversationRec[];
+    messages: WaMessageRec[];
+    inbox: InboxItemRec[];
+    history: InboxHistoryRec[];
+    optIns: OptInRec[];
+  }) {
+    if (!seed) return;
+    const s = structuredClone(seed);
+    for (const t of s.templates) this.tpl.set(t.name, t);
+    for (const r of s.rules) this.rules.set(r.key, r);
+    for (const c of s.conversations) this.conversations.set(c.phoneHash, c);
+    this.msgs.push(...s.messages);
+    for (const i of s.inbox) this.inbox.set(i.id, i);
+    this.history.push(...s.history);
+    for (const o of s.optIns) this.optins.set(o.phoneHash, o);
+  }
+
   private readonly conversations = new Map<string, ConversationRec>();
   private readonly msgs: WaMessageRec[] = [];
   private readonly tpl = new Map<string, WaTemplateRec>();

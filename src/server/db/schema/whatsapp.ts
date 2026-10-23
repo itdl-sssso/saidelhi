@@ -61,6 +61,7 @@ export const whatsappMessage = mysqlTable(
     index("whatsapp_message_conv_idx").on(t.conversationId, t.createdAt),
     index("whatsapp_message_phone_idx").on(t.phoneHash, t.createdAt),
     index("whatsapp_message_inbox_idx").on(t.inboxItemId),
+    index("whatsapp_message_provider_idx").on(t.providerId),
   ],
 );
 

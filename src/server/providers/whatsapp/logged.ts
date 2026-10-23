@@ -55,7 +55,9 @@ export class LoggedWhatsApp implements WhatsAppProvider {
   }
 
   sendTemplate(to: string, template: TemplateName, lang: Locale, params: readonly string[], meta?: SendMeta) {
-    const text = renderTemplate(template, lang, params);
+    // A login code is a credential: the stored copy never contains it.
+    const stored = template === "login_code" ? params.map(() => "••••••") : params;
+    const text = renderTemplate(template, lang, stored);
     return this.log(
       to,
       () => this.inner.sendTemplate(to, template, lang, params, meta),

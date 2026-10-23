@@ -15,7 +15,6 @@ export const canApprove = (t: Turn): boolean => !!t.actor && can(t.actor, "appro
 export function showMenu(t: Turn, withIntro = true): void {
   resetFlow(t);
   if (isCoordinator(t) && t.actor) {
-    const first = t.actor.name.split(" ")[0] ?? t.actor.name;
     const rows = [
       { id: "m:plan", title: LABEL.plan },
       { id: "m:report", title: LABEL.report },
@@ -23,7 +22,7 @@ export function showMenu(t: Turn, withIntro = true): void {
       ...(canApprove(t) ? [{ id: "m:approvals", title: LABEL.approvals }] : []),
       { id: "m:help", title: LABEL.help },
     ];
-    list(t, withIntro ? COPY.menuCoordinator(first) : COPY.help, LABEL.menu, rows, LABEL.menu);
+    list(t, withIntro ? COPY.menuCoordinator(t.actor.name) : COPY.help, LABEL.menu, rows, LABEL.menu);
     return;
   }
   buttons(t, withIntro ? COPY.menuPublic : COPY.helpPublic, [

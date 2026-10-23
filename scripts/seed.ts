@@ -6,6 +6,8 @@
  *
  *   pnpm db:seed            (after db:migrate, and after db:import-legacy)
  */
+import { mkdir, writeFile } from "node:fs/promises";
+import path from "node:path";
 import { eq, sql } from "drizzle-orm";
 import { closeDb, getDb } from "../src/server/db/client";
 import { postcontentPostcontent } from "../src/server/db/legacy";
@@ -31,17 +33,24 @@ import {
   event,
   eventTimeline,
   impactEstimate,
+  inboxHistory,
+  inboxItem,
   orgClosure,
   orgUnit,
   partner,
+  reminderRule,
   setting,
   sevaType,
   submissionAnswerKpi,
+  whatsappConversation,
+  whatsappMessage,
+  whatsappOptin,
+  whatsappTemplate,
 } from "../src/server/db/tables";
 import { appSecret, env } from "../src/server/env";
 import { lintDefinition } from "../src/contract";
 import { DEV_COORDINATOR_PHONE, devAllowedPhones, devLinks, SEED_EVENT_FORM_LOCKS, seedTemplates } from "../src/server/forms/seed-data";
-import { devUserPhone, fx, loadFixtures, portalFixtures, SAMPLE_ARTICLE_ID } from "../src/server/mock/fixtures";
+import { devUserPhone, fx, loadFixtures, portalFixtures, SAMPLE_ARTICLE_ID, waFixtures } from "../src/server/mock/fixtures";
 import type { OrgUnitRec } from "../src/server/repo/types";
 
 function closure(units: readonly OrgUnitRec[]) {
@@ -73,10 +82,14 @@ async function main() {
   }
   const links = devLinks(secret);
   const portal = portalFixtures(secret);
+  const wa = waFixtures(secret);
 
   await db.transaction(async (tx) => {
     await tx.execute(sql`SET FOREIGN_KEY_CHECKS = 0`);
     for (const t of [consentRecord, attachment, submission, linkSession, otpChallenge, linkAllowedPhone, formLink, formVersion, formTemplate]) {
+      await tx.delete(t);
+    }
+    for (const t of [inboxHistory, inboxItem, whatsappMessage, whatsappConversation, whatsappOptin, whatsappTemplate, reminderRule]) {
       await tx.delete(t);
     }
     for (const t of [approval, portalSession, roleAssignment, appUser, auditLog, articleI18n, submissionAnswerKpi, eventTimeline, impactEstimate, event, centreGathering, centre, partner, orgClosure, orgUnit, sevaType, contentItem, setting]) {
@@ -108,6 +121,16 @@ async function main() {
     await tx.insert(formLink).values(links.map((l) => l.rec));
     await tx.insert(linkAllowedPhone).values(devAllowedPhones(secret));
 
+    await tx.insert(whatsappTemplate).values(wa.templates);
+    await tx.insert(reminderRule).values(
+      wa.rules.map((r) => ({ id: r.id, key: r.key, labelEn: r.label.en, labelHi: r.label.hi, descriptionEn: r.description.en, descriptionHi: r.description.hi, enabled: r.enabled, copyDistrict: r.copyDistrict })),
+    );
+    await tx.insert(whatsappConversation).values(wa.conversations);
+    await tx.insert(inboxItem).values(wa.inbox);
+    await tx.insert(inboxHistory).values(wa.history);
+    await tx.insert(whatsappMessage).values(wa.messages);
+    await tx.insert(whatsappOptin).values(wa.optIns);
+
     const sample = f.articles.find((a) => a.id === SAMPLE_ARTICLE_ID);
     if (sample) {
       const row = {
@@ -136,12 +159,29 @@ async function main() {
     content_item: f.contentItems.length,
     setting: Object.keys(f.settings).length,
   };
-  console.log("Seeded:", { ...counts, form_template: forms.templates.length, form_link: links.length });
+  console.log("Seeded:", {
+    ...counts,
+    form_template: forms.templates.length,
+    form_link: links.length,
+    inbox_item: wa.inbox.length,
+    whatsapp_conversation: wa.conversations.length,
+    whatsapp_message: wa.messages.length,
+    whatsapp_optin: wa.optIns.length,
+  });
+
+  // Placeholder register photo for the seeded inbox item (a 1x1 PNG; the real ones come from WhatsApp).
+  const photo = path.resolve(env().MEDIA_PRIVATE_ROOT, "inbox", "seed-register.png");
+  await mkdir(path.dirname(photo), { recursive: true });
+  await writeFile(
+    photo,
+    Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==", "base64"),
+  );
 
   if (env().NODE_ENV !== "production") {
     const base = env().APP_URL.replace(/\/$/, "");
     console.log(`\nDEV form links (tokens derive from SESSION_SECRET; coordinator phone ${DEV_COORDINATOR_PHONE}, OTP codes print in the server log):`);
     for (const l of links) console.log(`  ${l.key.padEnd(14)} ${l.rec.purpose.padEnd(7)} ${base}/f/${l.token}`);
+    console.log("\nDEV WhatsApp bot: POST /api/v1/dev/whatsapp/inbound { from, text, replyId, media }; try +91 90000 00001 (coordinator, hi), 00002 (district), 00003 (state admin), +91 98765 43210 (public).");
     console.log("\nDEV portal logins (OTP prints in the server log):");
     const byId = new Map(portal.users.map((u) => [u.id, u]));
     for (const [i, r] of portal.roles.entries()) {

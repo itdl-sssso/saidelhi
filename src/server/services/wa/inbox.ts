@@ -22,7 +22,7 @@ import { newId } from "../../db/columns";
 import { eventHints } from "../../ai/rules";
 import type { ExtractField, ExtractResult } from "../../ai/types";
 import { auditRec } from "../../audit";
-import { type Actor, assertCan, ROLE_LABEL } from "../../auth/rbac";
+import { type Actor, assertCan } from "../../auth/rbac";
 import { addDays, istDate, istDayStart, toIso } from "../../domain/time";
 import { ApiError } from "../../http/errors";
 import { sniffMime } from "../../files";
@@ -369,7 +369,7 @@ export function createInboxService(ctx: WaCtx): InboxService {
       const sent = await messageSender(
         ctx,
         await sealedSender(item),
-        (l) => `${ROLE_LABEL[actor.role][l]} ${actor.name}: ${body.question}`,
+        () => `${actor.name}: ${body.question}`,
         { inboxItemId: item.id },
       );
       if (!sent) throw new ApiError("PROVIDER_UNAVAILABLE");

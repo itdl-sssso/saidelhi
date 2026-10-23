@@ -3,7 +3,6 @@ import type { Locale } from "@/contract";
 import { ApiError } from "../../http/errors";
 import type { UserRec } from "../../repo/portal-types";
 import type { EventRec } from "../../repo/types";
-import { ROLE_LABEL } from "../../auth/rbac";
 import { inSessionWindow } from "../conversations";
 import { phoneHash } from "../../security/phone";
 import { COPY, LABEL, pick } from "./copy";
@@ -189,7 +188,7 @@ export async function approvalsStep(t: Turn): Promise<void> {
     return showMenu(t, false);
   }
   const l = creator.locale;
-  const label = `${ROLE_LABEL[actor.role][l]} ${actor.name}`;
+  const label = actor.name;
   const q = text.slice(0, 500);
   const reached = await reachUser(t.deps, creator, `${label}: ${q}`, { template: "plan_decision", params: [titleOf(ev, l), `${label}: ${q}`] });
   if (reached) await armAnswer(t.deps, creator, actor.userId, actor.name, titleOf(ev, l));

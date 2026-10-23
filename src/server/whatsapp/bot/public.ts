@@ -35,7 +35,7 @@ async function resolveDistrict(t: Turn, text: string): Promise<{ slug: string; i
 
 function eventLine(t: Turn, e: EventPublic): string {
   const title = (t.locale === "hi" ? e.title.hi : null) ?? e.title.en;
-  const url = e.recurring && e.centre ? link(t, `/centres/${e.centre.slug}`) : link(t, `/events/${e.id}`);
+  const url = e.id.startsWith("gath_") && e.centre ? link(t, `/centres/${e.centre.slug}`) : link(t, `/events/${e.id}`);
   return `• ${title} — ${fmtWhen(new Date(e.startsAt), t.locale)}\n${url}`;
 }
 
@@ -49,8 +49,9 @@ export const nearFlow: Flow = {
     if (!text) return say(t, COPY.nearAsk);
     const place = await resolveDistrict(t, text);
     if (!place) return say(t, COPY.nearUnknown);
-    const page = await t.deps.events.list({ page: 1, pageSize: 20, district: place.slug });
-    const rows = [...page.data.filter((e) => !e.recurring), ...page.data.filter((e) => e.recurring)].slice(0, 5);
+    const page = await t.deps.events.list({ page: 1, pageSize: 100, district: place.slug });
+    // Real events first; the centres' weekly gatherings fill the rest.
+    const rows = [...page.data.filter((e) => !e.id.startsWith("gath_")), ...page.data.filter((e) => e.id.startsWith("gath_"))].slice(0, 5);
     resetFlow(t);
     if (rows.length === 0) {
       say(t, COPY.nearNone);

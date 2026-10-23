@@ -6,7 +6,6 @@ import {
   type BroadcastResult,
   type ConversationDetail,
   type ConversationRow,
-  type I18nText,
   type Locale,
   type Paged,
   type ReminderPatchBody,
@@ -14,7 +13,6 @@ import {
   type ThreadMessage,
   type WaStatus,
   type WaTemplate,
-  type WaTemplateCategory,
 } from "@/contract";
 import { newId } from "../../db/columns";
 import { auditRec } from "../../audit";
@@ -22,30 +20,14 @@ import { type Actor, assertCan, can, ROLE_LABEL } from "../../auth/rbac";
 import { istDate, toIso } from "../../domain/time";
 import { env } from "../../env";
 import { ApiError } from "../../http/errors";
-import { COST_PAISE_PER_MESSAGE, WHATSAPP_TEMPLATES, type TemplateName } from "../../providers/whatsapp/templates";
+import { COST_PAISE_PER_MESSAGE } from "../../providers/whatsapp/templates";
 import type { ConversationRec, ReminderRuleRec, WaMessageRec, WaTemplateRec } from "../../repo/wa-types";
 import { decryptField } from "../../security/crypto";
 import { maskPhone } from "../../security/phone";
-import { loadReminderRules } from "./rules";
+import { loadReminderRules, templateRecords } from "./rules";
 import type { WaCtx } from "./shared";
 
 export const MAX_BROADCAST = 1000;
-
-const CATEGORY: Record<TemplateName, WaTemplateCategory> = {
-  login_code: "otp",
-  plan_approval_request: "approval",
-  report_approval_request: "approval",
-  plan_decision: "approval",
-  escalation_notice: "approval",
-  form_link_sent: "link",
-  event_reminder_day_before: "reminder",
-  report_reminder: "reminder",
-  volunteer_reminder: "reminder",
-  seva_broadcast: "broadcast",
-  invite_coordinator: "general",
-  optin_confirm: "general",
-  review_message: "general",
-};
 
 export interface WaAdminService {
   templates(actor: Actor): Promise<WaTemplate[]>;
@@ -84,11 +66,9 @@ export function createWaAdminService(ctx: WaCtx): WaAdminService {
   async function ensureTemplates(): Promise<WaTemplateRec[]> {
     const existing = await repo.wa.templates();
     const have = new Set(existing.map((t) => t.name));
-    for (const [name, def] of Object.entries(WHATSAPP_TEMPLATES)) {
-      if (have.has(name)) continue;
-      await repo.wa.upsertTemplate({ id: newId(), name, category: CATEGORY[name as TemplateName], textEn: def.body.en, textHi: def.body.hi, metaStatus: "pending" });
-    }
-    return have.size === Object.keys(WHATSAPP_TEMPLATES).length ? existing : repo.wa.templates();
+    const missing = templateRecords().filter((t) => !have.has(t.name));
+    for (const t of missing) await repo.wa.upsertTemplate(t);
+    return missing.length === 0 ? existing : repo.wa.templates();
   }
 
   async function who(c: ConversationRec): Promise<ConversationRow["who"]> {

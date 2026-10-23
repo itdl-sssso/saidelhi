@@ -85,7 +85,10 @@ describe("events service (mock)", () => {
   it("lists upcoming by default, sorted, with filters and paging", async () => {
     const { svc } = mockServices();
     const page = Paged(EventPublic).parse(await svc.events.list({ page: 1, pageSize: 3 }));
-    expect(page.meta).toEqual({ page: 1, pageSize: 3, total: 7 });
+    // 7 one-off events plus the weekly gatherings of the next four weeks (recurring rows).
+    const everything = await svc.events.list({ page: 1, pageSize: 100 });
+    expect(everything.data.filter((e) => !e.id.startsWith("gath_"))).toHaveLength(7);
+    expect(page.meta).toEqual({ page: 1, pageSize: 3, total: everything.data.length });
     const starts = page.data.map((e) => e.startsAt);
     expect([...starts].sort()).toEqual(starts);
     expect(starts.every((s) => s >= "2026-10-22")).toBe(true);
