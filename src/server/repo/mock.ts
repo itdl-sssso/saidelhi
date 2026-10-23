@@ -31,7 +31,7 @@ export class MockRepo implements DataRepo {
     this.links = new MemoryLinksRepo(fx, secret);
     this.portal = new MemoryPortalRepo(fx, this.links, portalFixtures(secret));
     this.wa = new MemoryWaRepo(waFixtures(secret));
-    this.m6 = new MemoryM6Repo(fx, (rec) => this.portal.insertAudit(rec));
+    this.m6 = new MemoryM6Repo(fx, (rec) => this.portal.insertAudit(rec), this.redirects);
   }
 
   async orgUnits() {
@@ -130,6 +130,7 @@ export class MockRepo implements DataRepo {
     const rows = this.fx.articles
       .filter(isPublished)
       .filter((a) => !f.categories || f.categories.includes(a.category))
+      .filter((a) => !f.excludeIds?.includes(a.id))
       .sort(byNewest);
     return { rows: rows.slice(f.offset, f.offset + f.limit), total: rows.length };
   }

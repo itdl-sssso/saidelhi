@@ -9,6 +9,7 @@ import {
 import { compareDims, kpiDef, resultLayout, toFigure } from "../domain/kpi";
 import { toIso, toIsoOrNull } from "../domain/time";
 import type { CentreRec, DataRepo, EventRec, KpiFactRec } from "../repo/types";
+import { nativeSlugsForEvents } from "./native-articles";
 import { i18n, type OrgIndex } from "./org-index";
 
 export const isPublicStatus = (s: string): s is PublicEventStatus =>
@@ -76,6 +77,8 @@ export async function assembleEvents(repo: DataRepo, org: OrgIndex, events: read
     approvedIds.length ? repo.approvedFacts({ eventIds: approvedIds }) : Promise.resolve([]),
     repo.articleSlugsForEvents(visible.map((e) => e.id)),
   ]);
+  // Native (M6) articles win over legacy ones linked to the same event.
+  for (const [id, slug] of await nativeSlugsForEvents(repo, visible.map((e) => e.id), new Date())) slugs.set(id, slug);
 
   const partnerById = new Map(partners.map((p) => [p.id, p]));
   const centreById = new Map(centres.map((c) => [c.id, c]));

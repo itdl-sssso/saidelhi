@@ -11,6 +11,7 @@ import { decryptField } from "../../security/crypto";
 import { linkState } from "../../security/link-token";
 import type { ReminderRuleRec } from "../../repo/wa-types";
 import { loadReminderRules } from "../wa/rules";
+import { publishScheduled } from "./content";
 import { transition } from "./lifecycle";
 import { DAY_MS, escalationSettings, fmtDate, holders, notify, type PortalCtx, portalUrl } from "./shared";
 
@@ -151,11 +152,13 @@ export function createJobsService(ctx: PortalCtx): JobsService {
       const out: JobResult = { job, at: toIso(deps.now()), changed: 0, notified: 0, ids: [] };
       if (job === "escalations") await escalations(by, out);
       else if (job === "event-status") await eventStatus(by, out);
+      else if (job === "publish-scheduled") out.ids.push(...(await publishScheduled(ctx, by)));
       else if (job === "reminders") {
         await dayBefore(out);
         await reportReminders(out);
       } else await reportReminders(out);
       out.ids = [...new Set(out.ids)];
+      if (job === "publish-scheduled") out.changed = out.ids.length;
       return out;
     },
   };

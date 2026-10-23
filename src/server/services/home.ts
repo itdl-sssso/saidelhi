@@ -1,8 +1,7 @@
 import type { HomePayload, Thought, WingCard } from "@/contract";
-import { CENTENARY_LETTERS, toArticle } from "../domain/articles";
 import { istDate } from "../domain/time";
 import type { ContentItemRec, DataRepo } from "../repo/types";
-import { articleContext } from "./articles";
+import { listMerged } from "./articles";
 import { assembleEvents } from "./event-assembler";
 import { DEFAULT_HOME } from "./kpis";
 import { activeTile, hasAnyData, loadImpactData, periodWindow, tile } from "./impact-calc";
@@ -67,13 +66,12 @@ export function createHomeService(repo: DataRepo, deps: ServiceDeps): HomeServic
       const now = deps.now();
       const [org, settings, thoughts] = await Promise.all([loadOrg(repo), loadSettings(repo), repo.contentItems("thought_for_day")]);
       const win = periodWindow("this_year", now);
-      const ctx = articleContext(org, deps.mediaBase);
 
       const [upcoming, year, latest, centenary] = await Promise.all([
         repo.listEvents({ statuses: ["planned"], from: now, order: "asc", limit: 6, offset: 0 }),
         loadImpactData(repo, org, {}, win, settings.showEstimates),
-        repo.listArticles({ limit: 3, offset: 0 }),
-        repo.listArticles({ categories: CENTENARY_LETTERS, limit: 12, offset: 0 }),
+        listMerged(repo, deps, "all", 0, 3),
+        listMerged(repo, deps, "centenary", 0, 12),
       ]);
 
       return {
@@ -82,8 +80,8 @@ export function createHomeService(repo: DataRepo, deps: ServiceDeps): HomeServic
         kpis: hasAnyData(year)
           ? homeKeys(settings.homeTiles).map((k) => (k === "active" ? activeTile(year, win.info) : tile(year, k, win.info)))
           : null,
-        articles: latest.rows.map((r) => toArticle(r, ctx)),
-        centenary: centenary.rows.map((r) => toArticle(r, ctx)),
+        articles: latest.rows,
+        centenary: centenary.rows,
         wings: [...DEFAULT_WINGS],
       };
     },

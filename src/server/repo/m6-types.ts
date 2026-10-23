@@ -1,8 +1,9 @@
 // M6 storage port: a small document store over the M6 tables (see db/schema/m6.ts)
 // plus the settings write path and the few writes to existing tables the new
 // admin screens need. Implemented in memory (m6-mock.ts) and on MySQL (m6-db.ts).
+import type { ContentKind } from "@/contract";
 import type { DocTableName } from "../db/schema/m6";
-import type { AuditRec, CentreRec, EstimateRec, GatheringRec, PartnerRec, SevaTypeRec } from "./types";
+import type { ArticleI18nRec, ArticleRec, AuditRec, CentreRec, ContentItemRec, RedirectRec, EstimateRec, GatheringRec, PartnerRec, SevaTypeRec } from "./types";
 
 export type { DocTableName };
 
@@ -72,6 +73,26 @@ export interface M6Repo {
   estimateInsert(rec: EstimateRec, audit?: AuditRec[]): Promise<void>;
   estimateUpdate(id: string, patch: Partial<Omit<EstimateRec, "id">>, audit?: AuditRec[]): Promise<boolean>;
   estimateDelete(id: string, audit?: AuditRec[]): Promise<boolean>;
+
+  /** Every legacy post (any category/status). `content` is null unless `withContent`; no gallery. Newest first. */
+  legacyPosts(opts?: { withContent?: boolean }): Promise<ArticleRec[]>;
+  /** One legacy post with gallery and side row. */
+  legacyPost(id: number): Promise<ArticleRec | null>;
+  /** Replaces the whole `article_i18n` row. */
+  articleI18nUpsert(rec: ArticleI18nRec, audit?: AuditRec[]): Promise<void>;
+  /** Slugs of every legacy post. */
+  legacySlugs(): Promise<string[]>;
+
+  /** Every content item incl. drafts/archived, optionally of one kind. */
+  contentItemsAll(kind?: ContentKind): Promise<ContentItemRec[]>;
+  contentItemInsert(rec: ContentItemRec, audit?: AuditRec[]): Promise<void>;
+  contentItemUpdate(id: string, patch: Partial<Omit<ContentItemRec, "id" | "kind">>, expectVersion: number, audit?: AuditRec[]): Promise<"ok" | "conflict">;
+  contentItemDelete(id: string, audit?: AuditRec[]): Promise<boolean>;
+
+  redirectsAll(): Promise<(RedirectRec & { updatedAt: Date })[]>;
+  /** Insert or replace target/permanent/source; hits kept. */
+  redirectUpsert(rec: Omit<RedirectRec, "hits">, audit?: AuditRec[]): Promise<void>;
+  redirectDelete(from: string, audit?: AuditRec[]): Promise<boolean>;
 
   /** Writes a `setting` row (whole JSON value). */
   setSetting(key: string, value: unknown, userId: string | null, audit?: AuditRec[]): Promise<void>;

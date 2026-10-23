@@ -1,13 +1,15 @@
 import "server-only";
 import { and, asc, count, desc, eq, gte, isNotNull, lt, sql } from "drizzle-orm";
+import { postcontentContentpostimage as postImage, postcontentPostcontent as post } from "../db/legacy";
 import type { Db } from "../db/client";
 import { newId } from "../db/columns";
 import { M6_DOC_TABLES } from "../db/schema/m6";
-import { auditLog, centre, centreGathering, event, impactEstimate, partner, setting, sevaType } from "../db/tables";
+import { articleI18n, auditLog, centre, centreGathering, contentItem, event, impactEstimate, partner, redirect, setting, sevaType } from "../db/tables";
+import type { ContentKind } from "@/contract";
 import { affected, isDuplicateKey, type Tx } from "./links-db";
 import { partnerCols } from "./partner-cols";
 import type { DocListQuery, DocPutResult, DocRec, DocTableName, DocWrite, M6Repo } from "./m6-types";
-import type { AuditRec, CentreRec, EstimateRec, GatheringRec, PartnerRec, SevaTypeRec } from "./types";
+import type { ArticleI18nRec, ArticleRec, AuditRec, CentreRec, ContentItemRec, RedirectRec, EstimateRec, GatheringRec, PartnerRec, SevaTypeRec } from "./types";
 
 class Conflict extends Error {}
 
@@ -298,6 +300,139 @@ export class DbM6Repo implements M6Repo {
   async estimateDelete(id: string, audit?: AuditRec[]) {
     return this.db.transaction(async (tx) => {
       const res = await tx.delete(impactEstimate).where(eq(impactEstimate.id, id));
+      if (!affected(res)) return false;
+      await this.audit(tx, audit);
+      return true;
+    });
+  }
+
+  private i18nOf(r: typeof articleI18n.$inferSelect | null): ArticleI18nRec | null {
+    return r
+      ? { legacyId: r.legacyId, titleHi: r.titleHi, summaryHi: r.summaryHi, bodyHi: r.bodyHi, districtId: r.districtId, eventId: r.eventId, status: r.status }
+      : null;
+  }
+
+  async legacyPosts(opts: { withContent?: boolean } = {}): Promise<ArticleRec[]> {
+    const rows = await this.db
+      .select({
+        id: post.id,
+        slug: post.slug,
+        category: post.category,
+        title: post.title,
+        shortDescription: post.shortDescription,
+        content: opts.withContent ? post.content : sql<string | null>`NULL`,
+        featuredImage: post.featuredImage,
+        createdAt: post.createdAt,
+        updatedAt: post.updatedAt,
+        i18n: articleI18n,
+      })
+      .from(post)
+      .leftJoin(articleI18n, eq(articleI18n.legacyId, post.id))
+      .orderBy(desc(post.createdAt), desc(post.id));
+    return rows.map(({ i18n, ...p }) => ({ ...p, i18n: this.i18nOf(i18n), gallery: [] }));
+  }
+
+  async legacyPost(id: number): Promise<ArticleRec | null> {
+    const [r] = await this.db.select({ post, i18n: articleI18n }).from(post).leftJoin(articleI18n, eq(articleI18n.legacyId, post.id)).where(eq(post.id, id)).limit(1);
+    if (!r) return null;
+    const images = await this.db.select({ image: postImage.image, caption: postImage.caption, order: postImage.order }).from(postImage).where(eq(postImage.blogPostId, id));
+    const p = r.post;
+    return {
+      id: p.id,
+      slug: p.slug,
+      category: p.category,
+      title: p.title,
+      shortDescription: p.shortDescription,
+      content: p.content,
+      featuredImage: p.featuredImage,
+      createdAt: p.createdAt,
+      updatedAt: p.updatedAt,
+      i18n: this.i18nOf(r.i18n),
+      gallery: images,
+    };
+  }
+
+  async articleI18nUpsert(rec: ArticleI18nRec, audit?: AuditRec[]) {
+    await this.db.transaction(async (tx) => {
+      await tx.insert(articleI18n).values(rec).onDuplicateKeyUpdate({ set: { titleHi: rec.titleHi, summaryHi: rec.summaryHi, bodyHi: rec.bodyHi, districtId: rec.districtId, eventId: rec.eventId, status: rec.status } });
+      await this.audit(tx, audit);
+    });
+  }
+
+  async legacySlugs() {
+    return (await this.db.select({ slug: post.slug }).from(post)).map((r) => r.slug);
+  }
+
+  async contentItemsAll(kind?: ContentKind): Promise<ContentItemRec[]> {
+    const rows = await this.db.select().from(contentItem).where(kind ? eq(contentItem.kind, kind) : undefined).orderBy(desc(contentItem.date), desc(contentItem.createdAt));
+    return rows.map((r) => ({
+      id: r.id,
+      kind: r.kind,
+      key: r.key,
+      titleEn: r.titleEn,
+      titleHi: r.titleHi,
+      bodyEn: r.bodyEn,
+      bodyHi: r.bodyHi,
+      sourceEn: r.sourceEn,
+      sourceHi: r.sourceHi,
+      href: r.href,
+      date: r.date,
+      status: r.status,
+      sortOrder: r.sortOrder,
+      startsAt: r.startsAt,
+      endsAt: r.endsAt,
+      version: r.version,
+      updatedAt: r.updatedAt,
+    }));
+  }
+
+  async contentItemInsert(rec: ContentItemRec, audit?: AuditRec[]) {
+    await this.db.transaction(async (tx) => {
+      await tx.insert(contentItem).values({ ...rec, version: 1, updatedAt: undefined });
+      await this.audit(tx, audit);
+    });
+  }
+
+  async contentItemUpdate(id: string, patch: Partial<Omit<ContentItemRec, "id" | "kind">>, expectVersion: number, audit?: AuditRec[]) {
+    return this.db.transaction(async (tx) => {
+      const set = { ...patch, version: undefined, updatedAt: undefined };
+      const res = await tx
+        .update(contentItem)
+        .set({ ...set, version: sql`${contentItem.version} + 1` })
+        .where(and(eq(contentItem.id, id), eq(contentItem.version, expectVersion)));
+      if (!affected(res)) return "conflict" as const;
+      await this.audit(tx, audit);
+      return "ok" as const;
+    });
+  }
+
+  async contentItemDelete(id: string, audit?: AuditRec[]) {
+    return this.db.transaction(async (tx) => {
+      const res = await tx.delete(contentItem).where(eq(contentItem.id, id));
+      if (!affected(res)) return false;
+      await this.audit(tx, audit);
+      return true;
+    });
+  }
+
+  async redirectsAll() {
+    const rows = await this.db.select().from(redirect).orderBy(desc(redirect.updatedAt));
+    return rows.map((r) => ({ fromPath: r.fromPath, toPath: r.toPath, permanent: r.permanent, source: r.source, hits: r.hits, updatedAt: r.updatedAt }));
+  }
+
+  async redirectUpsert(rec: Omit<RedirectRec, "hits">, audit?: AuditRec[]) {
+    await this.db.transaction(async (tx) => {
+      await tx
+        .insert(redirect)
+        .values(rec)
+        .onDuplicateKeyUpdate({ set: { toPath: rec.toPath, permanent: rec.permanent, source: rec.source } });
+      await this.audit(tx, audit);
+    });
+  }
+
+  async redirectDelete(from: string, audit?: AuditRec[]) {
+    return this.db.transaction(async (tx) => {
+      const res = await tx.delete(redirect).where(eq(redirect.fromPath, from));
       if (!affected(res)) return false;
       await this.audit(tx, audit);
       return true;

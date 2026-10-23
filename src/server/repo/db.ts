@@ -1,5 +1,5 @@
 import "server-only";
-import { and, asc, count, desc, eq, gt, gte, inArray, isNotNull, isNull, lt, lte, or, type SQL, sql } from "drizzle-orm";
+import { and, asc, count, desc, eq, gt, gte, inArray, isNotNull, isNull, lt, lte, notInArray, or, type SQL, sql } from "drizzle-orm";
 import type { ContentKind, PartnerKind } from "@/contract";
 import type { Db } from "../db/client";
 import { PUBLIC_ARTICLE_LETTERS } from "../domain/articles";
@@ -312,7 +312,11 @@ export class DbRepo implements DataRepo {
   }
 
   async listArticles(f: ArticleFilter) {
-    const where = and(articlePublished, f.categories ? inArray(post.category, [...f.categories]) : undefined);
+    const where = and(
+      articlePublished,
+      f.categories ? inArray(post.category, [...f.categories]) : undefined,
+      f.excludeIds?.length ? notInArray(post.id, [...f.excludeIds]) : undefined,
+    );
     const [rows, [{ total }]] = await Promise.all([
       this.db
         .select({ post, i18n: articleI18n })

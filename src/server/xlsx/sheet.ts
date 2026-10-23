@@ -48,7 +48,7 @@ export async function readSheet(bytes: Uint8Array, ext: ".xlsx" | ".csv", maxRow
     if (ext === ".csv") {
       let buf = Buffer.from(bytes);
       if (buf[0] === 0xef && buf[1] === 0xbb && buf[2] === 0xbf) buf = buf.subarray(3);
-      ws = await wb.csv.read(Readable.from(buf));
+      ws = await wb.csv.read(Readable.from(buf), { dateFormats: [] });
     } else {
       await wb.xlsx.load(Buffer.from(bytes) as never);
       ws = wb.getWorksheet(REPORT_SHEET) ?? wb.worksheets.find((s) => s.state === "visible") ?? wb.worksheets[0];

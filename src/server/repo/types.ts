@@ -211,6 +211,11 @@ export interface ContentItemRec {
   date: string | null;
   status: ContentStatus;
   sortOrder: number;
+  /** Admin fields (not selected by the public read). */
+  startsAt?: Date | null;
+  endsAt?: Date | null;
+  version?: number;
+  updatedAt?: Date;
 }
 
 export interface PrivacyRequestRec {
@@ -255,6 +260,8 @@ export interface EventFilter {
 
 export interface ArticleFilter {
   categories?: readonly string[];
+  /** Legacy post ids shadowed by a native article copy. */
+  excludeIds?: readonly number[];
   limit: number;
   offset: number;
 }

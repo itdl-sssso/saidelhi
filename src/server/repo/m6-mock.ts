@@ -1,6 +1,7 @@
 import type { Fixtures } from "../mock/fixtures";
 import type { DocListQuery, DocPutResult, DocRec, DocTableName, DocWrite, M6Repo } from "./m6-types";
-import type { AuditRec, CentreRec, EstimateRec, GatheringRec, PartnerRec, SevaTypeRec } from "./types";
+import type { ContentKind } from "@/contract";
+import type { ArticleI18nRec, ArticleRec, AuditRec, CentreRec, ContentItemRec, RedirectRec, EstimateRec, GatheringRec, PartnerRec, SevaTypeRec } from "./types";
 
 /** In-memory M6 store (writes stay in memory). */
 export class MemoryM6Repo implements M6Repo {
@@ -12,6 +13,7 @@ export class MemoryM6Repo implements M6Repo {
   constructor(
     private readonly fx: Fixtures,
     private readonly pushAudit: (rec: AuditRec) => Promise<void>,
+    private readonly redirects: RedirectRec[] = [],
   ) {}
 
   private t(name: DocTableName) {
@@ -169,6 +171,74 @@ export class MemoryM6Repo implements M6Repo {
     const i = this.fx.estimates.findIndex((x) => x.id === id);
     if (i < 0) return false;
     this.fx.estimates.splice(i, 1);
+    await this.audit(audit);
+    return true;
+  }
+
+  async legacyPosts(opts: { withContent?: boolean } = {}): Promise<ArticleRec[]> {
+    return [...this.fx.articles]
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime() || b.id - a.id)
+      .map((a) => structuredClone({ ...a, content: opts.withContent ? a.content : null, gallery: [] }));
+  }
+
+  async legacyPost(id: number) {
+    const a = this.fx.articles.find((x) => x.id === id);
+    return a ? structuredClone(a) : null;
+  }
+
+  async articleI18nUpsert(rec: ArticleI18nRec, audit?: AuditRec[]) {
+    const a = this.fx.articles.find((x) => x.id === rec.legacyId);
+    if (a) a.i18n = structuredClone(rec);
+    await this.audit(audit);
+  }
+
+  async legacySlugs() {
+    return this.fx.articles.map((a) => a.slug);
+  }
+
+  async contentItemsAll(kind?: ContentKind) {
+    return structuredClone(this.fx.contentItems.filter((c) => !kind || c.kind === kind)).map((c) => ({ version: 1, updatedAt: new Date(0), ...c }));
+  }
+
+  async contentItemInsert(rec: ContentItemRec, audit?: AuditRec[]) {
+    this.fx.contentItems.push({ ...structuredClone(rec), version: 1, updatedAt: new Date() });
+    await this.audit(audit);
+  }
+
+  async contentItemUpdate(id: string, patch: Partial<Omit<ContentItemRec, "id" | "kind">>, expectVersion: number, audit?: AuditRec[]) {
+    const c = this.fx.contentItems.find((x) => x.id === id);
+    if (!c || (c.version ?? 1) !== expectVersion) return "conflict" as const;
+    Object.assign(c, structuredClone(patch), { version: expectVersion + 1, updatedAt: new Date() });
+    await this.audit(audit);
+    return "ok" as const;
+  }
+
+  async contentItemDelete(id: string, audit?: AuditRec[]) {
+    const i = this.fx.contentItems.findIndex((x) => x.id === id);
+    if (i < 0) return false;
+    this.fx.contentItems.splice(i, 1);
+    await this.audit(audit);
+    return true;
+  }
+
+  private readonly redirectStamp = new Map<string, Date>();
+
+  async redirectsAll() {
+    return this.redirects.map((r) => ({ ...r, updatedAt: this.redirectStamp.get(r.fromPath) ?? new Date(0) })).reverse();
+  }
+
+  async redirectUpsert(rec: Omit<RedirectRec, "hits">, audit?: AuditRec[]) {
+    const cur = this.redirects.find((r) => r.fromPath === rec.fromPath);
+    if (cur) Object.assign(cur, rec);
+    else this.redirects.push({ ...rec, hits: 0 });
+    this.redirectStamp.set(rec.fromPath, new Date());
+    await this.audit(audit);
+  }
+
+  async redirectDelete(from: string, audit?: AuditRec[]) {
+    const i = this.redirects.findIndex((r) => r.fromPath === from);
+    if (i < 0) return false;
+    this.redirects.splice(i, 1);
     await this.audit(audit);
     return true;
   }
