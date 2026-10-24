@@ -105,12 +105,12 @@ export function NavBarView({
   return (
     <header className={styles.header}>
       <div ref={rootRef} className={styles.bar}>
-        <Link href="/" className={styles.brand} aria-label={t("home")}>
+        <Link href="/" className={styles.brand}>
           <span className={styles.emblem}>
             <Image src={emblemSrc} alt="" width={42} height={42} priority />
           </span>
-          <span className={styles.wordmark} aria-hidden="true">
-            <span className={styles.org}>{orgName}</span>
+          <span className={styles.wordmark}>
+            <span className={styles.org}>{orgName}</span>{" "}
             <span className={styles.region}>{region}</span>
           </span>
         </Link>

@@ -149,7 +149,7 @@ export function ThoughtsPage() {
                     ) : (
                       <>
                         <span className={styles.cap}>{t("dayEmpty")}</span>
-                        {d.shown ? <span className={c.dayText} style={{ opacity: 0.6 }}>{t("dayRepeats", { text: tx(d.shown.text, locale) })}</span> : null}
+                        {d.shown ? <span className={c.dayText} style={{ color: "var(--slate-500)" }}>{t("dayRepeats", { text: tx(d.shown.text, locale) })}</span> : null}
                         <span className={styles.linkBtn}>{t("dayAdd")}</span>
                       </>
                     )}

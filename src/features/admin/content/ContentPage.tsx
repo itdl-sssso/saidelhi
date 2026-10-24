@@ -97,7 +97,7 @@ export function ContentPage({ org }: { org: OrgOptions }) {
                 <EmptyState icon="newspaper" title={q || status || lang || district ? t("noMatch") : t("empty")} />
               </div>
             ) : (
-              <div className={styles.tblScroll}>
+              <div className={styles.tblScroll} tabIndex={0}>
                 <table className={styles.tbl}>
                   <thead>
                     <tr>

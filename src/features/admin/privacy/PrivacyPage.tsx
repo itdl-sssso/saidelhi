@@ -88,7 +88,7 @@ function RequestsTab({ can }: { can: boolean }) {
               </div>
             ) : (
               <div className={styles.tblWrap}>
-                <div className={styles.tblScroll}>
+                <div className={styles.tblScroll} tabIndex={0}>
                   <table className={styles.tbl}>
                     <thead>
                       <tr>
@@ -390,7 +390,7 @@ function ConsentsTab() {
                 <EmptyState icon="shield-check" title={t("noConsents")} />
               </div>
             ) : (
-              <div className={styles.tblScroll}>
+              <div className={styles.tblScroll} tabIndex={0}>
                 <table className={styles.tbl}>
                   <thead>
                     <tr>
@@ -458,7 +458,7 @@ function RetentionTab({ can }: { can: boolean }) {
               <EmptyState icon="clock" title={t("noJobs")} />
             </div>
           ) : (
-            <div className={styles.tblScroll}>
+            <div className={styles.tblScroll} tabIndex={0}>
               <table className={styles.tbl}>
                 <thead>
                   <tr>

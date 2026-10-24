@@ -311,3 +311,5 @@ aside.side { gap: var(--space-3); }
 .wa p { flex: 1 1 220px; }
 .waTitle { font-weight: var(--weight-semibold); color: var(--slate-900); }
 .tzNote { display: flex; align-items: center; gap: 8px; margin: 0; font-size: var(--text-caption); color: var(--text-muted); }
+.row:focus-visible { box-shadow: var(--ring-focus); border-color: var(--border-focus); }
+.rowRecurring:focus-visible, .rowCancelled:focus-visible { box-shadow: var(--ring-focus); }

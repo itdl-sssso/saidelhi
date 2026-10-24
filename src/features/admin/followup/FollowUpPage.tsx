@@ -85,7 +85,7 @@ export function FollowUpPage({ canReveal }: { canReveal: boolean }) {
                 <EmptyState icon="heart-pulse" title={q || waiting || status !== "open" ? t("noMatch") : t("empty")} />
               </div>
             ) : (
-              <div className={styles.tblScroll}>
+              <div className={styles.tblScroll} tabIndex={0}>
                 <table className={styles.tbl}>
                   <thead>
                     <tr>

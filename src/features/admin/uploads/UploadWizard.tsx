@@ -330,7 +330,7 @@ function PreviewRows({ preview, locale }: { preview: UploadPreview; locale: AppL
   if (shown.length === 0) return null;
   return (
     <div className={styles.tblWrap}>
-      <div className={styles.tblScroll}>
+      <div className={styles.tblScroll} tabIndex={0}>
         <table className={`${styles.tbl} ${u.prevTbl}`}>
           <caption className={styles.srOnly}>{t("previewCaption")}</caption>
           <thead>

@@ -34,7 +34,7 @@ export function Pagination({ page, pageSize, total, href, className }: Paginatio
       <ul className={styles.pages}>
         <li>
           {page > 1 ? (
-            <Link href={href(page - 1)} className={styles.page} rel="prev">
+            <Link href={href(page - 1)} className={styles.page} rel="prev" aria-label={t("previous")}>
               <Icon name="chevron-left" size={16} />
               <span className={styles.label}>{t("previous")}</span>
             </Link>
@@ -65,7 +65,7 @@ export function Pagination({ page, pageSize, total, href, className }: Paginatio
         )}
         <li>
           {page < count ? (
-            <Link href={href(page + 1)} className={styles.page} rel="next">
+            <Link href={href(page + 1)} className={styles.page} rel="next" aria-label={t("next")}>
               <span className={styles.label}>{t("next")}</span>
               <Icon name="chevron-right" size={16} />
             </Link>

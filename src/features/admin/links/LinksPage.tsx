@@ -74,7 +74,7 @@ export async function LinksPage({
           </div>
         ) : (
           <>
-            <div className={`${styles.tblScroll} ${styles.onlyDesk}`}>
+            <div className={`${styles.tblScroll} ${styles.onlyDesk}`} tabIndex={0}>
               <table className={styles.tbl}>
                 <thead>
                   <tr>

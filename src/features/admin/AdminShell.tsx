@@ -150,7 +150,7 @@ export function AdminShell({ me, scopes, approvalsCount, children }: Props) {
           <LanguageSwitch />
           <Popover
             trigger={({ open, toggle, id, ref }) => (
-              <button ref={ref} type="button" className={styles.prof} aria-haspopup="menu" aria-expanded={open} aria-controls={open ? id : undefined} aria-label={t("shell.profile")} onClick={toggle}>
+              <button ref={ref} type="button" className={styles.prof} aria-haspopup="menu" aria-expanded={open} aria-controls={open ? id : undefined} onClick={toggle}>
                 <span className={styles.av}>{initials(me.user.name)}</span>
                 <span className={styles.profTxt}>
                   <span className={styles.profName}>{me.user.name}</span>

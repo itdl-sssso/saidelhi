@@ -3,6 +3,7 @@ import { connection } from "next/server";
 import { Suspense } from "react";
 import { getTranslations } from "next-intl/server";
 import { LanguageSwitch } from "@/features/admin/LanguageSwitch";
+import { MAIN_ID, SkipLink } from "@/features/shell";
 import { LoginForm } from "@/features/admin/login/LoginForm";
 import styles from "@/features/admin/login/Login.module.css";
 import { one } from "@/features/admin/server";
@@ -29,6 +30,7 @@ async function LoginContent({ searchParams }: PageProps<"/[locale]/admin/login">
   if (await getSession()) redirect({ href: next, locale });
   return (
     <div className={styles.stage}>
+      <SkipLink />
       <header className={styles.bar}>
         <Link href="/" className={styles.brand}>
           <span className={styles.ring} aria-hidden="true" />
@@ -36,7 +38,7 @@ async function LoginContent({ searchParams }: PageProps<"/[locale]/admin/login">
         </Link>
         <LanguageSwitch />
       </header>
-      <main className={styles.wrap}>
+      <main id={MAIN_ID} tabIndex={-1} className={styles.wrap}>
         <LoginForm next={next} />
       </main>
     </div>

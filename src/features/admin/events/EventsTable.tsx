@@ -78,7 +78,7 @@ export function EventsTable({ rows, sort, sortHref, canPlan, canLinks }: { rows:
         </div>
       ) : null}
 
-      <div className={`${styles.tblScroll} ${styles.onlyDesk}`}>
+      <div className={`${styles.tblScroll} ${styles.onlyDesk}`} tabIndex={0}>
         <table className={styles.tbl}>
           <thead>
             <tr>

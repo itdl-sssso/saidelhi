@@ -112,7 +112,7 @@ export function PartnersPage() {
                 />
               </div>
             ) : (
-              <div className={styles.tblScroll}>
+              <div className={styles.tblScroll} tabIndex={0}>
                 <table className={styles.tbl}>
                   <thead>
                     <tr>

@@ -22,6 +22,7 @@ export function PinPicker({ value, onChange, error }: { value: Geo | null; onCha
     cb.current = onChange;
   });
   const initial = useRef(value);
+  const pinLabel = useRef(t("mapLabel"));
 
   useEffect(() => {
     let dead = false;
@@ -36,7 +37,7 @@ export function PinPicker({ value, onChange, error }: { value: Geo | null; onCha
       const place = (lat: number, lng: number) => {
         if (markerRef.current) markerRef.current.setLatLng([lat, lng]);
         else {
-          const m = L.marker([lat, lng], { icon, draggable: true, keyboard: true }).addTo(map);
+          const m = L.marker([lat, lng], { icon, draggable: true, keyboard: true, title: pinLabel.current, alt: pinLabel.current }).addTo(map);
           m.on("dragend", () => {
             const p = m.getLatLng();
             cb.current({ lat: round(p.lat), lng: round(p.lng) });

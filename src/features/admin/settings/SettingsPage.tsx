@@ -142,7 +142,7 @@ function SevaTypes() {
                   <EmptyState icon="heart-handshake" title={t("seva.empty")} />
                 </div>
               ) : (
-                <div className={styles.tblScroll}>
+                <div className={styles.tblScroll} tabIndex={0}>
                   <table className={styles.tbl}>
                     <thead>
                       <tr>
@@ -280,7 +280,7 @@ function Kpis() {
       {(rows) => (
         <>
           <div className={styles.tblWrap}>
-            <div className={styles.tblScroll}>
+            <div className={styles.tblScroll} tabIndex={0}>
               <table className={styles.tbl}>
                 <thead>
                   <tr>
@@ -394,7 +394,7 @@ function Strings() {
                 <EmptyState icon="languages" title={missing ? t("strings.noneMissing") : t("strings.empty")} />
               </div>
             ) : (
-              <div className={styles.tblScroll}>
+              <div className={styles.tblScroll} tabIndex={0}>
                 <table className={styles.tbl}>
                   <thead>
                     <tr>

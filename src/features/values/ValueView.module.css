@@ -32,7 +32,7 @@
 .strands { margin-top: 40px; }
 .strandN { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
 .ico { width: 44px; height: 44px; flex: none; border-radius: 50%; display: grid; place-items: center; background: var(--surface-calm); border: 1px solid var(--border-calm); color: var(--blue-700); }
-.num { font-family: var(--font-serif-display); font-size: var(--text-h4); color: var(--slate-400); }
+.num { font-family: var(--font-serif-display); font-size: var(--text-h4); color: var(--slate-500); }
 .h3 { margin: 0; font-size: var(--text-h3); }
 .h4 { margin: 8px 0 0; font-size: var(--text-h4); }
 .body { margin: 12px 0 0; font-size: var(--text-body-size); color: var(--slate-600); max-width: var(--measure-prose); text-wrap: pretty; }

@@ -171,7 +171,7 @@ function Form({ d, canList, reload }: { d: CentreAdmin; canList: boolean; reload
               {s.photos.length < 12 ? (
                 <div className={styles.dialogBody}>
                   <Input label={t("newAlt")} hint={t("newAltHint")} value={alt} maxLength={200} onChange={(e) => setAlt(e.target.value)} error={errors.photo} />
-                  <input ref={fileRef} id="centre-photo" type="file" accept={UPLOAD_LIMITS.photoMimes.join(",")} className={styles.srOnly} onChange={(e) => addPhoto(e.target.files?.[0])} />
+                  <input ref={fileRef} id="centre-photo" aria-label={t("addPhoto")} tabIndex={-1} type="file" accept={UPLOAD_LIMITS.photoMimes.join(",")} className={styles.srOnly} onChange={(e) => addPhoto(e.target.files?.[0])} />
                   <Button variant="outline" icon="upload" pending={uploading === "photo"} onClick={() => fileRef.current?.click()}>
                     {t("addPhoto")}
                   </Button>

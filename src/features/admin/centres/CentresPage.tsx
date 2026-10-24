@@ -55,7 +55,7 @@ export function CentresPage({ org, single }: { org: OrgOptions; single: boolean 
                 <EmptyState icon="map-pin" title={filtered ? t("noMatch") : t("empty")} />
               </div>
             ) : (
-              <div className={styles.tblScroll}>
+              <div className={styles.tblScroll} tabIndex={0}>
                 <table className={styles.tbl}>
                   <thead>
                     <tr>

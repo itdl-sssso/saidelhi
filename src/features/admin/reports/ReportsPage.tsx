@@ -289,7 +289,7 @@ function Recent({ d }: { d: ReportsPayload }) {
           <EmptyState icon="file-text" title={t("recentEmpty")} />
         </div>
       ) : (
-        <div className={styles.tblScroll}>
+        <div className={styles.tblScroll} tabIndex={0}>
           <table className={styles.tbl}>
             <thead>
               <tr>
@@ -336,7 +336,7 @@ function Schedules({ d }: { d: ReportsPayload }) {
           <EmptyState icon="calendar-clock" title={t("schedulesEmpty")} />
         </div>
       ) : (
-        <div className={styles.tblScroll}>
+        <div className={styles.tblScroll} tabIndex={0}>
           <table className={styles.tbl}>
             <thead>
               <tr>

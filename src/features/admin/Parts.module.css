@@ -117,3 +117,4 @@
 .pastList li { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; justify-content: space-between; padding: 10px 16px; border-bottom: 1px solid var(--border-subtle); }
 .pastList li:last-child { border-bottom: 0; }
 .dpoAv { width: 40px; height: 40px; border-radius: 50%; display: inline-grid; place-items: center; background: var(--slate-100); color: var(--slate-500); flex: none; font-weight: 600; }
+.healthTile dd + dd { font-size: 0.8rem; font-weight: 400; }

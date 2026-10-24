@@ -9,7 +9,7 @@ import sk from "./skeletons.module.css";
 export function PageSkeleton({ crumbs = true, lead = true, children }: { crumbs?: boolean; lead?: boolean; children: ReactNode }) {
   const t = useTranslations("common");
   return (
-    <div aria-busy="true">
+    <div aria-busy="true" style={{ minHeight: "100svh" }}>
       <p className="sr-only" role="status">
         {t("loading")}
       </p>

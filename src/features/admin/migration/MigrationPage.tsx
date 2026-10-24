@@ -172,7 +172,7 @@ function MapStep({ run: r, reload, onNext }: { run: MigrationRun; reload: () => 
           <EmptyState icon="newspaper" title={t("mapEmpty")} />
         </div>
       ) : (
-        <div className={styles.tblScroll}>
+        <div className={styles.tblScroll} tabIndex={0}>
           <table className={styles.tbl}>
             <thead>
               <tr>
@@ -248,7 +248,7 @@ function IssuesTable({ run: r, limit }: { run: MigrationRun; limit?: number }) {
   const rows = limit ? r.issues.slice(0, limit) : r.issues;
   if (rows.length === 0) return <Alert tone="success">{t("noIssues")}</Alert>;
   return (
-    <div className={styles.tblScroll}>
+    <div className={styles.tblScroll} tabIndex={0}>
       <table className={styles.tbl}>
         <thead>
           <tr>
