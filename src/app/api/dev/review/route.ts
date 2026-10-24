@@ -3,8 +3,6 @@ import { devEnabled, devNotFound, json, sameOrigin } from "@/server/dev/gate";
 import { ReviewPut, RoundId } from "@/server/dev/review-schema";
 import { listRounds, readDoc, writeDoc } from "@/server/dev/review-store";
 
-export const dynamic = "force-dynamic";
-
 /** Dev only: GET ?round=round-1 -> { doc, rounds }. */
 export async function GET(req: NextRequest) {
   if (!devEnabled()) return devNotFound();

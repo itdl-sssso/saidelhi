@@ -4,8 +4,6 @@ import { NextResponse } from "next/server";
 import { designContentType, designRoot, resolveUnder } from "@/server/dev/design-path";
 import { devEnabled, devNotFound } from "@/server/dev/gate";
 
-export const dynamic = "force-dynamic";
-
 /** Dev only, read-only: serves files under docs/design so the review page can link to design prototypes. */
 export async function GET(_req: NextRequest, ctx: { params: Promise<{ path: string[] }> }) {
   if (!devEnabled()) return devNotFound();

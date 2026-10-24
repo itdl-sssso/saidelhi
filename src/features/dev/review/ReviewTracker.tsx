@@ -45,16 +45,14 @@ function Shots({ id, shots, onChange }: { id: string; shots: string[]; onChange:
   const [err, setErr] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const input = useRef<HTMLInputElement>(null);
-  const latest = useRef(shots);
-  latest.current = shots;
   const add = async (files: File[]) => {
     setErr(null);
     setBusy(true);
     try {
+      let next = shots;
       for (const f of files) {
-        const name = await uploadShot(id, f);
-        latest.current = [...latest.current, name];
-        onChange(latest.current);
+        next = [...next, await uploadShot(id, f)];
+        onChange(next);
       }
     } catch (e) {
       setErr(e instanceof Error ? e.message : "upload failed");
@@ -121,7 +119,6 @@ function ItemCard({ entry, item, onChange }: { entry: ReviewEntry; item: ReviewI
   const st = STATUS_BY[item.status];
   const role = entry.role ? ROLES[entry.role] : null;
   const open = (path: string) => `${window.location.origin}${path}`;
-  const shotsRef = useRef<HTMLDivElement>(null);
   const pasteAdd = async (files: File[]) => {
     let next = item.shots;
     try {
@@ -130,7 +127,7 @@ function ItemCard({ entry, item, onChange }: { entry: ReviewEntry; item: ReviewI
         onChange({ shots: next });
       }
     } catch {
-      shotsRef.current?.scrollIntoView({ block: "nearest" });
+      /* upload errors show on the Add screenshot control */
     }
   };
   return (
@@ -206,8 +203,34 @@ function ItemCard({ entry, item, onChange }: { entry: ReviewEntry; item: ReviewI
         onChange={(e) => onChange({ notes: e.target.value })}
         onPaste={pasteHandler((f) => void pasteAdd(f))}
       />
-      <div ref={shotsRef}>
+      <div>
         <Shots id={entry.id} shots={item.shots} onChange={(shots) => onChange({ shots })} />
+      </div>
+    </Card>
+  );
+}
+
+function GeneralCard({ note: g, onPatch, onRemove }: { note: ReviewDoc["general"][number]; onPatch: (patch: Partial<ReviewDoc["general"][number]>) => void; onRemove: () => void }) {
+  const pasteAdd = async (files: File[]) => {
+    let next = g.shots;
+    for (const f of files) {
+      try {
+        next = [...next, await uploadShot(g.id, f)];
+        onPatch({ shots: next });
+      } catch {
+        /* the Add screenshot button shows the error */
+      }
+    }
+  };
+  return (
+    <Card as="li" className={s.item}>
+      <Input label="Title" value={g.title} onChange={(e) => onPatch({ title: e.target.value })} placeholder="What is this about?" />
+      <Textarea label="Note" rows={3} value={g.notes} onChange={(e) => onPatch({ notes: e.target.value })} onPaste={pasteHandler((files) => void pasteAdd(files))} />
+      <Shots id={g.id} shots={g.shots} onChange={(shots) => onPatch({ shots })} />
+      <div>
+        <Button variant="ghost" size="sm" icon="trash-2" onClick={onRemove}>
+          Remove note
+        </Button>
       </div>
     </Card>
   );
@@ -228,9 +251,6 @@ export function ReviewTracker({ catalog, initialRounds }: { catalog: ReviewEntry
 
   useEffect(() => {
     let live = true;
-    docRef.current = null;
-    setDoc(null);
-    setLoadErr(null);
     fetch(`/api/dev/review?round=${round}`, { cache: "no-store" })
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`load failed (${r.status})`))))
       .then((b: { doc: ReviewDoc; rounds: string[] }) => {
@@ -289,6 +309,19 @@ export function ReviewTracker({ catalog, initialRounds }: { catalog: ReviewEntry
     return () => window.removeEventListener("pagehide", onHide);
   }, [titles]);
 
+  const switchRound = (id: string) => {
+    if (id === round) return;
+    if (timer.current) {
+      clearTimeout(timer.current);
+      timer.current = undefined;
+      void flush();
+    }
+    docRef.current = null;
+    setDoc(null);
+    setLoadErr(null);
+    setRound(id);
+  };
+
   const patchItem = (id: string, patch: Partial<ReviewItem>) =>
     mutate((d) => ({ ...d, items: { ...d.items, [id]: { ...(d.items[id] ?? blank()), ...patch, updatedAt: new Date().toISOString() } } }));
 
@@ -305,7 +338,7 @@ export function ReviewTracker({ catalog, initialRounds }: { catalog: ReviewEntry
     if (n > MAX_ROUNDS) return;
     const id = `round-${n}`;
     setRounds((r) => [...r, id]);
-    setRound(id);
+    switchRound(id);
   };
 
   const statusOf = (id: string): ReviewStatus => doc?.items[id]?.status ?? "not_tested";
@@ -336,7 +369,7 @@ export function ReviewTracker({ catalog, initialRounds }: { catalog: ReviewEntry
           <p className={s.lead}>Test the app page by page and leave feedback. Claude reads it from <code>docs/feedback/{round}.md</code>.</p>
         </div>
         <div className={s.roundBox}>
-          <Select label="Round" value={round} onChange={(e) => setRound(e.target.value)} options={rounds.map((r) => ({ value: r, label: r }))} />
+          <Select label="Round" value={round} onChange={(e) => switchRound(e.target.value)} options={rounds.map((r) => ({ value: r, label: r }))} />
           <Button variant="outline" size="sm" icon="plus" onClick={startNextRound}>
             Start next round
           </Button>
@@ -445,34 +478,7 @@ export function ReviewTracker({ catalog, initialRounds }: { catalog: ReviewEntry
               </h2>
               <ul className={s.list}>
                 {doc.general.map((g) => (
-                  <Card as="li" key={g.id} className={s.item}>
-                    <Input label="Title" value={g.title} onChange={(e) => patchGeneral(g.id, { title: e.target.value })} placeholder="What is this about?" />
-                    <Textarea
-                      label="Note"
-                      rows={3}
-                      value={g.notes}
-                      onChange={(e) => patchGeneral(g.id, { notes: e.target.value })}
-                      onPaste={pasteHandler((files) => {
-                        void (async () => {
-                          let next = g.shots;
-                          for (const f of files) {
-                            try {
-                              next = [...next, await uploadShot(g.id, f)];
-                              patchGeneral(g.id, { shots: next });
-                            } catch {
-                              /* the Add screenshot button shows the error */
-                            }
-                          }
-                        })();
-                      })}
-                    />
-                    <Shots id={g.id} shots={g.shots} onChange={(shots) => patchGeneral(g.id, { shots })} />
-                    <div>
-                      <Button variant="ghost" size="sm" icon="trash-2" onClick={() => removeGeneral(g.id)}>
-                        Remove note
-                      </Button>
-                    </div>
-                  </Card>
+                  <GeneralCard key={g.id} note={g} onPatch={(patch) => patchGeneral(g.id, patch)} onRemove={() => removeGeneral(g.id)} />
                 ))}
               </ul>
               <Button variant="outline" icon="plus" onClick={addGeneral}>

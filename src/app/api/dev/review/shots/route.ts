@@ -5,8 +5,6 @@ import { devEnabled, devNotFound, json, sameOrigin } from "@/server/dev/gate";
 import { MAX_SHOT_BYTES, SHOT_RE } from "@/server/dev/review-schema";
 import { saveShot, ShotError, shotsDir } from "@/server/dev/review-store";
 
-export const dynamic = "force-dynamic";
-
 const MIME = { png: "image/png", jpg: "image/jpeg", webp: "image/webp" } as const;
 
 /** Dev only: GET ?file=<id>-<n>.png serves a saved screenshot (name pattern checked, no paths). */

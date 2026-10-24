@@ -1,5 +1,5 @@
 import "server-only";
-import { EventsQuery, CentresQuery } from "@/contract";
+import { ArticlesQuery, EventsQuery, CentresQuery } from "@/contract";
 import { permissionsFor, type Actor } from "@/server/auth/rbac";
 import { appSecret } from "@/server/env";
 import { devLinks } from "@/server/forms/seed-data";
@@ -38,7 +38,7 @@ export async function resolveSamples(): Promise<Samples> {
   out.eventId = events?.data.find((e) => !e.id.startsWith("gath_"))?.id ?? null;
   out.centreSlug = (await first(() => s.centres.list(CentresQuery.parse({}))))?.data[0]?.slug ?? null;
   out.districtSlug = (await first(() => s.districts.list()))?.[0]?.district.slug ?? null;
-  out.articleSlug = (await first(() => s.articles.list({ page: 1, pageSize: 1 } as never)))?.data[0]?.slug ?? null;
+  out.articleSlug = (await first(() => s.articles.list(ArticlesQuery.parse({ pageSize: 1 }))))?.data[0]?.slug ?? null;
   out.programType = (await first(() => s.programs.list({})))?.[0]?.sevaType ?? null;
   out.discourseSlug = (await first(() => s.discourses.list({})))?.items?.[0]?.slug ?? null;
 
