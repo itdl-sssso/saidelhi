@@ -92,8 +92,8 @@ export const WHATSAPP_TEMPLATES = {
     "volunteer_signup_alert",
     "utility",
     3,
-    "New volunteer for {{1}}: {{2}} of {{3}} spots filled. See names in the portal.",
-    "{{1}} के लिए नया स्वयंसेवक: {{3}} में से {{2}} स्थान भरे। नाम पोर्टल में देखें।",
+    "New Sevadal for {{1}}: {{2}} of {{3}} spots filled. See names in the portal.",
+    "{{1}} के लिए नया सेवादल: {{3}} में से {{2}} स्थान भरे। नाम पोर्टल में देखें।",
   ),
   privacy_reply: def(
     "privacy_reply",

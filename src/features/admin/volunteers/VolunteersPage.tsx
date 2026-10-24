@@ -60,7 +60,7 @@ export function VolunteersPage({ org }: { org: OrgOptions }) {
             )}
             {meta && meta.total > meta.pageSize ? (
               <div className={styles.pagerWrap}>
-                <Pagination page={page} pageSize={meta.pageSize} total={meta.total} href={(n) => hrefWith("/admin/volunteers", params, { page: n })} />
+                <Pagination page={page} pageSize={meta.pageSize} total={meta.total} href={(n) => hrefWith("/admin/sevadal", params, { page: n })} />
               </div>
             ) : null}
             <Note icon="info">{t("retention")}</Note>

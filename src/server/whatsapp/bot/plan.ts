@@ -95,7 +95,7 @@ async function ask(t: Turn): Promise<void> {
     `${pick(l(t), { en: "When", hi: "कब" })}: ${when}`,
     `${pick(l(t), { en: "Venue", hi: "स्थान" })}: ${d.venue}`,
     `${pick(l(t), { en: "Samithi", hi: "समिति" })}: ${l(t) === "hi" ? (samithi?.nameHi ?? samithi?.nameEn) : samithi?.nameEn}`,
-    ...(d.volunteers !== null && d.volunteers !== undefined ? [`${pick(l(t), { en: "Volunteers needed", hi: "स्वयंसेवक चाहिए" })}: ${d.volunteers}`] : []),
+    ...(d.volunteers !== null && d.volunteers !== undefined ? [`${pick(l(t), { en: "Sevadal needed", hi: "सेवादल चाहिए" })}: ${d.volunteers}`] : []),
     ...(d.partner ? [`${pick(l(t), { en: "Partner", hi: "साझेदार" })}: ${d.partner}`] : []),
   ];
   buttons(t, `${pick(l(t), { en: "Please check your plan:", hi: "अपनी योजना जाँच लें:" })}\n${lines.join("\n")}`, [

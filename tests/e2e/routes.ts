@@ -60,7 +60,7 @@ export function adminRoutes(d: E2EData): RouteDef[] {
     "/admin/settings",
     "/admin/uploads",
     "/admin/uploads/new",
-    "/admin/volunteers",
+    "/admin/sevadal",
     "/admin/whatsapp",
   ].filter((x): x is string => !!x);
   return list.map((path) => ({ path, area: "admin" }));

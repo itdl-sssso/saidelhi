@@ -178,7 +178,7 @@ export function createPrivacyService(ctx: PortalCtx): PrivacyService {
         out.push({
           id: s.id,
           kind: volunteer ? "volunteer_signup" : "submission_personal",
-          label: `${volunteer ? "Volunteer sign-up" : "Report personal answers"}: ${ev?.titleEn ?? "event"}`,
+          label: `${volunteer ? "Sevadal sign-up" : "Report personal answers"}: ${ev?.titleEn ?? "event"}`,
           at: toIso(s.submittedAt),
           erasable: true,
           data: async () => scrub(s.personalAnswers, phone).value === null ? s.personalAnswers : pickMatching(s.personalAnswers, phone),

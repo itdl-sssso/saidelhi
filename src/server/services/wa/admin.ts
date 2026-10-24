@@ -1,5 +1,5 @@
 // WhatsApp admin (spec 42, contract v0.5 #5): templates, reminder rules,
-// broadcasts to opted-in volunteers (cost shown before sending), the
+// broadcasts to opted-in Sevadal (cost shown before sending), the
 // conversation log and number status.
 import {
   type BroadcastBody,

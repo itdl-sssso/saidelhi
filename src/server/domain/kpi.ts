@@ -20,8 +20,8 @@ const def = (key: string, en: string, hi: string, sevaType: SevaType | null, sup
 });
 
 export const KPI_DEFS: readonly KpiDef[] = [
-  def("volunteer_hours", "Volunteer hours", "स्वयंसेवा घंटे", null, false),
-  def("volunteers", "Sevadals (volunteers)", "सेवादल (स्वयंसेवक)", null, false),
+  def("volunteer_hours", "Sevadal hours", "सेवादल घंटे", null, false),
+  def("volunteers", "Sevadal members", "सेवादल सदस्य", null, false),
   // Demographic breakdowns: district level and above only (spec README data rules).
   def("people.male", "Men", "पुरुष", null, true),
   def("people.female", "Women", "महिलाएँ", null, true),

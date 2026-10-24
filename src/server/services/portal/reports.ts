@@ -216,7 +216,7 @@ export function createReportsService(ctx: PortalCtx): ReportsService {
     const tiles: [string, string][] = [
       ["Activities", String(events.length)],
       ["People served", String(sum(events, served))],
-      ["Volunteer hours", String(sum(events, ["volunteer_hours"]))],
+      ["Sevadal hours", String(sum(events, ["volunteer_hours"]))],
       ["Units of blood", String(sum(events, ["blood.units"]))],
     ];
     tiles.forEach(([label, val], i) => {
@@ -245,14 +245,14 @@ export function createReportsService(ctx: PortalCtx): ReportsService {
     for (const e of events) byDistrict.set(e.districtId, [...(byDistrict.get(e.districtId) ?? []), e]);
     table(
       "By district",
-      ["District", "Activities", "People served", "Volunteer hours"],
+      ["District", "Activities", "People served", "Sevadal hours"],
       [...byDistrict.entries()].map(([id, list]) => [org.ref(id).name.en, String(list.length), String(sum(list, served)), String(sum(list, ["volunteer_hours"]))]).sort((a, b) => a[0].localeCompare(b[0])),
     );
     const bySeva = new Map<string, EventRec[]>();
     for (const e of events) bySeva.set(e.sevaType, [...(bySeva.get(e.sevaType) ?? []), e]);
     table(
       "By seva type",
-      ["Seva type", "Activities", "People served", "Volunteer hours"],
+      ["Seva type", "Activities", "People served", "Sevadal hours"],
       [...bySeva.entries()].map(([code, list]) => [seva.get(code as EventRec["sevaType"]) ?? code, String(list.length), String(sum(list, served)), String(sum(list, ["volunteer_hours"]))]),
     );
     return { bytes: await doc.save(), pages: doc.getPageCount() };

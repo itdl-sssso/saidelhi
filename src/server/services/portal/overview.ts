@@ -40,7 +40,7 @@ const LABELS = {
 const TILE_LABELS = {
   activities: { en: "Activities", hi: "गतिविधियाँ" },
   people_served: { en: "People served", hi: "सेवा पाने वाले लोग" },
-  volunteer_hours: { en: "Volunteer hours", hi: "स्वयंसेवा घंटे" },
+  volunteer_hours: { en: "Sevadal hours", hi: "सेवादल घंटे" },
   reporting_rate: { en: "Reporting rate", hi: "रिपोर्टिंग दर" },
 } satisfies Record<string, I18nText>;
 

@@ -97,7 +97,7 @@ export const COPY = {
   planTimeBad: b("I couldn't read that time. Try 9 am or 17:30.", "वह समय समझ नहीं आया। सुबह 9 बजे या 17:30 लिखकर देखें।"),
   planVenue: b("Where will it be? Send the venue name.", "यह कहाँ होगा? स्थान का नाम भेजें।"),
   planVenueBad: b("Please send the venue name (at least 2 letters).", "कृपया स्थान का नाम भेजें (कम से कम 2 अक्षर)।"),
-  planVolunteers: b("How many volunteers do you need? Send a number, or Skip.", "कितने स्वयंसेवक चाहिए? संख्या भेजें, या छोड़ें।"),
+  planVolunteers: b("How many Sevadal do you need? Send a number, or Skip.", "कितने सेवादल चाहिए? संख्या भेजें, या छोड़ें।"),
   planVolunteersBad: b("Please send a whole number from 0 to 10000, or Skip.", "कृपया 0 से 10000 के बीच पूरी संख्या भेजें, या छोड़ें।"),
   planPartner: b("Is there a partner, for example a hospital? Send its name, or Skip.", "क्या कोई साझेदार है, जैसे अस्पताल? उसका नाम भेजें, या छोड़ें।"),
   planNeedsEdit: b("Something needs fixing:", "कुछ ठीक करना होगा:"),

@@ -223,7 +223,7 @@ export default async function KitchenSink() {
       <Section id="forms" title="Forms">
         <div className="grid gap-6 md:grid-cols-2">
           <Input label="Locality or pincode" placeholder="e.g. Mayur Vihar" hint="We use this only to sort centres by distance." />
-          <Input label="Volunteers needed" type="number" inputMode="numeric" defaultValue={6} />
+          <Input label="Sevadal needed" type="number" inputMode="numeric" defaultValue={6} />
           <Input label="Units collected" defaultValue="120" error="Must be no more than accepted donors (115)." />
           <Input label="Partner" optional placeholder="e.g. ICARE Eye Hospital" />
           <Input label="Venue" disabled defaultValue="Dr. Ambedkar Bhawan, Mayur Vihar Phase-1" />
@@ -303,7 +303,7 @@ export default async function KitchenSink() {
               name: "Eye camp with ICARE Eye Hospital",
               time: "9:00 AM",
               venue: "Dr. Ambedkar Bhawan, Mayur Vihar Phase-1",
-              tag: "Volunteers needed: 6",
+              tag: "Sevadal needed: 6",
               tagTone: "prem",
               href: "/events/1",
             },
@@ -321,9 +321,9 @@ export default async function KitchenSink() {
       <Section id="navigation" title="Navigation">
         <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Calendar", href: "/calendar" }, { label: "Eye camp, 17 Oct 2026" }]} />
         <TabsDemo />
-        <Stepper label="Plan an event" steps={["Event", "Volunteers", "Form links", "Review"]} current={2} />
-        <Meter value={5} max={6} label="5 of 6 volunteers" />
-        <Meter value={12} max={10} label="12 of 10 volunteers" tone="green" />
+        <Stepper label="Plan an event" steps={["Event", "Sevadal", "Form links", "Review"]} current={2} />
+        <Meter value={5} max={6} label="5 of 6 Sevadal" />
+        <Meter value={12} max={10} label="12 of 10 Sevadal" tone="green" />
         <Heatmap
           caption="Reports within 7 days, by samithi"
           rowHeader="Samithi"
