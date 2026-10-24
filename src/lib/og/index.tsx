@@ -100,7 +100,7 @@ export async function renderOg(card: Card, headers?: Record<string, string>) {
   const regLine = await T(locale, card.region, home ? { size: 44, color: C.blue600, width: colW } : { size: 24, color: C.slate500, width: 800 });
   const label = card.label ? await T(locale, card.label, { size: 28, color: C.gold600, bold: true, width: colW, upper: true, track: locale === "hi" ? 0 : 5 }) : null;
   const titleEl = await T(locale, title, { size: tsize, color: home ? C.blue700 : C.slate900, bold: true, width: colW });
-  const sub = !home && card.sub ? await T(locale, clip(card.sub, 80), { size: 30, color: C.slate500, width: colW }) : null;
+  const sub = !home && card.sub ? await T(locale, clip(card.sub, 60), { size: 30, color: C.slate500, width: colW }) : null;
   const tag = home && card.tagline ? await T(locale, card.tagline, { size: 26, color: C.slate500, width: colW }) : null;
 
   return new ImageResponse(

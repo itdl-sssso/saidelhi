@@ -3,14 +3,11 @@
  *   pnpm exec tsx scripts/gen-brand-assets.ts
  * Writes: public/brand/emblem-{512,1024}.png (transparent), emblem-white-512.png (one-colour, for dark backgrounds),
  * public/brand/icons/*.png (PWA, maskable, apple), src/app/icon.png + apple-icon.png, public/brand/whatsapp/*.png.
- * `sharp` is a transitive dependency of next (pnpm offline mirror cannot add it directly), so it is resolved through next.
  */
-import { createRequire } from "node:module";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
+import sharp from "sharp";
 
-const req = createRequire(createRequire(join(process.cwd(), "package.json")).resolve("next/package.json"));
-const sharp = req("sharp") as typeof import("sharp");
 
 const ROOT = process.cwd();
 const SRC = join(ROOT, "public/brand/sarva-dharma-emblem.jpg");
@@ -109,7 +106,7 @@ function whiteVersion(rgba: Buffer, size: number): Buffer {
 async function main() {
   const { data, size } = await transparentEmblem();
   const emblem = () => sharp(data, { raw: { width: size, height: size, channels: 4 } });
-  const png = (img: import("sharp").Sharp) => img.png({ compressionLevel: 9, palette: false }).toBuffer();
+  const png = (img: sharp.Sharp) => img.png({ compressionLevel: 9, palette: false }).toBuffer();
   const emblemAt = async (px: number) => png(emblem().resize(px, px, { kernel: "lanczos3" }));
   const write = (p: string, b: Buffer) => writeFileSync(p, b);
 
