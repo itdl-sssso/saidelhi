@@ -9,7 +9,7 @@ Before the event: tell people what, when and where, and invite help. After: show
 2. Title, seva type badge, status pill ("Planned"), date and time, duration.
 3. Venue with address → Google Maps (external) and → Map. Samithi → Centre. District → District.
 4. What happens: short description supplied by the coordinator (shown as entered).
-5. Volunteers: "6 volunteers needed" plus a primary "Join this seva" button (opens the public form link).
+5. Volunteers: "6 Sevadal needed" plus a primary "Join this seva" button (opens the public form link).
 6. What to bring or know (optional list).
 7. Partner: e.g. "With ICARE Eye Hospital".
 8. Contact: **centre contact only** (centre phone or WhatsApp number). Never a coordinator's personal number.

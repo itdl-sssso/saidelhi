@@ -3,7 +3,7 @@ B3 · Public core. Follow specs/RULES.md. Use the existing public nav/footer, up
 - Footer (shared): Impact, Calendar, Centres, Join a seva, Privacy, Donate↗; "All activities are free and open to people of every faith."
 
 **Event** (/events/[id]). Two variants:
-- Before (Planned): title, type, pill, date/time; venue → Google Maps↗ + Map; samithi → Centre; district → District; description as entered; "6 volunteers needed" + Join this seva; what to bring; "With ICARE Eye Hospital"; centre contact only.
+- Before (Planned): title, type, pill, date/time; venue → Google Maps↗ + Map; samithi → Centre; district → District; description as entered; "6 Sevadal needed" + Join this seva; what to bring; "With ICARE Eye Hospital"; centre contact only.
 - After (Approved): results tiles (115 · 63 · 13); bar of spectacles by power; "Cataract surgeries: 0 of 13 so far"; photos; Read the report → Article.
 - States: awaiting/submitted ("Results appear once the district approves"); cancelled/postponed banner.
 
@@ -23,14 +23,14 @@ B3 · Public core. Follow specs/RULES.md. Use the existing public nav/footer, up
 
 **Calendar** (update existing)
 - List (default on phone) / Month.
-- Filter chips: district, seva type, samithi, "Volunteers needed". Side sheet on phone; filters in URL.
+- Filter chips: district, seva type, samithi, "Sevadal needed". Side sheet on phone; filters in URL.
 - Rows → Event. Recurring gatherings lighter. Cancelled struck through.
 - WhatsApp opt-in note. Empty-filter state.
 
 **Home** (update existing A2 3D Lotus Journey; keep hero and petals)
 Add:
 - Thought for the Day quote.
-- Upcoming seva strip (3–6 cards with "Volunteers needed"; horizontal snap on phone).
+- Upcoming seva strip (3–6 cards with "Sevadal needed"; horizontal snap on phone).
 - Impact snapshot (4 tiles; hidden until data exists).
 - Find a centre (pincode search + map preview).
 - Join a seva + WhatsApp updates.

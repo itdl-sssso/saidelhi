@@ -437,3 +437,4 @@ User decision 24 Oct 2026: every user-visible "Volunteer" becomes **Sevadal** (E
 1. **Kept unchanged** (no migration, no API break): DB tables/columns, enum and KPI keys (`volunteer_hours`, `volunteers`), permission `volunteers.read`, contract field names (`volunteersNeeded`, `needsVolunteers`, ...), TS identifiers, i18n key names, API JSON keys, **API paths** `/api/v1/admin/volunteers*`, template codes `volunteer_reminder`/`volunteer_signup_alert`, public calendar query param `?volunteers=1`.
 2. **URL**: portal page `/admin/volunteers` is now `/admin/sevadal`. `src/proxy.ts` answers old `/admin/volunteers[/...]` and `/hi/...` with 301 to the new path (sub-path and query kept).
 3. **Proxy fix**: detail-path existence probe now consults `redirects.resolve(pathname)` before the 404 rewrite (retired district slugs 301 to `/impact`).
+4. Probe retries once on error (cold start); only two consecutive errors fail open (logged), never cached.

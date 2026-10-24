@@ -6,7 +6,7 @@ B4 · Remaining P0. Follow specs/RULES.md.
 - Bulk: resend links, export. Plan an event button. Cards on phone.
 
 **Admin – Plan event** (new/edit)
-- Fields: type, title (suggested), date/time, samithi (prefilled), venue + address, optional pin, partner (select or add), volunteers needed, what to bring.
+- Fields: type, title (suggested), date/time, samithi (prefilled), venue + address, optional pin, partner (select or add), Sevadal needed, what to bring.
 - Public description EN/HI with a "Translate" helper (draft for review); both required.
 - Toggle: show on calendar.
 - Save draft / Submit for district approval (district's own events = self-approved).

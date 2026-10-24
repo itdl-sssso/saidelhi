@@ -11,7 +11,7 @@ Welcome people, show what the organisation does and what's coming up, and route 
    - हिंदी / EN toggle and "Coordinator login" as a quiet text link.
 2. **Hero (existing 3D lotus journey):** keep it. Add a Thought for the Day QuoteCard.
 3. **Five values petals** (existing) → Value pages.
-4. **Upcoming seva strip (new):** 3–6 EventScheduleCards for the next approved events. Each shows date chip, seva type icon, title, samithi, district and "Volunteers needed: 6". Ends with "All upcoming seva" → Calendar.
+4. **Upcoming seva strip (new):** 3–6 EventScheduleCards for the next approved events. Each shows date chip, seva type icon, title, samithi, district and "Sevadal needed: 6". Ends with "All upcoming seva" → Calendar.
 5. **Impact snapshot (new):** 4 KPI tiles for this year. Activities, people served, blood units collected, spectacles given. Each has a small "Approved figures" caption. "See our impact" → Impact.
 6. **Wings and programmes (#seva):** wing cards → Programs.
 7. **News and activities:** latest 3 articles → Article; "See all" → Articles.

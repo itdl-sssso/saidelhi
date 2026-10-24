@@ -10,7 +10,7 @@ D. /admin/login. Phone → WhatsApp OTP, resend, email fallback link, neutral me
 
 E. /admin/events list. Status tabs with counts; filters (date, type, district, samithi, source); table w/ overdue "2 days overdue" pink; bulk resend/export; Plan event button. Phone: cards.
 
-F. /admin/events/new Plan event. Seva type, title (suggested), date/time, samithi (scope), venue + optional pin, partner, volunteers needed, what to bring, description EN+HI (Translate helper), show on calendar. Save draft / Submit for district approval. Live public card preview.
+F. /admin/events/new Plan event. Seva type, title (suggested), date/time, samithi (scope), venue + optional pin, partner, Sevadal needed, what to bring, description EN+HI (Translate helper), show on calendar. Save draft / Submit for district approval. Live public card preview.
 
 G. /admin/approvals. Tabs Plans / Reports / Escalated; cards with key numbers + "Escalates to state in 1 day"; Approve / Request changes / Open; bulk approve plans only.
 

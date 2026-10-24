@@ -44,4 +44,16 @@ describe("proxy existence probe", () => {
     expect(r.status).toBe(301);
     expect(r.headers.get("location")).toBe("http://x/hi/admin/sevadal/abc?page=2");
   });
+  it("retries a failed probe once; a transient error does not read as exists", async () => {
+    events.exists.mockRejectedValueOnce(new Error("pool cold"));
+    const r = await get("/events/transient");
+    expect(rewrittenToNotFound(r)).toBe(true);
+  });
+  it("fails open when the probe errors twice", async () => {
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    events.exists.mockRejectedValueOnce(new Error("down")).mockRejectedValueOnce(new Error("down"));
+    const r = await get("/events/dbdown");
+    expect(rewrittenToNotFound(r)).toBe(false);
+    spy.mockRestore();
+  });
 });

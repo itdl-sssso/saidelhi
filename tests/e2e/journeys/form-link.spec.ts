@@ -82,7 +82,7 @@ test("form link: offline draft survives reload", async ({ page, context }, ti) =
   const token = readData().tokens[keys(ti.project.name).draft]!;
   await verify(page, token);
   await page.waitForLoadState("networkidle");
-  const field = page.getByRole("textbox", { name: "Volunteers (sevadals)" });
+  const field = page.getByRole("textbox", { name: "Sevadal members" });
   await expect(field).toBeVisible();
   await context.setOffline(true);
   await field.fill("7");
@@ -91,5 +91,5 @@ test("form link: offline draft survives reload", async ({ page, context }, ti) =
   await context.setOffline(false);
   await page.reload();
   await page.waitForLoadState("networkidle");
-  await expect(page.getByRole("textbox", { name: "Volunteers (sevadals)" })).toHaveValue("7");
+  await expect(page.getByRole("textbox", { name: "Sevadal members" })).toHaveValue("7");
 });

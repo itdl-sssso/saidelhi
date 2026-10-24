@@ -107,7 +107,7 @@ export const SPEC_NAMES: Record<number, string> = {
   40: "Admin impact",
   41: "Admin migration",
   42: "Admin WhatsApp",
-  43: "Admin volunteers",
+  43: "Admin Sevadal",
   44: "Admin reports",
   45: "Admin health",
   46: "Admin follow-up",
@@ -124,7 +124,7 @@ const SPEC_FILE: Record<number, string> = {
   24: "24-admin-overview", 25: "25-admin-events", 26: "26-admin-event-detail", 27: "27-admin-event-form", 28: "28-admin-inbox",
   29: "29-admin-approvals", 30: "30-admin-form-templates", 31: "31-admin-form-builder", 32: "32-admin-links", 33: "33-admin-uploads",
   34: "34-admin-org", 35: "35-admin-centres", 36: "36-admin-partners", 37: "37-admin-people", 38: "38-admin-content", 39: "39-admin-discourses",
-  40: "40-admin-impact", 41: "41-admin-migration", 42: "42-admin-whatsapp", 43: "43-admin-volunteers", 44: "44-admin-reports",
+  40: "40-admin-impact", 41: "41-admin-migration", 42: "42-admin-whatsapp", 43: "43-admin-sevadal", 44: "44-admin-reports",
   45: "45-admin-health", 46: "46-admin-follow-up", 47: "47-admin-privacy", 48: "48-admin-audit", 49: "49-admin-settings", 50: "50-whatsapp-bot",
 };
 
@@ -224,7 +224,7 @@ function portalRaw(s: Samples): PRaw[] {
     !!a.formId && { id: "adm-form-edit", area: "Collect", role: "state", title: "Form builder", path: `/admin/forms/${a.formId}/edit`, spec: 31, design: [D.b5b, D.ds] },
     { id: "adm-uploads", area: "Collect", role: "district", title: "Uploads", path: "/admin/uploads", spec: 33, design: [D.b5a] },
     { id: "adm-uploads-new", area: "Collect", role: "district", title: "New upload", path: "/admin/uploads/new", spec: 33, design: [D.b5a] },
-    { id: "adm-volunteers", area: "Collect", role: "district", title: "Volunteers", path: "/admin/volunteers", spec: 43, design: [D.b5d] },
+    { id: "adm-volunteers", area: "Collect", role: "district", title: "Sevadal", path: "/admin/sevadal", spec: 43, design: [D.b5d] },
     { id: "adm-org", area: "Organisation", role: "state", title: "Organisation", path: "/admin/org", spec: 34, design: [D.b5b] },
     { id: "adm-centres", area: "Organisation", role: "state", title: "Centres", path: "/admin/centres", spec: 35, design: [D.b5b] },
     !!a.centreId && { id: "adm-centre", area: "Organisation", role: "state", title: "Centre detail", path: `/admin/centres/${a.centreId}`, spec: 35, design: [D.b5b] },

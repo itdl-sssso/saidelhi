@@ -67,6 +67,22 @@ async function exists(kind: ProbeKind, key: string): Promise<boolean> {
   return ok;
 }
 
+/**
+ * Cold start: the first DB call can fail while the pool warms up, which used to read as "exists" (200 on
+ * an unknown id). Retry once; only a persistent error fails open (page reports it). Errors are never cached.
+ */
+async function probe(kind: ProbeKind, key: string): Promise<boolean> {
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      return await exists(kind, key);
+    } catch (e) {
+      if (attempt === 1) console.error("[proxy] existence probe failed twice, failing open", kind, e instanceof Error ? e.message : e);
+      else await new Promise((r) => setTimeout(r, 150));
+    }
+  }
+  return true;
+}
+
 async function redirectFor(pathname: string) {
   try {
     const { services } = await import("./server/services");
@@ -148,7 +164,7 @@ export default async function proxy(req: NextRequest) {
       ? key === "new" && !d[0].endsWith("/edit") ? null : "adminEvent"
       : d[2] === "centres" && d[3] === "map" ? null : PROBE_KIND[d[2]];
     // A probe failure (DB down) falls through to the page, which reports its own error.
-    const ok = kind === null || (await exists(kind, key).catch(() => true));
+    const ok = kind === null || (await probe(kind, key));
     if (!ok) {
       // A retired slug may have a redirect rule (e.g. old districts -> /impact): honour it before the 404.
       const moved = await redirectFor(req.nextUrl.pathname);

@@ -8,7 +8,7 @@ C. /programs. Wing tabs (All, Service, Educational, Spiritual, Mahila, Youth); s
 
 D. /programs/[type] template. Breadcrumb; hero + wing badge; 3–4 step "what happens"; results tiles (eye: screened, spectacles, funnel found→referred→operated, unknown = "—" not 0); upcoming; related articles; partners by name; Volunteer CTA. Show eye camp variant; note which parts change for blood/medical/Narayan Seva/Bal Vikas/generic.
 
-E. /join. "Offer your hands"; filters; events needing volunteers → Event; WhatsApp opt-in (number as text + copy + QR, no form here); what to expect.
+E. /join. "Offer your hands"; filters; events needing Sevadal → Event; WhatsApp opt-in (number as text + copy + QR, no form here); what to expect.
 
 F. /centres/map. Pincode/locality search + district select (no geolocation); desktop map left/list right, phone list first + Show map; rows → Centre + Directions (ext).
 

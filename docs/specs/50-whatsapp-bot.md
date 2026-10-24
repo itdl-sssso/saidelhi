@@ -7,7 +7,7 @@ Design the conversation flows as chat mockups: bubbles, quick-reply buttons and 
 ## Flows
 1. **Main menu** (registered coordinator): Plan an activity · Report totals · My events · Help. District coordinators also see Approvals. Public numbers see: What's on near me · Join updates · Contact a centre.
 2. **Plan an activity:**
-   - Seva type (list) → date (quick replies: Today, Tomorrow, pick) → time → venue (free text) → volunteers needed (number) → partner (optional).
+   - Seva type (list) → date (quick replies: Today, Tomorrow, pick) → time → venue (free text) → Sevadal needed (number) → partner (optional).
    - Then a summary card with Confirm / Edit, and "Sent to East district for approval".
 3. **District approval:**
    - Message to the district: summary card with Approve / Reject / Ask.
