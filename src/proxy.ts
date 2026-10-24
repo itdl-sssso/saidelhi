@@ -114,7 +114,7 @@ export default async function proxy(req: NextRequest) {
     if (!on) {
       const url = req.nextUrl.clone();
       url.pathname = `/${list[1] ?? "en"}/__not-found`;
-      return NextResponse.rewrite(url);
+      return NextResponse.rewrite(url, { status: 404 });
     }
   }
   const d = DETAIL_PATH.exec(req.nextUrl.pathname);
@@ -134,7 +134,7 @@ export default async function proxy(req: NextRequest) {
     if (!ok) {
       const url = req.nextUrl.clone();
       url.pathname = `/${d[1] ?? "en"}/__not-found`;
-      return NextResponse.rewrite(url);
+      return NextResponse.rewrite(url, { status: 404 });
     }
   }
   return intl(req);
