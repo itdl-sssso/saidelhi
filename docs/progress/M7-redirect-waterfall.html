@@ -1,0 +1,177 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Redirect journey waterfall</title><style>
+:root{--bg:#fbfaf7;--fg:#1d1b17;--mut:#6b665c;--grid:#e3dfd5;--step:#4a6fa5;--net:#5b9a73;--hung:#c4572f;--fail:#9a8f7a;--card:#fff;--bd:#e3dfd5}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#17160f;--fg:#ece8dc;--mut:#a39d8d;--grid:#34312a;--step:#7aa2dc;--net:#7cc79b;--hung:#ef8a63;--fail:#7d7665;--card:#1f1d15;--bd:#34312a}}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,sans-serif}
+main{max-width:1240px;margin:0 auto;padding:24px 16px 48px}
+h1{font-size:22px;margin:0 0 4px}h2{font-size:17px;margin:32px 0 8px}
+p,li{color:var(--mut);max-width:80ch}code{background:var(--card);border:1px solid var(--bd);padding:0 4px;border-radius:3px;font-size:13px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:12px;overflow-x:auto}
+svg{min-width:900px}
+.grid{stroke:var(--grid);stroke-width:1}.ax{fill:var(--mut);font-size:11px}.lb{fill:var(--fg);font-size:11.5px;font-family:ui-monospace,monospace}.ms{fill:var(--mut);font-size:11px;font-family:ui-monospace,monospace}
+.bs{fill:var(--step)}.bn{fill:var(--net)}.bh{fill:var(--hung)}.bf{fill:var(--fail)}
+.leg span{display:inline-block;margin-right:16px;font-size:13px;color:var(--mut)}.leg i{display:inline-block;width:12px;height:12px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+table{border-collapse:collapse;font-size:14px}td,th{border:1px solid var(--bd);padding:4px 10px;text-align:right}th:first-child,td:first-child{text-align:left}
+</style></head><body><main>
+<h1>Journey "redirect: add a legacy redirect" - waterfall</h1>
+<p>Prod build (<code>next start -p 4900</code>, <code>DATA_SOURCE=db</code>), Playwright trace on, test run alone. Traces: Playwright <code>trace.zip</code>, steps and requests on one monotonic clock. Static chunks (25) and RSC prefetches (62) are omitted from the rows.</p>
+<h2>Summary</h2>
+<table><tr><th></th><th>Before</th><th>After</th></tr>
+<tr><td>Test duration</td><td>32.0 s</td><td>2.8 s</td></tr>
+<tr><td><code>waitForLoadState("networkidle")</code></td><td>30.0 s</td><td>removed</td></tr>
+<tr><td>Save + row visible</td><td>0.6 s</td><td>0.9 s</td></tr>
+<tr><td>Anonymous GET of old URL (301)</td><td>0.30 s</td><td>0.05 s</td></tr></table>
+<p><b>Root cause:</b> not the redirect cache, DB, or proxy (the 301 answers in 50-300 ms). The test waited for <code>networkidle</code> on <code>/admin/migration?tab=redirects</code>. With a query string in the URL, the sidebar link prefetch for the same path without query (<code>/en/admin/migration?_rsc=...</code>, 307, 307, <code>/admin/migration?_rsc=...</code>) returns 200 with <code>x-nextjs-postponed: 2</code> and chunked encoding, but the body is never completed; the browser aborts it at about 29.5 s (<code>net::ERR_ABORTED</code>). Playwright counts it as in flight, so networkidle fires 500 ms after the abort (31.1 s). Reproduced on <code>/admin/centres?x=1</code> and <code>/admin/people?tab=x</code>; plain URLs without query do not hang. Plain curl and in-page <code>fetch</code> replays of the same chain finish in about 10 ms, so the hang is in the browser prefetch body, not the server render. Possible app-side follow-up: same-path prefetch on queried portal URLs.</p>
+<h2>Before (32.0 s)</h2><p class="leg"><span><i style="background:var(--step)"></i>test step</span><span><i style="background:var(--net)"></i>network (ok)</span><span><i style="background:var(--fail)"></i>aborted</span><span><i style="background:var(--hung)"></i>hung response</span></p><div class="card"><svg viewBox="0 0 1180 548" width="100%" role="img" aria-label="before">
+<line x1="470.0" y1="28" x2="470.0" y2="524" class="grid"/><text x="470.0" y="22" class="ax" text-anchor="middle">0s</text>
+<line x1="531.0" y1="28" x2="531.0" y2="524" class="grid"/><text x="531.0" y="22" class="ax" text-anchor="middle">3s</text>
+<line x1="592.0" y1="28" x2="592.0" y2="524" class="grid"/><text x="592.0" y="22" class="ax" text-anchor="middle">6s</text>
+<line x1="653.0" y1="28" x2="653.0" y2="524" class="grid"/><text x="653.0" y="22" class="ax" text-anchor="middle">9s</text>
+<line x1="714.0" y1="28" x2="714.0" y2="524" class="grid"/><text x="714.0" y="22" class="ax" text-anchor="middle">12s</text>
+<line x1="775.0" y1="28" x2="775.0" y2="524" class="grid"/><text x="775.0" y="22" class="ax" text-anchor="middle">15s</text>
+<line x1="836.1" y1="28" x2="836.1" y2="524" class="grid"/><text x="836.1" y="22" class="ax" text-anchor="middle">18s</text>
+<line x1="897.1" y1="28" x2="897.1" y2="524" class="grid"/><text x="897.1" y="22" class="ax" text-anchor="middle">21s</text>
+<line x1="958.1" y1="28" x2="958.1" y2="524" class="grid"/><text x="958.1" y="22" class="ax" text-anchor="middle">24s</text>
+<line x1="1019.1" y1="28" x2="1019.1" y2="524" class="grid"/><text x="1019.1" y="22" class="ax" text-anchor="middle">27s</text>
+<line x1="1080.1" y1="28" x2="1080.1" y2="524" class="grid"/><text x="1080.1" y="22" class="ax" text-anchor="middle">30s</text>
+<text x="462" y="49" class="lb" text-anchor="end">Before Hooks</text>
+<rect x="470.0" y="37" width="8.0" height="14" rx="2" class="bs"/>
+<text x="482.0" y="49" class="ms" text-anchor="start">393 ms</text>
+<text x="462" y="71" class="lb" text-anchor="end">/admin/migration?tab=redirects</text>
+<rect x="478.0" y="59" width="13.4" height="14" rx="2" class="bs"/>
+<text x="495.5" y="71" class="ms" text-anchor="start">661 ms</text>
+<text x="462" y="93" class="lb" text-anchor="end">GET 200 /admin/migration?tab=redirects</text>
+<rect x="478.3" y="81" width="10.5" height="14" rx="2" class="bn"/>
+<text x="492.8" y="93" class="ms" text-anchor="start">515 ms</text>
+<text x="462" y="115" class="lb" text-anchor="end">Wait for load state &quot;networkidle&quot;</text>
+<rect x="491.5" y="103" width="610.7" height="14" rx="2" class="bs"/>
+<text x="487.5" y="115" class="ms" text-anchor="end">30029 ms</text>
+<text x="462" y="137" class="lb" text-anchor="end">GET 200* /admin/migration?_rsc=... (sidebar self-prefetch, body held ope</text>
+<rect x="492.6" y="125" width="598.0" height="14" rx="2" class="bh"/>
+<text x="488.6" y="137" class="ms" text-anchor="end">29405 ms</text>
+<text x="462" y="159" class="lb" text-anchor="end">GET 200 /api/v1/admin/redirects?page=1&amp;pageSize=25</text>
+<rect x="498.0" y="147" width="1.5" height="14" rx="2" class="bn"/>
+<text x="503.5" y="159" class="ms" text-anchor="start">41 ms</text>
+<text x="462" y="181" class="lb" text-anchor="end">GET 307 /admin/migration?tab=redirects</text>
+<rect x="501.0" y="169" width="1.5" height="14" rx="2" class="bf"/>
+<text x="506.5" y="181" class="ms" text-anchor="start">9 ms</text>
+<text x="462" y="203" class="lb" text-anchor="end">GET 307 /admin/migration</text>
+<rect x="502.5" y="191" width="1.5" height="14" rx="2" class="bf"/>
+<text x="508.0" y="203" class="ms" text-anchor="start">6 ms</text>
+<text x="462" y="225" class="lb" text-anchor="end">GET 307 /admin/migration</text>
+<rect x="502.9" y="213" width="1.5" height="14" rx="2" class="bf"/>
+<text x="508.4" y="225" class="ms" text-anchor="start">6 ms</text>
+<text x="462" y="247" class="lb" text-anchor="end">Click</text>
+<rect x="1102.2" y="235" width="1.8" height="14" rx="2" class="bs"/>
+<text x="1098.2" y="247" class="ms" text-anchor="end">88 ms</text>
+<text x="462" y="269" class="lb" text-anchor="end">Fill &quot;/content/e2e-moved-mvm7h6fk&quot;</text>
+<rect x="1104.0" y="257" width="1.5" height="14" rx="2" class="bs"/>
+<text x="1100.0" y="269" class="ms" text-anchor="end">35 ms</text>
+<text x="462" y="291" class="lb" text-anchor="end">Fill &quot;/about&quot;</text>
+<rect x="1104.8" y="279" width="1.5" height="14" rx="2" class="bs"/>
+<text x="1100.8" y="291" class="ms" text-anchor="end">28 ms</text>
+<text x="462" y="313" class="lb" text-anchor="end">Click</text>
+<rect x="1105.4" y="301" width="7.5" height="14" rx="2" class="bs"/>
+<text x="1101.4" y="313" class="ms" text-anchor="end">371 ms</text>
+<text x="462" y="335" class="lb" text-anchor="end">POST 201 /api/v1/admin/redirects</text>
+<rect x="1112.8" y="323" width="1.5" height="14" rx="2" class="bn"/>
+<text x="1108.8" y="335" class="ms" text-anchor="end">28 ms</text>
+<text x="462" y="357" class="lb" text-anchor="end">Expect &quot;toBeVisible&quot;</text>
+<rect x="1113.0" y="345" width="4.3" height="14" rx="2" class="bs"/>
+<text x="1109.0" y="357" class="ms" text-anchor="end">210 ms</text>
+<text x="462" y="379" class="lb" text-anchor="end">GET 200 /api/v1/admin/redirects?page=1&amp;pageSize=25</text>
+<rect x="1114.4" y="367" width="1.7" height="14" rx="2" class="bn"/>
+<text x="1110.4" y="379" class="ms" text-anchor="end">82 ms</text>
+<text x="462" y="401" class="lb" text-anchor="end">Create request context</text>
+<rect x="1117.3" y="389" width="1.5" height="14" rx="2" class="bs"/>
+<text x="1113.3" y="401" class="ms" text-anchor="end">2 ms</text>
+<text x="462" y="423" class="lb" text-anchor="end">/content/e2e-moved-mvm7h6fk</text>
+<rect x="1117.5" y="411" width="6.1" height="14" rx="2" class="bs"/>
+<text x="1113.5" y="423" class="ms" text-anchor="end">299 ms</text>
+<text x="462" y="445" class="lb" text-anchor="end">GET 301 /content/e2e-moved-mvm7h6fk</text>
+<rect x="1117.5" y="433" width="6.2" height="14" rx="2" class="bn"/>
+<text x="1113.5" y="445" class="ms" text-anchor="end">303 ms</text>
+<text x="462" y="467" class="lb" text-anchor="end">Expect &quot;toBe&quot;</text>
+<rect x="1123.6" y="455" width="1.5" height="14" rx="2" class="bs"/>
+<text x="1119.6" y="467" class="ms" text-anchor="end">0 ms</text>
+<text x="462" y="489" class="lb" text-anchor="end">Expect &quot;toMatch&quot;</text>
+<rect x="1123.6" y="477" width="1.5" height="14" rx="2" class="bs"/>
+<text x="1119.6" y="489" class="ms" text-anchor="end">0 ms</text>
+<text x="462" y="511" class="lb" text-anchor="end">After Hooks</text>
+<rect x="1124.1" y="499" width="2.8" height="14" rx="2" class="bs"/>
+<text x="1120.1" y="511" class="ms" text-anchor="end">136 ms</text>
+</svg></div>
+<p>The orange bar is inferred from a CDP probe (request sent about 0.3 s after navigation, aborted at +30.1 s); it is absent from the trace network log because Playwright only records finished requests.</p>
+<h2>After (2.8 s)</h2><p class="leg"><span><i style="background:var(--step)"></i>test step</span><span><i style="background:var(--net)"></i>network (ok)</span><span><i style="background:var(--fail)"></i>aborted</span><span><i style="background:var(--hung)"></i>hung response</span></p><div class="card"><svg viewBox="0 0 1180 526" width="100%" role="img" aria-label="after">
+<line x1="470.0" y1="28" x2="470.0" y2="502" class="grid"/><text x="470.0" y="22" class="ax" text-anchor="middle">0s</text>
+<line x1="581.5" y1="28" x2="581.5" y2="502" class="grid"/><text x="581.5" y="22" class="ax" text-anchor="middle">0.5s</text>
+<line x1="693.0" y1="28" x2="693.0" y2="502" class="grid"/><text x="693.0" y="22" class="ax" text-anchor="middle">1s</text>
+<line x1="804.5" y1="28" x2="804.5" y2="502" class="grid"/><text x="804.5" y="22" class="ax" text-anchor="middle">1.5s</text>
+<line x1="916.1" y1="28" x2="916.1" y2="502" class="grid"/><text x="916.1" y="22" class="ax" text-anchor="middle">2s</text>
+<line x1="1027.6" y1="28" x2="1027.6" y2="502" class="grid"/><text x="1027.6" y="22" class="ax" text-anchor="middle">2.5s</text>
+<line x1="1139.1" y1="28" x2="1139.1" y2="502" class="grid"/><text x="1139.1" y="22" class="ax" text-anchor="middle">3s</text>
+<text x="462" y="49" class="lb" text-anchor="end">Before Hooks</text>
+<rect x="470.0" y="37" width="44.5" height="14" rx="2" class="bs"/>
+<text x="518.5" y="49" class="ms" text-anchor="start">200 ms</text>
+<text x="462" y="71" class="lb" text-anchor="end">Wait for event &quot;response&quot;</text>
+<rect x="515.2" y="59" width="184.7" height="14" rx="2" class="bs"/>
+<text x="703.9" y="71" class="ms" text-anchor="start">828 ms</text>
+<text x="462" y="93" class="lb" text-anchor="end">/admin/migration?tab=redirects</text>
+<rect x="515.9" y="81" width="110.8" height="14" rx="2" class="bs"/>
+<text x="630.7" y="93" class="ms" text-anchor="start">497 ms</text>
+<text x="462" y="115" class="lb" text-anchor="end">GET 200 /admin/migration?tab=redirects</text>
+<rect x="520.6" y="103" width="53.0" height="14" rx="2" class="bn"/>
+<text x="577.6" y="115" class="ms" text-anchor="start">238 ms</text>
+<text x="462" y="137" class="lb" text-anchor="end">GET 200 /api/v1/admin/redirects?page=1&amp;pageSize=25</text>
+<rect x="692.0" y="125" width="7.6" height="14" rx="2" class="bn"/>
+<text x="703.5" y="137" class="ms" text-anchor="start">34 ms</text>
+<text x="462" y="159" class="lb" text-anchor="end">Click</text>
+<rect x="701.0" y="147" width="57.6" height="14" rx="2" class="bs"/>
+<text x="762.6" y="159" class="ms" text-anchor="start">258 ms</text>
+<text x="462" y="181" class="lb" text-anchor="end">GET 307 /admin/migration?tab=redirects</text>
+<rect x="732.6" y="169" width="5.2" height="14" rx="2" class="bf"/>
+<text x="741.8" y="181" class="ms" text-anchor="start">23 ms</text>
+<text x="462" y="203" class="lb" text-anchor="end">Fill &quot;/content/e2e-moved-mvm7p6yg&quot;</text>
+<rect x="759.9" y="191" width="27.0" height="14" rx="2" class="bs"/>
+<text x="790.9" y="203" class="ms" text-anchor="start">121 ms</text>
+<text x="462" y="225" class="lb" text-anchor="end">GET 307 /admin/migration</text>
+<rect x="783.9" y="213" width="3.2" height="14" rx="2" class="bf"/>
+<text x="791.1" y="225" class="ms" text-anchor="start">14 ms</text>
+<text x="462" y="247" class="lb" text-anchor="end">Fill &quot;/about&quot;</text>
+<rect x="787.5" y="235" width="19.8" height="14" rx="2" class="bs"/>
+<text x="811.3" y="247" class="ms" text-anchor="start">89 ms</text>
+<text x="462" y="269" class="lb" text-anchor="end">GET 307 /admin/migration</text>
+<rect x="792.6" y="257" width="3.0" height="14" rx="2" class="bf"/>
+<text x="799.6" y="269" class="ms" text-anchor="start">13 ms</text>
+<text x="462" y="291" class="lb" text-anchor="end">Click</text>
+<rect x="807.7" y="279" width="77.1" height="14" rx="2" class="bs"/>
+<text x="888.8" y="291" class="ms" text-anchor="start">346 ms</text>
+<text x="462" y="313" class="lb" text-anchor="end">POST 201 /api/v1/admin/redirects</text>
+<rect x="878.5" y="301" width="11.6" height="14" rx="2" class="bn"/>
+<text x="894.0" y="313" class="ms" text-anchor="start">52 ms</text>
+<text x="462" y="335" class="lb" text-anchor="end">Expect &quot;toBeVisible&quot;</text>
+<rect x="886.0" y="323" width="127.2" height="14" rx="2" class="bs"/>
+<text x="1017.2" y="335" class="ms" text-anchor="start">570 ms</text>
+<text x="462" y="357" class="lb" text-anchor="end">GET 200 /api/v1/admin/redirects?page=1&amp;pageSize=25</text>
+<rect x="898.5" y="345" width="21.2" height="14" rx="2" class="bn"/>
+<text x="923.7" y="357" class="ms" text-anchor="start">95 ms</text>
+<text x="462" y="379" class="lb" text-anchor="end">Create request context</text>
+<rect x="1014.0" y="367" width="1.5" height="14" rx="2" class="bs"/>
+<text x="1019.5" y="379" class="ms" text-anchor="start">2 ms</text>
+<text x="462" y="401" class="lb" text-anchor="end">/content/e2e-moved-mvm7p6yg</text>
+<rect x="1016.2" y="389" width="11.6" height="14" rx="2" class="bs"/>
+<text x="1031.8" y="401" class="ms" text-anchor="start">52 ms</text>
+<text x="462" y="423" class="lb" text-anchor="end">GET 301 /content/e2e-moved-mvm7p6yg</text>
+<rect x="1017.1" y="411" width="11.9" height="14" rx="2" class="bn"/>
+<text x="1033.1" y="423" class="ms" text-anchor="start">54 ms</text>
+<text x="462" y="445" class="lb" text-anchor="end">Expect &quot;toBe&quot;</text>
+<rect x="1028.1" y="433" width="1.5" height="14" rx="2" class="bs"/>
+<text x="1033.6" y="445" class="ms" text-anchor="start">1 ms</text>
+<text x="462" y="467" class="lb" text-anchor="end">Expect &quot;toMatch&quot;</text>
+<rect x="1028.5" y="455" width="1.5" height="14" rx="2" class="bs"/>
+<text x="1034.0" y="467" class="ms" text-anchor="start">0 ms</text>
+<text x="462" y="489" class="lb" text-anchor="end">After Hooks</text>
+<rect x="1038.2" y="477" width="76.0" height="14" rx="2" class="bs"/>
+<text x="1034.2" y="489" class="ms" text-anchor="end">341 ms</text>
+</svg></div>
+<p>Fix in <code>tests/e2e/journeys/portal.spec.ts</code>: wait for the <code>GET /api/v1/admin/redirects</code> response (the tab's own client fetch, which also proves hydration) instead of networkidle.</p>
+</main></body></html>

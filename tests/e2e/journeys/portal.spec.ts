@@ -142,8 +142,11 @@ test.describe("portal work", () => {
 
   test("redirect: add a legacy redirect, public URL answers 301", async ({ page, playwright, baseURL }) => {
     const from = `/content/e2e-moved-${stamp}`;
+    // No "networkidle" here: on a portal URL with a query string the sidebar prefetch of the same path keeps a
+    // response open until the client aborts it (~30s). The redirects list fetch proves the tab is hydrated.
+    const listed = page.waitForResponse((r) => r.url().includes("/api/v1/admin/redirects") && r.request().method() === "GET");
     await page.goto("/admin/migration?tab=redirects");
-    await page.waitForLoadState("networkidle");
+    await listed;
     await page.getByRole("button", { name: "Add redirect" }).click();
     const dlg = page.getByRole("dialog");
     await dlg.getByRole("textbox", { name: "Old address" }).fill(from);
