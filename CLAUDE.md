@@ -23,7 +23,7 @@ Rebuild of saidelhi.org (Sri Sathya Sai Seva Organisation, Delhi NCR): bilingual
 - Styling: tokens + Tailwind v4 `@theme` for layout, CSS Modules for components (`src/ui`, kitchen sink at `/dev/ui`, dev only).
 - WhatsApp: real Cloud API adapter written; switch `WHATSAPP_PROVIDER=cloud` when user supplies creds. AI extraction: rules-first + SmolLM2 (`smollm2:1.7b`, 360m on weak server) via Ollama, `EXTRACTOR_PROVIDER=rules|ollama`; prod server cannot run big LLMs. Discourses: 87 already translated at `~/Claude/sssso-platform/discourses/translations/*.hi.json` (import in M7, behind `discourses` flag).
 - Legacy content: dump at `.local-dumps/saidelhi-content.sql` (gitignored, contains personal data; `pnpm db:import-legacy`). Legacy media served from `MEDIA_ROOT` (dev: `/home/sam/Claude/saidelhi org/media`) at `/media/*`.
-- Placeholder districts (until user supplies real list): Central, East, New Delhi, North, South, West, Gurugram, Noida–Ghaziabad, Faridabad.
+- Real districts (24 Oct 2026, from `docs/data/sssso-delhi-ncr-units.json`, normalised in `src/server/data/sssso-units.json`): Central, East, North, South East, South West, West, Faridabad, Gurugram, Gautam Buddh Nagar, Ghaziabad. 56 samithis/units ("East 2", "Gautam Buddh Nagar 3", "Greater Noida West" bhajan mandali stored as samithi); 19 have address+coords and get a centre. Dev fictional centres hang off coord-less samithis.
 - Server: `ssh <prod-server>` (user types password). Legacy Django app runs as user `<legacy-user>`; DB creds are in `../saidelhi org/saidelhiweb/settings.py` (plaintext — never echo; user advised to rotate).
 
 ## Commands

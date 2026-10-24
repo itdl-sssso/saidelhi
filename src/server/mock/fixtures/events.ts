@@ -144,7 +144,7 @@ export const events: EventRec[] = [
     venueName: "Sai Centre Saket",
     venueAddress: "Block J, Saket, New Delhi",
     samithiId: SAMITHI.saket,
-    districtId: DISTRICT.south,
+    districtId: DISTRICT.southWest,
     volunteersNeeded: 8,
     volunteersJoined: 3,
   }),
@@ -172,7 +172,7 @@ export const events: EventRec[] = [
     venueName: "Neighbourhood park, Sector 62",
     venueAddress: "Noida",
     samithiId: SAMITHI.noida62,
-    districtId: DISTRICT.noida,
+    districtId: DISTRICT.gautamBuddhNagar,
     reportDueAt: at("2026-10-15", "23:59"),
   }),
   ev({
@@ -210,7 +210,7 @@ export const events: EventRec[] = [
     startsAt: at("2026-11-20", "09:00"),
     venueName: "To be confirmed",
     samithiId: SAMITHI.lodhiRoad,
-    districtId: DISTRICT.newDelhi,
+    districtId: DISTRICT.southEast,
     source: "whatsapp",
   }),
   ev({
@@ -280,7 +280,7 @@ export const events: EventRec[] = [
     venueName: "Sai Centre Saket",
     venueAddress: "Saket, New Delhi",
     samithiId: SAMITHI.saket,
-    districtId: DISTRICT.south,
+    districtId: DISTRICT.southWest,
     approvedAt: at("2026-08-18", "10:00"),
   }),
   ev({
@@ -463,7 +463,7 @@ export const events: EventRec[] = [
     venueName: "Sai Centre Saket",
     venueAddress: "Block J, Saket, New Delhi",
     samithiId: SAMITHI.saket,
-    districtId: DISTRICT.south,
+    districtId: DISTRICT.southWest,
     approvalRequestedAt: at("2026-10-18", "10:30"),
   }),
   ev({
@@ -566,8 +566,8 @@ const est = (orgUnitId: string, kpiKey: string, month: string, value: number, se
 export const estimates: EstimateRec[] = [
   est(DISTRICT.east, "activities", "2025-03", 4),
   est(DISTRICT.east, "eye.screened", "2025-03", 150, "eye"),
-  est(DISTRICT.south, "activities", "2026-01", 3),
-  est(DISTRICT.south, "narayan.meals", "2026-01", 500, "narayan_seva"),
+  est(DISTRICT.southWest, "activities", "2026-01", 3),
+  est(DISTRICT.southWest, "narayan.meals", "2026-01", 500, "narayan_seva"),
 ];
 
 let t = 0;

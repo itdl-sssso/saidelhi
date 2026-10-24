@@ -133,7 +133,7 @@ describe("plan an activity", () => {
     await t.tap(from, "m:plan");
     await t.tap(from, "seva:cleanliness");
     expect(texts(await t.say(from, "Atlantis"))).toContain("Try one of");
-    await t.say(from, "Laxmi Nagar");
+    await t.say(from, "East 4");
     await t.tap(from, "date:today");
     await t.say(from, "6 pm");
     await t.say(from, "Park gate");

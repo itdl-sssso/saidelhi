@@ -230,7 +230,7 @@ export default async function KitchenSink() {
           <Select
             label="District"
             placeholder="Choose a district"
-            options={["Central", "East", "New Delhi", "North", "South", "West", "Gurugram", "Noida–Ghaziabad", "Faridabad"].map((d) => ({ value: d, label: d }))}
+            options={["Central", "East", "North", "South East", "South West", "West", "Faridabad", "Gurugram", "Gautam Buddh Nagar", "Ghaziabad"].map((d) => ({ value: d, label: d }))}
           />
           <Textarea label="Notes for the district" hint="Shown to coordinators only." />
           <div className="flex flex-col">

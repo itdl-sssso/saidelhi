@@ -170,11 +170,11 @@ describe("home, centres, districts (mock)", () => {
   it("centres list/search and detail", async () => {
     const { svc } = mockServices();
     const all = Paged(CentreListItem).parse(await svc.centres.list({ page: 1, pageSize: 100 }));
-    expect(all.meta.total).toBe(11);
+    expect(all.meta.total).toBe(30); // 11 dev centres + 19 real samithis with address and coordinates
     const hit = await svc.centres.list({ page: 1, pageSize: 100, q: "MAYUR" });
     expect(hit.data.map((c) => c.slug)).toEqual(["mayur-vihar"]);
     expect((await svc.centres.list({ page: 1, pageSize: 100, q: "110091" })).data).toHaveLength(1);
-    expect((await svc.centres.list({ page: 1, pageSize: 100, district: "east" })).meta.total).toBe(3);
+    expect((await svc.centres.list({ page: 1, pageSize: 100, district: "east" })).meta.total).toBe(5);
 
     const mv = CentreDetail.parse(await svc.centres.bySlug("mayur-vihar"));
     expect(mv.schedule.map((g) => g.day)).toEqual([0, 4, 6]);
@@ -190,8 +190,8 @@ describe("home, centres, districts (mock)", () => {
   it("district page", async () => {
     const { svc } = mockServices();
     const east = DistrictPayload.parse(await svc.districts.bySlug("east"));
-    expect(east.samithiCount).toBe(3);
-    expect(east.centres).toHaveLength(3);
+    expect(east.samithiCount).toBe(5);
+    expect(east.centres).toHaveLength(5);
     expect(east.intro?.hi).toBeTruthy();
     expect(DistrictPayload.parse(await svc.districts.bySlug("north")).kpis).toBeNull();
     expect(await svc.districts.bySlug("mayur-vihar")).toBeNull();
