@@ -9,7 +9,7 @@ import { FigureValue } from "@/ui/Figure";
 import styles from "./DistrictMap.module.css";
 
 /**
- * Schematic tile map of the nine placeholder districts, placed roughly where they sit
+ * Schematic tile map of the ten districts, placed roughly where they sit
  * around Delhi. A real GeoJSON choropleth replaces this once boundaries are confirmed.
  */
 const LAYOUT: Record<string, { col: number; row: number }> = {
@@ -17,9 +17,10 @@ const LAYOUT: Record<string, { col: number; row: number }> = {
   west: { col: 1, row: 2 },
   central: { col: 2, row: 2 },
   east: { col: 3, row: 2 },
-  "noida-ghaziabad": { col: 4, row: 3 },
-  "new-delhi": { col: 2, row: 3 },
-  south: { col: 3, row: 3 },
+  ghaziabad: { col: 4, row: 2 },
+  "south-west": { col: 2, row: 3 },
+  "south-east": { col: 3, row: 3 },
+  "gautam-buddh-nagar": { col: 4, row: 3 },
   gurugram: { col: 1, row: 4 },
   faridabad: { col: 3, row: 4 },
 };

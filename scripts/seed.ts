@@ -154,6 +154,15 @@ async function main() {
     }
   });
 
+  // Placeholder district slugs that no longer exist (24 Oct 2026): 301 to the impact overview.
+  for (const slug of ["new-delhi", "south", "noida-ghaziabad"]) {
+    for (const prefix of ["", "/hi"]) {
+      await db.execute(
+        sql`INSERT IGNORE INTO \`redirect\` (from_path, to_path, permanent, source) VALUES (${`${prefix}/districts/${slug}`}, ${`${prefix}/impact`}, 1, 'migration')`,
+      );
+    }
+  }
+
   const counts = {
     org_unit: f.orgUnits.length,
     centre: f.centres.length,

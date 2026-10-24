@@ -46,8 +46,10 @@ describe("district tagging heuristic", () => {
     expect(detectDistrict(null, "Eye camp held in Mayur Vihar")).toBe("east");
     expect(detectDistrict("", "Free medical camp at Dwarka, New Delhi")).toBe("west");
     expect(detectDistrict(null, "Gurgaon youth meet")).toBe("gurugram");
-    expect(detectDistrict("Noida", "Blood donation, Gurugram")).toBe("noida-ghaziabad");
-    expect(detectDistrict(null, "Greater Noida and Ghaziabad service")).toBe("noida-ghaziabad");
+    expect(detectDistrict("Noida", "Blood donation, Gurugram")).toBe("gautam-buddh-nagar");
+    expect(detectDistrict(null, "Greater Noida seva")).toBe("gautam-buddh-nagar");
+    expect(detectDistrict(null, "Ghaziabad service, Indirapuram")).toBe("ghaziabad");
+    expect(detectDistrict(null, "Camp at Sarita Vihar")).toBe("south-east");
   });
 
   it("leaves vague or ambiguous posts untagged", () => {
