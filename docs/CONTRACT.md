@@ -288,7 +288,7 @@ Definition of done per milestone: `pnpm typecheck && pnpm lint && pnpm test && p
 1. Claude Design page export → `docs/design/` (Home lotus journey, Values, Calendar, Map visuals).
 2. A `mysqldump` of the server DB (schema + data, or schema-only + media) — or the DB analysis document mentioned — into `docs/db/`.
 3. WhatsApp Cloud API credentials (see `docs/whatsapp-setup.md`).
-4. Real district / samithi list (placeholder: Central, East, New Delhi, North, South, West, Gurugram, Noida–Ghaziabad, Faridabad).
+4. ~~Real district / samithi list~~ done 24 Oct 2026: Central, East, North, South East, South West, West, Faridabad, Gurugram, Gautam Buddh Nagar, Ghaziabad (56 samithis; slugs `south-east`, `south-west`, `gautam-buddh-nagar`; old placeholder slugs `new-delhi`, `south`, `noida-ghaziabad` removed).
 5. Sarva Dharma emblem file; photography.
 
 ---

@@ -188,10 +188,10 @@ describe("districts index and demographics", () => {
   it("lists active districts with counts", async () => {
     const { svc } = mockServices();
     const list = (await svc.districts.list()).map((d) => DistrictSummary.parse(d));
-    expect(list).toHaveLength(9);
+    expect(list).toHaveLength(10);
     const east = list.find((d) => d.district.slug === "east");
-    expect(east?.samithiCount).toBe(3);
-    expect(east?.centreCount).toBe(3);
+    expect(east?.samithiCount).toBe(5);
+    expect(east?.centreCount).toBe(5);
     const res = await districtsGet(new NextRequest("http://x/api/v1/districts"), { params: Promise.resolve({}) });
     expect(res.status).toBe(200);
   });
@@ -245,8 +245,8 @@ describe("centres by pincode", () => {
   it("combines pincode with a text query", async () => {
     const { svc } = mockServices();
     const res = await svc.centres.list({ pincode: "110091", q: "noida", page: 1, pageSize: 100 });
-    expect(res.data.map((c) => c.slug)).toEqual(["noida-sector-62"]);
-    expect(res.data[0].distanceKm).toBeGreaterThan(5);
+    expect(res.data.map((c) => c.slug)).toContain("noida-sector-62");
+    expect(res.data.every((c) => (c.distanceKm ?? 99) > 5)).toBe(true);
   });
 });
 

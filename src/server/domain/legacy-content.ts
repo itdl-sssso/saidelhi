@@ -3,19 +3,20 @@
 
 /** District slug -> phrases that point at it. "East", "North" alone are too ambiguous to match. */
 export const DISTRICT_ALIASES: Record<string, readonly string[]> = {
-  central: ["central delhi", "karol bagh", "paharganj", "connaught place"],
+  central: ["central delhi", "karol bagh", "paharganj", "connaught place", "rajender nagar", "rajinder nagar"],
   east: ["east delhi", "mayur vihar", "laxmi nagar", "preet vihar", "shahdara", "vivek vihar", "patparganj", "dilshad garden"],
-  "new-delhi": ["new delhi", "lodhi road", "lodhi estate", "chanakyapuri"],
   north: ["north delhi", "rohini", "pitampura", "model town", "ashok vihar", "shalimar bagh", "civil lines"],
-  south: ["south delhi", "saket", "vasant kunj", "hauz khas", "greater kailash", "lajpat nagar", "malviya nagar", "mehrauli"],
-  west: ["west delhi", "dwarka", "janakpuri", "rajouri garden", "punjabi bagh", "uttam nagar", "paschim vihar", "tilak nagar"],
-  gurugram: ["gurugram", "gurgaon"],
-  "noida-ghaziabad": ["noida", "ghaziabad", "greater noida", "indirapuram", "vaishali", "vasundhara", "sahibabad"],
+  "south-east": ["south east delhi", "sarita vihar", "kailash hills", "greater kailash", "lajpat nagar", "okhla", "kalkaji", "lodhi road", "lodhi estate"],
+  "south-west": ["south west delhi", "rama krishna puram", "rk puram", "vasant kunj", "munirka", "saket", "hauz khas", "malviya nagar", "mehrauli"],
+  west: ["west delhi", "dwarka", "janakpuri", "rajouri garden", "punjabi bagh", "uttam nagar", "paschim vihar", "tilak nagar", "najafgarh", "madhu vihar"],
   faridabad: ["faridabad"],
+  gurugram: ["gurugram", "gurgaon"],
+  "gautam-buddh-nagar": ["noida", "greater noida", "gautam buddh nagar", "gautam budh nagar"],
+  ghaziabad: ["ghaziabad", "indirapuram", "vaishali", "vasundhara", "sahibabad"],
 };
 
-/** "New Delhi" is also the generic address suffix ("Dwarka, New Delhi"), so it only weakly points at the district. */
-const WEAK = new Set(["new delhi"]);
+/** Phrases that only weakly point at a district (none today; "New Delhi" is no longer a district). */
+const WEAK = new Set<string>();
 
 const fold = (s: string) => s.normalize("NFKD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 
