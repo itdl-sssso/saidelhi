@@ -284,7 +284,7 @@ export function waFixtures(secret: string): WaFixtures {
   say(convB, "out", at("2026-10-22", "08:45"), pick("en", COPY.menuCoordinator("District coordinator B")));
 
   const sevaSets: SevaType[][] = [["eye", "blood"], [], ["narayan_seva"], ["bal_vikas", "bhajan"], ["medical"], []];
-  const districts = [DISTRICT.east, DISTRICT.east, DISTRICT.central, DISTRICT.south, DISTRICT.north, null, DISTRICT.east, DISTRICT.west, DISTRICT.noida, DISTRICT.east, DISTRICT.gurugram, DISTRICT.faridabad];
+  const districts = [DISTRICT.east, DISTRICT.east, DISTRICT.central, DISTRICT.southWest, DISTRICT.north, null, DISTRICT.east, DISTRICT.west, DISTRICT.gautamBuddhNagar, DISTRICT.east, DISTRICT.gurugram, DISTRICT.faridabad];
   const optIns: OptInRec[] = districts.map((districtId, i) => {
     const phone = `+9190010000${String(i + 1).padStart(2, "0")}`;
     const status: OptInRec["status"] = i === 10 ? "pending" : i === 11 ? "stopped" : "opted_in";
