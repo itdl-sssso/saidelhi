@@ -23,6 +23,7 @@ import { ApiError } from "../../http/errors";
 import type { EventRec, KpiFactRec } from "../../repo/types";
 import { decryptField } from "../../security/crypto";
 import type { OrgIndex } from "../org-index";
+import { embedEmblem } from "./letterhead";
 import { holders, loadOrg, type PortalCtx, portalUrl } from "./shared";
 
 export interface ReportsService {
@@ -204,8 +205,10 @@ export function createReportsService(ctx: PortalCtx): ReportsService {
     const text = (p: PDFPage, s: string, x: number, y: number, size = 11, f: PDFFont = font, color = ink) => p.drawText(s.replace(/[^\x20-\x7E]/g, "?"), { x, y, size, font: f, color });
 
     const cover = doc.addPage([W, H]);
-    text(cover, "Sri Sathya Sai Seva Organisation", 56, 740, 13, font, muted);
-    text(cover, "Delhi NCR", 56, 722, 13, font, muted);
+    cover.drawImage(await embedEmblem(doc), { x: 56, y: 712, width: 64, height: 64 });
+    text(cover, "Sri Sathya Sai Seva Organisation", 132, 752, 13, bold, ink);
+    text(cover, "Delhi NCR", 132, 734, 13, font, muted);
+    cover.drawLine({ start: { x: 56, y: 696 }, end: { x: W - 56, y: 696 }, thickness: 0.75, color: rgb(0.83, 0.69, 0.22) });
     text(cover, `Seva report, ${monthName}`, 56, 640, 28, bold);
     text(cover, scope, 56, 604, 16);
     text(cover, `${events.length} approved ${events.length === 1 ? "activity" : "activities"}. Figures come from approved reports only.`, 56, 560, 11, font, muted);

@@ -2,6 +2,7 @@
 // English only for now: the standard PDF fonts have no Devanagari (see report).
 import { PDFDocument, type PDFFont, rgb, StandardFonts } from "pdf-lib";
 import QRCode from "qrcode";
+import { embedEmblem } from "./letterhead";
 
 export interface PosterInput {
   url: string;
@@ -57,6 +58,8 @@ export async function qrPosterPdf(p: PosterInput): Promise<Uint8Array> {
     }
   };
 
+  page.drawImage(await embedEmblem(doc), { x: (w - 56) / 2, y: y - 56, width: 56, height: 56 });
+  y -= 64;
   lines("Sri Sathya Sai Seva Organisation · Delhi NCR", regular, 11, MUTED, 18);
   page.drawLine({ start: { x: MARGIN, y }, end: { x: w - MARGIN, y }, thickness: 0.75, color: rgb(0.83, 0.69, 0.22) });
   y -= 28;

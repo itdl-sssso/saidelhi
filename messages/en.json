@@ -5,6 +5,17 @@
     "region": "Delhi NCR",
     "description": "Bhajans, study circles, Bal Vikas and seva (service) across Delhi NCR. Open to everyone, free always."
   },
+  "og": {
+    "events": "Event",
+    "news": "News",
+    "discourses": "Discourse",
+    "values": "Value",
+    "programs": "Program",
+    "centres": "Centre",
+    "districts": "District",
+    "tagline": "Bhajans, study circles, Bal Vikas and seva across Delhi NCR. Open to everyone, free always.",
+    "alt": "Sri Sathya Sai Seva Organisation, Delhi NCR"
+  },
   "nav": {
     "skipToContent": "Skip to main content",
     "primary": "Primary",
