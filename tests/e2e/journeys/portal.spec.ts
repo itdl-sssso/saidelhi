@@ -87,7 +87,7 @@ test.describe("portal work", () => {
     const header = (ws.getRow(1).values as (string | undefined)[]).map((v) => v ?? "");
     const row = ws.getRow(2);
     const set = (key: string, v: string | number) => (row.getCell(header.indexOf(key)).value = v);
-    set("samithi_code", "S-KAROL");
+    set("samithi_code", "S-CEN1");
     set("date", "12/10/2026");
     set("venue", `E2E upload hall ${stamp}`);
     set("volunteers", 10);

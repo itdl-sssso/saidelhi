@@ -38,6 +38,6 @@ export default defineConfig({
     ? [{ name: "perf", testMatch: "**/perf.spec.ts", use: { ...devices["Desktop Chrome"], viewport: { width: 1280, height: 800 } } }]
     : [
         { name: "chromium-desktop", testIgnore: "**/perf.spec.ts", use: { ...devices["Desktop Chrome"], viewport: { width: 1280, height: 800 } } },
-        { name: "mobile", testIgnore: ["**/perf.spec.ts", "**/portal.spec.ts"] /* portal journeys: desktop only */, use: { ...devices["Desktop Chrome"], viewport: { width: 375, height: 812 }, hasTouch: true } },
+        { name: "mobile", testIgnore: ["**/perf.spec.ts", "**/portal.spec.ts", "**/prefetch.spec.ts"] /* portal journeys: desktop only */, use: { ...devices["Desktop Chrome"], viewport: { width: 375, height: 812 }, hasTouch: true } },
       ],
 });
