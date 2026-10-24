@@ -57,10 +57,23 @@ for (const prefix of ["", "/hi"]) {
   });
 }
 
-test("unknown event is a real 404", async ({ page }) => {
-  const res = await page.goto("/events/does-not-exist");
-  expect(res?.status()).toBe(404);
-});
+// Production serves the catch-all as a PPR shell; the proxy must still answer a real 404 (status + UI).
+for (const path of [
+  "/events/does-not-exist",
+  "/districts/atlantis",
+  "/centres/zzz",
+  "/news/zzz",
+  "/hi/events/does-not-exist",
+  "/hi/districts/atlantis",
+  "/hi/centres/zzz",
+  "/hi/news/zzz",
+]) {
+  test(`unknown detail ${path} is a real 404`, async ({ page }) => {
+    const res = await page.goto(path);
+    expect(res?.status()).toBe(404);
+    await expect(page.locator("main h1").first()).toBeVisible();
+  });
+}
 
 test("join opt-in form validates", async ({ page }) => {
   await page.goto("/join");
