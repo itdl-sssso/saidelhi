@@ -106,7 +106,7 @@ function whiteVersion(rgba: Buffer, size: number): Buffer {
 async function main() {
   const { data, size } = await transparentEmblem();
   const emblem = () => sharp(data, { raw: { width: size, height: size, channels: 4 } });
-  const png = (img: sharp.Sharp) => img.png({ compressionLevel: 9, palette: false }).toBuffer();
+  const png = (img: ReturnType<typeof sharp>) => img.png({ compressionLevel: 9, palette: false }).toBuffer();
   const emblemAt = async (px: number) => png(emblem().resize(px, px, { kernel: "lanczos3" }));
   const write = (p: string, b: Buffer) => writeFileSync(p, b);
 

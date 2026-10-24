@@ -9,3 +9,5 @@ Decisions
 - Manifest single scope "/" (no separate /f manifest). No icon.svg (would require hand-tracing the emblem).
 - No event-report PDF exists, only monthly report + QR poster.
 - Dynamic OG with a news cover keeps the cover (explicit metadata overrides file convention).
+
+Verified: typecheck/lint/test(369)/build green; OG en/hi/event rendered OK on :5400. e2e:perf not run.
