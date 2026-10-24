@@ -70,7 +70,7 @@ export function DialogDemo() {
           </>
         }
       >
-        <p>Volunteers who joined will get a WhatsApp message with the new date. Esc, the close button or a click outside closes this.</p>
+        <p>Sevadal who joined will get a WhatsApp message with the new date. Esc, the close button or a click outside closes this.</p>
       </Dialog>
     </>
   );
@@ -182,7 +182,7 @@ export function FormKitDemo() {
         <SaveStatus state="sent">Sent</SaveStatus>
         <SaveStatus state="error">Couldn&apos;t send</SaveStatus>
       </div>
-      <NumberField id="k-n" label="Volunteers" value={n} onChange={setN} max={50} stepper help="Big steppers for small counts" />
+      <NumberField id="k-n" label="Sevadal" value={n} onChange={setN} max={50} stepper help="Big steppers for small counts" />
       <NumberField id="k-big" label="Registered and screened" value={big} onChange={setBig} max={100000} messages={[{ type: "warning", text: "That is higher than usual. Please check." }]} />
       <NumberField id="k-err" label="Required count" value={null} onChange={() => undefined} messages={[{ type: "error", text: "This is required." }]} />
       <FieldMessage type="check">Adds up to 63 of 63</FieldMessage>

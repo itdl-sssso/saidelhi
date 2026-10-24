@@ -214,8 +214,8 @@ describe("district approvals by chat", () => {
 describe("report totals by chat", () => {
   /** Answers a question by its label; optional ones are skipped. */
   const answerFor = (text: string): string | null => {
-    if (text.includes("Volunteer hours")) return "40";
-    if (text.includes("Volunteers (sevadals)")) return "10";
+    if (text.includes("Sevadal hours")) return "40";
+    if (text.includes("Sevadal members")) return "10";
     if (text.includes("Registered and screened")) return "100";
     if (/\bMen\b/.test(text)) return "40";
     if (/\bWomen\b/.test(text)) return "55";

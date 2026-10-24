@@ -12,7 +12,7 @@ export async function generateMetadata() {
 }
 
 async function Content() {
-  const { allowed, session, locale } = await requirePortal("/admin/volunteers", "volunteers.read");
+  const { allowed, session, locale } = await requirePortal("/admin/sevadal", "volunteers.read");
   if (!allowed) return <NoAccess />;
   const org = await orgOptions(session, locale);
   return <VolunteersPage org={org} />;

@@ -23,7 +23,7 @@ Variants: Expired ("closed on 31 Oct… ask your samithi coordinator"), Revoked,
 
 **WhatsApp bot** (chat mockups, EN and HI; mark Meta-template messages)
 1. Menu: coordinator (Plan / Report / My events / Help; district adds Approvals); public (What's on near me / Join updates / Contact a centre).
-2. Plan: type list → date quick replies → time → venue → volunteers needed → partner → summary card Confirm/Edit → "Sent to East district for approval".
+2. Plan: type list → date quick replies → time → venue → Sevadal needed → partner → summary card Confirm/Edit → "Sent to East district for approval".
 3. District approval card: Approve / Reject (reason) / Ask. Day-2 reminder; day-3 "passed to state team".
 4. After approval: report link + desk-link note. Day-before checklist; day-after "Report here".
 5. Report by chat: one question per message, validation, final summary; optional register photo ("Kept private").

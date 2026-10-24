@@ -67,6 +67,31 @@ async function exists(kind: ProbeKind, key: string): Promise<boolean> {
   return ok;
 }
 
+/**
+ * Cold start: the first DB call can fail while the pool warms up, which used to read as "exists" (200 on
+ * an unknown id). Retry once; only a persistent error fails open (page reports it). Errors are never cached.
+ */
+async function probe(kind: ProbeKind, key: string): Promise<boolean> {
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      return await exists(kind, key);
+    } catch (e) {
+      if (attempt === 1) console.error("[proxy] existence probe failed twice, failing open", kind, e instanceof Error ? e.message : e);
+      else await new Promise((r) => setTimeout(r, 150));
+    }
+  }
+  return true;
+}
+
+async function redirectFor(pathname: string) {
+  try {
+    const { services } = await import("./server/services");
+    return await services().redirects.resolve(pathname);
+  } catch {
+    return null;
+  }
+}
+
 /** Old Django URLs: 301 to the new page, or the "This page moved" 404 when no rule matches. */
 async function legacy(req: NextRequest): Promise<NextResponse> {
   const { pathname } = req.nextUrl;
@@ -90,7 +115,16 @@ async function legacy(req: NextRequest): Promise<NextResponse> {
 /** `/admin/...` or `/hi/admin/...`, excluding the login page itself. */
 const PORTAL_PATH = /^(\/hi)?(\/admin(?:\/.*)?)$/;
 
+/** UI term is "Sevadal": the old portal URL moved. Keeps /hi, sub-paths and the query string. */
+const OLD_SEVADAL = /^(\/hi)?\/admin\/volunteers(\/.*)?$/;
+
 export default async function proxy(req: NextRequest) {
+  const old = OLD_SEVADAL.exec(req.nextUrl.pathname);
+  if (old) {
+    const url = req.nextUrl.clone();
+    url.pathname = `${old[1] ?? ""}/admin/sevadal${old[2] ?? ""}`;
+    return NextResponse.redirect(url, 301);
+  }
   if (isLegacyPath(req.nextUrl.pathname)) return legacy(req);
   // skipTrailingSlashRedirect is on (legacy URLs must 301 once), so normalise other trailing slashes here.
   if (req.nextUrl.pathname.length > 1 && req.nextUrl.pathname.endsWith("/")) {
@@ -130,8 +164,11 @@ export default async function proxy(req: NextRequest) {
       ? key === "new" && !d[0].endsWith("/edit") ? null : "adminEvent"
       : d[2] === "centres" && d[3] === "map" ? null : PROBE_KIND[d[2]];
     // A probe failure (DB down) falls through to the page, which reports its own error.
-    const ok = kind === null || (await exists(kind, key).catch(() => true));
+    const ok = kind === null || (await probe(kind, key));
     if (!ok) {
+      // A retired slug may have a redirect rule (e.g. old districts -> /impact): honour it before the 404.
+      const moved = await redirectFor(req.nextUrl.pathname);
+      if (moved) return NextResponse.redirect(new URL(moved.to, req.nextUrl.origin), moved.permanent ? 301 : 302);
       const url = req.nextUrl.clone();
       url.pathname = `/${d[1] ?? "en"}/__not-found`;
       return NextResponse.rewrite(url, { status: 404 });

@@ -34,7 +34,7 @@ const HEADINGS: Record<FormLink["purpose"], string> = {
 const INSTRUCTIONS: Record<FormLink["purpose"], string> = {
   report: "Scan with your phone camera to open the report form. You will be asked for your phone number and a code.",
   desk: "Scan with your phone camera to open the desk form.",
-  public: "Scan with your phone camera to sign up as a volunteer.",
+  public: "Scan with your phone camera to sign up as Sevadal.",
 };
 
 export function createAdminLinksService(ctx: PortalCtx): AdminLinksService {

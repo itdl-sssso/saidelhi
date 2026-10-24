@@ -519,7 +519,7 @@ export function createContentAdminService(ctx: PortalCtx): ContentAdminService {
         const h = headline(l);
         const day = new Intl.DateTimeFormat(l === "hi" ? "hi-IN" : "en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "Asia/Kolkata" }).format(ev.startsAt);
         if (l === "hi") return `${where.hi ?? where.en} के सेवादलों ने ${day} को ${ev.venueName} में सेवा की।${h ? ` ${h}।` : ""}`;
-        return `Sevadals of Samithi ${where.en} held ${(seva?.labelEn ?? ev.titleEn).toLowerCase()} at ${ev.venueName} on ${day}.${h ? ` ${h}.` : ""}`;
+        return `Sevadal members of Samithi ${where.en} held ${(seva?.labelEn ?? ev.titleEn).toLowerCase()} at ${ev.venueName} on ${day}.${h ? ` ${h}.` : ""}`;
       };
       const titleEn = mk("en");
       const slug = await uniqueSlug(slugify(titleEn));

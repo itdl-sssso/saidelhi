@@ -36,21 +36,21 @@ export function aboutSection(partnerLabel: I18nText): FormSection {
     field("date", "date", t("Date", "तारीख़"), { required: true, locked: true, prefill: "date" }),
     field("venue", "text", t("Venue", "स्थान"), { required: true, locked: true, prefill: "venue", min: 2, max: 200 }),
     field("partner", "text", partnerLabel, { prefill: "partner", max: 120 }),
-    num("volunteers", t("Volunteers (sevadals)", "स्वयंसेवक (सेवादल)"), {
+    num("volunteers", t("Sevadal members", "सेवादल सदस्य"), {
       required: true,
       locked: true,
       max: 1000,
       warnAbove: 150,
       kpi: "volunteers",
     }),
-    num("volunteer_hours", t("Volunteer hours", "स्वयंसेवा घंटे"), {
+    num("volunteer_hours", t("Sevadal hours", "सेवादल घंटे"), {
       required: true,
       locked: true,
       max: 20_000,
       warnAbove: 1500,
-      help: t("All sevadals together, including set-up.", "सभी सेवादलों के कुल घंटे, तैयारी सहित।"),
+      help: t("All Sevadal members together, including set-up.", "सभी सेवादल सदस्यों के कुल घंटे, तैयारी सहित।"),
       kpi: "volunteer_hours",
-      checks: [warn("gte", "volunteer_hours", "volunteers", t("Fewer hours than sevadals. Please check.", "सेवादलों से कम घंटे। कृपया जाँच लें।"))],
+      checks: [warn("gte", "volunteer_hours", "volunteers", t("Fewer hours than Sevadal members. Please check.", "सेवादल सदस्यों से कम घंटे। कृपया जाँच लें।"))],
     }),
   ]);
 }

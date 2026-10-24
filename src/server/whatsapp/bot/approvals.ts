@@ -39,7 +39,7 @@ export async function cardText(deps: BotDeps, ev: EventRec, l: Locale, kind: "pl
       titleOf(ev, l),
       `${fmtWhen(ev.startsAt, l)} · ${ev.venueName}`,
       samithi,
-      ev.volunteersNeeded !== null ? pick(l, { en: `Volunteers needed: ${ev.volunteersNeeded}`, hi: `स्वयंसेवक चाहिए: ${ev.volunteersNeeded}` }) : "",
+      ev.volunteersNeeded !== null ? pick(l, { en: `Sevadal needed: ${ev.volunteersNeeded}`, hi: `सेवादल चाहिए: ${ev.volunteersNeeded}` }) : "",
     ];
     return lines.filter(Boolean).join("\n");
   }

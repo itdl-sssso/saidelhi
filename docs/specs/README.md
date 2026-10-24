@@ -38,7 +38,7 @@ A website that **replaces saidelhi.org** for the Sri Sathya Sai Seva Organisatio
 - Sentence case everywhere. No exclamation marks. **No emoji.**
 - Gloss Sanskrit terms on first use in a section, e.g. "seva (service)".
 - Say **district**, never "zone". The hierarchy is **Delhi NCR → district → samithi** (a centre is a samithi's public face).
-- Say *sevadals* and *coordinators*, never *users*.
+- Say *Sevadal* (singular and plural; "Sevadal members" where a plural noun reads better) and *coordinators*, never *users* or *volunteers*. Hindi: सेवादल. (Decision 24 Oct 2026; internal "volunteer" identifiers are unchanged.)
 - Numbers: Indian grouping (1,23,456). Dates as "17 Oct 2026". Times as "5:30 PM".
 
 ## Language

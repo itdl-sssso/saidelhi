@@ -4,7 +4,7 @@ import styles from "./Meter.module.css";
 export type MeterProps = {
   value: number;
   max: number | null;
-  /** Accessible text, e.g. "5 of 6 volunteers". */
+  /** Accessible text, e.g. "5 of 6 Sevadal". */
   label: string;
   /** Visible caption beside the bar (defaults to the label). */
   caption?: string;
@@ -12,7 +12,7 @@ export type MeterProps = {
   className?: string;
 };
 
-/** Small "5 of 6" fill meter (volunteers, capacity). With no max the bar is empty and only the caption shows. */
+/** Small "5 of 6" fill meter (Sevadal, capacity). With no max the bar is empty and only the caption shows. */
 export function Meter({ value, max, label, caption, tone = "pink", className }: MeterProps) {
   const pct = max && max > 0 ? Math.max(0, Math.min(100, Math.round((value / max) * 100))) : 0;
   return (

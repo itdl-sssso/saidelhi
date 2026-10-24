@@ -10,7 +10,7 @@ The web version of the WhatsApp planning flow.
 - Date and time.
 - Samithi (prefilled from scope), venue name and address, map pin (optional).
 - Partner (select from Partners, or add new).
-- Volunteers needed, what to bring.
+- Sevadal needed, what to bring.
 - Public description (EN/HI; "Translate" helper that drafts the other language for review).
 - Show on public calendar (on by default).
 
