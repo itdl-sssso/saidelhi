@@ -83,6 +83,36 @@ async function probe(kind: ProbeKind, key: string): Promise<boolean> {
   return true;
 }
 
+
+/**
+ * A real 404 for a rewritten not-found page. In production the catch-all is a PPR shell: the router
+ * applies the rewrite's `status` only in dev, prod serves the shell with 200 (x-nextjs-postponed).
+ * A response body produced by the proxy itself keeps its status, so fetch the rendered page from this
+ * server and return it as 404. Loopback origin (PORT) avoids a round trip through the public proxy.
+ * Falls back to the rewrite if the inner fetch fails.
+ */
+async function notFoundResponse(req: NextRequest, locale: string | undefined, search = ""): Promise<NextResponse> {
+  const path = `${locale === "hi" ? "/hi" : ""}/__not-found${search}`;
+  try {
+    const port = process.env.PORT || req.nextUrl.port || "3000";
+    const res = await fetch(new URL(path, `http://127.0.0.1:${port}`), {
+      headers: { "x-nf-inner": "1", "accept-language": req.headers.get("accept-language") ?? "", cookie: req.headers.get("cookie") ?? "" },
+      redirect: "manual",
+      signal: AbortSignal.timeout(8000),
+    });
+    if (res.ok && res.body) {
+      const headers = new Headers({ "content-type": res.headers.get("content-type") ?? "text/html; charset=utf-8", "cache-control": "private, no-store" });
+      return new NextResponse(res.body, { status: 404, headers });
+    }
+  } catch {
+    /* fall through to the rewrite */
+  }
+  const url = req.nextUrl.clone();
+  url.pathname = `/${locale ?? "en"}/__not-found`;
+  url.search = search;
+  return NextResponse.rewrite(url, { status: 404 });
+}
+
 async function redirectFor(pathname: string) {
   try {
     const { services } = await import("./server/services");
@@ -105,11 +135,7 @@ async function legacy(req: NextRequest): Promise<NextResponse> {
   } catch {
     /* DB down: show the moved page rather than a 500 */
   }
-  const url = req.nextUrl.clone();
-  url.pathname = "/en/__not-found";
-  url.search = "?moved=1";
-  // Rewrite keeps the page's 200; the explicit status makes the moved page a real 404.
-  return NextResponse.rewrite(url, { status: 404 });
+  return notFoundResponse(req, undefined, "?moved=1");
 }
 
 /** `/admin/...` or `/hi/admin/...`, excluding the login page itself. */
@@ -119,6 +145,7 @@ const PORTAL_PATH = /^(\/hi)?(\/admin(?:\/.*)?)$/;
 const OLD_SEVADAL = /^(\/hi)?\/admin\/volunteers(\/.*)?$/;
 
 export default async function proxy(req: NextRequest) {
+  if (req.headers.get("x-nf-inner")) return intl(req); // inner not-found fetch: just render
   const old = OLD_SEVADAL.exec(req.nextUrl.pathname);
   if (old) {
     const url = req.nextUrl.clone();
@@ -146,9 +173,7 @@ export default async function proxy(req: NextRequest) {
   if (list) {
     const on = await import("./server/services").then((m) => m.services().flags.flags()).then((f) => f.discourses, () => true);
     if (!on) {
-      const url = req.nextUrl.clone();
-      url.pathname = `/${list[1] ?? "en"}/__not-found`;
-      return NextResponse.rewrite(url, { status: 404 });
+      return notFoundResponse(req, list[1]);
     }
   }
   const d = DETAIL_PATH.exec(req.nextUrl.pathname);
@@ -169,9 +194,7 @@ export default async function proxy(req: NextRequest) {
       // A retired slug may have a redirect rule (e.g. old districts -> /impact): honour it before the 404.
       const moved = await redirectFor(req.nextUrl.pathname);
       if (moved) return NextResponse.redirect(new URL(moved.to, req.nextUrl.origin), moved.permanent ? 301 : 302);
-      const url = req.nextUrl.clone();
-      url.pathname = `/${d[1] ?? "en"}/__not-found`;
-      return NextResponse.rewrite(url, { status: 404 });
+      return notFoundResponse(req, d[1]);
     }
   }
   return intl(req);
