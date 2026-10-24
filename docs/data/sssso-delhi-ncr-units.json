@@ -1,0 +1,624 @@
+{
+  "state": "Delhi NCR (SSSSO Delhi & NCR; listed on ssssoindia.org under political states Delhi, Haryana, Uttar Pradesh)",
+  "districts": [
+    {
+      "name": "Central",
+      "samithis": [
+        {
+          "name": "Central 1",
+          "category": "Samithi",
+          "area": null,
+          "sourceId": "5300"
+        },
+        {
+          "name": "Central -2",
+          "category": "Samithi",
+          "area": null,
+          "sourceId": "3804"
+        },
+        {
+          "name": "Central-3",
+          "category": "Samithi",
+          "area": null,
+          "sourceId": "4964"
+        },
+        {
+          "name": "Central-4",
+          "category": "Samithi",
+          "area": null,
+          "sourceId": "5531"
+        },
+        {
+          "name": "Central-5",
+          "category": "Samithi",
+          "area": null,
+          "sourceId": "3661"
+        },
+        {
+          "name": "Central-6",
+          "category": "Samithi",
+          "area": "New Delhi",
+          "sourceId": "3645",
+          "address": "R-815, Block R, Rajender Nagar Part 1,  New Rajinder Nagar, Near Parko dry cleaner, New Delhi, 110060",
+          "lat": 28.634855,
+          "lng": 77.179073
+        }
+      ]
+    },
+    {
+      "name": "East",
+      "samithis": [
+        {
+          "name": "East -2",
+          "category": "Samithi",
+          "area": "Delhi",
+          "sourceId": "5080",
+          "address": "DH 603, Abhimanyu Appartment, Vasundhara Enclave, Shaheed Raj Guru Collage, Delhi, 110096",
+          "lat": 28.601305,
+          "lng": 77.318452
+        },
+        {
+          "name": "East - 1",
+          "category": "Samithi",
+          "area": "Delhi",
+          "sourceId": "3644",
+          "address": "D-64,, Dilshad Colony New Simapuri,  Dilshad Garden, Delhi, 110095",
+          "lat": 28.68929,
+          "lng": 77.323055
+        },
+        {
+          "name": "East - 3",
+          "category": "Samithi",
+          "area": null,
+          "sourceId": "3656"
+        },
+        {
+          "name": "East - 4",
+          "category": "Samithi",
+          "area": null,
+          "sourceId": "3623"
+        },
+        {
+          "name": "East - 5",
+          "category": "Samithi",
+          "area": null,
+          "sourceId": "3898"
+        }
+      ]
+    },
+    {
+      "name": "North",
+      "samithis": [
+        {
+          "name": "North -3",
+          "category": "Samithi",
+          "area": null,
+          "sourceId": "3999"
+        },
+        {
+          "name": "North -4",
+          "category": "Samithi",
+          "area": "Delhi",
+          "sourceId": "3582",
+          "address": "A3-37, Pocket 3, Sector 3A,  Rohini, Delhi, 110085",
+          "lat": 28.697784,
+          "lng": 77.10817
+        },
+        {
+          "name": "North -5",
+          "category": "Samithi",
+          "area": null,
+          "sourceId": "3866"
+        },
+        {
+          "name": "North - 1",
+          "category": "Samithi",
+          "area": "Delhi",
+          "sourceId": "3627",
+          "address": "G-3/65, Model Town 3, Phase 3, Model Town, Delhi, 110009",
+          "lat": 28.711191,
+          "lng": 77.182895
+        },
+        {
+          "name": "North - 2",
+          "category": "Samithi",
+          "area": null,
+          "sourceId": "3599"
+        }
+      ]
+    },
+    {
+      "name": "South East",
+      "samithis": [
+        {
+          "name": "South East 1",
+          "category": "Samithi",
+          "area": "New Delhi",
+          "sourceId": "3529",
+          "address": "L-497 Sarita Vihar, New Delhi, 110076",
+          "lat": 28.539394,
+          "lng": 77.295202
+        },
+        {
+          "name": "South East 2",
+          "category": "Samithi",
+          "area": null,
+          "sourceId": "4048"
+        },
+        {
+          "name": "South East 3",
+          "category": "Samithi",
+          "area": "New Delhi",
+          "sourceId": "3797",
+          "address": "182, Kailash Hills, New Delhi, 110065",
+          "lat": 28.563325,
+          "lng": 77.246872
+        },
+        {
+          "name": "South East 4",
+          "category": "Samithi",
+          "area": null,
+          "sourceId": "3714"
+        },
+        {
+          "name": "South East 5",
+          "category": "Samithi",
+          "area": null,
+          "sourceId": "3306"
+        }
+      ]
+    },
+    {
+      "name": "South West",
+      "samithis": [
+        {
+          "name": "South West 1",
+          "category": "Samithi",
+          "area": null,
+          "sourceId": "4055"
+        },
+        {
+          "name": "South West 2",
+          "category": "Samithi",
+          "area": "New Delhi",
+          "sourceId": "8160",
+          "address": "223, P and T Colony,, Sector 6,  Rama Krishna Puram, P and T Colony, New Delhi, 110022",
+          "lat": 28.563345,
+          "lng": 77.169304
+        },
+        {
+          "name": "South West 3",
+          "category": "Samithi",
+          "area": null,
+          "sourceId": "3754"
+        },
+        {
+          "name": "South West 4",
+          "category": "Samithi",
+          "area": null,
+          "sourceId": "8159"
+        },
+        {
+          "name": "South West 5",
+          "category": "Samithi",
+          "area": null,
+          "sourceId": "4438"
+        }
+      ]
+    },
+    {
+      "name": "West",
+      "samithis": [
+        {
+          "name": "West 1",
+          "category": "Samithi",
+          "area": null,
+          "sourceId": "3446"
+        },
+        {
+          "name": "West 2",
+          "category": "Samithi",
+          "area": null,
+          "sourceId": "3815"
+        },
+        {
+          "name": "West 3",
+          "category": "Samithi",
+          "area": null,
+          "sourceId": "3617"
+        },
+        {
+          "name": "West 4",
+          "category": "Samithi",
+          "area": "New Delhi",
+          "sourceId": "3612",
+          "address": "165, Solanki Market, Block D,  Madhu Vihar, New Delhi, 110075",
+          "lat": 28.601754,
+          "lng": 77.060518
+        },
+        {
+          "name": "West 5",
+          "category": "Samithi",
+          "area": "Najafgarh",
+          "sourceId": "3519",
+          "address": "B-59, Arjun Park, Main Najafgarh Road, Near Gufa Mata Mandir, Najafgarh, 110043",
+          "lat": 28.623155,
+          "lng": 77.011811
+        },
+        {
+          "name": "West 6",
+          "category": "Samithi",
+          "area": "New Delhi",
+          "sourceId": "3964",
+          "address": "Dwarka Sector 9, Dwarka, Prashanti Dham Sai Mandir, Opp Center for Sight Hospital, New Delhi, 110077"
+        }
+      ]
+    },
+    {
+      "name": "Faridabad",
+      "samithis": [
+        {
+          "name": "Faridabad 1",
+          "category": "Samithi",
+          "area": null,
+          "sourceId": "4844"
+        },
+        {
+          "name": "Faridabad 3",
+          "category": "Samithi",
+          "area": "Faridabad",
+          "sourceId": "3817",
+          "address": "457, Block A, ADB PWD Colony,  Sector 16 A, Faridabad, 121002",
+          "lat": 28.407523,
+          "lng": 77.316546
+        },
+        {
+          "name": "Faridabad 5",
+          "category": "Samithi",
+          "area": null,
+          "sourceId": "4861"
+        },
+        {
+          "name": "Faridabad - 06",
+          "category": "Samithi",
+          "area": null,
+          "sourceId": "8408"
+        },
+        {
+          "name": "Faridabad-2",
+          "category": "Samithi",
+          "area": "Faridabad",
+          "sourceId": "3550",
+          "address": "B-33, Manglam Regency, Sector 21D, Near g b n school, Faridabad, 121012",
+          "lat": 28.425556,
+          "lng": 77.292368
+        },
+        {
+          "name": "Faridabad-4",
+          "category": "Samithi",
+          "area": "Faridabad",
+          "sourceId": "3699",
+          "address": "530 sec 37, 1st floor, Faridabad, 121003",
+          "lat": 28.470025,
+          "lng": 77.314669
+        }
+      ]
+    },
+    {
+      "name": "Gurugram",
+      "samithis": [
+        {
+          "name": "Gurugram 1",
+          "category": "Samithi",
+          "area": null,
+          "sourceId": "4224"
+        },
+        {
+          "name": "Gurugram 2",
+          "category": "Samithi",
+          "area": null,
+          "sourceId": "3807"
+        },
+        {
+          "name": "Gurugram 3",
+          "category": "Samithi",
+          "area": "Gurugram",
+          "sourceId": "4424",
+          "address": "7603, 2nd Floor, DLF Phase 4, Gurugram, 122009",
+          "lat": 28.460452,
+          "lng": 77.087646
+        },
+        {
+          "name": "Gurugram 4",
+          "category": "Samithi",
+          "area": null,
+          "sourceId": "4332"
+        },
+        {
+          "name": "Gurugram 5",
+          "category": "Samithi",
+          "area": null,
+          "sourceId": "4303"
+        },
+        {
+          "name": "Gurugram 6",
+          "category": "Samithi",
+          "area": null,
+          "sourceId": "8591"
+        },
+        {
+          "name": "Gurugram 7 Samithi",
+          "category": "Samithi",
+          "area": null,
+          "sourceId": "8386"
+        }
+      ]
+    },
+    {
+      "name": "Gautam Buddh Nagar",
+      "samithis": [
+        {
+          "name": "Gautam Budh Nagar 04",
+          "category": "Samithi",
+          "area": null,
+          "sourceId": "8506"
+        },
+        {
+          "name": "Gautam Budh Nagar 05",
+          "category": "Samithi",
+          "area": null,
+          "sourceId": "9536"
+        },
+        {
+          "name": "Gautam Budh Nagar -3",
+          "category": "Samithi",
+          "area": "Greater Noida",
+          "sourceId": "4824",
+          "address": "Stellar mi legacy, Zeta 1, Greater Noida, 201310",
+          "lat": 28.505118,
+          "lng": 77.521633
+        },
+        {
+          "name": "Gautambuddh Nagar 1",
+          "category": "Samithi",
+          "area": "Noida",
+          "sourceId": "3288",
+          "address": "Flat No.16-D, E-3 Shatabdi Vihar, Sector-52, Noida, Near SBI Bank, Noida, 201303",
+          "lat": 28.588776,
+          "lng": 77.365663
+        },
+        {
+          "name": "Gautambuddh Nagar 2",
+          "category": "Samithi",
+          "area": null,
+          "sourceId": "3752"
+        },
+        {
+          "name": "Greater Noida West",
+          "category": "Bhajan Mandali",
+          "area": null,
+          "sourceId": "8818"
+        }
+      ]
+    },
+    {
+      "name": "Ghaziabad",
+      "samithis": [
+        {
+          "name": "Ghaziabad 1",
+          "category": "Samithi",
+          "area": "Ghaziabad",
+          "sourceId": "3824",
+          "address": "C-102 A    Block C, Lajpat Nagar, Sahibabad, Shani Mandir,, Ghaziabad, 201005",
+          "lat": 28.685478,
+          "lng": 77.37236
+        },
+        {
+          "name": "Ghaziabad 2",
+          "category": "Samithi",
+          "area": "Ghaziabad",
+          "sourceId": "3611",
+          "address": "8/416, Swastik, SF-1, Sector-3, Rajendra Nagar, Sahibabad, Sector-3 Market, Ghaziabad, 201005",
+          "lat": 28.686282,
+          "lng": 77.362892
+        },
+        {
+          "name": "Ghaziabad 3",
+          "category": "Samithi",
+          "area": "Ghaziabad",
+          "sourceId": "3693",
+          "address": "P-45, Block B, Duplex Flats, Block P,  Sector 23,  Sanjay Nagar, Ghaziabad, 201002",
+          "lat": 28.689378,
+          "lng": 77.453194
+        },
+        {
+          "name": "Ghaziabad 4",
+          "category": "Samithi",
+          "area": null,
+          "sourceId": "3723"
+        },
+        {
+          "name": "Ghaziabad 5",
+          "category": "Samithi",
+          "area": null,
+          "sourceId": "5187"
+        }
+      ]
+    }
+  ],
+  "peripheralDistrictsListedUnderNcrRevenueDistricts": [
+    {
+      "name": "Bulandshahr",
+      "samithis": [
+        {
+          "name": "Anoopshahr",
+          "category": "Samithi",
+          "area": null,
+          "sourceId": "3940"
+        },
+        {
+          "name": "Dibai",
+          "category": "Samithi",
+          "area": null,
+          "sourceId": "5252"
+        },
+        {
+          "name": "Jahangir Pur",
+          "category": "Samithi",
+          "area": null,
+          "sourceId": "5205"
+        },
+        {
+          "name": "Pahasu",
+          "category": "Samithi",
+          "area": null,
+          "sourceId": "3802"
+        },
+        {
+          "name": "Pilakhana",
+          "category": "Samithi",
+          "area": null,
+          "sourceId": "3792"
+        },
+        {
+          "name": "Rahmapur",
+          "category": "Bhajan Mandali",
+          "area": null,
+          "sourceId": "8551"
+        },
+        {
+          "name": "Rehmapur",
+          "category": "Bhajan Mandali",
+          "area": null,
+          "sourceId": "5278"
+        },
+        {
+          "name": "Sadar",
+          "category": "Samithi",
+          "area": null,
+          "sourceId": "9500"
+        },
+        {
+          "name": "Shree Satya Sai Bhajan Mandali Kaser Klan",
+          "category": "Bhajan Mandali",
+          "area": null,
+          "sourceId": "8569"
+        }
+      ]
+    },
+    {
+      "name": "Palwal",
+      "samithis": [
+        {
+          "name": "Mewat",
+          "category": "Bhajan Mandali",
+          "area": null,
+          "sourceId": "5357"
+        },
+        {
+          "name": "Palwal",
+          "category": "Samithi",
+          "area": "Palwal",
+          "sourceId": "5349",
+          "address": "Db 1380/1, Shiv Colony, Near Modern School, Palwal, 121102",
+          "lat": 28.148434,
+          "lng": 77.335751
+        }
+      ]
+    },
+    {
+      "name": "Rewari",
+      "samithis": [
+        {
+          "name": "Kanina",
+          "category": "Bhajan Mandali",
+          "area": null,
+          "sourceId": "5425"
+        },
+        {
+          "name": "Mahender Garh",
+          "category": "Bhajan Mandali",
+          "area": null,
+          "sourceId": "5297"
+        },
+        {
+          "name": "Narnaul",
+          "category": "Samithi",
+          "area": null,
+          "sourceId": "5291"
+        },
+        {
+          "name": "Rewari",
+          "category": "Samithi",
+          "area": null,
+          "sourceId": "4983"
+        },
+        {
+          "name": "Samithi No. 2",
+          "category": "Samithi",
+          "area": null,
+          "sourceId": "4746"
+        }
+      ]
+    },
+    {
+      "name": "Rohtak",
+      "samithis": [
+        {
+          "name": "Bahadurgarh",
+          "category": "Samithi",
+          "area": null,
+          "sourceId": "3606"
+        },
+        {
+          "name": "Rohtak",
+          "category": "Samithi",
+          "area": null,
+          "sourceId": "5380"
+        },
+        {
+          "name": "Tej Colony Rohtak",
+          "category": "Bhajan Mandali",
+          "area": null,
+          "sourceId": "5415"
+        }
+      ]
+    },
+    {
+      "name": "Sonipat",
+      "samithis": [
+        {
+          "name": "Gannaur",
+          "category": "Bhajan Mandali",
+          "area": null,
+          "sourceId": "3195"
+        },
+        {
+          "name": "Kurar Ibrahimpur",
+          "category": "Bhajan Mandali",
+          "area": null,
+          "sourceId": "3339"
+        },
+        {
+          "name": "Mandaura",
+          "category": "Bhajan Mandali",
+          "area": null,
+          "sourceId": "3296"
+        },
+        {
+          "name": "Sonipat",
+          "category": "Samithi",
+          "area": null,
+          "sourceId": "3003"
+        }
+      ]
+    }
+  ],
+  "sources": [
+    "https://ssssoindia.org/find-a-samithi-bhajan-mandali/",
+    "https://ssssoindia.org/wp-admin/admin-ajax.php (POST action=get_filtered_data_by_id&id=10|13|33; action=get_filtered_data_by_distic_id&id=404-414,420,422,424,430,431,437,662,672,673)",
+    "https://saidelhi.org/ (counts: 10 districts, 55+ samithis/mandalis)"
+  ],
+  "retrieved": "2026-10-24",
+  "notes": "Convenor/president names and phones present in source were deliberately omitted. Most samithi records have no address or coordinates. Names are as published (title-cased)."
+}
