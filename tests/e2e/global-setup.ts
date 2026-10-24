@@ -48,6 +48,15 @@ export default async function globalSetup(config: FullConfig) {
     // State admin session saved for all admin specs (one OTP, avoids the rate limit).
     await apiLogin(api, "state_admin");
     await api.storageState({ path: AUTH_FILE });
+    // The Discourses flag defaults to on only under `next dev`; a production build starts with it off.
+    // The journeys need the feature on, so switch it on explicitly (idempotent) instead of relying on NODE_ENV.
+    const csrf = (await api.storageState()).cookies.find((c) => c.name === "csrf")?.value ?? "";
+    const cur = ((await (await api.get("/api/v1/admin/settings")).json()) as { data: { flags: { discourses: boolean }; version: number } }).data;
+    const on = cur.flags.discourses
+      ? { ok: () => true, status: () => 200, text: async () => "" }
+      : await api.patch("/api/v1/admin/settings", { data: { flags: { discourses: true }, version: cur.version }, headers: { "x-csrf": csrf } });
+    if (!on.ok()) throw new Error(`global-setup: enabling discourses flag failed ${on.status()} ${await on.text()}`);
+    data.discourseSlug = await first("/api/v1/discourses", "slug");
     data.admin = {
       eventId: await first("/api/v1/admin/events"),
       centreId: await first("/api/v1/admin/centres"),
