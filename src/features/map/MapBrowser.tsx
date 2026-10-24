@@ -22,20 +22,21 @@ export function MapBrowser({ pins, labels, children }: { pins: Pin[]; labels: Ma
   const t = useTranslations("map");
   const hydrated = useHydrated();
   const [showMap, setShowMap] = useState(false);
-  const canMap = hydrated && pins.length > 0;
+  // Layout is decided on the server (pins exist) so hydration does not reflow the list; only the map itself waits.
+  const canMap = pins.length > 0;
 
   return (
     <div className={styles.browser} data-map={canMap ? (showMap ? "open" : "closed") : "off"}>
       {canMap ? (
         <div className={styles.toggle}>
-          <Button variant="outline" size="sm" icon={showMap ? "list" : "map"} aria-pressed={showMap} onClick={() => setShowMap((v) => !v)}>
+          <Button variant="outline" size="sm" icon={showMap ? "list" : "map"} aria-pressed={showMap} disabled={!hydrated} onClick={() => setShowMap((v) => !v)}>
             {showMap ? t("showList") : t("showMap")}
           </Button>
         </div>
       ) : null}
       {canMap ? (
         <div className={styles.mapPane}>
-          <CentreMap pins={pins} labels={labels} />
+          {hydrated ? <CentreMap pins={pins} labels={labels} /> : <Skeleton width="100%" height={460} radius={12} />}
         </div>
       ) : null}
       <div className={styles.listPane}>{children}</div>
