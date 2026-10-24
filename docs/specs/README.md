@@ -94,7 +94,7 @@ Menu items a role can't use are hidden, not disabled.
   - Eye camp, 17 Oct 2026, Dr. Ambedkar Bhawan, Mayur Vihar Phase-1, with ICARE Eye Hospital.
   - 115 people registered and screened. 63 reading spectacles given: +1.0 ×12, +1.5 ×10, +2.0 ×20, +2.5 ×14, +3.0 ×7.
   - 13 cataract found.
-- **Districts (placeholder list until confirmed):** Central, East, New Delhi, North, South, West, Gurugram, Noida–Ghaziabad, Faridabad.
+- **Districts (real, 24 Oct 2026):** Central, East, North, South East, South West, West, Faridabad, Gurugram, Gautam Buddh Nagar, Ghaziabad.
 - **Names in mocks** must be obviously fictional and generic (e.g. "Coordinator A", "Samithi Mayur Vihar"). Never copy names from real registers.
 
 ## Feature flags

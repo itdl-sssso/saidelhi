@@ -26,11 +26,11 @@ describe("GET /org/units", () => {
   it("lists active districts, or the samithis of one district", async () => {
     const { svc } = mockServices();
     const districts = await svc.districts.units({ kind: "district" });
-    expect(districts).toHaveLength(9);
+    expect(districts).toHaveLength(10);
     for (const d of districts) OrgUnit.parse(d);
     expect(districts[0].kind).toBe("district");
     const east = await svc.districts.units({ kind: "samithi", district: "east" });
-    expect(east.map((u) => u.slug).sort()).toEqual(["laxmi-nagar", "mayur-vihar", "preet-vihar"]);
+    expect(east.map((u) => u.slug).sort()).toEqual(["east-1", "east-2", "east-3", "east-4", "east-5"]);
     expect(east.every((u) => u.kind === "samithi" && u.active)).toBe(true);
     const all = await svc.districts.units({ kind: "samithi" });
     expect(all.length).toBeGreaterThan(east.length);

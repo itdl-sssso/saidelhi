@@ -1,5 +1,6 @@
-// Placeholder districts (spec README) and fictional samithis/centres.
+// Real SSSSO Delhi NCR districts and samithis (src/server/data/sssso-units.json) plus fictional dev centres.
 import type { CentreRec, GatheringRec, OrgUnitRec, PartnerRec, SevaTypeRec } from "../../repo/types";
+import realUnits from "../../data/sssso-units.json";
 import { fx } from "./ids";
 
 const unit = (
@@ -33,54 +34,73 @@ export const NCR_ID = fx("ORG", 1);
 export const DISTRICT = {
   central: fx("ORG", 10),
   east: fx("ORG", 11),
-  newDelhi: fx("ORG", 12),
-  north: fx("ORG", 13),
-  south: fx("ORG", 14),
+  north: fx("ORG", 12),
+  southEast: fx("ORG", 13),
+  southWest: fx("ORG", 14),
   west: fx("ORG", 15),
-  gurugram: fx("ORG", 16),
-  noida: fx("ORG", 17),
-  faridabad: fx("ORG", 18),
+  faridabad: fx("ORG", 16),
+  gurugram: fx("ORG", 17),
+  gautamBuddhNagar: fx("ORG", 18),
+  ghaziabad: fx("ORG", 19),
 } as const;
 
+interface RealSamithi {
+  name: string;
+  nameHi: string;
+  slug: string;
+  code: string;
+  kind: string;
+  address?: string;
+  pincode?: string;
+  lat?: number;
+  lng?: number;
+}
+interface RealDistrict {
+  name: string;
+  nameHi: string;
+  slug: string;
+  code: string;
+  samithis: RealSamithi[];
+}
+const REAL = (realUnits as { districts: RealDistrict[] }).districts;
+const EAST_INTRO: [string, string] = [
+  "Samithis across East Delhi, running eye camps, food seva and Bal Vikas classes.",
+  "पूर्वी दिल्ली की समितियाँ, जो नेत्र शिविर, भोजन सेवा और बाल विकास कक्षाएँ चलाती हैं।",
+];
+const DISTRICT_IDS = Object.values(DISTRICT);
+
+/** Real samithis get ids fx("ORG", 200 + position) in file order. */
+const realSamithis = REAL.flatMap((d, di) => d.samithis.map((s) => ({ ...s, districtId: DISTRICT_IDS[di] })));
+const realId = (slug: string) => {
+  const i = realSamithis.findIndex((s) => s.slug === slug);
+  if (i < 0) throw new Error(`unknown samithi ${slug}`);
+  return fx("ORG", 200 + i);
+};
+
+/**
+ * Dev-fixture handles onto real samithis. Each fictional dev centre/event hangs off a real
+ * samithi that has no published address (so the map never shows two pins for one unit).
+ */
 export const SAMITHI = {
-  mayurVihar: fx("ORG", 100),
-  laxmiNagar: fx("ORG", 101),
-  preetVihar: fx("ORG", 102),
-  karolBagh: fx("ORG", 103),
-  lodhiRoad: fx("ORG", 104),
-  rohini: fx("ORG", 105),
-  saket: fx("ORG", 106),
-  dwarka: fx("ORG", 107),
-  gurugram31: fx("ORG", 108),
-  noida62: fx("ORG", 109),
-  faridabad: fx("ORG", 110),
+  mayurVihar: realId("east-3"),
+  laxmiNagar: realId("east-4"),
+  preetVihar: realId("east-5"),
+  karolBagh: realId("central-1"),
+  lodhiRoad: realId("south-east-2"),
+  rohini: realId("north-3"),
+  saket: realId("south-west-1"),
+  dwarka: realId("west-1"),
+  gurugram31: realId("gurugram-1"),
+  noida62: realId("gautam-buddh-nagar-2"),
+  faridabad: realId("faridabad-1"),
 } as const;
 
 export const orgUnits: OrgUnitRec[] = [
   unit(1, "ncr", "NCR", "delhi-ncr", "Delhi NCR", "दिल्ली एनसीआर", null),
-  unit(10, "district", "D-CEN", "central", "Central", "मध्य", NCR_ID, 1),
-  unit(11, "district", "D-EAS", "east", "East", "पूर्व", NCR_ID, 2, [
-    "Samithis across East Delhi, from Mayur Vihar to Laxmi Nagar, running eye camps, food seva and Bal Vikas classes.",
-    "मयूर विहार से लक्ष्मी नगर तक पूर्वी दिल्ली की समितियाँ, जो नेत्र शिविर, भोजन सेवा और बाल विकास कक्षाएँ चलाती हैं।",
-  ]),
-  unit(12, "district", "D-NDL", "new-delhi", "New Delhi", "नई दिल्ली", NCR_ID, 3),
-  unit(13, "district", "D-NOR", "north", "North", "उत्तर", NCR_ID, 4),
-  unit(14, "district", "D-SOU", "south", "South", "दक्षिण", NCR_ID, 5),
-  unit(15, "district", "D-WES", "west", "West", "पश्चिम", NCR_ID, 6),
-  unit(16, "district", "D-GUR", "gurugram", "Gurugram", "गुरुग्राम", NCR_ID, 7),
-  unit(17, "district", "D-NOG", "noida-ghaziabad", "Noida–Ghaziabad", "नोएडा–गाज़ियाबाद", NCR_ID, 8),
-  unit(18, "district", "D-FAR", "faridabad", "Faridabad", "फ़रीदाबाद", NCR_ID, 9),
-  unit(100, "samithi", "S-MAYUR", "mayur-vihar", "Samithi Mayur Vihar", "समिति मयूर विहार", DISTRICT.east),
-  unit(101, "samithi", "S-LAXMI", "laxmi-nagar", "Samithi Laxmi Nagar", "समिति लक्ष्मी नगर", DISTRICT.east),
-  unit(102, "samithi", "S-PREET", "preet-vihar", "Samithi Preet Vihar", "समिति प्रीत विहार", DISTRICT.east),
-  unit(103, "samithi", "S-KAROL", "karol-bagh", "Samithi Karol Bagh", "समिति करोल बाग", DISTRICT.central),
-  unit(104, "samithi", "S-LODHI", "lodhi-road", "Samithi Lodhi Road", "समिति लोधी रोड", DISTRICT.newDelhi),
-  unit(105, "samithi", "S-ROHINI", "rohini", "Samithi Rohini", "समिति रोहिणी", DISTRICT.north),
-  unit(106, "samithi", "S-SAKET", "saket", "Samithi Saket", "समिति साकेत", DISTRICT.south),
-  unit(107, "samithi", "S-DWARKA", "dwarka", "Samithi Dwarka", "समिति द्वारका", DISTRICT.west),
-  unit(108, "samithi", "S-GUR31", "gurugram-sector-31", "Samithi Gurugram Sector 31", "समिति गुरुग्राम सेक्टर 31", DISTRICT.gurugram),
-  unit(109, "samithi", "S-NOI62", "noida-sector-62", "Samithi Noida Sector 62", "समिति नोएडा सेक्टर 62", DISTRICT.noida),
-  unit(110, "samithi", "S-FARID", "faridabad-sector-15", "Samithi Faridabad Sector 15", "समिति फ़रीदाबाद सेक्टर 15", DISTRICT.faridabad),
+  ...REAL.map((d, i) =>
+    unit(10 + i, "district", `D-${d.code}`, d.slug, d.name, d.nameHi, NCR_ID, i + 1, d.slug === "east" ? EAST_INTRO : undefined),
+  ),
+  ...realSamithis.map((s, i) => unit(200 + i, "samithi", s.code, s.slug, s.name, s.nameHi, s.districtId, i + 1)),
 ];
 
 /** Icons follow the design-system Lucide vocabulary. */
@@ -150,6 +170,19 @@ export const centres: CentreRec[] = [
   centre(9, SAMITHI.gurugram31, "gurugram-sector-31", "Sai Centre Gurugram", "साई केंद्र गुरुग्राम", "Sector 31, Gurugram, Haryana", "सेक्टर 31, गुरुग्राम, हरियाणा", "122001", [28.4520, 77.0490]),
   centre(10, SAMITHI.noida62, "noida-sector-62", "Sai Centre Noida", "साई केंद्र नोएडा", "Sector 62, Noida, Uttar Pradesh", "सेक्टर 62, नोएडा, उत्तर प्रदेश", "201309", [28.6270, 77.3650]),
   centre(11, SAMITHI.faridabad, "faridabad-sector-15", "Sai Centre Faridabad", "साई केंद्र फ़रीदाबाद", "Sector 15, Faridabad, Haryana", "सेक्टर 15, फ़रीदाबाद, हरियाणा", "121007", [28.4010, 77.3150]),
+  // Real published samithi addresses and coordinates (only samithis that have both).
+  ...realSamithis.flatMap((s, i) =>
+    s.address && s.lat != null && s.lng != null
+      ? [
+          {
+            ...centre(100 + i, fx("ORG", 200 + i), s.slug, `${s.name} Samithi`, `समिति ${s.nameHi}`, s.address, s.address, s.pincode ?? "", [s.lat, s.lng]),
+            addressHi: null,
+            pincode: s.pincode ?? null,
+            contactPhone: null,
+          } satisfies CentreRec,
+        ]
+      : [],
+  ),
 ];
 
 let g = 0;

@@ -1,0 +1,687 @@
+{
+ "_meta": "Real SSSSO Delhi NCR structure, normalised from docs/data/sssso-delhi-ncr-units.json (retrieved 2026-10-24). Peripheral districts omitted.",
+ "districts": [
+  {
+   "name": "Central",
+   "nameHi": "मध्य",
+   "slug": "central",
+   "code": "CEN",
+   "samithis": [
+    {
+     "name": "Central 1",
+     "nameHi": "मध्य 1",
+     "slug": "central-1",
+     "code": "S-CEN1",
+     "num": 1,
+     "kind": "samithi",
+     "sourceId": "5300"
+    },
+    {
+     "name": "Central 2",
+     "nameHi": "मध्य 2",
+     "slug": "central-2",
+     "code": "S-CEN2",
+     "num": 2,
+     "kind": "samithi",
+     "sourceId": "3804"
+    },
+    {
+     "name": "Central 3",
+     "nameHi": "मध्य 3",
+     "slug": "central-3",
+     "code": "S-CEN3",
+     "num": 3,
+     "kind": "samithi",
+     "sourceId": "4964"
+    },
+    {
+     "name": "Central 4",
+     "nameHi": "मध्य 4",
+     "slug": "central-4",
+     "code": "S-CEN4",
+     "num": 4,
+     "kind": "samithi",
+     "sourceId": "5531"
+    },
+    {
+     "name": "Central 5",
+     "nameHi": "मध्य 5",
+     "slug": "central-5",
+     "code": "S-CEN5",
+     "num": 5,
+     "kind": "samithi",
+     "sourceId": "3661"
+    },
+    {
+     "name": "Central 6",
+     "nameHi": "मध्य 6",
+     "slug": "central-6",
+     "code": "S-CEN6",
+     "num": 6,
+     "kind": "samithi",
+     "sourceId": "3645",
+     "area": "New Delhi",
+     "address": "R-815, Block R, Rajender Nagar Part 1, New Rajinder Nagar, Near Parko dry cleaner, New Delhi, 110060",
+     "pincode": "110060",
+     "lat": 28.634855,
+     "lng": 77.179073
+    }
+   ]
+  },
+  {
+   "name": "East",
+   "nameHi": "पूर्व",
+   "slug": "east",
+   "code": "EAS",
+   "samithis": [
+    {
+     "name": "East 1",
+     "nameHi": "पूर्व 1",
+     "slug": "east-1",
+     "code": "S-EAS1",
+     "num": 1,
+     "kind": "samithi",
+     "sourceId": "3644",
+     "area": "Delhi",
+     "address": "D-64, Dilshad Colony New Simapuri, Dilshad Garden, Delhi, 110095",
+     "pincode": "110095",
+     "lat": 28.68929,
+     "lng": 77.323055
+    },
+    {
+     "name": "East 2",
+     "nameHi": "पूर्व 2",
+     "slug": "east-2",
+     "code": "S-EAS2",
+     "num": 2,
+     "kind": "samithi",
+     "sourceId": "5080",
+     "area": "Delhi",
+     "address": "DH 603, Abhimanyu Appartment, Vasundhara Enclave, Shaheed Raj Guru Collage, Delhi, 110096",
+     "pincode": "110096",
+     "lat": 28.601305,
+     "lng": 77.318452
+    },
+    {
+     "name": "East 3",
+     "nameHi": "पूर्व 3",
+     "slug": "east-3",
+     "code": "S-EAS3",
+     "num": 3,
+     "kind": "samithi",
+     "sourceId": "3656"
+    },
+    {
+     "name": "East 4",
+     "nameHi": "पूर्व 4",
+     "slug": "east-4",
+     "code": "S-EAS4",
+     "num": 4,
+     "kind": "samithi",
+     "sourceId": "3623"
+    },
+    {
+     "name": "East 5",
+     "nameHi": "पूर्व 5",
+     "slug": "east-5",
+     "code": "S-EAS5",
+     "num": 5,
+     "kind": "samithi",
+     "sourceId": "3898"
+    }
+   ]
+  },
+  {
+   "name": "North",
+   "nameHi": "उत्तर",
+   "slug": "north",
+   "code": "NOR",
+   "samithis": [
+    {
+     "name": "North 1",
+     "nameHi": "उत्तर 1",
+     "slug": "north-1",
+     "code": "S-NOR1",
+     "num": 1,
+     "kind": "samithi",
+     "sourceId": "3627",
+     "area": "Delhi",
+     "address": "G-3/65, Model Town 3, Phase 3, Model Town, Delhi, 110009",
+     "pincode": "110009",
+     "lat": 28.711191,
+     "lng": 77.182895
+    },
+    {
+     "name": "North 2",
+     "nameHi": "उत्तर 2",
+     "slug": "north-2",
+     "code": "S-NOR2",
+     "num": 2,
+     "kind": "samithi",
+     "sourceId": "3599"
+    },
+    {
+     "name": "North 3",
+     "nameHi": "उत्तर 3",
+     "slug": "north-3",
+     "code": "S-NOR3",
+     "num": 3,
+     "kind": "samithi",
+     "sourceId": "3999"
+    },
+    {
+     "name": "North 4",
+     "nameHi": "उत्तर 4",
+     "slug": "north-4",
+     "code": "S-NOR4",
+     "num": 4,
+     "kind": "samithi",
+     "sourceId": "3582",
+     "area": "Delhi",
+     "address": "A3-37, Pocket 3, Sector 3A, Rohini, Delhi, 110085",
+     "pincode": "110085",
+     "lat": 28.697784,
+     "lng": 77.10817
+    },
+    {
+     "name": "North 5",
+     "nameHi": "उत्तर 5",
+     "slug": "north-5",
+     "code": "S-NOR5",
+     "num": 5,
+     "kind": "samithi",
+     "sourceId": "3866"
+    }
+   ]
+  },
+  {
+   "name": "South East",
+   "nameHi": "दक्षिण-पूर्व",
+   "slug": "south-east",
+   "code": "SEA",
+   "samithis": [
+    {
+     "name": "South East 1",
+     "nameHi": "दक्षिण-पूर्व 1",
+     "slug": "south-east-1",
+     "code": "S-SEA1",
+     "num": 1,
+     "kind": "samithi",
+     "sourceId": "3529",
+     "area": "New Delhi",
+     "address": "L-497 Sarita Vihar, New Delhi, 110076",
+     "pincode": "110076",
+     "lat": 28.539394,
+     "lng": 77.295202
+    },
+    {
+     "name": "South East 2",
+     "nameHi": "दक्षिण-पूर्व 2",
+     "slug": "south-east-2",
+     "code": "S-SEA2",
+     "num": 2,
+     "kind": "samithi",
+     "sourceId": "4048"
+    },
+    {
+     "name": "South East 3",
+     "nameHi": "दक्षिण-पूर्व 3",
+     "slug": "south-east-3",
+     "code": "S-SEA3",
+     "num": 3,
+     "kind": "samithi",
+     "sourceId": "3797",
+     "area": "New Delhi",
+     "address": "182, Kailash Hills, New Delhi, 110065",
+     "pincode": "110065",
+     "lat": 28.563325,
+     "lng": 77.246872
+    },
+    {
+     "name": "South East 4",
+     "nameHi": "दक्षिण-पूर्व 4",
+     "slug": "south-east-4",
+     "code": "S-SEA4",
+     "num": 4,
+     "kind": "samithi",
+     "sourceId": "3714"
+    },
+    {
+     "name": "South East 5",
+     "nameHi": "दक्षिण-पूर्व 5",
+     "slug": "south-east-5",
+     "code": "S-SEA5",
+     "num": 5,
+     "kind": "samithi",
+     "sourceId": "3306"
+    }
+   ]
+  },
+  {
+   "name": "South West",
+   "nameHi": "दक्षिण-पश्चिम",
+   "slug": "south-west",
+   "code": "SWE",
+   "samithis": [
+    {
+     "name": "South West 1",
+     "nameHi": "दक्षिण-पश्चिम 1",
+     "slug": "south-west-1",
+     "code": "S-SWE1",
+     "num": 1,
+     "kind": "samithi",
+     "sourceId": "4055"
+    },
+    {
+     "name": "South West 2",
+     "nameHi": "दक्षिण-पश्चिम 2",
+     "slug": "south-west-2",
+     "code": "S-SWE2",
+     "num": 2,
+     "kind": "samithi",
+     "sourceId": "8160",
+     "area": "New Delhi",
+     "address": "223, P and T Colony, Sector 6, Rama Krishna Puram, P and T Colony, New Delhi, 110022",
+     "pincode": "110022",
+     "lat": 28.563345,
+     "lng": 77.169304
+    },
+    {
+     "name": "South West 3",
+     "nameHi": "दक्षिण-पश्चिम 3",
+     "slug": "south-west-3",
+     "code": "S-SWE3",
+     "num": 3,
+     "kind": "samithi",
+     "sourceId": "3754"
+    },
+    {
+     "name": "South West 4",
+     "nameHi": "दक्षिण-पश्चिम 4",
+     "slug": "south-west-4",
+     "code": "S-SWE4",
+     "num": 4,
+     "kind": "samithi",
+     "sourceId": "8159"
+    },
+    {
+     "name": "South West 5",
+     "nameHi": "दक्षिण-पश्चिम 5",
+     "slug": "south-west-5",
+     "code": "S-SWE5",
+     "num": 5,
+     "kind": "samithi",
+     "sourceId": "4438"
+    }
+   ]
+  },
+  {
+   "name": "West",
+   "nameHi": "पश्चिम",
+   "slug": "west",
+   "code": "WES",
+   "samithis": [
+    {
+     "name": "West 1",
+     "nameHi": "पश्चिम 1",
+     "slug": "west-1",
+     "code": "S-WES1",
+     "num": 1,
+     "kind": "samithi",
+     "sourceId": "3446"
+    },
+    {
+     "name": "West 2",
+     "nameHi": "पश्चिम 2",
+     "slug": "west-2",
+     "code": "S-WES2",
+     "num": 2,
+     "kind": "samithi",
+     "sourceId": "3815"
+    },
+    {
+     "name": "West 3",
+     "nameHi": "पश्चिम 3",
+     "slug": "west-3",
+     "code": "S-WES3",
+     "num": 3,
+     "kind": "samithi",
+     "sourceId": "3617"
+    },
+    {
+     "name": "West 4",
+     "nameHi": "पश्चिम 4",
+     "slug": "west-4",
+     "code": "S-WES4",
+     "num": 4,
+     "kind": "samithi",
+     "sourceId": "3612",
+     "area": "New Delhi",
+     "address": "165, Solanki Market, Block D, Madhu Vihar, New Delhi, 110075",
+     "pincode": "110075",
+     "lat": 28.601754,
+     "lng": 77.060518
+    },
+    {
+     "name": "West 5",
+     "nameHi": "पश्चिम 5",
+     "slug": "west-5",
+     "code": "S-WES5",
+     "num": 5,
+     "kind": "samithi",
+     "sourceId": "3519",
+     "area": "Najafgarh",
+     "address": "B-59, Arjun Park, Main Najafgarh Road, Near Gufa Mata Mandir, Najafgarh, 110043",
+     "pincode": "110043",
+     "lat": 28.623155,
+     "lng": 77.011811
+    },
+    {
+     "name": "West 6",
+     "nameHi": "पश्चिम 6",
+     "slug": "west-6",
+     "code": "S-WES6",
+     "num": 6,
+     "kind": "samithi",
+     "sourceId": "3964",
+     "area": "New Delhi",
+     "address": "Dwarka Sector 9, Dwarka, Prashanti Dham Sai Mandir, Opp Center for Sight Hospital, New Delhi, 110077",
+     "pincode": "110077"
+    }
+   ]
+  },
+  {
+   "name": "Faridabad",
+   "nameHi": "फ़रीदाबाद",
+   "slug": "faridabad",
+   "code": "FAR",
+   "samithis": [
+    {
+     "name": "Faridabad 1",
+     "nameHi": "फ़रीदाबाद 1",
+     "slug": "faridabad-1",
+     "code": "S-FAR1",
+     "num": 1,
+     "kind": "samithi",
+     "sourceId": "4844"
+    },
+    {
+     "name": "Faridabad 2",
+     "nameHi": "फ़रीदाबाद 2",
+     "slug": "faridabad-2",
+     "code": "S-FAR2",
+     "num": 2,
+     "kind": "samithi",
+     "sourceId": "3550",
+     "area": "Faridabad",
+     "address": "B-33, Manglam Regency, Sector 21D, Near g b n school, Faridabad, 121012",
+     "pincode": "121012",
+     "lat": 28.425556,
+     "lng": 77.292368
+    },
+    {
+     "name": "Faridabad 3",
+     "nameHi": "फ़रीदाबाद 3",
+     "slug": "faridabad-3",
+     "code": "S-FAR3",
+     "num": 3,
+     "kind": "samithi",
+     "sourceId": "3817",
+     "area": "Faridabad",
+     "address": "457, Block A, ADB PWD Colony, Sector 16 A, Faridabad, 121002",
+     "pincode": "121002",
+     "lat": 28.407523,
+     "lng": 77.316546
+    },
+    {
+     "name": "Faridabad 4",
+     "nameHi": "फ़रीदाबाद 4",
+     "slug": "faridabad-4",
+     "code": "S-FAR4",
+     "num": 4,
+     "kind": "samithi",
+     "sourceId": "3699",
+     "area": "Faridabad",
+     "address": "530 sec 37, 1st floor, Faridabad, 121003",
+     "pincode": "121003",
+     "lat": 28.470025,
+     "lng": 77.314669
+    },
+    {
+     "name": "Faridabad 5",
+     "nameHi": "फ़रीदाबाद 5",
+     "slug": "faridabad-5",
+     "code": "S-FAR5",
+     "num": 5,
+     "kind": "samithi",
+     "sourceId": "4861"
+    },
+    {
+     "name": "Faridabad 6",
+     "nameHi": "फ़रीदाबाद 6",
+     "slug": "faridabad-6",
+     "code": "S-FAR6",
+     "num": 6,
+     "kind": "samithi",
+     "sourceId": "8408"
+    }
+   ]
+  },
+  {
+   "name": "Gurugram",
+   "nameHi": "गुरुग्राम",
+   "slug": "gurugram",
+   "code": "GUR",
+   "samithis": [
+    {
+     "name": "Gurugram 1",
+     "nameHi": "गुरुग्राम 1",
+     "slug": "gurugram-1",
+     "code": "S-GUR1",
+     "num": 1,
+     "kind": "samithi",
+     "sourceId": "4224"
+    },
+    {
+     "name": "Gurugram 2",
+     "nameHi": "गुरुग्राम 2",
+     "slug": "gurugram-2",
+     "code": "S-GUR2",
+     "num": 2,
+     "kind": "samithi",
+     "sourceId": "3807"
+    },
+    {
+     "name": "Gurugram 3",
+     "nameHi": "गुरुग्राम 3",
+     "slug": "gurugram-3",
+     "code": "S-GUR3",
+     "num": 3,
+     "kind": "samithi",
+     "sourceId": "4424",
+     "area": "Gurugram",
+     "address": "7603, 2nd Floor, DLF Phase 4, Gurugram, 122009",
+     "pincode": "122009",
+     "lat": 28.460452,
+     "lng": 77.087646
+    },
+    {
+     "name": "Gurugram 4",
+     "nameHi": "गुरुग्राम 4",
+     "slug": "gurugram-4",
+     "code": "S-GUR4",
+     "num": 4,
+     "kind": "samithi",
+     "sourceId": "4332"
+    },
+    {
+     "name": "Gurugram 5",
+     "nameHi": "गुरुग्राम 5",
+     "slug": "gurugram-5",
+     "code": "S-GUR5",
+     "num": 5,
+     "kind": "samithi",
+     "sourceId": "4303"
+    },
+    {
+     "name": "Gurugram 6",
+     "nameHi": "गुरुग्राम 6",
+     "slug": "gurugram-6",
+     "code": "S-GUR6",
+     "num": 6,
+     "kind": "samithi",
+     "sourceId": "8591"
+    },
+    {
+     "name": "Gurugram 7",
+     "nameHi": "गुरुग्राम 7",
+     "slug": "gurugram-7",
+     "code": "S-GUR7",
+     "num": 7,
+     "kind": "samithi",
+     "sourceId": "8386"
+    }
+   ]
+  },
+  {
+   "name": "Gautam Buddh Nagar",
+   "nameHi": "गौतम बुद्ध नगर",
+   "slug": "gautam-buddh-nagar",
+   "code": "GBN",
+   "samithis": [
+    {
+     "name": "Gautam Buddh Nagar 1",
+     "nameHi": "गौतम बुद्ध नगर 1",
+     "slug": "gautam-buddh-nagar-1",
+     "code": "S-GBN1",
+     "num": 1,
+     "kind": "samithi",
+     "sourceId": "3288",
+     "area": "Noida",
+     "address": "Flat No.16-D, E-3 Shatabdi Vihar, Sector-52, Noida, Near SBI Bank, Noida, 201303",
+     "pincode": "201303",
+     "lat": 28.588776,
+     "lng": 77.365663
+    },
+    {
+     "name": "Gautam Buddh Nagar 2",
+     "nameHi": "गौतम बुद्ध नगर 2",
+     "slug": "gautam-buddh-nagar-2",
+     "code": "S-GBN2",
+     "num": 2,
+     "kind": "samithi",
+     "sourceId": "3752"
+    },
+    {
+     "name": "Gautam Buddh Nagar 3",
+     "nameHi": "गौतम बुद्ध नगर 3",
+     "slug": "gautam-buddh-nagar-3",
+     "code": "S-GBN3",
+     "num": 3,
+     "kind": "samithi",
+     "sourceId": "4824",
+     "area": "Greater Noida",
+     "address": "Stellar mi legacy, Zeta 1, Greater Noida, 201310",
+     "pincode": "201310",
+     "lat": 28.505118,
+     "lng": 77.521633
+    },
+    {
+     "name": "Gautam Buddh Nagar 4",
+     "nameHi": "गौतम बुद्ध नगर 4",
+     "slug": "gautam-buddh-nagar-4",
+     "code": "S-GBN4",
+     "num": 4,
+     "kind": "samithi",
+     "sourceId": "8506"
+    },
+    {
+     "name": "Gautam Buddh Nagar 5",
+     "nameHi": "गौतम बुद्ध नगर 5",
+     "slug": "gautam-buddh-nagar-5",
+     "code": "S-GBN5",
+     "num": 5,
+     "kind": "samithi",
+     "sourceId": "9536"
+    },
+    {
+     "name": "Greater Noida West",
+     "nameHi": "ग्रेटर नोएडा वेस्ट",
+     "slug": "greater-noida-west",
+     "code": "S-GBN-GNW",
+     "num": 99,
+     "kind": "bhajan_mandali",
+     "sourceId": "8818"
+    }
+   ]
+  },
+  {
+   "name": "Ghaziabad",
+   "nameHi": "गाज़ियाबाद",
+   "slug": "ghaziabad",
+   "code": "GHA",
+   "samithis": [
+    {
+     "name": "Ghaziabad 1",
+     "nameHi": "गाज़ियाबाद 1",
+     "slug": "ghaziabad-1",
+     "code": "S-GHA1",
+     "num": 1,
+     "kind": "samithi",
+     "sourceId": "3824",
+     "area": "Ghaziabad",
+     "address": "C-102 A Block C, Lajpat Nagar, Sahibabad, Shani Mandir, Ghaziabad, 201005",
+     "pincode": "201005",
+     "lat": 28.685478,
+     "lng": 77.37236
+    },
+    {
+     "name": "Ghaziabad 2",
+     "nameHi": "गाज़ियाबाद 2",
+     "slug": "ghaziabad-2",
+     "code": "S-GHA2",
+     "num": 2,
+     "kind": "samithi",
+     "sourceId": "3611",
+     "area": "Ghaziabad",
+     "address": "8/416, Swastik, SF-1, Sector-3, Rajendra Nagar, Sahibabad, Sector-3 Market, Ghaziabad, 201005",
+     "pincode": "201005",
+     "lat": 28.686282,
+     "lng": 77.362892
+    },
+    {
+     "name": "Ghaziabad 3",
+     "nameHi": "गाज़ियाबाद 3",
+     "slug": "ghaziabad-3",
+     "code": "S-GHA3",
+     "num": 3,
+     "kind": "samithi",
+     "sourceId": "3693",
+     "area": "Ghaziabad",
+     "address": "P-45, Block B, Duplex Flats, Block P, Sector 23, Sanjay Nagar, Ghaziabad, 201002",
+     "pincode": "201002",
+     "lat": 28.689378,
+     "lng": 77.453194
+    },
+    {
+     "name": "Ghaziabad 4",
+     "nameHi": "गाज़ियाबाद 4",
+     "slug": "ghaziabad-4",
+     "code": "S-GHA4",
+     "num": 4,
+     "kind": "samithi",
+     "sourceId": "3723"
+    },
+    {
+     "name": "Ghaziabad 5",
+     "nameHi": "गाज़ियाबाद 5",
+     "slug": "ghaziabad-5",
+     "code": "S-GHA5",
+     "num": 5,
+     "kind": "samithi",
+     "sourceId": "5187"
+    }
+   ]
+  }
+ ]
+}
