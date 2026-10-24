@@ -11,7 +11,12 @@ const OPTIONS: Array<{ locale: Locale; label: string; name: string }> = [
   { locale: "en", label: "EN", name: "English" },
 ];
 
-/** Same page in the other language, keeping the query string (filters, ?next=). */
+/**
+ * Same page in the other language, keeping the query string (filters, ?next=).
+ * No prefetch: the shell is prerendered without the query, so the link first points at the bare path, and the
+ * explicit-locale href (`/en/admin/x`, always prefixed) is a 307 -> 307 chain to the unprefixed URL whose postponed
+ * RSC body never completes in the browser (networkidle waited ~30s). A language switch is a rare click anyway.
+ */
 export function LanguageSwitch() {
   const t = useTranslations("nav");
   const locale = useLocale();
@@ -25,6 +30,7 @@ export function LanguageSwitch() {
           key={o.locale}
           href={href}
           locale={o.locale}
+          prefetch={false}
           lang={o.locale}
           hrefLang={o.locale}
           className={langStyles.option}
