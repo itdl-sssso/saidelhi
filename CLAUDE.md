@@ -2,7 +2,7 @@
 
 # SSSSO Delhi NCR platform — project state & handoff
 
-Rebuild of saidelhi.org (Sri Sathya Sai Seva Organisation, Delhi NCR): bilingual public site + coordinator portal (`/admin`) + event form links (`/f/<token>`) + WhatsApp bot. Last updated **23 Oct 2026** (M6 done).
+Rebuild of saidelhi.org (Sri Sathya Sai Seva Organisation, Delhi NCR): bilingual public site + coordinator portal (`/admin`) + event form links (`/f/<token>`) + WhatsApp bot. Last updated **24 Oct 2026** (M7 done).
 
 ## Read these first
 | File | What |
@@ -44,11 +44,11 @@ Run `pnpm db:seed` before `pnpm test` if the DB was mutated by a walkthrough (li
 | M4 | WhatsApp bot flows + webhook + reminders, extractor (rules + SmolLM via Ollama), Review inbox, WhatsApp admin, opt-in endpoint, dev simulator `/dev/whatsapp`, proxy 404s | ✅ | ✅ walkthrough done | see git log (merges `30e2bf2`…) |
 | M5 | Public P1: Values ×5, About, Programs, Program, News/Article, Join (number+QR+opt-in form), Map (Leaflet+OSM), District, legacy 301 redirects (`redirect` table, migration 0005), sitemap/robots, legacy polish | ✅ | ✅ | merges `08e80b2`…`4127b36` + integration |
 | M6 | Portal P1: form templates/builder, uploads (xlsx), centres, partners, content (native `article`, tiptap), impact controls, migration, volunteers, reports/exports, health, follow-up, privacy, settings; crons publish-scheduled/monthly-report/retention | ✅ | ✅ | merges `556cd5e` + integration |
-| M7 | Discourses (flag) import + pages + workspace; a11y/perf pass; Playwright e2e | ⬜ | ⬜ | |
+| M7 | Discourses (flag) import + pages + workspace; a11y/perf pass; Playwright e2e (`pnpm e2e:journeys`, `e2e:a11y`, `e2e:perf`) | ✅ | ✅ | merges `df5cb12`…`c0825d8` + fixes |
 
 ### Immediate next steps (in order)
-1. **M7** (scope decided 23 Oct: full). Run straight through without pausing between milestones.
-2. After M7: **UI feedback session with user** (user 23 Oct: UI mismatches vs design, at least Home page).
+1. **UI feedback session with user** (user 23 Oct: UI mismatches vs design, at least Home page first).
+2. Then TODO(user) items below (real districts/coords, WhatsApp creds + public number, About text, Sadhana Trust permission for discourses).
 
 ### Known open issues
 - In-process rate limits and bot-challenge reuse (single node only).
@@ -58,6 +58,7 @@ Run `pnpm db:seed` before `pnpm test` if the DB was mutated by a walkthrough (li
 - Hindi hero/value copy + all M5 HI strings written by an agent — needs native review (value prose shows EN with notice until `HI_PROSE_READY`).
 - M5 TODO(user): `WHATSAPP_PUBLIC_NUMBER`, real districts + centre coords, NCR pincode table (approx, `src/server/data/ncr-pincodes.json`), About contact/auditorium/founder text+photo, llms.txt.
 - M6 leftovers: new entities stored as JSON doc tables (`repo.m6`, migrations 0006/0007); monthly PDF ASCII-only (Hindi → `?`, needs Devanagari font); centre photo EXIF not stripped; privacy `PR-nnnn` ref derived by order (unstable if deleted); redirects cache 5 min; retention purge only tested on mock repo; 375px/`/hi` not fully browser-checked on all M6 pages (cover in M7 a11y pass).
+- M7 leftovers: `discourses` flag defaults ON only in development (prod stays off until Sadhana Trust written permission); e2e global-setup turns it on via settings API. Discourse audio/video deferred. `tests/e2e/known.ts` empty (a11y 230/230, perf 20/20 budgets). Home CLS 0.074 (<0.1). M6 portal pages got automated 375px overflow check only, no manual /hi pass. Redirect journey slow (~31s, uninvestigated). e2e global-setup reseeds shared DB (wipes sessions) — run `pnpm db:seed` before `pnpm test` after e2e. Dev server sometimes dies during long e2e runs → agents used `pnpm build && pnpm start` for e2e.
 - Dev: if `next dev` hangs on "Compiling" after merges/new deps → `rm -rf .next/dev` and restart.
 - Root-owned stale dir `.claude/worktrees/agent-aec2e1a718ded6454` (Docker-created) — `sudo rm -rf` it.
 
