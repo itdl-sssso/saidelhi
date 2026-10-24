@@ -14,7 +14,8 @@ import os from "node:os";
 import path from "node:path";
 import { closeDb, getDb } from "../src/server/db/client";
 import { DiscourseCatalog, parseDiscourse, parseGlossary } from "../src/server/domain/discourse-import";
-import { importDiscourses, publishSamples } from "../src/server/services/discourse-import";
+import { MediaIndex, mediaForEntry } from "../src/server/domain/discourse-media-import";
+import { importDiscourseMedia, importDiscourses, publishSamples } from "../src/server/services/discourse-import";
 
 const DEFAULT_DIR = path.join(os.homedir(), "Claude", "sssso-platform", "discourses");
 
@@ -54,6 +55,13 @@ export async function runImport(opts: { dir?: string; dryRun?: boolean; publish?
   const db = getDb();
   const stats = await importDiscourses(db, items, glossary, { dryRun: opts.dryRun });
   console.log(`${opts.dryRun ? "[dry-run] " : ""}discourses: ${files.length} files, ${JSON.stringify(stats)}`);
+  // Media (audio/video URLs) from <base>/media/index.json; optional.
+  const mediaPath = path.join(dirs.base, "media", "index.json");
+  if (existsSync(mediaPath)) {
+    const index = MediaIndex.parse(readJson(mediaPath));
+    const m = await importDiscourseMedia(db, index.map((e) => ({ n: e.n, media: mediaForEntry(e) })), { dryRun: opts.dryRun });
+    console.log(`${opts.dryRun ? "[dry-run] " : ""}discourse media: ${JSON.stringify(m)}`);
+  } else console.log(`No media/index.json in ${dirs.base}: audio/video not imported.`);
   if (opts.publish && !opts.dryRun) {
     const slugs = await publishSamples(db, opts.publish, new Date());
     console.log(`published ${slugs.length} sample discourse(s) for dev (flag stays as set in Settings).`);

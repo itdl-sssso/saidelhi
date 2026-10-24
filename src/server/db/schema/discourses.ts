@@ -1,4 +1,4 @@
-import { date, index, int, json, longtext, mysqlTable, text, timestamp, uniqueIndex, varchar } from "drizzle-orm/mysql-core";
+import { boolean, date, index, int, json, longtext, mysqlTable, text, timestamp, uniqueIndex, varchar } from "drizzle-orm/mysql-core";
 import type { Discourse, DiscourseBlockStatus, DiscourseBlockType, DiscourseStatus, DiscourseTheme } from "@/contract";
 import { idPk, idRef, timestamps } from "../columns";
 import { appUser } from "./auth";
@@ -66,3 +66,30 @@ export const discourseGlossary = mysqlTable("discourse_glossary", {
   hi: varchar("hi", { length: 200 }).notNull(),
   gloss: text("gloss"),
 });
+
+/** Audio/video recordings of a discourse (M7.1). URLs only: nothing is downloaded or hosted. */
+export const discourseMedia = mysqlTable(
+  "discourse_media",
+  {
+    id: idPk(),
+    discourseId: idRef("discourse_id")
+      .notNull()
+      .references(() => discourse.id, { onDelete: "cascade" }),
+    kind: varchar("kind", { length: 8 }).$type<"audio" | "video">().notNull(),
+    provider: varchar("provider", { length: 12 }).$type<"radiosai" | "youtube">().notNull(),
+    url: varchar("url", { length: 500 }).notNull(),
+    externalId: varchar("external_id", { length: 40 }),
+    title: varchar("title", { length: 300 }).notNull().default(""),
+    channel: varchar("channel", { length: 200 }),
+    durationS: int("duration_s"),
+    recordedDate: date("recorded_date", { mode: "string" }),
+    official: boolean("official").notNull().default(false),
+    confidence: varchar("confidence", { length: 8 }).$type<"high" | "medium" | "low">(),
+    score: int("score"),
+    sourcePage: varchar("source_page", { length: 500 }),
+    approved: boolean("approved").notNull().default(false),
+    sort: int("sort").notNull().default(0),
+    ...timestamps(),
+  },
+  (t) => [uniqueIndex("discourse_media_uq").on(t.discourseId, t.url), index("discourse_media_idx").on(t.discourseId, t.sort)],
+);

@@ -2985,7 +2985,29 @@
       "footer": "SSSSO Delhi NCR · saidelhi.org/discourses",
       "quoteNoHi": "Add the Hindi for this card first.",
       "close": "Close",
-      "empty2": "No paragraphs."
+      "empty2": "No paragraphs.",
+      "media": {
+        "title": "Audio and video",
+        "count": "{n} of {total} shown",
+        "help": "Check each link is this talk, then approve it. Approved items appear on the public page straight away, without republishing.",
+        "empty": "No recordings found for this discourse.",
+        "kind": {
+          "audio": "Audio",
+          "video": "Video"
+        },
+        "confidence": {
+          "high": "High match",
+          "medium": "Medium match",
+          "low": "Low match",
+          "official": "Official audio"
+        },
+        "approved": "Shown",
+        "hidden": "Hidden",
+        "approve": "Approve",
+        "hide": "Hide",
+        "unofficial": "Unofficial",
+        "newTab": "(opens in a new tab)"
+      }
     }
   },
   "news": {
@@ -3536,6 +3558,25 @@
       "shanti": "Shanti (Peace)",
       "prema": "Prema (Love)",
       "ahimsa": "Ahimsa (Non-violence)"
+    },
+    "media": {
+      "title": "Listen and watch",
+      "note": "Recordings of this talk, in the language it was spoken. They open only when you press play.",
+      "audio": "Audio",
+      "video": "Video",
+      "audioFallback": "Audio recording",
+      "videoFallback": "Video recording",
+      "audioLabel": "Audio player: {title}",
+      "audioCredit": "Audio from the Sri Sathya Sai Media Centre",
+      "audioSource": "Media Centre page",
+      "playLabel": "Play video: {title}",
+      "channel": "Channel: {channel}",
+      "duration": "{count} min",
+      "loadNote": "The video loads from YouTube only after you press play.",
+      "privacy": "Playing from YouTube (privacy mode).",
+      "unofficial": "Unofficial recording, shared by a centre or devotee. It is not published by the Sri Sathya Sai Media Centre.",
+      "openYoutube": "Open on YouTube",
+      "newTab": "(opens in a new tab)"
     }
   }
 }

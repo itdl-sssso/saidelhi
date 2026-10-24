@@ -1,12 +1,14 @@
 import type { GlossaryTerm } from "@/contract";
-import { type DiscourseFixture, discourseFixtures, discourseGlossaryFixture } from "../mock/fixtures/discourses";
+import { type DiscourseFixture, discourseFixtures, discourseGlossaryFixture, discourseMediaFixtures } from "../mock/fixtures/discourses";
 import type { AuditRec } from "./types";
-import type { DiscourseAdminRow, DiscourseBlockRec, DiscourseChange, DiscourseRec, DiscourseRepo, PublishedDiscourse } from "./discourse-types";
+import type { DiscourseAdminRow, DiscourseBlockRec, DiscourseChange, DiscourseMediaRec, DiscourseRec, DiscourseRepo, PublishedDiscourse } from "./discourse-types";
 
 /** In-memory discourse store over the synthetic fixtures. */
 export class MemoryDiscourseRepo implements DiscourseRepo {
   readonly items: DiscourseFixture[] = discourseFixtures();
   readonly glossaryTerms: GlossaryTerm[] = structuredClone(discourseGlossaryFixture);
+
+  readonly media: DiscourseMediaRec[] = discourseMediaFixtures();
 
   constructor(private readonly pushAudit: (rec: AuditRec) => Promise<void> = async () => {}) {}
 
@@ -77,6 +79,24 @@ export class MemoryDiscourseRepo implements DiscourseRepo {
       if (c.hi !== undefined) b.hi = c.hi;
       if (c.status !== undefined) b.status = c.status;
     }
+    for (const a of audit) await this.pushAudit(a);
+    return "ok" as const;
+  }
+
+  async mediaFor(discourseId: string) {
+    return structuredClone(this.media.filter((m) => m.discourseId === discourseId).sort((a, b) => a.sort - b.sort));
+  }
+
+  async approvedMediaBySlug(slug: string) {
+    const f = this.items.find((x) => x.rec.slug === slug);
+    if (!f) return [];
+    return structuredClone(this.media.filter((m) => m.discourseId === f.rec.id && m.approved).sort((a, b) => a.sort - b.sort));
+  }
+
+  async updateMedia(discourseId: string, mediaId: string, change: { approved?: boolean; sort?: number }, audit: AuditRec[]) {
+    const m = this.media.find((x) => x.id === mediaId && x.discourseId === discourseId);
+    if (!m) return "missing" as const;
+    Object.assign(m, change);
     for (const a of audit) await this.pushAudit(a);
     return "ok" as const;
   }

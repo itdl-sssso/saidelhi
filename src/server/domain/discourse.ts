@@ -1,7 +1,7 @@
 // Pure discourse rules shared by the importer, the public service and (B2) the workspace.
-import type { Discourse, DiscourseTheme } from "@/contract";
+import type { AdminDiscourseMedia, Discourse, DiscourseMedia, DiscourseTheme } from "@/contract";
 import { DISCOURSE_THEMES } from "@/contract";
-import type { DiscourseBlockRec, DiscourseRec } from "../repo/discourse-types";
+import type { DiscourseBlockRec, DiscourseMediaRec, DiscourseRec } from "../repo/discourse-types";
 
 const MONTHS = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
 
@@ -59,4 +59,30 @@ export function buildSnapshot(rec: DiscourseRec, blocks: readonly DiscourseBlock
     blocks: [...blocks].sort((a, b) => a.idx - b.idx).map((b) => ({ id: b.blockId, type: b.type, en: b.en, hi: b.hi })),
     quotes: rec.quotes,
   };
+}
+
+/** Public media DTO: approved rows only; drops workspace-only fields. */
+export function publicMedia(rows: readonly DiscourseMediaRec[]): DiscourseMedia[] {
+  return rows
+    .filter((m) => m.approved)
+    .sort((a, b) => a.sort - b.sort)
+    .map(toMedia);
+}
+
+const toMedia = (m: DiscourseMediaRec): DiscourseMedia => ({
+  id: m.id,
+  kind: m.kind,
+  provider: m.provider,
+  url: m.url,
+  externalId: m.externalId,
+  title: m.title,
+  channel: m.channel,
+  durationS: m.durationS,
+  recordedDate: m.recordedDate,
+  official: m.official,
+  sourcePage: m.sourcePage,
+});
+
+export function adminMedia(rows: readonly DiscourseMediaRec[]): AdminDiscourseMedia[] {
+  return [...rows].sort((a, b) => a.sort - b.sort).map((m) => ({ ...toMedia(m), approved: m.approved, confidence: m.confidence, score: m.score, sort: m.sort }));
 }

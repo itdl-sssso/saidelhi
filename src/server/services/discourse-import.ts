@@ -3,9 +3,10 @@ import { eq } from "drizzle-orm";
 import { type GlossaryTerm, QUOTES_MIN } from "@/contract";
 import type { Db } from "../db/client";
 import { newId } from "../db/columns";
-import { discourse, discourseBlock, discourseGlossary } from "../db/tables";
+import { discourse, discourseBlock, discourseGlossary, discourseMedia } from "../db/tables";
 import { buildSnapshot } from "../domain/discourse";
 import { type ImportedDiscourse, uniqueSlug } from "../domain/discourse-import";
+import type { ImportedMedia } from "../domain/discourse-media-import";
 
 export interface ImportStats {
   created: number;
@@ -139,4 +140,59 @@ export async function publishSamples(db: Db, count: number, now: Date): Promise<
 
 function pick(row: Record<string, unknown>, keys: string[]) {
   return Object.fromEntries(keys.map((k) => [k, row[k]]));
+}
+
+export interface MediaImportStats {
+  created: number;
+  updated: number;
+  unchanged: number;
+  /** Index entries whose `n` is not an imported discourse. */
+  unmatched: number;
+  audio: number;
+  video: number;
+  /** Rows approved after the import (defaults + earlier coordinator choices). */
+  approved: number;
+}
+
+/**
+ * Idempotent: rows are keyed by (discourse, url). Metadata is refreshed; `approved` and `sort` are kept
+ * once a row exists (a coordinator's choice survives re-import).
+ */
+export async function importDiscourseMedia(
+  db: Db,
+  entries: readonly { n: number; media: readonly ImportedMedia[] }[],
+  opts: { dryRun?: boolean } = {},
+): Promise<MediaImportStats> {
+  const stats: MediaImportStats = { created: 0, updated: 0, unchanged: 0, unmatched: 0, audio: 0, video: 0, approved: 0 };
+  const idByN = new Map((await db.select({ id: discourse.id, n: discourse.n }).from(discourse)).map((r) => [r.n, r.id]));
+  const have = await db.select().from(discourseMedia);
+  const byKey = new Map(have.map((r) => [`${r.discourseId}\n${r.url}`, r]));
+  for (const e of entries) {
+    const did = idByN.get(e.n);
+    if (!did) {
+      stats.unmatched++;
+      continue;
+    }
+    for (const m of e.media) {
+      const cur = byKey.get(`${did}\n${m.url}`);
+      const { approved, sort, ...meta } = m;
+      if (m.kind === "audio") stats.audio++;
+      else stats.video++;
+      if (!cur) {
+        stats.created++;
+        if (approved) stats.approved++;
+        if (!opts.dryRun) await db.insert(discourseMedia).values({ discourseId: did, ...meta, approved, sort });
+        continue;
+      }
+      if (cur.approved) stats.approved++;
+      const dirty = (Object.keys(meta) as (keyof typeof meta)[]).some((k) => (cur[k] ?? null) !== (meta[k] ?? null));
+      if (!dirty) {
+        stats.unchanged++;
+        continue;
+      }
+      stats.updated++;
+      if (!opts.dryRun) await db.update(discourseMedia).set(meta).where(eq(discourseMedia.id, cur.id));
+    }
+  }
+  return stats;
 }

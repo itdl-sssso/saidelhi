@@ -79,6 +79,52 @@ export const DiscoursesPayload = z.object({
 });
 export type DiscoursesPayload = z.infer<typeof DiscoursesPayload>;
 
+// ---- Media (v0.9 M7.1): audio/video recordings of a discourse (URLs only, nothing hosted) ----
+
+export const DiscourseMediaKind = z.enum(["audio", "video"]);
+export type DiscourseMediaKind = z.infer<typeof DiscourseMediaKind>;
+export const DiscourseMediaProvider = z.enum(["radiosai", "youtube"]);
+export type DiscourseMediaProvider = z.infer<typeof DiscourseMediaProvider>;
+export const DiscourseMediaConfidence = z.enum(["high", "medium", "low"]);
+export type DiscourseMediaConfidence = z.infer<typeof DiscourseMediaConfidence>;
+
+/** Public shape: only approved items are served, in `sort` order. */
+export const DiscourseMedia = z.object({
+  id: Id,
+  kind: DiscourseMediaKind,
+  provider: DiscourseMediaProvider,
+  /** mp3 URL (audio) or watch URL (video). */
+  url: z.string(),
+  /** YouTube video id (video) else null. */
+  externalId: z.string().nullable(),
+  title: z.string(),
+  channel: z.string().nullable(),
+  durationS: z.number().int().nonnegative().nullable(),
+  recordedDate: ISODate.nullable(),
+  /** false = a devotee/centre upload, not the Sri Sathya Sai Media Centre: shown with an "unofficial recording" note. */
+  official: z.boolean(),
+  /** Credit page (Media Centre discourse page) or null. */
+  sourcePage: z.string().nullable(),
+});
+export type DiscourseMedia = z.infer<typeof DiscourseMedia>;
+
+/** Workspace shape: every candidate. `confidence` null for official audio. */
+export const AdminDiscourseMedia = DiscourseMedia.extend({
+  approved: z.boolean(),
+  confidence: DiscourseMediaConfidence.nullable(),
+  score: z.number().int().nullable(),
+  sort: z.number().int(),
+});
+export type AdminDiscourseMedia = z.infer<typeof AdminDiscourseMedia>;
+
+/** POST /admin/discourses/:id/media/:mediaId — approve/hide and/or reorder; no `version` check. → AdminDiscourseDetail. */
+export const DiscourseMediaPatch = z
+  .object({ approved: z.boolean().optional(), sort: z.number().int().min(0).max(1000).optional() })
+  .refine((v) => v.approved !== undefined || v.sort !== undefined, { message: "Nothing to change." });
+export const DiscourseMediaParams = z.object({ id: Id, mediaId: Id });
+
+export type DiscourseMediaPatch = z.infer<typeof DiscourseMediaPatch>;
+
 /** GET /discourses/:slug → only `published` (else 404). Hindi of every block is approved, so `hi` is non-null. */
 export const DiscourseDetail = Discourse.extend({
   related: z.array(DiscourseSummary).max(3),
@@ -90,6 +136,8 @@ export const DiscourseDetail = Discourse.extend({
     publishedAt: ISODateTime,
   }),
   credit: I18nText,
+  /** v0.9: approved recordings (live data, not part of the publish snapshot). */
+  media: z.array(DiscourseMedia),
 });
 export type DiscourseDetail = z.infer<typeof DiscourseDetail>;
 
@@ -187,6 +235,8 @@ export const AdminDiscourseDetail = z.object({
   publishedAt: ISODateTime.nullable(),
   flagOn: z.boolean(),
   publishBlockers: z.array(DiscoursePublishBlocker),
+  /** v0.9: all audio/video candidates (approved or not). */
+  media: z.array(AdminDiscourseMedia),
   /** People who may be assigned as reviewer (holders of `discourses.review`). */
   reviewers: z.array(DiscourseReviewer),
   can: z.object({ edit: z.boolean(), review: z.boolean(), publish: z.boolean() }),

@@ -2,7 +2,7 @@
 // and live only in the database (scripts/import-discourses.ts); never paste them here.
 import type { DiscourseTheme, GlossaryTerm } from "@/contract";
 import { buildSnapshot } from "../../domain/discourse";
-import type { DiscourseBlockRec, DiscourseRec } from "../../repo/discourse-types";
+import type { DiscourseBlockRec, DiscourseMediaRec, DiscourseRec } from "../../repo/discourse-types";
 
 const T0 = new Date("2026-10-01T06:00:00Z");
 
@@ -115,3 +115,14 @@ export const discourseFixtures = (): DiscourseFixture[] =>
   });
 
 export const discourseGlossaryFixture: GlossaryTerm[] = [{ term: "Sample Term", hi: "नमूना शब्द", gloss: null }];
+
+/** Placeholder candidates for the published sample (n=1): one official audio, one approved and one pending video. */
+export const discourseMediaFixtures = (): DiscourseMediaRec[] => {
+  const discourseId = `01DISCOURSE${String(1).padStart(15, "0")}`;
+  const base = { discourseId, externalId: null, channel: null, durationS: null, recordedDate: null, score: null, sourcePage: null };
+  return [
+    { ...base, id: "01MEDIA000000000000000001", kind: "audio", provider: "radiosai", url: "https://example.org/sample.mp3", title: "Sample audio recording", recordedDate: "1970-10-04", official: true, confidence: null, sourcePage: "https://example.org/sample-page", approved: true, sort: 0 },
+    { ...base, id: "01MEDIA000000000000000002", kind: "video", provider: "youtube", url: "https://www.youtube.com/watch?v=sampleVid01", externalId: "sampleVid01", title: "Sample video recording", channel: "Sample Centre", durationS: 1830, official: false, confidence: "high", score: 80, approved: true, sort: 1 },
+    { ...base, id: "01MEDIA000000000000000003", kind: "video", provider: "youtube", url: "https://www.youtube.com/watch?v=sampleVid02", externalId: "sampleVid02", title: "Pending video candidate", channel: "Other Channel", durationS: 2400, official: false, confidence: "medium", score: 55, approved: false, sort: 2 },
+  ];
+};

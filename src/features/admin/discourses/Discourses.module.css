@@ -46,3 +46,9 @@
 .reviewerSel { min-width: 200px; }
 .srOnly { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 .workflowEnd { margin-inline-start: auto; }
+
+/* Media panel (M7.1) */
+.mediaList { display: flex; flex-direction: column; gap: 12px; margin: 0; padding: 0; list-style: none; }
+.mediaItem { display: flex; flex-direction: column; gap: 6px; padding-bottom: 12px; border-bottom: 1px solid var(--border-calm); min-width: 0; overflow-wrap: anywhere; }
+.mediaItem:last-child { border-bottom: 0; padding-bottom: 0; }
+.mediaHead { display: flex; flex-wrap: wrap; gap: 6px; }
