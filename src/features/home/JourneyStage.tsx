@@ -100,7 +100,9 @@ export function JourneyStage({ photos }: { photos: { key: string; src: string }[
       const wide = window.innerWidth > 900;
       const bloom = 0.3 + 0.7 * smooth(clamp((p1 - 0.18) / 0.62, 0, 1));
       stage.set({ bloom, exposure, focus: f, shift: wide ? 0.86 * clamp(f + 1, 0, 1) : 0, spin: p1 * 0.5 });
-      stageEl.style.backgroundColor = skyAt(p1);
+      const skyCss = skyAt(p1);
+      stageEl.style.backgroundColor = skyCss;
+      if (root) root.style.backgroundColor = skyCss; // real CSS bg behind text (contrast tools / no-canvas)
       if (glowRef.current) glowRef.current.style.opacity = (bloom * exposure * 0.55).toFixed(3);
       sky.set({ dawn: smooth(clamp((p1 - 0.06) / 0.42, 0, 1)), petals: smooth(clamp((p1 - 0.46) / 0.3, 0, 1)) });
 

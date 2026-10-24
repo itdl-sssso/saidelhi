@@ -254,7 +254,6 @@ function VerifyForm({
               }}
               messages={phoneError ? [{ type: "error", text: phoneError }] : undefined}
               disabled={busy}
-              autoFocus
             />
             <Button type="submit" size="lg" icon="message-circle" pending={busy} disabled={!online || blockedFor > 0} fullWidth>
               {busy ? t("sendingCode") : t("sendCode")}

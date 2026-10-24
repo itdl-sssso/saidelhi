@@ -141,7 +141,6 @@ export function LoginForm({ next }: { next: string }) {
                 label={t("phoneLabel")}
                 inputMode="numeric"
                 autoComplete="tel-national"
-                autoFocus
                 maxLength={12}
                 value={digits}
                 error={phoneError ?? undefined}

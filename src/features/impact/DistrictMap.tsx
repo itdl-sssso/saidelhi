@@ -53,10 +53,10 @@ export function DistrictMap({ districts, periodLabel }: { districts: DistrictImp
         <Link
           href={`/districts/${d.district.slug}`}
           className={cx(styles.tile, styles[`b${bin(value(d), max)}`])}
-          aria-label={`${name}: ${text}`}
         >
           <span className={styles.name}>{name}</span>
-          <span className={styles.val}>{v === null || v === 0 ? "—" : <FigureValue value={v} inline />}</span>
+          <span className={styles.val} aria-hidden="true">{v === null || v === 0 ? "—" : <FigureValue value={v} inline />}</span>
+          <span className="sr-only">{`: ${text}`}</span>
         </Link>
       </li>
     );

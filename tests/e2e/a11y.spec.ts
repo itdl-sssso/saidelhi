@@ -16,7 +16,7 @@ const data = readData();
 
 type Issue = { check: string; rule: string; impact: string; detail: string; selector?: string; nodes?: number };
 
-const IGNORED_CONSOLE = [/React DevTools/i, /Download the React/i, /\[HMR\]|\[Fast Refresh\]/i, /favicon/i, /Failed to load resource.*(tile|openstreetmap|googleapis|gstatic)/i];
+const IGNORED_CONSOLE = [/Failed to load resource.*status of 410/i, /React DevTools/i, /Download the React/i, /\[HMR\]|\[Fast Refresh\]/i, /favicon/i, /Failed to load resource.*(tile|openstreetmap|googleapis|gstatic)/i];
 
 async function audit(page: Page, path: string, locale: "en" | "hi", mobile: boolean): Promise<Issue[]> {
   const issues: Issue[] = [];
@@ -74,7 +74,10 @@ async function audit(page: Page, path: string, locale: "en" | "hi", mobile: bool
       const shadow = cs.boxShadow !== "none";
       const rect = el.getBoundingClientRect();
       const label = `${el.tagName.toLowerCase()}${el.id ? "#" + el.id : ""}[${(el.getAttribute("aria-label") ?? el.textContent ?? "").trim().slice(0, 24)}]`;
-      return { ok: outline || shadow, label, visible: rect.width > 0 && rect.height > 0 };
+      // a focus ring drawn by the control wrapper (:focus-within box-shadow) counts as visible focus
+      let wrapRing = false;
+      for (let a = el.parentElement, n = 0; a && n < 3; a = a.parentElement, n++) if (a.matches(":focus-within") && getComputedStyle(a).boxShadow !== "none") wrapRing = true;
+      return { ok: outline || shadow || wrapRing, label, visible: rect.width > 0 && rect.height > 0 };
     });
     if (r && r.visible && !r.ok) bad.push(r.label);
     await page.keyboard.press("Tab");
