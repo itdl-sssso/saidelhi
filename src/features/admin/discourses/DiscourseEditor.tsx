@@ -9,6 +9,7 @@ import {
   QUOTES_MAX,
   type AdminDiscourseBlock,
   type AdminDiscourseDetail,
+  type AdminDiscourseMedia,
   type DiscoursePatch,
   type DiscourseQuote,
   type GlossaryTerm,
@@ -32,6 +33,7 @@ import { renderQuoteImage, shareOrDownload } from "@/features/discourses/quote-i
 import { Note, Loadable } from "../parts";
 import { PageHead, Panel } from "../kit";
 import { type Result, get, useDisc, useDiscMutate } from "./api";
+import { MediaPanel } from "./MediaPanel";
 import { BlockPill, StatusPill } from "./shared";
 import styles from "../Admin.module.css";
 import d from "./Discourses.module.css";
@@ -154,6 +156,14 @@ function Editor({ initial, glossary, reload }: { initial: AdminDiscourseDetail; 
       if (left[b.id] === hi) delete left[b.id];
       setDraftMap(left);
     });
+  };
+
+  const [mediaPending, setMediaPending] = useState<string | null>(null);
+  const toggleMedia = async (m: AdminDiscourseMedia) => {
+    setMediaPending(m.id);
+    const res = await run<AdminDiscourseDetail>(adminEndpoints.discourseMedia(det.id, m.id), "POST", { approved: !m.approved }, { key: `media-${m.id}` });
+    setMediaPending(null);
+    if (res.ok) setDet((cur) => ({ ...cur, media: res.data.media }));
   };
 
   const act = async (action: Action, extra: { reviewerId?: string; blockIds?: string[] } = {}) => {
@@ -354,6 +364,7 @@ function Editor({ initial, glossary, reload }: { initial: AdminDiscourseDetail; 
         </div>
 
         <aside className={d.side} aria-label={t("details")}>
+          <MediaPanel media={det.media} canReview={can.review} pendingId={mediaPending} onToggle={(m) => void toggleMedia(m)} />
           <Panel title={t("quotes")} badge={<span className={styles.cap}>{t("quotesCount", { n: det.quotes.length })}</span>}>
             <p className={styles.cap}>{t("quotesHelp")}</p>
             {det.quotes.length === 0 ? <p className={styles.cap}>{t("quoteEmpty")}</p> : null}

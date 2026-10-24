@@ -78,4 +78,32 @@ export interface DiscourseRepo {
   slugs(): Promise<Set<string>>;
   insert(rec: DiscourseRec, blocks: DiscourseBlockRec[], audit: AuditRec[]): Promise<"ok" | "duplicate">;
   update(id: string, expectVersion: number, change: DiscourseChange, audit: AuditRec[]): Promise<"ok" | "conflict">;
+
+  // ---- Media (M7.1) ----
+  /** All candidates of a discourse, `sort` order. */
+  mediaFor(discourseId: string): Promise<DiscourseMediaRec[]>;
+  /** Approved candidates of a published discourse (public page), `sort` order. */
+  approvedMediaBySlug(slug: string): Promise<DiscourseMediaRec[]>;
+  /** Approve/hide and/or reorder one candidate; no discourse version bump. */
+  updateMedia(discourseId: string, mediaId: string, change: { approved?: boolean; sort?: number }, audit: AuditRec[]): Promise<"ok" | "missing">;
+}
+
+/** One audio/video candidate of a discourse (M7.1). */
+export interface DiscourseMediaRec {
+  id: string;
+  discourseId: string;
+  kind: "audio" | "video";
+  provider: "radiosai" | "youtube";
+  url: string;
+  externalId: string | null;
+  title: string;
+  channel: string | null;
+  durationS: number | null;
+  recordedDate: string | null;
+  official: boolean;
+  confidence: "high" | "medium" | "low" | null;
+  score: number | null;
+  sourcePage: string | null;
+  approved: boolean;
+  sort: number;
 }

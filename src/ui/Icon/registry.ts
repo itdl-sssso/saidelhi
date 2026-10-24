@@ -1,5 +1,8 @@
 import {
   ArrowDown,
+  Headphones,
+  Play,
+  Video,
   ArrowDownRight,
   ArrowLeft,
   ArrowRight,
@@ -161,6 +164,9 @@ export const icons = {
   hourglass: Hourglass,
   house: House,
   image: Image,
+  headphones: Headphones,
+  play: Play,
+  video: Video,
   inbox: Inbox,
   info: Info,
   "life-buoy": LifeBuoy,

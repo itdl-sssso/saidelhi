@@ -11,6 +11,7 @@ import {
   VALUE_DISCOURSE_THEMES,
   VALUE_ORDER,
 } from "@/contract";
+import { publicMedia } from "../domain/discourse";
 import { istDate } from "../domain/time";
 import type { PublishedDiscourse } from "../repo/discourse-types";
 import type { DataRepo } from "../repo/types";
@@ -78,7 +79,7 @@ export function createDiscoursesService(repo: DataRepo, deps: ServiceDeps): Disc
       if (!(await flagOn())) return null;
       const p = await repo.discourses.publishedBySlug(slug);
       if (!p) return null;
-      const all = await repo.discourses.published({ withBlocks: false });
+      const [all, media] = await Promise.all([repo.discourses.published({ withBlocks: false }), repo.discourses.approvedMediaBySlug(slug)]);
       const own = new Set(p.snapshot.themes);
       const value = VALUE_ORDER.find((v) => VALUE_DISCOURSE_THEMES[v].some((t) => own.has(t))) ?? null;
       return {
@@ -88,6 +89,7 @@ export function createDiscoursesService(repo: DataRepo, deps: ServiceDeps): Disc
         // Reviewer group name is not configured yet (TODO(user)): the note stays hidden until it is.
         translation: { reviewedBy: null, publishedAt: p.publishedAt.toISOString() },
         credit: DISCOURSE_CREDIT,
+        media: publicMedia(media),
       };
     },
 

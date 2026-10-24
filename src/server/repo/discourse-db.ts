@@ -3,10 +3,10 @@ import { and, asc, eq, isNotNull, max, sql } from "drizzle-orm";
 import type { GlossaryTerm } from "@/contract";
 import type { Db } from "../db/client";
 import { newId } from "../db/columns";
-import { auditLog, discourse, discourseBlock, discourseGlossary } from "../db/tables";
+import { auditLog, discourse, discourseBlock, discourseGlossary, discourseMedia } from "../db/tables";
 import type { DiscourseSnapshot } from "../db/schema/discourses";
 import { affected, isDuplicateKey, type Tx } from "./links-db";
-import type { DiscourseAdminRow, DiscourseBlockRec, DiscourseChange, DiscourseRec, DiscourseRepo, PublishedDiscourse } from "./discourse-types";
+import type { DiscourseAdminRow, DiscourseBlockRec, DiscourseChange, DiscourseMediaRec, DiscourseRec, DiscourseRepo, PublishedDiscourse } from "./discourse-types";
 import type { AuditRec } from "./types";
 
 // Public = has a live snapshot. Editing a published discourse moves `status` to in_review but the snapshot keeps serving.
@@ -128,6 +128,34 @@ export class DbDiscourseRepo implements DiscourseRepo {
       if (err instanceof Conflict) return "conflict" as const;
       throw err;
     }
+  }
+
+  async mediaFor(discourseId: string): Promise<DiscourseMediaRec[]> {
+    return this.db.select().from(discourseMedia).where(eq(discourseMedia.discourseId, discourseId)).orderBy(asc(discourseMedia.sort), asc(discourseMedia.createdAt));
+  }
+
+  async approvedMediaBySlug(slug: string): Promise<DiscourseMediaRec[]> {
+    const rows = await this.db
+      .select({ m: discourseMedia })
+      .from(discourseMedia)
+      .innerJoin(discourse, eq(discourse.id, discourseMedia.discourseId))
+      .where(and(eq(discourse.slug, slug), eq(discourseMedia.approved, true)))
+      .orderBy(asc(discourseMedia.sort), asc(discourseMedia.createdAt));
+    return rows.map((r) => r.m);
+  }
+
+  async updateMedia(discourseId: string, mediaId: string, change: { approved?: boolean; sort?: number }, audit: AuditRec[]) {
+    return this.db.transaction(async (tx) => {
+      const [cur] = await tx
+        .select({ id: discourseMedia.id })
+        .from(discourseMedia)
+        .where(and(eq(discourseMedia.id, mediaId), eq(discourseMedia.discourseId, discourseId)))
+        .limit(1);
+      if (!cur) return "missing" as const;
+      await tx.update(discourseMedia).set(change).where(eq(discourseMedia.id, mediaId));
+      await this.audit(tx, audit);
+      return "ok" as const;
+    });
   }
 }
 

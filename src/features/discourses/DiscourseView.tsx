@@ -7,6 +7,7 @@ import { Button } from "@/ui/Button";
 import { cx } from "@/ui/cx";
 import { Icon } from "@/ui/Icon";
 import { QuoteCard } from "@/ui/QuoteCard";
+import { DiscourseMediaSection } from "./DiscourseMedia";
 import { DiscourseCardView, ThemeBadges } from "./DiscoursesView";
 import { ShareQuote } from "./ShareQuote";
 import styles from "./Discourses.module.css";
@@ -132,6 +133,12 @@ export function DiscourseView({ d, read }: { d: DiscourseDetail; read: ReadLang 
           </div>
         </div>
       </PageHero>
+
+      {d.media.length ? (
+        <div className={cx(pub.wrap, styles.mediaWrap)}>
+          <DiscourseMediaSection media={d.media} />
+        </div>
+      ) : null}
 
       <section className={pub.section} style={{ paddingTop: "var(--space-6)" }}>
         <div className={pub.wrap}>

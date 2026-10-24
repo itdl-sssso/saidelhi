@@ -10,6 +10,7 @@ import {
   type DiscourseAiDraftBody,
   type DiscourseActionBody,
   type DiscourseCreate,
+  type DiscourseMediaPatch,
   type DiscoursePatch,
   type DiscourseReviewer,
   type DiscourseStatus,
@@ -23,7 +24,7 @@ import {
 import { auditRec } from "../../audit";
 import { type Actor, assertCan, can, ROLE_PERMISSIONS } from "../../auth/rbac";
 import { newId } from "../../db/columns";
-import { buildSnapshot, parseIsoDate } from "../../domain/discourse";
+import { adminMedia, buildSnapshot, parseIsoDate } from "../../domain/discourse";
 import { toIso } from "../../domain/time";
 import { ApiError } from "../../http/errors";
 import type { DiscourseBlockRec, DiscourseChange, DiscourseRec } from "../../repo/discourse-types";
@@ -41,6 +42,8 @@ export interface DiscoursesAdminService {
   approve(actor: Actor, id: string, body: DiscourseActionBody): Promise<AdminDiscourseDetail>;
   publish(actor: Actor, id: string, body: DiscourseActionBody): Promise<AdminDiscourseDetail>;
   unpublish(actor: Actor, id: string, body: DiscourseActionBody): Promise<AdminDiscourseDetail>;
+  /** v0.9: approve/hide/reorder one audio/video candidate (needs `discourses.review`). */
+  setMedia(actor: Actor, id: string, mediaId: string, body: DiscourseMediaPatch): Promise<AdminDiscourseDetail>;
 }
 
 const STATUSES: DiscourseStatus[] = ["not_started", "ai_draft", "in_review", "approved", "published"];
@@ -91,7 +94,7 @@ export function createDiscoursesAdminService(ctx: PortalCtx): DiscoursesAdminSer
   }
 
   async function detail(actor: Actor, id: string): Promise<AdminDiscourseDetail> {
-    const [{ rec, blocks }, glossary, on, revs, who] = await Promise.all([load(id), repo.discourses.glossary(), flagOn(), reviewers(), names()]);
+    const [{ rec, blocks }, glossary, on, revs, who, media] = await Promise.all([load(id), repo.discourses.glossary(), flagOn(), reviewers(), names(), repo.discourses.mediaFor(id)]);
     const dtoBlocks: AdminDiscourseBlock[] = blocks.map((b) => ({
       id: b.blockId,
       idx: b.idx,
@@ -128,6 +131,7 @@ export function createDiscoursesAdminService(ctx: PortalCtx): DiscoursesAdminSer
       publishedAt: rec.publishedAt ? toIso(rec.publishedAt) : null,
       flagOn: on,
       publishBlockers: publishBlockers(rec.status, on),
+      media: adminMedia(media),
       reviewers: revs,
       can: { edit: can(actor, "discourses.edit"), review: can(actor, "discourses.review"), publish: can(actor, "discourses.publish") },
       version: rec.version,
@@ -323,6 +327,17 @@ export function createDiscoursesAdminService(ctx: PortalCtx): DiscoursesAdminSer
       if (!changed.length && !blockChanges.length) return detail(actor, id);
       if (content) Object.assign(set, demote(rec));
       await write(actor, rec, { rec: set, blocks: blockChanges }, "discourse.update", { fields: changed, blocks: blockChanges.map((b) => b.blockId), status: set.status ?? rec.status });
+      return detail(actor, id);
+    },
+
+    async setMedia(actor, id, mediaId, body) {
+      assertCan(actor, "discourses.review");
+      const { rec } = await load(id);
+      const change: { approved?: boolean; sort?: number } = {};
+      if (body.approved !== undefined) change.approved = body.approved;
+      if (body.sort !== undefined) change.sort = body.sort;
+      const res = await repo.discourses.updateMedia(id, mediaId, change, [auditRec(actor, { action: "discourse.media", entity: "discourse", entityId: id, data: { n: rec.n, mediaId, ...change } })]);
+      if (res === "missing") throw new ApiError("NOT_FOUND");
       return detail(actor, id);
     },
 

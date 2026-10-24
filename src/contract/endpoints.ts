@@ -210,6 +210,7 @@ export const adminEndpoints = {
   discourse: (id: string) => p(`/admin/discourses/${seg(id)}`),
   discourseAction: (id: string, action: "ai-draft" | "send-review" | "approve" | "publish" | "unpublish") =>
     p(`/admin/discourses/${seg(id)}/${action}`),
+  discourseMedia: (id: string, mediaId: string) => p(`/admin/discourses/${seg(id)}/media/${seg(mediaId)}`),
   discourseGlossary: () => p("/admin/discourses/glossary"),
 } as const;
 
