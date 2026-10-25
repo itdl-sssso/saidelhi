@@ -1,4 +1,6 @@
 import {
+  Landmark,
+  Mail,
   ArrowDown,
   Headphones,
   Play,
@@ -173,8 +175,10 @@ export const icons = {
   "link-2-off": Link2Off,
   list: List,
   "loader-circle": LoaderCircle,
+  landmark: Landmark,
   lock: Lock,
   "log-in": LogIn,
+  mail: Mail,
   map: MapIcon,
   "map-pin": MapPin,
   menu: Menu,

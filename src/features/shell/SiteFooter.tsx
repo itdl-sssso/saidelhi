@@ -3,7 +3,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { DharmaRule } from "@/ui/DharmaRule";
 import { Icon } from "@/ui/Icon";
-import { DONATE_URL, EMBLEM_SRC, SAICONNECT_URL } from "./links";
+import { EMBLEM_SRC, SAICONNECT_URL } from "./links";
 import styles from "./SiteFooter.module.css";
 
 export function SiteFooter() {
@@ -77,7 +77,11 @@ export function SiteFooter() {
                     {t("joinSeva")}
                   </Link>
                 </li>
-                <li>{external(DONATE_URL, t("donate"))}</li>
+                <li>
+                  <Link href="/donate" className={styles.link}>
+                    {t("donate")}
+                  </Link>
+                </li>
                 <li>{external(SAICONNECT_URL, t("saiConnect"))}</li>
               </ul>
             </nav>

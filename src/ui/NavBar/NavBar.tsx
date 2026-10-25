@@ -28,7 +28,7 @@ export type NavBarProps = {
   quickLinks: NavItem[];
   /** Grouped links in the menu panel. */
   groups: NavGroup[];
-  donate: { href: string; label: string };
+  donate: { href: string; label: string; external?: boolean };
   /** Footer row of the panel, e.g. SaiConnect and the coordinator login. */
   utilityLinks: Array<NavItem & { quiet?: boolean }>;
   languageSwitch: ReactNode;
@@ -130,7 +130,7 @@ export function NavBarView({
           ))}
           <span className={styles.sep} aria-hidden="true" />
           <span className={styles.barLang}>{languageSwitch}</span>
-          <Button href={donate.href} external icon="heart" iconAfter="external-link">
+          <Button href={donate.href} external={donate.external} icon="heart" iconAfter={donate.external ? "external-link" : undefined}>
             {donate.label}
           </Button>
           <button
