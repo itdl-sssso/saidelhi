@@ -121,11 +121,22 @@ describe.skipIf(!pool)("M7 workspace over MySQL (integration)", () => {
     expect((await svc.discourses.bySlug("ws-test-new"))!.blocks[1].hi).toBe("हिन्दी 2");
     expect((await w.list(actor, { page: 1, pageSize: 200, q: "ws test" })).data.map((r) => r.slug)).toContain("ws-test-new");
 
-    const un = await w.unpublish(actor, d.id, { version: re.version });
+    expect(re).toMatchObject({ dirtySincePublish: true });
+    expect(re.blocks[1].differsFromPublished).toBe(true);
+    const rv = await w.revert(actor, d.id, { scope: "all", version: re.version });
+    expect(rv).toMatchObject({ status: "published", dirtySincePublish: false });
+    expect(rv.blocks[1]).toMatchObject({ hi: "हिन्दी 2", status: "approved", differsFromPublished: false });
+    expect(await code(w.revert(actor, d.id, { scope: "all", version: re.version }))).toBe("CONFLICT");
+    const re2 = await w.patch(actor, d.id, { version: rv.version, blocks: [{ id: "s2", hi: "फिर बदला" }] });
+    const rb = await w.revert(actor, d.id, { scope: "block", blockId: "s2", source: "published", version: re2.version });
+    expect(rb).toMatchObject({ status: "published", dirtySincePublish: false });
+
+    const re3 = await w.patch(actor, d.id, { version: rb.version, blocks: [{ id: "s2", hi: "तीसरा" }] });
+    const un = await w.unpublish(actor, d.id, { version: re3.version });
     expect(un).toMatchObject({ status: "in_review", publishedAt: null });
     expect(await svc.discourses.bySlug("ws-test-new")).toBeNull();
 
     const actions = (await db.select({ a: auditLog.action }).from(auditLog).where(eq(auditLog.entityId, d.id))).map((r) => r.a);
-    expect(actions).toEqual(expect.arrayContaining(["discourse.create", "discourse.update", "discourse.approve", "discourse.publish", "discourse.unpublish"]));
+    expect(actions).toEqual(expect.arrayContaining(["discourse.create", "discourse.update", "discourse.approve", "discourse.publish", "discourse.unpublish", "discourse.revert"]));
   });
 });

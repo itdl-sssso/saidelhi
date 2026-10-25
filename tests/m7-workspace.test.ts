@@ -209,3 +209,56 @@ describe("approve + publish", () => {
     expect(await errCode(t.svc.portal.discourses.get(ed, "nope"))).toBe("NOT_FOUND");
   });
 });
+
+describe("revert", () => {
+  it("block from AI draft or published, discard all since publish, guards, audit", async () => {
+    const t = setup();
+    const ed = await t.actor(USER.contentD);
+    const w = t.svc.portal.discourses;
+    const d = await w.create(ed, body);
+    expect(d).toMatchObject({ dirtySincePublish: false });
+    expect(await errCode(w.revert(ed, d.id, { scope: "all", version: d.version }))).toBe("VALIDATION_FAILED");
+    expect(await errCode(w.revert(await t.actor(USER.coordA), d.id, { scope: "all", version: d.version }))).toBe("FORBIDDEN");
+
+    // AI draft on s2, then overwritten by a person
+    t.repo.discourses.items.find((f) => f.rec.id === d.id)!.blocks[1].hiAi = "एआई मसौदा";
+    const ai = await w.revert(ed, d.id, { scope: "block", blockId: "s2", source: "ai", version: d.version });
+    expect(ai.blocks[1]).toMatchObject({ hi: "एआई मसौदा", status: "ai_draft", aiDraft: "एआई मसौदा", published: null });
+    expect(await errCode(w.revert(ed, d.id, { scope: "block", blockId: "s2", source: "ai", version: ai.version }))).toBe("VALIDATION_FAILED");
+    expect(await errCode(w.revert(ed, d.id, { scope: "block", blockId: "s2", source: "published", version: ai.version }))).toBe("VALIDATION_FAILED");
+    expect(await errCode(w.revert(ed, d.id, { scope: "block", blockId: "s3", source: "ai", version: ai.version }))).toBe("VALIDATION_FAILED");
+
+    const approved = await translateAll(t, ai);
+    await flagSet(t.repo, true);
+    const pub = await w.publish(ed, d.id, { version: approved.version });
+    expect(pub).toMatchObject({ dirtySincePublish: false });
+    const live = pub.blocks.map((b) => b.hi);
+
+    // mistaken edits: paragraph text, title, quotes
+    const e = await w.patch(ed, d.id, {
+      version: pub.version,
+      blocks: [{ id: "s2", hi: "गलती से बदला" }],
+      title: { en: pub.title.en, hi: "गलत शीर्षक" },
+      quotes: [pub.quotes[0]],
+    });
+    expect(e).toMatchObject({ status: "in_review", dirtySincePublish: true, dirtySummary: { blocks: 1, quotes: true, title: true, why: false, themes: false } });
+    expect(e.blocks[1]).toMatchObject({ differsFromPublished: true, published: { hi: live[1] } });
+    expect(await errCode(w.revert(ed, d.id, { scope: "all", version: pub.version }))).toBe("CONFLICT");
+
+    // one paragraph back; other edits remain so still in review
+    const one = await w.revert(ed, d.id, { scope: "block", blockId: "s2", source: "published", version: e.version });
+    expect(one.blocks[1]).toMatchObject({ hi: live[1], status: "approved", differsFromPublished: false });
+    expect(one).toMatchObject({ status: "in_review", dirtySincePublish: true, dirtySummary: { blocks: 0, quotes: true, title: true } });
+
+    const all = await w.revert(ed, d.id, { scope: "all", version: one.version });
+    expect(all).toMatchObject({ status: "published", dirtySincePublish: false, title: pub.title, quotes: pub.quotes });
+    expect(all.blocks.map((b) => b.hi)).toEqual(live);
+    expect(all.version).toBe(one.version + 1);
+    // public page untouched throughout
+    expect((await t.svc.discourses.bySlug(d.slug))!.blocks.map((b) => b.hi)).toEqual(live);
+
+    const rows = (await t.repo.portal.listAudit({ limit: 200, offset: 0 })).rows.filter((r) => r.action === "discourse.revert");
+    expect(rows).toHaveLength(3);
+    expect(JSON.stringify(rows)).not.toContain("गलती");
+  });
+});

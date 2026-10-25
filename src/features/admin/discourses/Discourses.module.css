@@ -52,3 +52,6 @@
 .mediaItem { display: flex; flex-direction: column; gap: 6px; padding-bottom: 12px; border-bottom: 1px solid var(--border-calm); min-width: 0; overflow-wrap: anywhere; }
 .mediaItem:last-child { border-bottom: 0; padding-bottom: 0; }
 .mediaHead { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.diffBox { display: flex; flex-direction: column; gap: 6px; padding: 12px; border: 1px solid var(--border, rgba(0, 0, 0, 0.14)); border-radius: 8px; align-items: flex-start; }
+.diffText { margin: 0; white-space: pre-wrap; max-height: 9rem; overflow: auto; width: 100%; }

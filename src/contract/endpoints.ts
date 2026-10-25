@@ -208,7 +208,7 @@ export const adminEndpoints = {
   // v0.8 (M7) — discourses workspace (39)
   discourses: (q?: { q?: string; theme?: string; status?: string; reviewer?: string } & PageQuery) => withQuery(p("/admin/discourses"), q),
   discourse: (id: string) => p(`/admin/discourses/${seg(id)}`),
-  discourseAction: (id: string, action: "ai-draft" | "send-review" | "approve" | "publish" | "unpublish") =>
+  discourseAction: (id: string, action: "ai-draft" | "send-review" | "approve" | "publish" | "unpublish" | "revert") =>
     p(`/admin/discourses/${seg(id)}/${action}`),
   discourseMedia: (id: string, mediaId: string) => p(`/admin/discourses/${seg(id)}/media/${seg(mediaId)}`),
   discourseGlossary: () => p("/admin/discourses/glossary"),

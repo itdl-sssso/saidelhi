@@ -210,6 +210,12 @@ export const AdminDiscourseBlock = z.object({
   status: DiscourseBlockStatus,
   /** True when an imported AI draft exists for this block (Request AI draft can restore it). */
   hasAiDraft: z.boolean(),
+  /** v0.9.2: imported AI draft text (null when none) — shown in the restore preview. */
+  aiDraft: z.string().nullable(),
+  /** v0.9.2: Hindi text in the published snapshot (`published` null: no snapshot or block not in it). */
+  published: z.object({ hi: z.string().nullable() }).nullable(),
+  /** v0.9.2: snapshot exists and this paragraph's Hindi differs from it. */
+  differsFromPublished: z.boolean(),
   glossaryIssues: z.array(GlossaryIssue),
 });
 export type AdminDiscourseBlock = z.infer<typeof AdminDiscourseBlock>;
@@ -235,6 +241,10 @@ export const AdminDiscourseDetail = z.object({
   publishedAt: ISODateTime.nullable(),
   flagOn: z.boolean(),
   publishBlockers: z.array(DiscoursePublishBlocker),
+  /** v0.9.2: a snapshot exists and the live text/quotes/title/why/themes differ from it. */
+  dirtySincePublish: z.boolean(),
+  /** v0.9.2: what differs from the snapshot (all zero/false when not dirty). */
+  dirtySummary: z.object({ blocks: Count, quotes: z.boolean(), title: z.boolean(), why: z.boolean(), themes: z.boolean() }),
   /** v0.9: all audio/video candidates (approved or not). */
   media: z.array(AdminDiscourseMedia),
   /** People who may be assigned as reviewer (holders of `discourses.review`). */
@@ -284,6 +294,17 @@ export type DiscourseAiDraftBody = z.infer<typeof DiscourseAiDraftBody>;
 /** POST …/send-review (needs a reviewer), …/approve (all blocks approved + 2–4 valid quotes), …/publish (flag on + approved), …/unpublish. */
 export const DiscourseActionBody = z.object({ version: Version, reviewerId: Id.optional() });
 export type DiscourseActionBody = z.infer<typeof DiscourseActionBody>;
+
+/**
+ * POST /admin/discourses/:id/revert (v0.9.2; perm `discourses.edit`, version → 409).
+ * `all`: restore text, quotes, title, why, themes and status from the publish snapshot (422 when none or nothing differs).
+ * `block` + `published`: that paragraph's Hindi back to the snapshot (status approved); `ai`: back to the imported draft (status ai_draft).
+ */
+export const DiscourseRevertBody = z.discriminatedUnion("scope", [
+  z.object({ scope: z.literal("all"), version: Version }),
+  z.object({ scope: z.literal("block"), version: Version, blockId: z.string().min(1).max(32), source: z.enum(["published", "ai"]) }),
+]);
+export type DiscourseRevertBody = z.infer<typeof DiscourseRevertBody>;
 
 // ---- Pure helpers (shared by editor previews and backend checks) ------------
 
