@@ -1,6 +1,6 @@
 # Handoff — 25 Oct 2026 (session ended by power loss; user switching account)
 
-Main HEAD at handoff: see `git log -1` (after commit "docs: handoff"). All milestones M0–M7 done + post-M7 work below. Local only, never pushed.
+Main HEAD at handoff: see `git log -1` (after commit "docs: handoff"). All milestones M0–M7 done + post-M7 work below. Pushed to github.com/itdl-sssso/saidelhi (public) on 25 Oct 2026 after history redaction (server SSH details replaced with placeholders; pre-redact history kept locally as tag `pre-redact-main` + bundle in `~/Claude/backups/` — never push those).
 
 ## Done since M7 (all merged on main)
 | Item | Notes |
@@ -21,8 +21,8 @@ Main HEAD at handoff: see `git log -1` (after commit "docs: handoff"). All miles
 ## Open branches (NOT merged)
 | Branch / worktree | State | Next |
 |---|---|---|
-| `worktree-agent-ae67270dd13934ac1` (`.claude/worktrees/agent-ae67270dd13934ac1`) — **/donate** | WIP `acdd3ed`: page, copy buttons, en/hi, OG, nav/footer, sitemap, routes.ts, review catalog, spec 51. **DoD not run.** No image (legacy image shows identifiable person). | Merge main, run `pnpm typecheck && pnpm lint && pnpm test && pnpm build`, screenshot 1280/375/hi, merge. ⚠ Footer says "Nothing is ever collected from the public" — contradicts Donate page; reword (e.g. "No fees for any programme"). |
-| `worktree-agent-a1640c5d1fadcd400` — **/gallery** (PARKED by user) | WIP `56a49f5`: backend only (contract, service, repo, API). See `docs/progress/gallery.md` in that worktree for scope. | Resume later on user request. |
+| `worktree-agent-ae67270dd13934ac1` (`.claude/worktrees/agent-ae67270dd13934ac1`) — **/donate** | WIP `c9feaa2`: page, copy buttons, en/hi, OG, nav/footer, sitemap, routes.ts, review catalog, spec 51. **DoD not run.** No image (legacy image shows identifiable person). | Merge main, run `pnpm typecheck && pnpm lint && pnpm test && pnpm build`, screenshot 1280/375/hi, merge. ⚠ Footer says "Nothing is ever collected from the public" — contradicts Donate page; reword (e.g. "No fees for any programme"). |
+| `worktree-agent-a1640c5d1fadcd400` — **/gallery** (PARKED by user) | WIP `39681d4`: backend only (contract, service, repo, API). See `docs/progress/gallery.md` in that worktree for scope. | Resume later on user request. |
 
 ## Next steps (in order)
 1. Finish + merge /donate (above).
@@ -34,6 +34,6 @@ Main HEAD at handoff: see `git log -1` (after commit "docs: handoff"). All miles
 - Subagents for work, caveman briefs; Opus plan/lead, Sonnet implement, Haiku small tasks.
 - **Max 2 background agents at once** (machine crashes); queue the rest.
 - After any crash: commit worktree WIP first (`wip: post-crash snapshot`), then resume fresh agent from its `docs/progress/*.md` log.
-- Agents never commit to main; lead merges; local only, never push. Never `pkill -f` (kills shells) — stop servers by PID from `ss -ltnp`.
+- Agents never commit to main; lead merges; push main to `origin` only when user asks (repo is PUBLIC — no server details, creds, personal data, discourse text). Never `pkill -f` (kills shells) — stop servers by PID from `ss -ltnp`.
 - Dev login: phone 9000000003 (state admin); OTP printed in dev server log (`[whatsapp:console] … Your code is NNNNNN`).
 - Never print `.env.local`, server DB creds (`../saidelhi org/saidelhiweb/settings.py`); SSH `ssh <prod-server>` needs user's password (use ControlMaster: user types once in a terminal tab).

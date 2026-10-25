@@ -69,7 +69,7 @@ Run `pnpm db:seed` before `pnpm test` if the DB was mutated by a walkthrough (li
 - Root-owned stale dir `.claude/worktrees/agent-aec2e1a718ded6454` (Docker-created) — `sudo rm -rf` it.
 
 ## How work is run (process the user asked for)
-- **Two tracks per milestone** (backend / frontend) as parallel subagents in git worktrees (`isolation: worktree`); lead merges, runs the definition of done, commits **one commit per milestone on `main`, local only (no push)**.
+- **Two tracks per milestone** (backend / frontend) as parallel subagents in git worktrees (`isolation: worktree`); lead merges, runs the definition of done, commits **one commit per milestone on `main`** (push to public `origin` only when user asks; never commit server details/creds).
 - **Models:** Sonnet for implementation agents, Opus for planning/lead, Haiku for small atomic tasks (run tests/typecheck/lint/build, dev servers, merges with explicit steps). Lead delegates; briefs written caveman-style (agents answer terse caveman). Be credit-conscious: tight briefs, selective reading (`graft ask/skeleton`), short reports, few screenshots.
 - **Context hygiene / resumability (required for every subagent):**
   - Keep a progress log at `docs/progress/<milestone>-<track>.md` in the worktree: done / in progress / next / decisions / blockers. Update it after each sub-task.
