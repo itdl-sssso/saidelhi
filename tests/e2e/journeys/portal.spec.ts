@@ -191,5 +191,14 @@ test.describe("portal work", () => {
     const pub = page.getByRole("dialog").getByRole("button", { name: "Publish", exact: true });
     if (await pub.isVisible().catch(() => false)) await pub.click();
     await expect(page.getByRole("button", { name: "Unpublish" })).toBeVisible({ timeout: 15_000 });
+
+    // Mistaken edit of the live text, then discard everything since publish.
+    const live = page.getByRole("textbox", { name: "Hindi · Paragraph 1", exact: true });
+    await live.fill(`गलती ${stamp}`);
+    await expect(page.getByText("All changes saved")).toBeVisible({ timeout: 15_000 });
+    await page.getByRole("button", { name: "Discard changes since publish" }).click();
+    await page.getByRole("dialog").getByRole("button", { name: "Discard changes", exact: true }).click();
+    await expect(live).toHaveValue(`समीक्षा संपादन ${stamp}`, { timeout: 15_000 });
+    await expect(page.getByRole("button", { name: "Discard changes since publish" })).toHaveCount(0);
   });
 });

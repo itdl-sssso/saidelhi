@@ -86,3 +86,28 @@ const toMedia = (m: DiscourseMediaRec): DiscourseMedia => ({
 export function adminMedia(rows: readonly DiscourseMediaRec[]): AdminDiscourseMedia[] {
   return [...rows].sort((a, b) => a.sort - b.sort).map((m) => ({ ...toMedia(m), approved: m.approved, confidence: m.confidence, score: m.score, sort: m.sort }));
 }
+
+const sameText = (a: string | null | undefined, b: string | null | undefined) => (a ?? "") === (b ?? "");
+const sameQuotes = (a: readonly { en: string; hi: string | null; blockId: string | null }[], b: readonly { en: string; hi: string | null; blockId: string | null }[]) =>
+  a.length === b.length && a.every((q, i) => q.en === b[i].en && sameText(q.hi, b[i].hi) && (q.blockId ?? null) === (b[i].blockId ?? null));
+
+/** What differs between the live discourse and its publish snapshot (all empty when no snapshot). */
+export function diffFromSnapshot(rec: DiscourseRec, blocks: readonly DiscourseBlockRec[]) {
+  const snap = rec.publishedSnapshot;
+  const blockIds: string[] = [];
+  let quotes = false;
+  let title = false;
+  let why = false;
+  let themes = false;
+  if (snap) {
+    for (const b of blocks) {
+      const sb = snap.blocks.find((x) => x.id === b.blockId);
+      if (sb && !sameText(sb.hi, b.hi)) blockIds.push(b.blockId);
+    }
+    quotes = !sameQuotes(rec.quotes, snap.quotes);
+    title = rec.titleEn !== snap.title.en || !sameText(rec.titleHi, snap.title.hi);
+    why = rec.whyEn !== snap.why.en || !sameText(rec.whyHi, snap.why.hi);
+    themes = rec.themes.length !== snap.themes.length || rec.themes.some((t, i) => t !== snap.themes[i]);
+  }
+  return { blockIds, quotes, title, why, themes, dirty: blockIds.length > 0 || quotes || title || why || themes };
+}

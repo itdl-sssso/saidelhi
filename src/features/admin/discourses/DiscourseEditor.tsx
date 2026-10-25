@@ -33,6 +33,7 @@ import { renderQuoteImage, shareOrDownload } from "@/features/discourses/quote-i
 import { Note, Loadable } from "../parts";
 import { PageHead, Panel } from "../kit";
 import { type Result, get, useDisc, useDiscMutate } from "./api";
+import { RestoreDialog, DiscardDialog } from "./RestoreDialogs";
 import { MediaPanel } from "./MediaPanel";
 import { BlockPill, StatusPill } from "./shared";
 import styles from "../Admin.module.css";
@@ -68,6 +69,8 @@ function Editor({ initial, glossary, reload }: { initial: AdminDiscourseDetail; 
   const [pick, setPick] = useState<{ blockId: string; text: string } | null>(null);
   const [preview, setPreview] = useState<{ q: DiscourseQuote; lang: "en" | "hi" } | null>(null);
   const [reviewerPick, setReviewerPick] = useState("");
+  const [restoreFor, setRestoreFor] = useState<string | null>(null);
+  const [discardOpen, setDiscardOpen] = useState(false);
   const { can } = det;
 
   const setDraftMap = (next: Record<string, string>) => {
@@ -181,6 +184,25 @@ function Editor({ initial, glossary, reload }: { initial: AdminDiscourseDetail; 
     }
   };
 
+  /** Revert (v0.9.2): flush pending typing first, then restore from snapshot / AI draft; drop local drafts it replaces. */
+  const revert = async (body: { scope: "all" } | { scope: "block"; blockId: string; source: "published" | "ai" }) => {
+    await flush();
+    const res = await run<AdminDiscourseDetail>(adminEndpoints.discourseAction(det.id, "revert"), "POST", { version: verRef.current, ...body }, { key: "revert", quiet: true });
+    if (res.ok) {
+      verRef.current = res.data.version;
+      setDet(res.data);
+      const left = { ...draftsRef.current };
+      if (body.scope === "all") for (const k of Object.keys(left)) delete left[k];
+      else delete left[body.blockId];
+      setDraftMap(left);
+      setRestoreFor(null);
+      setDiscardOpen(false);
+      toast.show({ tone: "success", message: t(body.scope === "all" ? "done.revertAll" : "done.revertBlock") });
+    } else {
+      toast.show({ tone: "error", message: res.status === 409 ? t("revertConflict") : (Object.values(res.error.fields ?? {})[0] ?? res.error.message) });
+    }
+  };
+
   const focusRel = (idx: number, dir: 1 | -1) => {
     const next = det.blocks[idx + dir];
     if (!next) return;
@@ -276,6 +298,11 @@ function Editor({ initial, glossary, reload }: { initial: AdminDiscourseDetail; 
               </Button>
             )
           ) : null}
+          {can.edit && det.dirtySincePublish ? (
+            <Button variant="outline" icon="undo-2" onClick={() => setDiscardOpen(true)}>
+              {t("discardAll")}
+            </Button>
+          ) : null}
           <span className={d.workflowEnd}>
             <SaveStatus state={dirty && save === "sent" ? "local" : save}>{saveLabel}</SaveStatus>
           </span>
@@ -338,6 +365,11 @@ function Editor({ initial, glossary, reload }: { initial: AdminDiscourseDetail; 
                   ) : null}
                   <div className={d.blkFoot}>
                     <BlockPill status={st} />
+                    {can.edit && ((b.published && hi !== (b.published.hi ?? "")) || (b.aiDraft && hi !== b.aiDraft)) ? (
+                      <Button size="sm" variant="quiet" icon="undo-2" aria-label={t("restoreMenuFor", { n: b.idx })} onClick={() => setRestoreFor(b.id)}>
+                        {t("restoreMenu")}
+                      </Button>
+                    ) : null}
                     {can.edit && b.hasAiDraft && st === "empty" ? (
                       <Button size="sm" variant="quiet" icon="sparkles" onClick={() => act("ai-draft", { blockIds: [b.id] })}>
                         {t("restoreBlock")}
@@ -432,6 +464,14 @@ function Editor({ initial, glossary, reload }: { initial: AdminDiscourseDetail; 
           </Button>
         </div>
       ) : null}
+      <RestoreDialog
+        block={det.blocks.find((b) => b.id === restoreFor) ?? null}
+        hi={(b) => hiOf(b)}
+        pending={pending === "revert"}
+        onClose={() => setRestoreFor(null)}
+        onRestore={(blockId, source) => void revert({ scope: "block", blockId, source })}
+      />
+      <DiscardDialog open={discardOpen} summary={det.dirtySummary} pending={pending === "revert"} onClose={() => setDiscardOpen(false)} onConfirm={() => void revert({ scope: "all" })} />
       <PreviewDialog preview={preview} source={`${det.meta.collPrint} · ${det.meta.date}`} slug={det.slug} onClose={() => setPreview(null)} />
     </>
   );

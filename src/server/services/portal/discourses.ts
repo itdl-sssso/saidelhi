@@ -13,6 +13,7 @@ import {
   type DiscourseMediaPatch,
   type DiscoursePatch,
   type DiscourseReviewer,
+  type DiscourseRevertBody,
   type DiscourseStatus,
   type GlossaryTerm,
   approveBlockers,
@@ -24,7 +25,7 @@ import {
 import { auditRec } from "../../audit";
 import { type Actor, assertCan, can, ROLE_PERMISSIONS } from "../../auth/rbac";
 import { newId } from "../../db/columns";
-import { adminMedia, buildSnapshot, parseIsoDate } from "../../domain/discourse";
+import { adminMedia, buildSnapshot, diffFromSnapshot, parseIsoDate } from "../../domain/discourse";
 import { toIso } from "../../domain/time";
 import { ApiError } from "../../http/errors";
 import type { DiscourseBlockRec, DiscourseChange, DiscourseRec } from "../../repo/discourse-types";
@@ -42,6 +43,8 @@ export interface DiscoursesAdminService {
   approve(actor: Actor, id: string, body: DiscourseActionBody): Promise<AdminDiscourseDetail>;
   publish(actor: Actor, id: string, body: DiscourseActionBody): Promise<AdminDiscourseDetail>;
   unpublish(actor: Actor, id: string, body: DiscourseActionBody): Promise<AdminDiscourseDetail>;
+  /** v0.9.2: restore one paragraph (published snapshot or imported AI draft) or everything since publish. */
+  revert(actor: Actor, id: string, body: DiscourseRevertBody): Promise<AdminDiscourseDetail>;
   /** v0.9: approve/hide/reorder one audio/video candidate (needs `discourses.review`). */
   setMedia(actor: Actor, id: string, mediaId: string, body: DiscourseMediaPatch): Promise<AdminDiscourseDetail>;
 }
@@ -49,6 +52,7 @@ export interface DiscoursesAdminService {
 const STATUSES: DiscourseStatus[] = ["not_started", "ai_draft", "in_review", "approved", "published"];
 const fold = (s: string) => s.normalize("NFKD").replace(/[̀-ͯ]/g, "").toLowerCase();
 const clean = (s: string | null | undefined) => (s?.trim() ? s.trim() : null);
+const sameHi = (a: string | null | undefined, b: string | null | undefined) => (a ?? "") === (b ?? "");
 const fail = (fields: Record<string, string>) => new ApiError("VALIDATION_FAILED", { fields });
 
 function slugify(title: string, n: number): string {
@@ -95,6 +99,7 @@ export function createDiscoursesAdminService(ctx: PortalCtx): DiscoursesAdminSer
 
   async function detail(actor: Actor, id: string): Promise<AdminDiscourseDetail> {
     const [{ rec, blocks }, glossary, on, revs, who, media] = await Promise.all([load(id), repo.discourses.glossary(), flagOn(), reviewers(), names(), repo.discourses.mediaFor(id)]);
+    const diff = diffFromSnapshot(rec, blocks);
     const dtoBlocks: AdminDiscourseBlock[] = blocks.map((b) => ({
       id: b.blockId,
       idx: b.idx,
@@ -103,6 +108,9 @@ export function createDiscoursesAdminService(ctx: PortalCtx): DiscoursesAdminSer
       hi: b.hi,
       status: b.status,
       hasAiDraft: !!b.hiAi,
+      aiDraft: b.hiAi,
+      published: ((sb) => (sb ? { hi: sb.hi } : null))(rec.publishedSnapshot?.blocks.find((x) => x.id === b.blockId)),
+      differsFromPublished: diff.blockIds.includes(b.blockId),
       glossaryIssues: glossaryIssues(b.en, b.hi, glossary),
     }));
     return {
@@ -131,6 +139,8 @@ export function createDiscoursesAdminService(ctx: PortalCtx): DiscoursesAdminSer
       publishedAt: rec.publishedAt ? toIso(rec.publishedAt) : null,
       flagOn: on,
       publishBlockers: publishBlockers(rec.status, on),
+      dirtySincePublish: diff.dirty,
+      dirtySummary: { blocks: diff.blockIds.length, quotes: diff.quotes, title: diff.title, why: diff.why, themes: diff.themes },
       media: adminMedia(media),
       reviewers: revs,
       can: { edit: can(actor, "discourses.edit"), review: can(actor, "discourses.review"), publish: can(actor, "discourses.publish") },
@@ -338,6 +348,47 @@ export function createDiscoursesAdminService(ctx: PortalCtx): DiscoursesAdminSer
       if (body.sort !== undefined) change.sort = body.sort;
       const res = await repo.discourses.updateMedia(id, mediaId, change, [auditRec(actor, { action: "discourse.media", entity: "discourse", entityId: id, data: { n: rec.n, mediaId, ...change } })]);
       if (res === "missing") throw new ApiError("NOT_FOUND");
+      return detail(actor, id);
+    },
+
+    async revert(actor, id, body) {
+      assertCan(actor, "discourses.edit");
+      const { rec, blocks } = await load(id, body.version);
+      const snap = rec.publishedSnapshot;
+      if (body.scope === "all") {
+        if (!snap) throw fail({ status: "This discourse has not been published." });
+        const diff = diffFromSnapshot(rec, blocks);
+        if (!diff.dirty) throw fail({ status: "Nothing has changed since publishing." });
+        const restore = blocks.flatMap((b) => {
+          const sb = snap.blocks.find((x) => x.id === b.blockId);
+          return sb && (!sameHi(sb.hi, b.hi) || b.status !== "approved") ? [{ blockId: b.blockId, hi: sb.hi, status: sb.hi ? ("approved" as const) : ("empty" as const) }] : [];
+        });
+        const set: NonNullable<DiscourseChange["rec"]> = {
+          titleEn: snap.title.en,
+          titleHi: snap.title.hi,
+          whyEn: snap.why.en,
+          whyHi: snap.why.hi,
+          themes: snap.themes,
+          quotes: snap.quotes.map((q) => ({ en: q.en, hi: q.hi, blockId: q.blockId })),
+          status: "published",
+        };
+        await write(actor, rec, { rec: set, blocks: restore }, "discourse.revert", { scope: "all", from: rec.status, blocks: diff.blockIds, quotes: diff.quotes, title: diff.title, why: diff.why, themes: diff.themes });
+        return detail(actor, id);
+      }
+      const cur = blocks.find((b) => b.blockId === body.blockId);
+      if (!cur) throw fail({ blockId: "Unknown paragraph." });
+      if (body.source === "published") {
+        const sb = snap?.blocks.find((x) => x.id === cur.blockId);
+        if (!sb) throw fail({ source: "No published version of this paragraph." });
+        if (sameHi(sb.hi, cur.hi)) throw fail({ source: "This paragraph already matches the published version." });
+        const next = blocks.map((b) => (b.blockId === cur.blockId ? { ...b, hi: sb.hi } : b));
+        const back = !diffFromSnapshot(rec, next).dirty && rec.status === "in_review";
+        await write(actor, rec, { rec: back ? { status: "published" } : {}, blocks: [{ blockId: cur.blockId, hi: sb.hi, status: sb.hi ? "approved" : "empty" }] }, "discourse.revert", { scope: "block", source: "published", blockId: cur.blockId });
+        return detail(actor, id);
+      }
+      if (!cur.hiAi) throw fail({ source: "No stored AI draft for this paragraph." });
+      if (sameHi(cur.hiAi, cur.hi) && cur.status === "ai_draft") throw fail({ source: "This paragraph already matches the AI draft." });
+      await write(actor, rec, { rec: demote(rec), blocks: [{ blockId: cur.blockId, hi: cur.hiAi, status: "ai_draft" }] }, "discourse.revert", { scope: "block", source: "ai", blockId: cur.blockId });
       return detail(actor, id);
     },
 
