@@ -8,6 +8,8 @@ const nextConfig: NextConfig = {
   partialPrefetching: true,
   // Legacy URLs like /about-us/ must 301 once (proxy); other trailing slashes are normalised in the proxy.
   skipTrailingSlashRedirect: true,
+  // LAN testing (`pnpm dev -H 0.0.0.0`): comma-separated hosts, e.g. DEV_ORIGINS=192.168.1.20
+  allowedDevOrigins: process.env.DEV_ORIGINS?.split(",").map((h) => h.trim()).filter(Boolean),
   experimental: {
     // The root layout sits under [locale], so unmatched non-locale URLs need a standalone 404.
     globalNotFound: true,

@@ -31,7 +31,9 @@ export function idempotencyKeyOf(req: NextRequest, required: boolean): string | 
 }
 
 function cookie(name: string, value: string, maxAge: number, httpOnly: boolean): string {
-  const parts = [`${name}=${value}`, "Path=/", `Max-Age=${maxAge}`, "SameSite=Lax", "Secure"];
+  const parts = [`${name}=${value}`, "Path=/", `Max-Age=${maxAge}`, "SameSite=Lax"];
+  // Dev over plain-http LAN (phone testing): browsers drop Secure cookies off localhost.
+  if (process.env.NODE_ENV === "production" || process.env.DEV_INSECURE_COOKIES !== "1") parts.push("Secure");
   if (httpOnly) parts.push("HttpOnly");
   return parts.join("; ");
 }
