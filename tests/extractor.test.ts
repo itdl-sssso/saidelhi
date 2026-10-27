@@ -1,6 +1,6 @@
 // Extractor: rules (numbers, dates, Hinglish, seva words) and the Ollama adapter.
 import { describe, expect, it } from "vitest";
-import { createExtractor, detectDate, detectSevaType, eventHints, OllamaExtractor, rulesExtract } from "@/server/ai";
+import { createExtractor, detectDate, detectSevaType, eventHints, HfExtractor, OllamaExtractor, rulesExtract } from "@/server/ai";
 import type { ExtractField } from "@/server/ai";
 import { eyeCampReport } from "@/server/forms/definitions";
 import { chatQuestions } from "@/server/whatsapp/questions";
@@ -92,9 +92,11 @@ describe("ollama adapter", () => {
   });
 
   it("is chosen by EXTRACTOR_PROVIDER", async () => {
-    const rules = await createExtractor("rules", { url: "http://x", model: "m" }).extractFields({ text: "100 log aaye", now: NOW, fields: FIELDS });
+    const cfg = { ollama: { url: "http://x", model: "m" }, hf: { model: "m", dtype: "q4" } };
+    const rules = await createExtractor("rules", cfg).extractFields({ text: "100 log aaye", now: NOW, fields: FIELDS });
     expect(rules.model).toBe("rules");
-    expect(createExtractor("ollama", { url: "http://x", model: "m" })).toBeInstanceOf(OllamaExtractor);
+    expect(createExtractor("ollama", cfg)).toBeInstanceOf(OllamaExtractor);
+    expect(createExtractor("hf", cfg)).toBeInstanceOf(HfExtractor);
   });
 });
 

@@ -40,7 +40,10 @@ export function services(): Services {
     secret: appSecret(),
     // Every outbound message is stored (admin log, dev simulator).
     whatsapp: new LoggedWhatsApp(whatsapp(), repo.wa, { secret: appSecret(), now }),
-    extractor: createExtractor(e.EXTRACTOR_PROVIDER, { url: e.OLLAMA_URL, model: e.OLLAMA_MODEL }),
+    extractor: createExtractor(e.EXTRACTOR_PROVIDER, {
+      ollama: { url: e.OLLAMA_URL, model: e.OLLAMA_MODEL },
+      hf: { model: e.HF_MODEL, dtype: e.HF_DTYPE, cacheDir: e.HF_CACHE_DIR },
+    }),
     email: email(),
     storage: new DiskStorage(env().MEDIA_PRIVATE_ROOT),
     publicMedia: new DiskStorage(env().MEDIA_ROOT),

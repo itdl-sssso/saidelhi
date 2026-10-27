@@ -64,3 +64,6 @@ next-env.d.ts
 /test-results/
 /playwright-report/
 /tests/e2e/.cache/
+
+# Hugging Face model weights (EXTRACTOR_PROVIDER=hf)
+/.cache/

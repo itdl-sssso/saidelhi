@@ -3,7 +3,7 @@
 import { z } from "zod";
 import { Confidence, InboxState, Role, SevaType, Source } from "./enums";
 import { FormDefinition, InboxRaw } from "./forms";
-import { I18nText, ISODateTime, Id, Locale, MaskedPhone, PageMeta } from "./primitives";
+import { I18nText, ISODate, ISODateTime, Id, Locale, MaskedPhone, PageMeta } from "./primitives";
 import { opt, Pagination } from "./queries";
 
 // ── Review inbox (spec 28) ───────────────────────────────────────────────────
@@ -227,3 +227,71 @@ export type SimInboundBody = z.infer<typeof SimInboundBody>;
 /** GET /dev/whatsapp/messages?phone → both directions, oldest first. */
 export const SimMessage = z.object({ dir: z.enum(["in", "out"]), at: ISODateTime, text: z.string().nullable(), out: WaOutbound.nullable() });
 export type SimMessage = z.infer<typeof SimMessage>;
+
+/**
+ * Event details read from a WhatsApp message, one shape for every seva type
+ * (bhajan, eye camp, blood donation, Narayan Seva, Bal Vikas, relief drive…).
+ * Only a draft for Plan event / the review inbox: a person checks it before
+ * anything is saved. Fields the message does not state are null (lists empty).
+ * Values are copied as written, except dates/times, which are normalised (v0.9.3).
+ */
+export const EventExtractKind = z.enum(["announcement", "report", "other"]);
+export type EventExtractKind = z.infer<typeof EventExtractKind>;
+
+const HHMM = z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/);
+const Written = z.string().min(1).max(300);
+
+export const EventExtract = z.object({
+  /** announcement = upcoming event; report = something that already happened; other = no event (greeting, quote, question). */
+  kind: EventExtractKind,
+  sevaType: SevaType.nullable(),
+  /** Headline as written, greeting dropped ("GGN 4 Samithi bhajan"). */
+  title: Written.nullable(),
+  /** `raw` as written ("GGN 4"); `slug`/`name` of the matched samithi in sssso-units, null when unknown. */
+  samithi: z.object({ raw: Written, slug: z.string().nullable(), name: z.string().nullable() }).nullable(),
+
+  // When — IST. `endDate` only for multi-day events.
+  date: ISODate.nullable(),
+  endDate: ISODate.nullable(),
+  /** 'HH:MM', 24 h. */
+  startTime: HHMM.nullable(),
+  endTime: HHMM.nullable(),
+  /** date + time as instants, ready for EventInput.startsAt / endsAt. */
+  startsAt: ISODateTime.nullable(),
+  endsAt: ISODateTime.nullable(),
+  /** Repeats ("every Thursday"): text as written + weekday (0 = Sunday) when one is named. */
+  recurrence: z.object({ text: Written, weekday: z.number().int().min(0).max(6).nullable() }).nullable(),
+
+  // Where
+  venueName: Written.nullable(),
+  venueAddress: Written.nullable(),
+
+  // What
+  /** Hospital, blood bank, school or NGO running it with us. */
+  partner: Written.nullable(),
+  /** Study circle topic, bhajan theme, talk subject. */
+  topic: Written.nullable(),
+  /** Who it is for ("children 5–9 years", "ladies", "all devotees"). */
+  audience: Written.nullable(),
+  /** What is offered ("free eye check-up", "spectacles", "medicines"). */
+  services: z.array(Written).max(20),
+  /** What to bring (attendees or sevadals): "Aadhaar card", "old clothes". */
+  bring: z.array(Written).max(20),
+
+  // Who
+  volunteersNeeded: z.number().int().min(0).max(10_000).nullable(),
+  /** Goal stated in the message ("100 donors", "500 meals"). */
+  target: z.object({ count: z.number().int().min(0), unit: Written }).nullable(),
+  /** Contact as written in the message (public announcement text). */
+  contact: z.object({ name: Written.nullable(), phone: z.string().max(20).nullable() }).nullable(),
+  /** Instruction for sevadals ("Please reach before 10 minutes"). */
+  sevadalNote: Written.nullable(),
+
+  /** Keyed by field name above; only fields that were filled. */
+  fieldConfidence: z.record(z.string(), z.object({ level: Confidence, why: I18nText.nullable() })),
+  /** Model values that failed the type check or could not be found in the message (dropped). */
+  rejected: z.array(z.object({ field: z.string(), value: z.string(), reason: z.string() })),
+  /** "rules" or "rules+LFM2.5-350M-ONNX". */
+  model: z.string(),
+});
+export type EventExtract = z.infer<typeof EventExtract>;
