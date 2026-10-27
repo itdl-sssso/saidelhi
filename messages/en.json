@@ -1186,7 +1186,16 @@
       "previewLabel": "Preview of the public event card",
       "previewLang": "Preview language",
       "previewNoDesc": "The description will show here.",
-      "previewNoVenue": "Venue"
+      "previewNoVenue": "Venue",
+      "fromMessage": {
+        "title": "Fill from a WhatsApp message",
+        "label": "Paste the event message",
+        "hint": "Copy the announcement from the group and paste it here. The form is filled for you to check; nothing is saved until you save.",
+        "fill": "Fill the form",
+        "filled": "Filled from the message",
+        "check": "Please check: {fields}. Add the Hindi title and description before you submit.",
+        "checkAll": "Please check every field and add the Hindi title and description before you submit."
+      }
     },
     "approvals": {
       "title": "Approvals",
@@ -1405,7 +1414,8 @@
         "hint": "Suggested from samithi, date and wording. Change it if it is wrong.",
         "create": "Not listed? Plan a new event",
         "needed": "Pick the event this report belongs to. The form for that event then shows here.",
-        "approveHint": "Match an event before you approve."
+        "approveHint": "Match an event before you approve.",
+        "createFrom": "Plan an event from this message"
       },
       "fixErrors": "{n, plural, one {# field needs fixing} other {# fields need fixing}}",
       "fixErrorsBody": "Correct the fields marked below, then approve again.",

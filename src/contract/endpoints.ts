@@ -98,6 +98,7 @@ export const adminEndpoints = {
   overview: (q?: { scope?: string }) => withQuery(p("/admin/overview"), q),
   events: (q?: object) => withQuery(p("/admin/events"), q),
   event: (id: string) => p(`/admin/events/${seg(id)}`),
+  eventFromMessage: () => p("/admin/events/extract"),
   eventAction: (id: string, action: AdminEventAction) => p(`/admin/events/${seg(id)}/${action}`),
   eventLinks: (id: string) => p(`/admin/events/${seg(id)}/links`),
   bulkResendLinks: () => p("/admin/events/bulk/resend-links"),

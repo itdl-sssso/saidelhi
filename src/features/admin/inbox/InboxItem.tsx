@@ -196,8 +196,8 @@ function Loaded({ d, reload }: { d: InboxDetail; reload: () => void }) {
                 onChange={(e) => void patch({ eventId: e.target.value || null, answers }, "match")}
               />
               {d.can.edit ? (
-                <Link href="/admin/events/new" className={styles.textLink}>
-                  {t("match.create")}
+                <Link href={d.raw.text ? `/admin/events/new?from=${encodeURIComponent(d.id)}` : "/admin/events/new"} className={styles.textLink}>
+                  {d.raw.text ? t("match.createFrom") : t("match.create")}
                 </Link>
               ) : null}
 

@@ -295,3 +295,36 @@ export const EventExtract = z.object({
   model: z.string(),
 });
 export type EventExtract = z.infer<typeof EventExtract>;
+
+/** POST /admin/events/extract — a pasted WhatsApp message, or the text of an inbox item the viewer can review. */
+export const EventFromMessageBody = z.union([z.object({ text: z.string().trim().min(3).max(4000) }), z.object({ inboxId: Id })]);
+export type EventFromMessageBody = z.infer<typeof EventFromMessageBody>;
+
+/** Plan event fields the form may still need checked (blank, or not certain). */
+export const PlanField = z.enum(["sevaType", "title", "startsAt", "endsAt", "samithiId", "venueName", "venueAddress", "volunteersNeeded", "bring", "description"]);
+export type PlanField = z.infer<typeof PlanField>;
+
+/** Plan event prefill read from a message. Nothing is saved; the coordinator reviews the form. */
+export const EventFromMessage = z.object({
+  extract: EventExtract,
+  prefill: z.object({
+    sevaType: SevaType.nullable(),
+    title: z.string().nullable(),
+    /** IST day and 'HH:MM' times, as the Plan event form takes them. */
+    date: ISODate.nullable(),
+    startTime: z.string().nullable(),
+    endTime: z.string().nullable(),
+    /** Only when the samithi named in the message is in the viewer's scope. */
+    samithiId: Id.nullable(),
+    venueName: z.string().nullable(),
+    venueAddress: z.string().nullable(),
+    volunteersNeeded: z.number().int().nullable(),
+    bring: z.array(z.string()),
+    /** English description lines from topic, audience, partner, services, recurrence and the sevadal note. Contact is left out. */
+    description: z.string(),
+    recurring: z.boolean(),
+  }),
+  /** Fields the message gave with less than high confidence, or that the form still needs. */
+  check: z.array(PlanField),
+});
+export type EventFromMessage = z.infer<typeof EventFromMessage>;

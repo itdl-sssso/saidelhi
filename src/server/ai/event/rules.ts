@@ -3,7 +3,7 @@
 // offline; the model only fills what is left (./model.ts).
 import type { EventExtractKind, I18nText, SevaType } from "@/contract";
 import { istDate } from "../../domain/time";
-import { detectSevaType } from "../rules";
+import { detectDate, detectSevaType } from "../rules";
 import type { FieldConfidence } from "../types";
 import type { Draft } from "./draft";
 import { emptyDraft } from "./draft";
@@ -49,7 +49,7 @@ function labelled(lines: readonly string[]): Partial<Record<Label, string>> {
 }
 
 const INVITE = /\b(requested to|kindly (join|come|attend)|all are (welcome|requested|invited)|please (join|come|attend)|join us|invited|aamantrit|padhare|padharein|aayiye|aaiye|pahunchiye|पधारें|आमंत्रित|आइए|आप सभी)\b/i;
-const PAST = /\b(was held|were held|was conducted|were conducted|conducted on|successfully|concluded|attended by|benefit+ed|were served|got their|thanks to all|participated|ho gaya|sampann|सम्पन्न|संपन्न|आयोजित किया गया)\b/i;
+const PAST = /\b(was held|were held|was conducted|were conducted|conducted on|successfully|concluded|attended by|benefit+ed|were served|got their|thanks to all|participated|ho gaya|report|log aaye|aaye the|people came|were examined|sampann|सम्पन्न|संपन्न|आयोजित किया गया)\b/i;
 export const PLACE = /\b(centre|center|mandir|temple|bhawan|bhavan|hall|school|park|ashram|hospital|community|society|apartments?|camp|ground|basti|slum|chowk|market|gurudwara|dharamshala|sadan|niwas|nilayam)\b|सेंटर|मंदिर|भवन|पार्क|विद्यालय|अस्पताल/i;
 export const ADDRESS = /\d|\b(sector|sec|block|phase|road|rd|marg|lane|gali|street|near|opp|opposite|behind|plot|house|flat|floor|nagar|vihar|enclave|extn|colony)\b|सेक्टर|मार्ग|के पास/i;
 
@@ -204,8 +204,9 @@ export function rulesEvent(text: string, now: Date): Draft {
 
   // ---- who
   const vol =
-    /\b(\d{1,4})\s*(?:more\s+)?(?:sevadals?|volunteers?|seva ?dal members?)\s*(?:are\s+)?(?:needed|required|chahiye|wanted)/i.exec(body) ??
-    /\b(?:need|needed|require|required|chahiye)\s*:?\s*(\d{1,4})\s*(?:sevadals?|volunteers?)/i.exec(body) ??
+    /\b(\d{1,4})[ \t]*(?:more[ \t]+)?(?:sevadals?|volunteers?|seva ?dal members?)[ \t]*(?:are[ \t]+)?(?:needed|required|chahiye|wanted)/i.exec(body) ??
+    /\b(?:sevadals?|volunteers?)[ \t]*(?:needed|required|chahiye|wanted)[ \t]*[:\-–][ \t]*(\d{1,4})\b/i.exec(body) ??
+    /\b(?:need|needed|require|required|chahiye)[ \t]*:?[ \t]*(\d{1,4})[ \t]*(?:sevadals?|volunteers?)/i.exec(body) ??
     /\b(?:sevadals?|volunteers?)\b[^.\n\d]{0,24}?(\d{1,4})\s*(?:more\s+)?(?:needed|required|chahiye|wanted)/i.exec(body) ??
     /(\d{1,4})\s*सेवादल(?:ों)?\s*की आवश्यकता/.exec(body);
   if (vol) {
@@ -230,6 +231,11 @@ export function rulesEvent(text: string, now: Date): Draft {
   }
 
   d.kind = kindOf(body, d, now);
+  // "kal" is yesterday in a report ("kal ka report"), tomorrow in an announcement.
+  if (d.kind === "report" && d.date && !dateLine && !recurrence) {
+    const past = detectDate(body, now, "past")?.date;
+    if (past) d.date = past;
+  }
   // A greeting or quote has no event title.
   if (looksLikeNoEvent(d)) {
     d.title = null;

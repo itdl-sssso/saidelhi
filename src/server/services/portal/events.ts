@@ -6,6 +6,7 @@ import {
   type EventAction,
   type EventActionBody,
   type EventAdmin,
+  type EventFromMessage,
   type EventInputParsed,
   type EventPatch,
   type EventRow,
@@ -26,6 +27,7 @@ import type { AdminEventFilter, EventPatchRec } from "../../repo/portal-types";
 import type { EventRec } from "../../repo/types";
 import { assembleEvents, buildResults } from "../event-assembler";
 import type { OrgIndex } from "../org-index";
+import { eventFromMessage } from "./event-from-message";
 import { transition } from "./lifecycle";
 import { eventInScope, loadOrg, type PortalCtx, scopeSamithiIds, toEventRow } from "./shared";
 
@@ -46,6 +48,8 @@ export interface AdminEventsService {
   create(actor: Actor, input: EventInputParsed, locale: Locale): Promise<EventAdmin>;
   patch(actor: Actor, id: string, patch: EventPatch, locale: Locale): Promise<EventAdmin>;
   act(actor: Actor, id: string, action: EventAction, body: EventActionBody, locale?: Locale): Promise<EventAdmin>;
+  /** Plan event prefill from a forwarded WhatsApp message; saves nothing. */
+  fromMessage(actor: Actor, text: string): Promise<EventFromMessage>;
 }
 
 /** Bilingual description (and Hindi title) are required before an event leaves draft (spec 27). */
@@ -184,6 +188,8 @@ export function createAdminEventsService(ctx: PortalCtx): AdminEventsService {
         meta: { page: q.page, pageSize: q.pageSize, total: page.total, counts: countObj },
       };
     },
+
+    fromMessage: (actor, text) => eventFromMessage(ctx, actor, text),
 
     async get(actor, id) {
       assertCan(actor, "events.read");
