@@ -11,4 +11,7 @@ L=/var/log/saidelhi-cron.log
 30   3 * * * root $R report-reminders  >>$L 2>&1
 # 7th of the month, 06:00 IST
 30   0 7 * * root $R monthly-report    >>$L 2>&1
+# Official Sai Message for the Day (flag thought_official): 00:20 IST, retry 06:05 IST (skips once stored)
+50  18 * * * root $R official-thought >>$L 2>&1
+35   0 * * * root $R official-thought >>$L 2>&1
 0   21 * * * root $R retention         >>$L 2>&1

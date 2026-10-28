@@ -28,6 +28,8 @@ export const Permission = z.enum([
   "people.invite",
   "people.manage",
   "content.edit",
+  /** v0.10: add/rename/reorder/deactivate article types (state admin). */
+  "content.types",
   "impact.manage",
   "discourses.edit",
   /** v0.8: approve paragraphs/discourses, assign reviewers. */

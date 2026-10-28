@@ -25,6 +25,7 @@ export const KIND_ICON: Record<string, IconName> = {
   yesno: "circle-check",
   repeater: "repeat",
   file: "paperclip",
+  photos: "camera",
   heading: "flag",
   help: "info",
 };
@@ -92,12 +93,12 @@ function FieldCard({
         </button>
         <button type="button" className={s.fbody} onClick={onSelect} aria-pressed={selected} aria-label={t("selectField", { name: label || t("untitled") })}>
           <span className={s.fname}>
-            <Icon name={KIND_ICON[f.kind] ?? "file-text"} size={16} />
+            <Icon name={KIND_ICON[f.kind === "file" && f.photos ? "photos" : f.kind] ?? "file-text"} size={16} />
             {label || <em>{t("untitled")}</em>}
             {f.locked ? <Icon icon={Lock} size={16} label={t("locked")} /> : null}
           </span>
           <span className={s.fmeta}>
-            <span className={s.tag}>{t(`kind.${f.kind}`)}</span>
+            <span className={s.tag}>{t(`kind.${f.kind === "file" && f.photos ? "photos" : f.kind}`)}</span>
             {f.required ? <span className={s.tag}>{t("required")}</span> : null}
             {f.kpi ? <span className={cx(s.tag, s.tagBlue)}>{t("kpiTag", { key: f.kpi })}</span> : null}
             {f.personal ? (

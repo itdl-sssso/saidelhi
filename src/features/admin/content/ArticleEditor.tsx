@@ -2,7 +2,7 @@
 
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
-import { ArticleCategory, type ArticleEditor as ArticleDetail, type ContentDetail, type ContentItemEditor, UPLOAD_LIMITS, type Media, adminEndpoints } from "@/contract";
+import { type ArticleEditor as ArticleDetail, type ContentDetail, type ContentItemEditor, UPLOAD_LIMITS, type Media, adminEndpoints } from "@/contract";
 import { formatDate, type AppLocale, tx } from "@/lib/format";
 import { Alert } from "@/ui/Alert";
 import { Button } from "@/ui/Button";
@@ -21,6 +21,7 @@ import { Loadable, Note } from "../parts";
 import { ItemEditor } from "./ItemEditor";
 import { RichEditor } from "./RichEditor";
 import { STATUS_TONE } from "./ContentPage";
+import { useContentTypes } from "./ContentTypesPage";
 import styles from "../Admin.module.css";
 import c from "./Content.module.css";
 
@@ -61,6 +62,9 @@ function Article({ d, org, reload }: { d: ArticleDetail; org: OrgOptions; reload
   const { run, pending } = useAction();
   const { upload, pending: uploading } = useUpload();
   const [s, setS] = useState<State>(from(d));
+  const types = useContentTypes();
+  const typeOptions = types.rows.filter((r) => r.active || r.slug === s.category).map((r) => ({ value: r.slug, label: types.name(r) }));
+  if (!typeOptions.some((o) => o.value === s.category)) typeOptions.push({ value: s.category, label: s.category });
   const [lang, setLang] = useState<"en" | "hi">("en");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [schedule, setSchedule] = useState(false);
@@ -169,7 +173,7 @@ function Article({ d, org, reload }: { d: ArticleDetail; org: OrgOptions; reload
         <aside className={c.stack}>
           <Panel title={t("details")}>
             <div className={c.stack}>
-              <Select label={t("fCategory")} value={s.category} onChange={(e) => set("category", e.target.value as State["category"])} options={ArticleCategory.options.map((x) => ({ value: x, label: t(`cat.${x}`) }))} />
+              <Select label={t("fCategory")} value={s.category} onChange={(e) => set("category", e.target.value as State["category"])} options={typeOptions} />
               {org.districts.length ? <Select label={t("colDistrict")} value={s.districtId} onChange={(e) => set("districtId", e.target.value)} options={[{ value: "", label: t("allNcr") }, ...org.districts]} /> : null}
               <Loadable api={events} rows={1}>
                 {(rows) => (

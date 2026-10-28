@@ -1,5 +1,5 @@
 import { useLocale, useTranslations } from "next-intl";
-import type { DistrictSummary, EventPublic, JoinPayload, JoinQuery, SevaType } from "@/contract";
+import type { DistrictSummary, JoinEvent, JoinPayload, JoinQuery, SevaType } from "@/contract";
 import { Link } from "@/i18n/navigation";
 import { type AppLocale, formatTime, tx } from "@/lib/format";
 import { DateChip, LocalText, PageHero, pub } from "@/features/public/parts";
@@ -138,12 +138,9 @@ export function JoinView({ data, q, districts }: { data: JoinPayload; q: JoinQue
   );
 }
 
-function Need({ event: e }: { event: EventPublic }) {
+function Need({ event: e }: { event: JoinEvent }) {
   const t = useTranslations("join");
   const locale = useLocale() as AppLocale;
-  const needed = e.volunteersNeeded ?? 0;
-  const left = Math.max(0, needed - e.volunteersJoined);
-  const pct = needed > 0 ? Math.min(100, Math.round((e.volunteersJoined / needed) * 100)) : 0;
   return (
     <li>
       <Link href={`/events/${e.id}`} className={styles.need}>
@@ -161,19 +158,9 @@ function Need({ event: e }: { event: EventPublic }) {
           </span>
         </span>
         <span className={styles.needFoot}>
-          <span
-            className={styles.track}
-            role="progressbar"
-            aria-label={t("progressLabel", { joined: e.volunteersJoined, needed })}
-            aria-valuemin={0}
-            aria-valuemax={100}
-            aria-valuenow={pct}
-          >
-            <i style={{ width: `${pct}%` }} />
-          </span>
           <span className={pub.volb}>
             <Icon name="hand-heart" size={16} />
-            {t("moreNeeded", { count: left })}
+            {t("sevadalNeeded")}
           </span>
         </span>
       </Link>

@@ -417,8 +417,8 @@ export type AuditQuery = z.infer<typeof AuditQuery>;
 
 // ---- Jobs -------------------------------------------------------------------
 
-/** v0.7 adds `monthly-report` (7th, 06:00 IST), `retention` (nightly purge), `publish-scheduled` (content schedule). */
-export const CronJob = z.enum(["escalations", "report-reminders", "event-status", "reminders", "monthly-report", "retention", "publish-scheduled"]);
+/** v0.10 adds `official-thought` (daily, after 00:05 IST: pulls the official Sai Message for the Day when flag `thought_official` is on). v0.7 adds `monthly-report` (7th, 06:00 IST), `retention` (nightly purge), `publish-scheduled` (content schedule). */
+export const CronJob = z.enum(["escalations", "report-reminders", "event-status", "reminders", "monthly-report", "retention", "publish-scheduled", "official-thought"]);
 export type CronJob = z.infer<typeof CronJob>;
 
 export const JobResult = z.object({

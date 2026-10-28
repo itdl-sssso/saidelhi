@@ -22,6 +22,7 @@ import type { OrgOptions } from "../server";
 import { hrefWith } from "../url";
 import { useAction } from "../useAction";
 import { useApi } from "../useApi";
+import { useContentTypes } from "./ContentTypesPage";
 import { Lang, LinkTabs, Loadable, TableFoot } from "../parts";
 import styles from "../Admin.module.css";
 
@@ -50,6 +51,7 @@ export function ContentPage({ org }: { org: OrgOptions }) {
   const q = sp.get("q") || undefined;
   const params = Object.fromEntries(sp.entries());
   const api = useApi<ContentRow[], Meta>(adminEndpoints.content({ tab, status, lang, district, q, page, pageSize: 20 }));
+  const types = useContentTypes();
   const [creating, setCreating] = useState(false);
   const [fromEvent, setFromEvent] = useState(false);
   const [del, setDel] = useState<ContentRow | null>(null);
@@ -68,6 +70,9 @@ export function ContentPage({ org }: { org: OrgOptions }) {
         sub={t("sub")}
         actions={
           <>
+            <Button variant="secondary" icon="list" href="/admin/content/types">
+              {t("typesLink")}
+            </Button>
             <Button variant="secondary" icon="calendar-days" href="/admin/content/thoughts">
               {t("thoughts")}
             </Button>
@@ -126,7 +131,7 @@ export function ContentPage({ org }: { org: OrgOptions }) {
                             </>
                           ) : null}
                         </td>
-                        <td>{r.category ? t(`cat.${r.category}`) : t(`type.${r.type}`)}</td>
+                        <td>{r.category ? types.label(r.category) : t(`type.${r.type}`)}</td>
                         <td>{r.district ? tx(r.district.name, locale) : "—"}</td>
                         <td>
                           <Lang en={r.languages.en} hi={r.languages.hi} />

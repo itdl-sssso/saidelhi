@@ -222,6 +222,8 @@ export interface ContentItemRec {
   date: string | null;
   status: ContentStatus;
   sortOrder: number;
+  /** Extra JSON: thought pictures (`image`) and `origin`/`sourceUrl` of official thoughts. */
+  data?: Record<string, unknown> | null;
   /** Admin fields (not selected by the public read). */
   startsAt?: Date | null;
   endsAt?: Date | null;

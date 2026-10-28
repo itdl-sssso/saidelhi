@@ -403,6 +403,7 @@ export class DbRepo implements DataRepo {
         date: contentItem.date,
         status: contentItem.status,
         sortOrder: contentItem.sortOrder,
+        data: contentItem.data,
       })
       .from(contentItem)
       .where(eq(contentItem.kind, kind))

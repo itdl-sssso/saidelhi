@@ -117,11 +117,30 @@ export const WhatsAppContact = z.object({
 export type WhatsAppContact = z.infer<typeof WhatsAppContact>;
 
 /**
+ * v0.10: an event on /join. Only that Sevadal are needed: no head-counts, no phone numbers
+ * (people reach us through the organisation's WhatsApp number or the opt-in form).
+ */
+export const JoinEvent = EventPublic.pick({
+  id: true,
+  title: true,
+  sevaType: true,
+  status: true,
+  startsAt: true,
+  endsAt: true,
+  postponedTo: true,
+  venue: true,
+  samithi: true,
+  district: true,
+  recurring: true,
+}).extend({ sevadalNeeded: z.literal(true) });
+export type JoinEvent = z.infer<typeof JoinEvent>;
+
+/**
  * GET /join → `{ events, whatsapp }`. Events: public, non-recurring, status planned|postponed,
- * `volunteersNeeded > volunteersJoined`, from today (IST) when `from` absent, soonest first.
+ * `volunteersNeeded > volunteersJoined` (not sent), from today (IST) when `from` absent, soonest first.
  */
 export const JoinPayload = z.object({
-  events: Paged(EventPublic),
+  events: Paged(JoinEvent),
   whatsapp: WhatsAppContact,
 });
 export type JoinPayload = z.infer<typeof JoinPayload>;

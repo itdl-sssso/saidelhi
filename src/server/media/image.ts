@@ -19,6 +19,20 @@ export async function probe(bytes: Uint8Array): Promise<Probe | null> {
   }
 }
 
+/** Form-link photos: auto-orient, fit inside `maxEdge`, JPEG q82, no EXIF/GPS/ICC. Null when undecodable. */
+export async function normalizePhoto(bytes: Uint8Array, maxEdge: number): Promise<Uint8Array | null> {
+  try {
+    const out = await sharp(bytes, { failOn: "error" })
+      .rotate()
+      .resize({ width: maxEdge, height: maxEdge, fit: "inside", withoutEnlargement: true })
+      .jpeg({ quality: 82, mozjpeg: true })
+      .toBuffer();
+    return new Uint8Array(out);
+  } catch {
+    return null;
+  }
+}
+
 const clamp = (n: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, n));
 
 /**
