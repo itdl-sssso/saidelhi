@@ -15,6 +15,7 @@ import { createImpactService } from "./impact";
 import { createJoinService } from "./join";
 import { createProgramsService } from "./programs";
 import { createRedirectsService } from "./redirects";
+import { createThoughtService } from "./thought";
 import { createValuesService } from "./values";
 import { RulesExtractor } from "../ai";
 import { createLinksService } from "./links";
@@ -52,6 +53,7 @@ export function createServices(repo: DataRepo, deps: ServiceDeps): Services {
   return {
     dataSource: repo.kind,
     home: createHomeService(repo, deps),
+    thought: createThoughtService(repo, deps),
     events,
     centres,
     districts: createDistrictsService(repo, deps),

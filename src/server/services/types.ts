@@ -120,6 +120,8 @@ export interface ImpactService {
   get(q: ImpactQuery): Promise<ImpactPayload | null>;
 }
 
+export type { ThoughtService, TodaysThought } from "./thought";
+
 export interface ArticlesService {
   list(q: ArticlesQuery): Promise<Paged<Article>>;
   bySlug(slug: string): Promise<ArticleDetail | null>;
@@ -247,6 +249,8 @@ export interface LinksService {
 export interface Services {
   readonly dataSource: "mock" | "db";
   home: HomeService;
+  /** Thought of the day: `thought.today(locale)` -> {text, source, image, date}; use `image ?? default`. */
+  thought: import("./thought").ThoughtService;
   events: EventsService;
   centres: CentresService;
   districts: DistrictsService;

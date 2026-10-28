@@ -514,6 +514,8 @@ export const ContentItemEditor = z.object({
   title: I18nText.nullable(),
   body: I18nText.nullable(),
   source: I18nText.nullable(),
+  /** v0.10: the picture of a thought (shown with it on Home). */
+  image: z.object({ url: z.string(), alt: I18nText }).nullable(),
   href: z.string().nullable(),
   date: ISODate.nullable(),
   startsAt: ISODateTime.nullable(),
@@ -539,11 +541,15 @@ const ArticleFields = {
   eventId: Id.nullable().default(null),
 };
 
+/** Picture of a thought: a public media URL (from POST /admin/content/media) and its alt text. */
+const ThoughtImageInput = z.object({ url: Text(400), alt: I18nOptionalInput(200) });
+
 const ItemFields = {
   key: Text(64).nullable().default(null),
   title: I18nOptionalInput(300).nullable().default(null),
   body: I18nOptionalInput(4000).nullable().default(null),
   source: I18nOptionalInput(300).nullable().default(null),
+  image: ThoughtImageInput.nullable().default(null),
   href: Text(400).nullable().default(null),
   date: ISODate.nullable().default(null),
   startsAt: ISODateTime.nullable().default(null),
@@ -569,6 +575,7 @@ export const ContentPatch = z.object({
   bodyHtml: I18nOptionalInput(200_000).optional(),
   body: I18nOptionalInput(4000).nullable().optional(),
   source: I18nOptionalInput(300).nullable().optional(),
+  image: ThoughtImageInput.nullable().optional(),
   href: Text(400).nullable().optional(),
   date: ISODate.nullable().optional(),
   startsAt: ISODateTime.nullable().optional(),
@@ -589,6 +596,8 @@ export const FromEventParams = z.object({ eventId: Id });
 
 /** POST /admin/content/media (multipart `file`, `alt`) → 201 Media (public). Photo rules shown in UI. */
 export const ContentMediaForm = PhotoUploadForm;
+
+/** GET /admin/content/thoughts/pool → ContentItemEditor[]: coordinator thoughts WITHOUT a date. They rotate by IST date on days with no dated thought. */
 
 /** GET /admin/content/thoughts?from&to (≤ 62 days) → ThoughtDay[] (one per day; empty days `item: null`). */
 export const ThoughtsQuery = z.object({ from: ISODate, to: ISODate });
@@ -1307,7 +1316,7 @@ export type AnalyticsStatus = z.infer<typeof AnalyticsStatus>;
 
 /** GET /admin/settings — flags, link defaults, escalation, analytics (seva types/KPIs/strings have their own lists). */
 export const SettingsPayload = z.object({
-  flags: z.object({ discourses: z.boolean(), offline_mode: z.boolean(), ai_extraction: z.boolean() }),
+  flags: z.object({ discourses: z.boolean(), offline_mode: z.boolean(), ai_extraction: z.boolean(), thought_official: z.boolean() }),
   links: LinkDefaults,
   escalation: EscalationSettings,
   analytics: AnalyticsStatus,
@@ -1317,7 +1326,7 @@ export type SettingsPayload = z.infer<typeof SettingsPayload>;
 
 /** PATCH /admin/settings → SettingsPayload. Applies to new links / future escalations only. */
 export const SettingsPatch = z.object({
-  flags: z.object({ discourses: z.boolean(), offline_mode: z.boolean(), ai_extraction: z.boolean() }).partial().optional(),
+  flags: z.object({ discourses: z.boolean(), offline_mode: z.boolean(), ai_extraction: z.boolean(), thought_official: z.boolean() }).partial().optional(),
   links: LinkDefaults.partial().optional(),
   escalation: EscalationSettings.partial().optional(),
   version: Version,

@@ -38,6 +38,8 @@ export const Thought = z.object({
   date: ISODate,
   text: I18nText,
   source: I18nText.nullable(),
+  /** The picture that belongs to this thought (coordinator-uploaded); null/absent = the page uses its default. */
+  image: z.object({ url: z.string(), alt: I18nText }).nullable().optional(),
 });
 export type Thought = z.infer<typeof Thought>;
 

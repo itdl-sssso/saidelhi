@@ -1,4 +1,5 @@
-import type { HomePayload, Thought, WingCard } from "@/contract";
+import type { HomePayload, WingCard } from "@/contract";
+import { officialOn, pickThoughtFor, toThought } from "./thought";
 import { istDate } from "../domain/time";
 import type { ContentItemRec, DataRepo } from "../repo/types";
 import { listMerged } from "./articles";
@@ -70,18 +71,6 @@ function pickWings(items: readonly ContentItemRec[]): WingCard[] {
   return cards.sort((a, b) => a.at - b.at).map((c) => c.card);
 }
 
-function pickThought(items: readonly ContentItemRec[], today: string): Thought | null {
-  const t = items
-    .filter((i) => i.status === "published" && i.bodyEn && i.date && i.date <= today)
-    .sort((a, b) => (b.date ?? "").localeCompare(a.date ?? ""))[0];
-  if (!t || !t.bodyEn || !t.date) return null;
-  return {
-    date: t.date,
-    text: i18n(t.bodyEn, t.bodyHi),
-    source: t.sourceEn ? i18n(t.sourceEn, t.sourceHi) : null,
-  };
-}
-
 /** Exactly four tiles: admin picks first, padded from the defaults. */
 function homeKeys(picked: readonly string[]): string[] {
   return [...new Set([...picked, ...DEFAULT_HOME, "volunteer_hours"])].slice(0, 4);
@@ -102,7 +91,11 @@ export function createHomeService(repo: DataRepo, deps: ServiceDeps): HomeServic
       ]);
 
       return {
-        thought: pickThought(thoughts, istDate(now)),
+        thought: (() => {
+          const day = istDate(now);
+          const p = pickThoughtFor(thoughts, day, officialOn(settings.flags));
+          return p ? toThought(p, day) : null;
+        })(),
         upcoming: await assembleEvents(repo, org, upcoming.rows),
         kpis: hasAnyData(year)
           ? homeKeys(settings.homeTiles).map((k) => (k === "active" ? activeTile(year, win.info) : tile(year, k, win.info)))

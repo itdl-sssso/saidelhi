@@ -181,7 +181,7 @@ export type PrivacyRequestStatus = z.infer<typeof PrivacyRequestStatus>;
 export const ContentKind = z.enum(["thought_for_day", "announcement", "home_section"]);
 export type ContentKind = z.infer<typeof ContentKind>;
 
-export const FeatureFlag = z.enum(["discourses", "offline_mode", "ai_extraction"]);
+export const FeatureFlag = z.enum(["discourses", "offline_mode", "ai_extraction", "thought_official"]);
 export type FeatureFlag = z.infer<typeof FeatureFlag>;
 
 export const ValueSlug = z.enum(["sathya", "dharma", "shanti", "prema", "ahimsa"]);
