@@ -1,11 +1,13 @@
 import { z } from "zod";
-import { ArticleCategory, DiscourseBlockType, DiscourseTheme, Wing } from "./enums";
+import { ArticleCategory, ContentTypeSlug, DiscourseBlockType, DiscourseTheme, Wing } from "./enums";
 import { EventPublic } from "./events";
 import { I18nText, ISODate, ISODateTime, Id, Media } from "./primitives";
 
 export const Article = z.object({
   slug: z.string(),
   category: ArticleCategory,
+  /** v0.10: the article's admin-managed type (slug + display name). `category` is its nearest built-in. */
+  type: z.object({ slug: ContentTypeSlug, label: I18nText }).nullable().optional(),
   title: I18nText,
   summary: I18nText,
   /** Sanitised HTML. */

@@ -167,6 +167,9 @@ export const adminEndpoints = {
   contentItem: (id: string) => p(`/admin/content/${seg(id)}`),
   contentFromEvent: (eventId: string) => p(`/admin/content/from-event/${seg(eventId)}`),
   contentMedia: () => p("/admin/content/media"),
+  contentTypes: () => p("/admin/content/types"),
+  contentType: (slug: string) => p(`/admin/content/types/${seg(slug)}`),
+  contentTypesReorder: () => p("/admin/content/types/reorder"),
   thoughts: (q: { from: string; to: string }) => withQuery(p("/admin/content/thoughts"), q),
   thoughtsImport: () => p("/admin/content/thoughts/import"),
   // impact controls (40)

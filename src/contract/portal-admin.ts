@@ -5,7 +5,7 @@
 // keys are documented per schema. Mutations carry `version` (409 CONFLICT when stale).
 import { z } from "zod";
 import { ScopeRef } from "./auth";
-import { ArticleCategory, ContentKind, LinkPurpose, PartnerKind, PrivacyRequestStatus, PrivacyRequestType, Role, SevaType, Source, Wing } from "./enums";
+import { ArticleCategory, ContentKind, ContentTypeSlug, LinkPurpose, PartnerKind, PrivacyRequestStatus, PrivacyRequestType, Role, SevaType, Source, Wing } from "./enums";
 import { EventCard } from "./events";
 import { ExcelColumn } from "./form-builder";
 import { Answers, FormDefinition } from "./forms";
@@ -446,7 +446,7 @@ export const ContentRow = z.object({
   /** Native ids are ULIDs; legacy posts not yet edited are `legacy-<postId>`. */
   id: z.string(),
   type: ContentType,
-  category: ArticleCategory.nullable(),
+  category: ContentTypeSlug.nullable(),
   title: I18nText,
   district: UnitRef.nullable(),
   languages: LangStatus,
@@ -480,7 +480,8 @@ export const ArticleEditor = z.object({
   kind: z.literal("article"),
   id: z.string(),
   slug: z.string(),
-  category: ArticleCategory,
+  /** Slug of a content type (GET /admin/content/types). */
+  category: ContentTypeSlug,
   title: I18nText,
   summary: I18nText,
   /**
@@ -528,7 +529,7 @@ export type ContentDetail = z.infer<typeof ContentDetail>;
 
 const ArticleFields = {
   slug: Slug.optional(),
-  category: ArticleCategory,
+  category: ContentTypeSlug,
   title: I18nInput(300),
   summary: I18nOptionalInput(1000).default({ en: "", hi: null }),
   bodyHtml: I18nOptionalInput(200_000).default({ en: "", hi: null }),
@@ -562,7 +563,7 @@ export type ContentCreate = z.input<typeof ContentCreate>;
  */
 export const ContentPatch = z.object({
   slug: Slug.optional(),
-  category: ArticleCategory.optional(),
+  category: ContentTypeSlug.optional(),
   title: I18nOptionalInput(300).optional(),
   summary: I18nOptionalInput(1000).optional(),
   bodyHtml: I18nOptionalInput(200_000).optional(),
@@ -603,6 +604,42 @@ export type ThoughtDay = z.infer<typeof ThoughtDay>;
 /** POST /admin/content/thoughts/import (multipart `file`: CSV `date,text_en,text_hi,source_en,source_hi`). */
 export const ThoughtsImportResult = z.object({ created: Count, updated: Count, errors: z.array(z.object({ row: Int.positive(), message: I18nText })) });
 export type ThoughtsImportResult = z.infer<typeof ThoughtsImportResult>;
+
+// ---- Content types (v0.10) ----------------------------------------------------
+
+/** One article type. `builtin` = one of the seven original slugs (legacy posts map onto them; they can be renamed/hidden, never removed). */
+export const ContentTypeRow = z.object({
+  slug: ContentTypeSlug,
+  labelEn: z.string(),
+  labelHi: z.string().nullable(),
+  active: z.boolean(),
+  order: Int.nonnegative(),
+  builtin: z.boolean(),
+  /** Native articles of this type. */
+  articles: Count,
+  /** 0 until the list is first saved (defaults are shown before that). */
+  version: z.number().int().nonnegative(),
+});
+export type ContentTypeRow = z.infer<typeof ContentTypeRow>;
+
+/** GET /admin/content/types (content.edit) → ContentTypeRow[] in order, inactive included. */
+/** POST /admin/content/types (content.types) → 201 ContentTypeRow; slug defaults to the English label. */
+export const ContentTypeCreate = z.object({ labelEn: Text(60).min(2), labelHi: Text(60).nullable().default(null), slug: ContentTypeSlug.optional() });
+export type ContentTypeCreate = z.input<typeof ContentTypeCreate>;
+
+/** PATCH /admin/content/types/:slug (content.types) → ContentTypeRow. */
+export const ContentTypePatch = z.object({
+  labelEn: Text(60).min(2).optional(),
+  labelHi: Text(60).nullable().optional(),
+  active: z.boolean().optional(),
+  version: z.number().int().nonnegative(),
+});
+export type ContentTypePatch = z.infer<typeof ContentTypePatch>;
+export const ContentTypeParams = z.object({ slug: ContentTypeSlug });
+
+/** POST /admin/content/types/reorder (content.types): the new order; unknown slugs are an error, missing ones keep their place after. → ContentTypeRow[] */
+export const ContentTypeReorder = z.object({ slugs: z.array(ContentTypeSlug).min(1).max(100) });
+export type ContentTypeReorder = z.infer<typeof ContentTypeReorder>;
 
 // ---- Impact controls (40) ---------------------------------------------------
 

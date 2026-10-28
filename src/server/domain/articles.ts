@@ -1,8 +1,10 @@
 import sanitizeHtml from "sanitize-html";
 import {
   type Article,
-  type ArticleCategory,
   type ArticleCategoryFilter,
+  type ArticleCategory,
+  type BuiltinArticleCategory,
+  type I18nText,
   type ArticleRef,
   LEGACY_ARTICLE_CATEGORY,
   type LegacyArticleCategory,
@@ -16,7 +18,7 @@ const LETTER_BY_CATEGORY = Object.fromEntries(
 ) as Record<ArticleCategory, LegacyArticleCategory>;
 
 /** Legacy one-letter category → contract enum. Unknown letters fall back to 'news'. */
-export function mapLegacyCategory(letter: string): ArticleCategory {
+export function mapLegacyCategory(letter: string): BuiltinArticleCategory {
   return LEGACY_ARTICLE_CATEGORY[letter.toUpperCase() as LegacyArticleCategory] ?? "news";
 }
 
@@ -24,7 +26,8 @@ export function mapLegacyCategory(letter: string): ArticleCategory {
 export function legacyLettersFor(filter: ArticleCategoryFilter): LegacyArticleCategory[] | undefined {
   if (filter === "all") return undefined;
   if (filter === "centenary") return [LETTER_BY_CATEGORY.centenary_national, LETTER_BY_CATEGORY.centenary_state];
-  return [LETTER_BY_CATEGORY[filter]];
+  // Types added by coordinators have no legacy posts.
+  return LETTER_BY_CATEGORY[filter as ArticleCategory] ? [LETTER_BY_CATEGORY[filter as ArticleCategory]] : [];
 }
 
 /** Letters that may be shown publicly; any other legacy category (e.g. 'O') is never public. */
@@ -101,9 +104,16 @@ export function mediaUrl(mediaBase: string, path: string): string {
   return `${mediaBase.replace(/\/$/, "")}/${path}`;
 }
 
+export function typeOf(ctx: ArticleContext, slug: string): Article["type"] {
+  const label = ctx.categoryLabels?.get(slug);
+  return label ? { slug, label } : null;
+}
+
 export interface ArticleContext {
   mediaBase: string;
   districts: Map<string, UnitRef>;
+  /** Display names of article types (slug -> label); filled from the admin-managed list. */
+  categoryLabels?: ReadonlyMap<string, I18nText>;
 }
 
 function legacyMedia(ctx: ArticleContext, path: string, alt: string): Media {
@@ -118,6 +128,7 @@ export function toArticle(rec: ArticleRec, ctx: ArticleContext): Article {
   return {
     slug: rec.slug,
     category: mapLegacyCategory(rec.category),
+    type: typeOf(ctx, mapLegacyCategory(rec.category)),
     title: { en: rec.title, hi: i18n?.titleHi ?? null },
     summary: { en: rec.shortDescription, hi: i18n?.summaryHi ?? null },
     bodyHtml: { en: bodyEn, hi: bodyHi },

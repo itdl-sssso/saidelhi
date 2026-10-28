@@ -2,7 +2,6 @@
 // thought-for-the-day / announcement / home-section items, thought calendar + CSV import,
 // create-from-event, cover upload and scheduled publishing.
 import {
-  type ArticleCategory,
   type ArticleEditor,
   ContentCreate as ContentCreateSchema,
   type ContentDetail,
@@ -36,6 +35,7 @@ import { buildResults } from "../event-assembler";
 import { legacyCategoryOf, legacyMediaOf, legacyStatusOf, type NativeArticle, type NativeDoc, nativeAll, nativeFromLegacy } from "../native-articles";
 import { i18n, type OrgIndex } from "../org-index";
 import { loadOrg, type PortalCtx } from "./shared";
+import { contentTypeDocs } from "../content-types";
 
 type ContentCreate = z.output<typeof ContentCreateSchema>;
 
@@ -53,7 +53,7 @@ export interface ContentAdminService {
 
 const LEGACY_PREFIX = "legacy-";
 
-const tabOf = (category: ArticleCategory | null): ContentTab[] => {
+const tabOf = (category: string | null): ContentTab[] => {
   const tabs: ContentTab[] = ["all"];
   if (category === "news") tabs.push("news");
   else if (category === "activities") tabs.push("activities");
@@ -365,6 +365,7 @@ export function createContentAdminService(ctx: PortalCtx): ContentAdminService {
       const org = await loadOrg(repo);
       if (body.kind === "article") {
         await checkRefs(org, body.districtId, body.eventId);
+        await checkType(body.category, null);
         const slug = body.slug ? body.slug : await uniqueSlug(slugify(body.title.en));
         if (body.slug && (await slugTaken(slug))) throw new ApiError("VALIDATION_FAILED", { fields: { slug: "This address is already used." } });
         const data: NativeArticle = {
@@ -444,7 +445,10 @@ export function createContentAdminService(ctx: PortalCtx): ContentAdminService {
         }
         a.slug = body.slug;
       }
-      if (body.category) a.category = body.category;
+      if (body.category) {
+        await checkType(body.category, a.category);
+        a.category = body.category;
+      }
       if (body.title) a.title = cleanI18n(body.title);
       if (body.summary) a.summary = cleanI18n(body.summary);
       if (body.bodyHtml) a.bodyHtml = cleanBody(body.bodyHtml);
@@ -629,6 +633,13 @@ export function createContentAdminService(ctx: PortalCtx): ContentAdminService {
       return out;
     },
   };
+
+  /** A new/changed article type must exist and be active (the current one may stay even if switched off). */
+  async function checkType(slug: string, current: string | null) {
+    if (slug === current) return;
+    const { docs } = await contentTypeDocs(repo);
+    if (!docs.some((d) => d.data.slug === slug && d.data.active)) throw new ApiError("VALIDATION_FAILED", { fields: { category: "Choose one of the listed types." } });
+  }
 
   // ---- items --------------------------------------------------------------------
 

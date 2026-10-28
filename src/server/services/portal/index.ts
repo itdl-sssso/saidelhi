@@ -3,6 +3,7 @@ import { type AttachmentsService, type AuditService, createAttachmentsService, c
 import { type AdminEventsService, createAdminEventsService } from "./events";
 import { type CentresAdminService, createCentresAdminService } from "./centres";
 import { type ContentAdminService, createContentAdminService } from "./content";
+import { type ContentTypesAdminService, createContentTypesAdminService } from "./content-types";
 import { createGalleryAdminService } from "./gallery";
 import type { AdminGalleryService } from "./gallery-types";
 import { createFollowUpService, type FollowUpService } from "./followup";
@@ -49,6 +50,7 @@ export interface PortalServices {
   volunteers: VolunteersService;
   impact: ImpactAdminService;
   content: ContentAdminService;
+  contentTypes: ContentTypesAdminService;
   migration: MigrationService;
   followUp: FollowUpService;
   privacy: PrivacyService;
@@ -81,6 +83,7 @@ export function createPortalServices(ctx: PortalCtx): PortalServices {
     volunteers: createVolunteersService(ctx),
     impact: createImpactAdminService(ctx),
     content: createContentAdminService(ctx),
+    contentTypes: createContentTypesAdminService(ctx),
     migration: createMigrationService(ctx),
     followUp: createFollowUpService(ctx),
     privacy: createPrivacyService(ctx),
