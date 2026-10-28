@@ -48,7 +48,12 @@ export function HomeSnap() {
       const span = Math.max(1, act1.offsetHeight - window.innerHeight);
       const a1 = top(act1);
       targets = ACT_STOPS.map((p) => Math.round(a1 + p * span));
-      document.querySelectorAll("#act2 > section").forEach((el) => targets.push(Math.round(top(el))));
+      // Petal cards sit at the bottom of their section. When a section is taller than the screen
+      // (short phones, mobile URL bar showing), stop where its bottom meets the screen bottom so the
+      // whole card (and its Explore button) is in view, not just the top.
+      document
+        .querySelectorAll<HTMLElement>("#act2 > section")
+        .forEach((el) => targets.push(Math.round(top(el) + Math.max(0, el.offsetHeight - window.innerHeight))));
       flowTop = Math.round(top(flow));
       return targets.length > 1;
     };
