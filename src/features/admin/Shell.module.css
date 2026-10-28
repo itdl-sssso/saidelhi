@@ -7,7 +7,7 @@
 
 /* Side nav */
 .brand { display: flex; align-items: center; gap: 10px; padding: 16px 20px; border-bottom: 1px solid var(--border-subtle); text-decoration: none; color: inherit; }
-.ring { width: 36px; height: 36px; border-radius: 50%; border: 2px dashed var(--gold-300); flex: none; }
+.ring { width: 36px; height: 36px; object-fit: contain; flex: none; }
 .brandName { font-family: var(--font-serif-display); font-size: 16px; line-height: 1.2; color: var(--text-heading); }
 .brandCap { font-size: var(--text-caption); color: var(--text-muted); }
 .navBody { padding: 8px 12px 16px; display: flex; flex-direction: column; gap: 2px; overflow-y: auto; flex: 1; }

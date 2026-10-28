@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import Image from "next/image";
+import { EMBLEM_SRC } from "@/features/shell/links";
 import { connection } from "next/server";
 import { Suspense } from "react";
 import { getTranslations } from "next-intl/server";
@@ -33,7 +35,7 @@ async function LoginContent({ searchParams }: PageProps<"/[locale]/admin/login">
       <SkipLink />
       <header className={styles.bar}>
         <Link href="/" className={styles.brand}>
-          <span className={styles.ring} aria-hidden="true" />
+          <Image src={EMBLEM_SRC} alt="" width={36} height={36} className={styles.ring} priority />
           <span className={styles.name}>SSSSO Delhi NCR</span>
         </Link>
         <LanguageSwitch />
