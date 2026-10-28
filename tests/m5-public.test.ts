@@ -132,10 +132,11 @@ describe("join", () => {
     for (const e of j.events.data) {
       expect(e.recurring).toBe(false);
       expect(["planned", "postponed"]).toContain(e.status);
-      expect(e.volunteersNeeded).not.toBeNull();
-      expect(e.volunteersNeeded as number).toBeGreaterThan(e.volunteersJoined);
+      expect(e.sevadalNeeded).toBe(true);
       expect(Date.parse(e.startsAt)).toBeGreaterThanOrEqual(NOW.getTime() - 24 * 3600 * 1000);
     }
+    // No head-counts or phone numbers leave the server.
+    expect(JSON.stringify(j.events)).not.toMatch(/volunteers(Needed|Joined)|centreContact|phone/i);
     const times = j.events.data.map((e) => e.startsAt);
     expect([...times].sort()).toEqual(times);
     expect(j.events.meta.total).toBe(j.events.data.length);
