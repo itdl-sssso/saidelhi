@@ -493,3 +493,4 @@ Spec `docs/specs/52-gallery.md`. (The WIP note said v0.9.3; that number is taken
 3. **`DELETE /admin/uploads/:id`** → 204 (`uploads.manage`, CSRF). Removes batch, rows and stored file. 422 for loaded batches (they are the record of where reports came from). Audit `upload.delete`.
 4. **WhatsApp bot**: `resolveDistrict` falls back to nearest centre by pincode centroid (`ncr-pincodes.json`) when the text search finds no centre.
 5. **Portal 404**: `admin/(portal)/not-found.tsx` catches `notFound()` from `guarded()` (was Next default 404).
+6. **Home**: `Thought.image?: { url, alt: I18nText } | null` (optional). Home shows the picture from the thought itself. Until editors can attach one, `services/home.ts` `thoughtImage(date)` rotates the five value photos by day. The daily-thought track may replace it.

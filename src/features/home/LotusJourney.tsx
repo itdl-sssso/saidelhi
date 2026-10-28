@@ -3,6 +3,7 @@ import { useTranslations } from "next-intl";
 import { Badge } from "@/ui/Badge";
 import { Button } from "@/ui/Button";
 import { Eyebrow } from "@/ui/Eyebrow";
+import { HomeSnap } from "./HomeSnap";
 import { JourneyStage } from "./JourneyStage";
 import { VALUE_ICON, VALUE_KEYS, valueEmblem, valuePhoto } from "./values";
 import styles from "./LotusJourney.module.css";
@@ -18,6 +19,7 @@ export function LotusJourney() {
   const t = useTranslations("home");
   return (
     <div className={styles.journey} data-act="0" data-focus="-1" data-tone="dark" data-hint="1">
+      <HomeSnap />
       <JourneyStage photos={VALUE_KEYS.map((k) => ({ key: k, src: valuePhoto(k) }))} />
 
       <section id="act1" className={styles.act1} aria-labelledby="home-title">
@@ -53,6 +55,10 @@ export function LotusJourney() {
             aria-labelledby={`petal-${k}-title`}
           >
             <div className={styles.panel}>
+              {/* Phones: the photo that rides on the lotus heart on wide screens sits on the card instead. */}
+              <div className={styles.cardPhoto}>
+                <Image src={valuePhoto(k)} alt="" fill sizes="(min-width: 900px) 0px, 92vw" loading="lazy" className={styles.cardPhotoImg} />
+              </div>
               <div className={styles.crest}>
                 <Image src={valueEmblem(k)} alt="" width={52} height={52} />
               </div>

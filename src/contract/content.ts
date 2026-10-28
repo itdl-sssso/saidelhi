@@ -36,6 +36,8 @@ export const Thought = z.object({
   date: ISODate,
   text: I18nText,
   source: I18nText.nullable(),
+  /** Picture shown beside the thought (changes with it). Absent: the page falls back to a neutral photo. */
+  image: z.object({ url: z.string(), alt: I18nText }).nullable().optional(),
 });
 export type Thought = z.infer<typeof Thought>;
 
