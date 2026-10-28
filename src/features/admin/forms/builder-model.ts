@@ -1,5 +1,5 @@
 // Pure helpers for the form builder UI (spec 31). No React: unit-tested in tests/m6-builder-ui.test.ts.
-import { type CrossRule, type FormDefinition, type FormField, type FormFieldKind, type FormSection, type Rule, PALETTE_KINDS } from "@/contract";
+import { type CrossRule, type FormDefinition, type FormField, type FormFieldKind, type FormSection, type Rule, PALETTE_KINDS, PHOTO_LIMITS } from "@/contract";
 
 export type Kind = (typeof PALETTE_KINDS)[number];
 export const RETENTION_CHOICES = [30, 90, 365, 730] as const;
@@ -59,6 +59,7 @@ export function newField(kind: Kind, taken: ReadonlySet<string>): FormField {
   if (kind === "number") return { ...base, min: 0, max: 100000 };
   if (kind === "select" || kind === "multiselect") return { ...base, options: [{ value: "option_1", label: { en: "", hi: null } }] };
   if (kind === "repeater") return { ...base, fields: [] };
+  if (kind === "photos") return { ...base, kind: "file", photos: true, max: PHOTO_LIMITS.defaultMax };
   if (kind === "file") return { ...base, max: 3 };
   if (kind === "yesno") return base;
   return base;

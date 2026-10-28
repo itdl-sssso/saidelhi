@@ -1799,6 +1799,7 @@
         "multiselect": "Multi-select",
         "yesno": "Yes / No",
         "repeater": "Repeating group",
+        "photos": "Photos",
         "file": "Photo or file",
         "heading": "Section heading",
         "help": "Help text"
@@ -1889,6 +1890,7 @@
       "minLen": "Fewest characters",
       "maxLen": "Most characters",
       "maxFiles": "Most files",
+      "maxPhotos": "Most photos",
       "options": "Options",
       "optionEn": "Option (English)",
       "optionHi": "Option (Hindi)",

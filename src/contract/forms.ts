@@ -58,6 +58,8 @@ export type FormField = {
   format?: FieldFormat;
   /** v0.7: days personal answers are kept (personal fields only; default per data kind). */
   retentionDays?: number;
+  /** v0.10: `file` field that takes photos only (JPEG/PNG/WebP): shrunk on the phone, EXIF/GPS stripped on the server. */
+  photos?: boolean;
 };
 export const FormField: z.ZodType<FormField> = z.object({
   id: z.string(),
@@ -82,6 +84,7 @@ export const FormField: z.ZodType<FormField> = z.object({
   consent: z.boolean().optional(),
   format: FieldFormat.optional(),
   retentionDays: z.number().int().min(1).max(3650).optional(),
+  photos: z.boolean().optional(),
 });
 
 /** Splits "key:dim" into its parts (dim '' = total). */
@@ -208,6 +211,15 @@ export const LinkAttachment = z.object({
   uploadedAt: ISODateTime,
 });
 export type LinkAttachment = z.infer<typeof LinkAttachment>;
+
+/** Photos fields: the phone shrinks every photo to this long edge before upload; the server enforces it again. */
+export const PHOTO_LIMITS = {
+  maxEdge: 1600,
+  /** Raw input accepted on the phone before it is shrunk (the server still caps what arrives at ATTACHMENT_LIMITS.maxBytes). */
+  maxInputBytes: 30 * 1024 * 1024,
+  defaultMax: 5,
+  mimes: ["image/jpeg", "image/png", "image/webp"],
+} as const;
 
 export const ATTACHMENT_LIMITS = {
   maxBytes: 10 * 1024 * 1024,
