@@ -335,3 +335,43 @@
   .journey:not([data-mode="enhanced"]) .actEyebrow { color: var(--gold-600); }
   .journey:not([data-mode="enhanced"]) .hint { color: var(--slate-700); }
 }
+
+/* ---- Loading veil ("Lighting the lamp…", design Home v2 .loading) ---- */
+.veil {
+  position: fixed;
+  inset: 0;
+  z-index: 60; /* over the hero; the journey is isolated, so the navbar stays usable on top */
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 18px;
+  background: #14161c;
+  color: #fcefc7;
+  font-size: var(--text-small);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition: opacity 600ms linear, visibility 0s linear 600ms;
+}
+.veil:lang(hi) { letter-spacing: 0; text-transform: none; }
+.veilFlame {
+  width: 10px;
+  height: 16px;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  background: radial-gradient(circle at 50% 70%, #fff6d8 0 25%, #f5c35b 45%, #e8892c 75%, transparent 76%);
+  box-shadow: 0 0 18px 6px rgba(245, 195, 91, 0.35);
+  animation: flicker 1.6s ease-in-out infinite;
+}
+@keyframes flicker {
+  0%, 100% { transform: scale(1) rotate(-2deg); opacity: 1; }
+  50% { transform: scale(0.9, 1.08) rotate(2deg); opacity: 0.85; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .veilFlame { animation: none; }
+}
+.journey[data-mode="static"] .veil,
+.journey[data-ready="1"] .veil,
+.journey[data-veil="off"] .veil {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}

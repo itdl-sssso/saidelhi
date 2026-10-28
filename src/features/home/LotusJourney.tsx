@@ -19,6 +19,15 @@ export function LotusJourney() {
   const t = useTranslations("home");
   return (
     <div className={styles.journey} data-act="0" data-focus="-1" data-tone="dark" data-hint="1">
+      {/* Design's "Lighting the lamp…" veil: first paint, lifted by JourneyStage (first 3D frame,
+          static mode, or a time cap). Hidden without JS so the poster is never covered. */}
+      <div className={styles.veil} aria-hidden="true">
+        <span className={styles.veilFlame} />
+        {t("lighting")}
+      </div>
+      <noscript>
+        <style>{`.${styles.veil}{display:none}`}</style>
+      </noscript>
       <HomeSnap />
       <JourneyStage photos={VALUE_KEYS.map((k) => ({ key: k, src: valuePhoto(k) }))} />
 
