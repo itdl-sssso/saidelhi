@@ -1,0 +1,50 @@
+name: CD / staging
+
+# Deploys a main commit to staging once CI has passed on it (i.e. after a PR is merged).
+# Manual run: deploys the current tip of main (the server only accepts commits on main).
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push')
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    environment:
+      name: staging
+      url: https://staging.saidelhi.org
+    # One deploy at a time; a newer main commit waits, then the server skips stale SHAs.
+    concurrency:
+      group: deploy-staging
+      cancel-in-progress: false
+    env:
+      SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+    steps:
+      - name: Deploy over SSH
+        env:
+          SSH_KEY: ${{ secrets.STAGING_SSH_KEY }}
+          KNOWN_HOSTS: ${{ secrets.STAGING_KNOWN_HOSTS }}
+          HOST: ${{ secrets.STAGING_HOST }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/deploy && chmod 600 ~/.ssh/deploy
+          printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
+          # The key is bound to a forced command on the server (deploy/ci-deploy.sh) that only deploys a main commit by SHA.
+          ssh -i ~/.ssh/deploy -o IdentitiesOnly=yes -o BatchMode=yes -o ServerAliveInterval=30 \
+            "ubuntu@$HOST" "$SHA"
+
+      - name: Smoke test
+        run: |
+          for p in / /hi /news /admin/login; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' --retry 5 --retry-all-errors --retry-delay 5 "https://staging.saidelhi.org$p")
+            echo "$p $code"; [ "$code" = 200 ] || exit 1
+          done

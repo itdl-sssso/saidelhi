@@ -81,8 +81,20 @@ sudo cp deploy/cron/saidelhi /etc/cron.d/saidelhi   # paths assume /opt/saidelhi
 
 ## CI/CD
 
-`.github/workflows/ci-deploy.yml`: PRs into `main` run typecheck, lint and tests (MySQL in Docker, seeded). A push to
-`main` (merged PR) runs the same checks, then SSHes to the VM with a deploy-only key and runs `deploy.sh` for that SHA.
+Two workflows:
+
+- **CI** (`.github/workflows/ci.yml`), on every PR into `main` and every push to `main`:
+  - `pnpm audit --prod --audit-level high`, typecheck, lint, tests (MySQL in Docker, seeded), production build;
+  - secrets: `scripts/ci/repo-guard.sh` (no env files, DB dumps, keys or public server IPs tracked) + gitleaks
+    (PR commits on PRs, full history on `main`);
+  - dependency review on PRs — **disabled for now** (`if: false`): it needs the repo's dependency graph, which needs
+    an org admin to enable;
+  - CodeQL (`security-extended`), results under Security → Code scanning.
+- **CD** (`.github/workflows/cd.yml`): when CI succeeds on a push to `main` (a merged PR) it SSHes to the VM with a
+  deploy-only key, runs `deploy.sh` for that SHA, then smoke-tests `/`, `/hi`, `/news`, `/admin/login`. Manual run
+  ("Run workflow") deploys the tip of `main`. `workflow_run` only fires from the copy of `cd.yml` on `main`.
+- Make CI required: Settings → Branches → rule for `main` → require status checks "Typecheck, lint, test, build",
+  "Secrets and repo rules", "CodeQL" (add "Dependency review" once it is re-enabled).
 
 - Repo secrets: `STAGING_HOST`, `STAGING_SSH_KEY` (private half), `STAGING_KNOWN_HOSTS` (`ssh-keyscan -t ed25519 <host>`).
 - On the VM the key is bound to a forced command (`deploy/ci-deploy.sh`, installed as
