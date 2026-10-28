@@ -12,3 +12,6 @@ Status per item (done/next). Resume from here.
 10 mobile swami photo on card: code done (card photo <900px, heart hidden) – browser check pending
 11 thought: contract Thought.image optional; services/home.ts thoughtImage(); UI uses thought.image
 12 dharma copy done (en+hi)
+
+ALL ITEMS DONE. Checked 1280, 375, /hi, snap glide (synthetic wheel), CLS 0.078 dev.
+Unresolved: social URLs from legacy site (verify); auditorium contact copy from design (unconfirmed); poster/auditorium/centenary images = ImageSlot placeholders; HI agent-written; value photos ~200px (soft on card).
