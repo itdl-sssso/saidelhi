@@ -350,7 +350,7 @@
   aspect-ratio: 16 / 9;
   border-radius: var(--radius-xl);
   overflow: hidden;
-  background: var(--slate-900);
+  background: var(--gold-50);
   box-shadow: var(--shadow-md);
 }
 .play {
@@ -379,3 +379,4 @@
 .factsList li { display: flex; align-items: center; gap: 10px; }
 .factsList svg { color: var(--slate-500); flex: none; }
 .audCta { margin-top: 24px; }
+.waIc { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: var(--white); border: 1px solid var(--border-subtle); color: var(--slate-800); flex: none; }

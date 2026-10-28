@@ -65,7 +65,7 @@ export function HomeSections({
   // Order follows the design (Home v2): thought, upcoming, impact, find a centre, wings,
   // stories, centenary, news, answers, auditorium, get involved.
   return (
-    <div className={styles.flow}>
+    <div id="home-flow" className={styles.flow}>
       <ThoughtSection thought={data.thought} />
       <UpcomingStrip events={data.upcoming} />
       {data.kpis ? <ImpactSnapshot kpis={data.kpis} /> : <ProgramsTeaser />}
@@ -569,7 +569,7 @@ function GetInvolved() {
           </div>
         </div>
         <div className={cx(styles.involveCard, styles.involveCalm)}>
-          <span className={styles.wingIc} aria-hidden="true">
+          <span className={styles.waIc} aria-hidden="true">
             <Icon name="message-circle" size={20} />
           </span>
           <h3 className={styles.h3}>{t("waTitle")}</h3>

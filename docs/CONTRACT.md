@@ -486,3 +486,6 @@ Spec `docs/specs/52-gallery.md`. (The WIP note said v0.9.3; that number is taken
 9. **Simulator**: `SimInboundBody.media.data` (base64) is decoded to bytes in `POST /dev/whatsapp/inbound` (≤11 MB decoded, else 422); without `data` the media has no bytes (bot answers "couldn't download").
 10. **Tests**: `tests/gallery-{image,review,editor,public,intake}.test.ts`, proxy probe in `tests/proxy.test.ts`.
 
+
+### v0.9.6 (Home review round 1 — `Thought.image`)
+- `Thought.image?: { url, alt: I18nText } | null` (optional). Home shows the picture from the thought itself. Until editors can attach one, `services/home.ts` `thoughtImage(date)` rotates the five value photos by day. The daily-thought track may replace it.

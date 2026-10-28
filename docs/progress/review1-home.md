@@ -1,7 +1,7 @@
 # review1-home (Home / EN+HI round-1 fixes)
 Status per item (done/next). Resume from here.
-1 navbar island: code done (NavBar.module.css fixed island, main pt, journey -margin) – needs browser check
-2 scroll snap: next
+1 navbar island: done (fixed island, dark glass over hero via body:has data-tone, main pt, journey -margin, DharmaRule removed) – 1280 checked
+2 scroll snap: HomeSnap.tsx (port of a2-snap.js) mounted in LotusJourney; flow id home-flow; needs browser check
 3 impact: done in code (local tiles, pink highlighted icon, title "This year so far")
 4 wings: 5 emblem colours + SaiConnect + FB/YT in code
 5 centenary: ImageSlot wired

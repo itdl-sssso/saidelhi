@@ -3,6 +3,7 @@ import { useTranslations } from "next-intl";
 import { Badge } from "@/ui/Badge";
 import { Button } from "@/ui/Button";
 import { Eyebrow } from "@/ui/Eyebrow";
+import { HomeSnap } from "./HomeSnap";
 import { JourneyStage } from "./JourneyStage";
 import { VALUE_ICON, VALUE_KEYS, valueEmblem, valuePhoto } from "./values";
 import styles from "./LotusJourney.module.css";
@@ -18,6 +19,7 @@ export function LotusJourney() {
   const t = useTranslations("home");
   return (
     <div className={styles.journey} data-act="0" data-focus="-1" data-tone="dark" data-hint="1">
+      <HomeSnap />
       <JourneyStage photos={VALUE_KEYS.map((k) => ({ key: k, src: valuePhoto(k) }))} />
 
       <section id="act1" className={styles.act1} aria-labelledby="home-title">

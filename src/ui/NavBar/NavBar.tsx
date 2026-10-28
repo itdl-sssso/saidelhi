@@ -5,7 +5,6 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import { Button } from "../Button";
-import { DharmaRule } from "../DharmaRule";
 import { Icon, type IconName } from "../Icon";
 import { cx } from "../cx";
 import styles from "./NavBar.module.css";
@@ -191,7 +190,6 @@ export function NavBarView({
           </div>
         </nav>
       </div>
-      <DharmaRule height={2} />
     </header>
   );
 }
