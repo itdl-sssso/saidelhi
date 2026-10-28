@@ -36,10 +36,7 @@ export function Popover({
   const id = useId();
 
   useLayoutEffect(() => {
-    if (!open) {
-      setPos(null);
-      return;
-    }
+    if (!open) return;
     const w = wrap.current?.getBoundingClientRect();
     const h = panel.current?.offsetHeight ?? 0;
     if (!w) return;
