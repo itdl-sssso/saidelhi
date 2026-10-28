@@ -1,3 +1,4 @@
+import type { Media } from "@/contract";
 import type {
   GalleryAlbumDetail,
   GalleryPage,
@@ -119,11 +120,23 @@ export interface ImpactService {
   get(q: ImpactQuery): Promise<ImpactPayload | null>;
 }
 
+export type { ThoughtService, TodaysThought } from "./thought";
+
 export interface ArticlesService {
   list(q: ArticlesQuery): Promise<Paged<Article>>;
   bySlug(slug: string): Promise<ArticleDetail | null>;
   /** Cheap existence probe for public visibility (proxy 404 check). */
   exists(slug: string): Promise<boolean>;
+  /** Newest live articles of type `golden-stories` (Home "Told by the people who were there"). `image` = the cover, if any. */
+  goldenStories(locale: Locale, limit: number): Promise<GoldenStory[]>;
+}
+
+export interface GoldenStory {
+  title: string;
+  excerpt: string;
+  /** Locale-less path; render with the locale-aware Link. */
+  href: string;
+  image?: Media;
 }
 
 /** v0.9.5 public gallery (spec 52). */
@@ -236,6 +249,8 @@ export interface LinksService {
 export interface Services {
   readonly dataSource: "mock" | "db";
   home: HomeService;
+  /** Thought of the day: `thought.today(locale)` -> {text, source, image, date}; use `image ?? default`. */
+  thought: import("./thought").ThoughtService;
   events: EventsService;
   centres: CentresService;
   districts: DistrictsService;

@@ -1,6 +1,8 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import Image from "next/image";
+import { EMBLEM_SRC } from "@/features/shell/links";
 import { type ReactNode, useState } from "react";
 import { type Me, authEndpoints } from "@/contract";
 import { MAIN_ID, SkipLink } from "@/features/shell";
@@ -86,7 +88,7 @@ export function AdminShell({ me, scopes, approvalsCount, children }: Props) {
       <SkipLink />
       <nav className={styles.side} aria-label={t("shell.portal")}>
         <Link href="/admin" className={styles.brand}>
-          <span className={styles.ring} aria-hidden="true" />
+          <Image src={EMBLEM_SRC} alt="" width={36} height={36} className={styles.ring} priority />
           <span className={menuStyles.col}>
             <span className={styles.brandName}>SSSSO Delhi NCR</span>
             <span className={styles.brandCap}>{t("shell.portal")}</span>

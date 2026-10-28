@@ -2,7 +2,6 @@
 // thought-for-the-day / announcement / home-section items, thought calendar + CSV import,
 // create-from-event, cover upload and scheduled publishing.
 import {
-  type ArticleCategory,
   type ArticleEditor,
   ContentCreate as ContentCreateSchema,
   type ContentDetail,
@@ -36,6 +35,9 @@ import { buildResults } from "../event-assembler";
 import { legacyCategoryOf, legacyMediaOf, legacyStatusOf, type NativeArticle, type NativeDoc, nativeAll, nativeFromLegacy } from "../native-articles";
 import { i18n, type OrgIndex } from "../org-index";
 import { loadOrg, type PortalCtx } from "./shared";
+import { loadSettings } from "../shared";
+import { contentTypeDocs } from "../content-types";
+import { isOfficial, isPoolItem, officialOn, pickThoughtFor, thoughtImageOf } from "../thought";
 
 type ContentCreate = z.output<typeof ContentCreateSchema>;
 
@@ -48,12 +50,13 @@ export interface ContentAdminService {
   fromEvent(actor: Actor, eventId: string): Promise<ArticleEditor>;
   uploadMedia(actor: Actor, file: { name: string; bytes: Uint8Array }, form: PhotoUploadForm): Promise<Media>;
   thoughts(actor: Actor, q: ThoughtsQuery): Promise<ThoughtDay[]>;
+  thoughtPool(actor: Actor): Promise<ContentItemEditor[]>;
   importThoughts(actor: Actor, file: { name: string; bytes: Uint8Array }): Promise<ThoughtsImportResult>;
 }
 
 const LEGACY_PREFIX = "legacy-";
 
-const tabOf = (category: ArticleCategory | null): ContentTab[] => {
+const tabOf = (category: string | null): ContentTab[] => {
   const tabs: ContentTab[] = ["all"];
   if (category === "news") tabs.push("news");
   else if (category === "activities") tabs.push("activities");
@@ -224,6 +227,7 @@ export function createContentAdminService(ctx: PortalCtx): ContentAdminService {
     title: c.titleEn || c.titleHi ? i18n(c.titleEn ?? "", c.titleHi) : null,
     body: c.bodyEn || c.bodyHi ? i18n(c.bodyEn ?? "", c.bodyHi) : null,
     source: c.sourceEn || c.sourceHi ? i18n(c.sourceEn ?? "", c.sourceHi) : null,
+    image: thoughtImageOf(c),
     href: c.href,
     date: c.date,
     startsAt: toIsoOrNull(c.startsAt ?? null),
@@ -365,6 +369,7 @@ export function createContentAdminService(ctx: PortalCtx): ContentAdminService {
       const org = await loadOrg(repo);
       if (body.kind === "article") {
         await checkRefs(org, body.districtId, body.eventId);
+        await checkType(body.category, null);
         const slug = body.slug ? body.slug : await uniqueSlug(slugify(body.title.en));
         if (body.slug && (await slugTaken(slug))) throw new ApiError("VALIDATION_FAILED", { fields: { slug: "This address is already used." } });
         const data: NativeArticle = {
@@ -405,6 +410,7 @@ export function createContentAdminService(ctx: PortalCtx): ContentAdminService {
         date: body.date ?? null,
         status: "draft",
         sortOrder: 0,
+        data: body.image ? { image: cleanImage(body.image) } : null,
         startsAt: body.startsAt ? new Date(body.startsAt) : null,
         endsAt: body.endsAt ? new Date(body.endsAt) : null,
       };
@@ -444,7 +450,10 @@ export function createContentAdminService(ctx: PortalCtx): ContentAdminService {
         }
         a.slug = body.slug;
       }
-      if (body.category) a.category = body.category;
+      if (body.category) {
+        await checkType(body.category, a.category);
+        a.category = body.category;
+      }
       if (body.title) a.title = cleanI18n(body.title);
       if (body.summary) a.summary = cleanI18n(body.summary);
       if (body.bodyHtml) a.bodyHtml = cleanBody(body.bodyHtml);
@@ -560,18 +569,23 @@ export function createContentAdminService(ctx: PortalCtx): ContentAdminService {
       assertCan(actor, "content.edit");
       if (q.to < q.from || daysBetween(q.from, q.to) > 61) throw new ApiError("VALIDATION_FAILED", { fields: { to: "Choose at most 62 days." } });
       const all = await repo.m6.contentItemsAll("thought_for_day");
-      const live = all.filter((c) => c.status === "published" && c.bodyEn && c.date).sort((a, b) => (b.date ?? "").localeCompare(a.date ?? ""));
+      const official = officialOn((await loadSettings(repo)).flags);
       const out: ThoughtDay[] = [];
       for (let d = q.from; d <= q.to; d = addDays(d, 1)) {
-        const own = all.filter((c) => c.date === d).sort((a, b) => (a.status === "archived" ? 1 : 0) - (b.status === "archived" ? 1 : 0))[0] ?? null;
-        const shownRec = live.find((c) => (c.date ?? "") <= d);
+        const own = all.filter((c) => c.date === d && !isOfficial(c)).sort((a, b) => (a.status === "archived" ? 1 : 0) - (b.status === "archived" ? 1 : 0))[0] ?? null;
+        const shownRec = pickThoughtFor(all, d, official);
         out.push({
           date: d,
           item: own ? (itemEditor(own) as ContentItemEditor) : null,
-          shown: shownRec ? { text: i18n(shownRec.bodyEn ?? "", shownRec.bodyHi), source: shownRec.sourceEn ? i18n(shownRec.sourceEn, shownRec.sourceHi) : null, repeated: shownRec.date !== d } : null,
+          shown: shownRec ? { text: i18n(shownRec.rec.bodyEn ?? "", shownRec.rec.bodyHi), source: shownRec.rec.sourceEn ? i18n(shownRec.rec.sourceEn, shownRec.rec.sourceHi) : null, repeated: shownRec.origin !== "official" && shownRec.rec.date !== d } : null,
         });
       }
       return out;
+    },
+
+    async thoughtPool(actor) {
+      assertCan(actor, "content.edit");
+      return (await repo.m6.contentItemsAll("thought_for_day")).filter((c) => isPoolItem(c) && c.status !== "archived").map(itemEditor);
     },
 
     async importThoughts(actor, file) {
@@ -630,12 +644,18 @@ export function createContentAdminService(ctx: PortalCtx): ContentAdminService {
     },
   };
 
+  /** A new/changed article type must exist and be active (the current one may stay even if switched off). */
+  async function checkType(slug: string, current: string | null) {
+    if (slug === current) return;
+    const { docs } = await contentTypeDocs(repo);
+    if (!docs.some((d) => d.data.slug === slug && d.data.active)) throw new ApiError("VALIDATION_FAILED", { fields: { category: "Choose one of the listed types." } });
+  }
+
   // ---- items --------------------------------------------------------------------
 
   function itemProblems(type: ContentItemRec["kind"], v: { key?: string | null; title?: I18nText | null; body?: I18nText | null; date?: string | null; href?: string | null }): Record<string, string> {
     const f: Record<string, string> = {};
     if (type === "thought_for_day") {
-      if (!v.date) f.date = "Choose the day.";
       if (!hasText(v.body?.en)) f.body = "Add the thought in English.";
     } else if (type === "announcement") {
       if (!hasText(v.title?.en)) f.title = "Add a title in English.";
@@ -661,6 +681,11 @@ export function createContentAdminService(ctx: PortalCtx): ContentAdminService {
       patch.sourceHi = body.source?.hi?.trim() || null;
     }
     if (body.href !== undefined) patch.href = body.href?.trim() || null;
+    if (body.image !== undefined) {
+      const { image: _old, ...rest } = cur.data ?? {};
+      void _old;
+      patch.data = body.image ? { ...rest, image: cleanImage(body.image) } : Object.keys(rest).length ? rest : null;
+    }
     if (body.date !== undefined) patch.date = body.date;
     if (body.startsAt !== undefined) patch.startsAt = body.startsAt ? new Date(body.startsAt) : null;
     if (body.endsAt !== undefined) patch.endsAt = body.endsAt ? new Date(body.endsAt) : null;
@@ -685,6 +710,13 @@ export function createContentAdminService(ctx: PortalCtx): ContentAdminService {
     deps.revalidate(["home"]);
     return itemEditor((await itemById(cur.id)) as ContentItemRec);
   }
+}
+
+/** Only our own media or https images; alt text trimmed. */
+function cleanImage(img: { url: string; alt: I18nText }): { url: string; alt: I18nText } {
+  const url = img.url.trim();
+  if (!/^(\/|https:\/\/)/.test(url)) throw new ApiError("VALIDATION_FAILED", { fields: { image: "Upload the picture again." } });
+  return { url, alt: { en: img.alt.en.trim(), hi: img.alt.hi?.trim() || null } };
 }
 
 const escapeHtml = (s: string) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c] as string);

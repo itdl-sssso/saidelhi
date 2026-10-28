@@ -5,6 +5,8 @@ export const FeatureFlags = z.object({
   discourses: z.boolean(),
   offline_mode: z.boolean(),
   ai_extraction: z.boolean(),
+  /** v0.10: pull the official "Sai Message for the Day" daily (needs Sadhana Trust permission, like `discourses`). */
+  thought_official: z.boolean(),
 });
 export type FeatureFlags = z.infer<typeof FeatureFlags>;
 

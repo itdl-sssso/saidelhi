@@ -1,7 +1,7 @@
 "use client";
 
 import { useLocale, useTranslations } from "next-intl";
-import { useEffect, useMemo, useState } from "react";
+import { type ReactNode, useEffect, useMemo, useState } from "react";
 import { type InboxDetail, type InboxPatchBody, adminEndpoints } from "@/contract";
 import { Link, useRouter } from "@/i18n/navigation";
 import { type AppLocale, tx } from "@/lib/format";
@@ -12,6 +12,7 @@ import { Button } from "@/ui/Button";
 import { EmptyState } from "@/ui/EmptyState";
 import { Icon } from "@/ui/Icon";
 import { Select } from "@/ui/Select";
+import { Tip } from "@/ui/Tip";
 import { useToast } from "@/ui/Toast";
 import { SkeletonCard } from "@/ui/Skeleton";
 import { ReasonDialog } from "../Dialogs";
@@ -226,14 +227,18 @@ function Loaded({ d, reload }: { d: InboxDetail; reload: () => void }) {
       <section className={styles.card}>
         <div className={s.actbar}>
           {d.can.approve ? (
-            <Button icon="check" pending={pending === "approve"} disabled={!eventId || !def} onClick={approve}>
-              {t("action.approve")}
-            </Button>
+            <Why reason={!eventId ? t("match.approveHint") : !def ? t("blocked.noForm") : null}>
+              <Button icon="check" pending={pending === "approve"} disabled={!eventId || !def} onClick={approve}>
+                {t("action.approve")}
+              </Button>
+            </Why>
           ) : null}
           {d.can.edit ? (
-            <Button variant="outline" icon="pencil" pending={pending === "save"} disabled={!dirty} onClick={() => void patch({ answers }, "save", t("done.saved"))}>
-              {t("action.save")}
-            </Button>
+            <Why reason={!dirty ? t("blocked.noChanges") : null}>
+              <Button variant="outline" icon="pencil" pending={pending === "save"} disabled={!dirty} onClick={() => void patch({ answers }, "save", t("done.saved"))}>
+                {t("action.save")}
+              </Button>
+            </Why>
           ) : null}
           {d.can.ask ? (
             <Button variant="outline" icon="message-circle" onClick={() => setDialog("ask")}>
@@ -253,6 +258,7 @@ function Loaded({ d, reload }: { d: InboxDetail; reload: () => void }) {
           ) : null}
         </div>
         {!eventId && d.can.approve ? <p className={s.hint}>{t("match.approveHint")}</p> : null}
+        {d.can.edit && !dirty ? <p className={`${s.hint} ${s.touchHint}`}>{t("blocked.noChanges")}</p> : null}
         <p className={s.footNote}>
           <Icon name="user" size={16} />
           {d.aiDraftedAt ? t("footer", { at: fmtShortDateTime(d.aiDraftedAt, locale), model: d.aiModel ?? "" }) : t("footerPlain")}
@@ -313,5 +319,16 @@ function Loaded({ d, reload }: { d: InboxDetail; reload: () => void }) {
         onSubmit={decide("escalate", "note", t("done.escalated"), true)}
       />
     </div>
+  );
+}
+
+/** Explains why an action is blocked: hover/focus tooltip on the disabled button (a visible hint covers touch screens). */
+function Why({ reason, children }: { reason: string | null; children: ReactNode }) {
+  return reason ? (
+    <Tip tip={reason} className={s.why}>
+      {children}
+    </Tip>
+  ) : (
+    <>{children}</>
   );
 }

@@ -21,7 +21,7 @@ export const VALUE_ORDER = ValueSlug.options;
  */
 export const VALUE_LINKS = {
   sathya: { sevaType: null, wing: null, sevaTypes: ["study_circle"], gathering: "study_circle" },
-  dharma: { sevaType: "bal_vikas", wing: "educational", sevaTypes: ["bal_vikas"], gathering: "bal_vikas" },
+  dharma: { sevaType: "medical", wing: "service", sevaTypes: ["medical"], gathering: null },
   shanti: { sevaType: "bhajan", wing: "spiritual", sevaTypes: ["bhajan", "study_circle"], gathering: "bhajan" },
   prema: { sevaType: "narayan_seva", wing: "service", sevaTypes: ["narayan_seva", "blood", "medical"], gathering: null },
   ahimsa: { sevaType: null, wing: null, sevaTypes: ["cleanliness"], gathering: null },
@@ -117,11 +117,30 @@ export const WhatsAppContact = z.object({
 export type WhatsAppContact = z.infer<typeof WhatsAppContact>;
 
 /**
+ * v0.10: an event on /join. Only that Sevadal are needed: no head-counts, no phone numbers
+ * (people reach us through the organisation's WhatsApp number or the opt-in form).
+ */
+export const JoinEvent = EventPublic.pick({
+  id: true,
+  title: true,
+  sevaType: true,
+  status: true,
+  startsAt: true,
+  endsAt: true,
+  postponedTo: true,
+  venue: true,
+  samithi: true,
+  district: true,
+  recurring: true,
+}).extend({ sevadalNeeded: z.literal(true) });
+export type JoinEvent = z.infer<typeof JoinEvent>;
+
+/**
  * GET /join → `{ events, whatsapp }`. Events: public, non-recurring, status planned|postponed,
- * `volunteersNeeded > volunteersJoined`, from today (IST) when `from` absent, soonest first.
+ * `volunteersNeeded > volunteersJoined` (not sent), from today (IST) when `from` absent, soonest first.
  */
 export const JoinPayload = z.object({
-  events: Paged(EventPublic),
+  events: Paged(JoinEvent),
   whatsapp: WhatsAppContact,
 });
 export type JoinPayload = z.infer<typeof JoinPayload>;

@@ -4,7 +4,7 @@ import { useLocale, useTranslations } from "next-intl";
 import type { ArticleDetail, ArticleRef } from "@/contract";
 import { Link } from "@/i18n/navigation";
 import { type AppLocale, formatDate, pickText, tx } from "@/lib/format";
-import { ArticleCard, EnglishOnlyBar, categoryTone, p1 } from "@/features/public/p1";
+import { ArticleCard, EnglishOnlyBar, articleTypeName, categoryTone, p1 } from "@/features/public/p1";
 import { LocalText, PageHero, SectionHead, pub } from "@/features/public/parts";
 import { Badge } from "@/ui/Badge";
 import { Button } from "@/ui/Button";
@@ -33,12 +33,12 @@ export function ArticleView({ article }: { article: ArticleDetail }) {
         crumbs={[
           { label: t("crumbHome"), href: "/" },
           { label: t("crumbNews"), href: "/news" },
-          { label: tc(article.category), href: `/news?c=${article.category === "news" || article.category === "activities" ? article.category : "all"}` },
+          { label: title.text },
         ]}
       >
         <div className={styles.head}>
           <div className={pub.row}>
-            <Badge tone={categoryTone(article.category)}>{tc(article.category)}</Badge>
+            <Badge tone={categoryTone(article.category)}>{articleTypeName(article, locale, tc)}</Badge>
             {article.district ? (
               <Link href={`/districts/${article.district.slug}`} className={styles.districtLink}>
                 <Icon name="map-pin" size={16} />
@@ -48,8 +48,9 @@ export function ArticleView({ article }: { article: ArticleDetail }) {
             <time className={pub.cap} dateTime={article.publishedAt}>
               {formatDate(article.publishedAt, locale)}
             </time>
-            <span className={pub.cap}>
-              <Icon name="clock" size={16} /> {t("readingMinutes", { count: article.readingMinutes })}
+            <span className={cx(pub.cap, styles.readTime)}>
+              <Icon name="clock" size={16} />
+              {t("readingMinutes", { count: article.readingMinutes })}
             </span>
           </div>
           <h1 className={pub.h1} lang={title.fallback ? "en" : undefined}>

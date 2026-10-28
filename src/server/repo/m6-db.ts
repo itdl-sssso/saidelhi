@@ -379,6 +379,7 @@ export class DbM6Repo implements M6Repo {
       date: r.date,
       status: r.status,
       sortOrder: r.sortOrder,
+      data: r.data,
       startsAt: r.startsAt,
       endsAt: r.endsAt,
       version: r.version,

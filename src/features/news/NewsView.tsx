@@ -1,5 +1,5 @@
 import { useTranslations } from "next-intl";
-import type { Article, ArticleCategoryFilter, Paged } from "@/contract";
+import { type Article, ArticleCategory, type ArticleCategoryFilter, type Paged } from "@/contract";
 import { Link } from "@/i18n/navigation";
 import { LinkTabs, ArticleCard, p1 } from "@/features/public/p1";
 import { PageHero, pub } from "@/features/public/parts";
@@ -40,7 +40,7 @@ export function NewsView({ c, result }: { c: ArticleCategoryFilter; result: Page
         />
         {!onTab && c !== "all" ? (
           <p className={pub.small}>
-            {t("showingCategory", { category: tc(c as Article["category"]) })}{" "}
+            {t("showingCategory", { category: ArticleCategory.safeParse(c).success ? tc(c as Article["category"]) : (result.data.find((a) => a.type?.slug === c)?.type?.label.en ?? c) })}{" "}
             <Link href="/news" className={p1.moreLink}>
               {t("showAll")}
             </Link>

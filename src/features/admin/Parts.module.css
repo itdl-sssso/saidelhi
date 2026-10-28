@@ -47,7 +47,13 @@
 .impactHead { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
 .impactSide { display: flex; flex-direction: column; gap: 16px; }
 .previewTiles { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
-.stickySave { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.saveIsland { position: fixed; z-index: 24; left: 50%; bottom: calc(16px + env(safe-area-inset-bottom)); transform: translateX(-50%); display: flex; align-items: center; gap: 8px; padding: 8px 8px 8px 20px; max-width: calc(100vw - 32px); background: var(--slate-900); color: var(--white); border-radius: var(--radius-pill); box-shadow: var(--shadow-lg); animation: islandIn 0.2s ease-out; }
+.saveIslandMsg { font-size: var(--text-small); margin-right: 8px; white-space: nowrap; }
+.saveIsland button { color: inherit; }
+.saveIsland button:first-of-type:not(:last-of-type) { color: var(--slate-100); }
+@media (max-width: 959px) { .saveIsland { bottom: calc(var(--tabbar-h, 64px) + 12px + env(safe-area-inset-bottom)); } }
+@keyframes islandIn { from { opacity: 0; transform: translate(-50%, 12px); } }
+@media (prefers-reduced-motion: reduce) { .saveIsland { animation: none; } }
 
 /* migration (41) */
 .migBody { display: flex; flex-direction: column; gap: 16px; }

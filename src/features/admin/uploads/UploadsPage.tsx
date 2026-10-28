@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import { type UploadBatch, type UploadStatus, UploadStatus as StatusEnum, SevaType, adminEndpoints } from "@/contract";
@@ -9,7 +10,9 @@ import { Button } from "@/ui/Button";
 import { EmptyState } from "@/ui/EmptyState";
 import { Pagination } from "@/ui/Pagination";
 import { FilterBar } from "../FilterBar";
-import { Download as DownloadIcon } from "../icons";
+import { Download as DownloadIcon, Trash2 } from "../icons";
+import { ConfirmDialog } from "../Dialogs";
+import { useAction } from "../useAction";
 import { PageHead, Pill, type Tone } from "../kit";
 import { RowMenu } from "../Menu";
 import { hrefWith } from "../url";
@@ -29,6 +32,8 @@ export function UploadsPage() {
   const status = StatusEnum.safeParse(sp.get("status")).data;
   const sevaType = SevaType.safeParse(sp.get("sevaType")).data;
   const params = Object.fromEntries(sp.entries());
+  const { run, pending } = useAction();
+  const [del, setDel] = useState<UploadBatch | null>(null);
   const api = useApi<UploadBatch[], { total: number; page: number; pageSize: number }>(adminEndpoints.uploads({ status, sevaType, page, pageSize: 20 }));
   return (
     <div className={styles.page}>
@@ -92,6 +97,8 @@ export function UploadsPage() {
                               { label: t("continue"), href: `/admin/uploads/new?batch=${r.id}`, hidden: r.status !== "preview" },
                               { icon: DownloadIcon, label: t("dlErrors"), hidden: r.counts.rejected + r.counts.errors === 0, onClick: () => void download(adminEndpoints.uploadErrorsXlsx(r.id), `${r.fileName.replace(/\.\w+$/, "")}-problems.xlsx`) },
                               { icon: DownloadIcon, label: t("dlOriginal"), onClick: () => void download(adminEndpoints.uploadOriginal(r.id), r.fileName) },
+                              "-",
+                              { icon: Trash2, label: t("delete"), danger: true, hidden: r.status === "loaded", onClick: () => setDel(r) },
                             ]}
                           />
                         </td>
@@ -109,6 +116,21 @@ export function UploadsPage() {
           </div>
         )}
       </Loadable>
+      <ConfirmDialog
+        open={del !== null}
+        onClose={() => setDel(null)}
+        title={t("deleteTitle", { name: del?.fileName ?? "" })}
+        body={t("deleteBody")}
+        confirmLabel={t("delete")}
+        danger
+        pending={pending === "del"}
+        onConfirm={async () => {
+          if (!del) return false;
+          const res = await run(adminEndpoints.upload(del.id), { method: "DELETE" }, { key: "del", success: t("deleted"), refresh: false, onReload: api.reload });
+          if (res.ok) api.reload();
+          return res.ok;
+        }}
+      />
       <Link href="/admin/approvals" className={styles.linkBtn}>
         {t("toApprovals")}
       </Link>
