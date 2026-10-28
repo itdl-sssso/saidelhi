@@ -486,3 +486,10 @@ Spec `docs/specs/52-gallery.md`. (The WIP note said v0.9.3; that number is taken
 9. **Simulator**: `SimInboundBody.media.data` (base64) is decoded to bytes in `POST /dev/whatsapp/inbound` (≤11 MB decoded, else 422); without `data` the media has no bytes (bot answers "couldn't download").
 10. **Tests**: `tests/gallery-{image,review,editor,public,intake}.test.ts`, proxy probe in `tests/proxy.test.ts`.
 
+
+### v0.9.6 (Review round 1 — public polish + portal fixes)
+1. **`VALUE_LINKS.dharma`** (`src/contract/public.ts`): now `medical` / `service` / `gathering: null` (Dharma page features medical camps, not Bal Vikas).
+2. **`DELETE /admin/forms/:id`** → 204 (`forms.manage`, CSRF). Archives the template (`active=false`, hidden from list). 422 `details {reason: "links"|"pinned"|"last", count}` while live links use it, Settings pins it as a seva type's report form, or it is the last report form of that seva type. Audit `form.delete`.
+3. **`DELETE /admin/uploads/:id`** → 204 (`uploads.manage`, CSRF). Removes batch, rows and stored file. 422 for loaded batches (they are the record of where reports came from). Audit `upload.delete`.
+4. **WhatsApp bot**: `resolveDistrict` falls back to nearest centre by pincode centroid (`ncr-pincodes.json`) when the text search finds no centre.
+5. **Portal 404**: `admin/(portal)/not-found.tsx` catches `notFound()` from `guarded()` (was Next default 404).
