@@ -2,14 +2,19 @@
 
 import type { LucideIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { type ReactNode, useEffect, useId, useRef, useState } from "react";
+import { type CSSProperties, type ReactNode, useEffect, useId, useLayoutEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Link } from "@/i18n/navigation";
 import { Icon, type IconName } from "@/ui/Icon";
 import { cx } from "@/ui/cx";
 import { Ellipsis } from "./icons";
 import styles from "./Admin.module.css";
 
-/** Closes on outside press and Escape (returns focus to the trigger). */
+/**
+ * Closes on outside press, Escape (returns focus to the trigger), scroll and resize. The panel renders in a portal
+ * with fixed positioning so list/table cards with `overflow: hidden` never clip it; it flips above the trigger
+ * when there is no room below.
+ */
 export function Popover({
   trigger,
   children,
@@ -26,12 +31,31 @@ export function Popover({
   const [open, setOpen] = useState(false);
   const wrap = useRef<HTMLDivElement>(null);
   const btn = useRef<HTMLButtonElement>(null);
+  const panel = useRef<HTMLDivElement>(null);
+  const [pos, setPos] = useState<CSSProperties | null>(null);
   const id = useId();
+
+  useLayoutEffect(() => {
+    if (!open) return;
+    const w = wrap.current?.getBoundingClientRect();
+    const h = panel.current?.offsetHeight ?? 0;
+    if (!w) return;
+    const below = window.innerHeight - w.bottom;
+    const flip = h > below - 8 && w.top > below;
+    const style: CSSProperties = { position: "fixed", top: flip ? Math.max(8, w.top - 6 - h) : w.bottom + 6 };
+    if (align === "right") style.right = Math.max(8, window.innerWidth - w.right);
+    else style.left = Math.max(8, w.left);
+    setPos(style);
+  }, [open, align]);
 
   useEffect(() => {
     if (!open) return;
     const press = (e: MouseEvent | TouchEvent) => {
-      if (wrap.current && !wrap.current.contains(e.target as Node)) setOpen(false);
+      const n = e.target as Node;
+      if (wrap.current && !wrap.current.contains(n) && !panel.current?.contains(n)) setOpen(false);
+    };
+    const away = (e: Event) => {
+      if (!panel.current?.contains(e.target as Node)) setOpen(false);
     };
     const key = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -42,7 +66,11 @@ export function Popover({
     document.addEventListener("mousedown", press);
     document.addEventListener("touchstart", press);
     document.addEventListener("keydown", key);
+    window.addEventListener("scroll", away, true);
+    window.addEventListener("resize", away);
     return () => {
+      window.removeEventListener("scroll", away, true);
+      window.removeEventListener("resize", away);
       document.removeEventListener("mousedown", press);
       document.removeEventListener("touchstart", press);
       document.removeEventListener("keydown", key);
@@ -52,11 +80,14 @@ export function Popover({
   return (
     <div ref={wrap} className={cx(styles.menuWrap, wrapClassName)} onClick={(e) => e.stopPropagation()}>
       {trigger({ open, toggle: () => setOpen((o) => !o), id, ref: btn })}
-      {open ? (
-        <div id={id} className={cx(styles.menu, align === "right" ? styles.menuR : styles.menuL, className)}>
-          {children(() => setOpen(false))}
-        </div>
-      ) : null}
+      {open
+        ? createPortal(
+            <div ref={panel} id={id} className={cx(styles.menu, className)} style={pos ?? { position: "fixed", visibility: "hidden", top: 0, left: 0 }}>
+              {children(() => setOpen(false))}
+            </div>,
+            document.body,
+          )
+        : null}
     </div>
   );
 }

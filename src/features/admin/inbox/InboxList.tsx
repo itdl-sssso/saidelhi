@@ -10,6 +10,7 @@ import { Icon } from "@/ui/Icon";
 import { Pagination } from "@/ui/Pagination";
 import { SkeletonRows } from "@/ui/Skeleton";
 import { PageHead } from "../kit";
+import { ScrollTabs } from "../ScrollTabs";
 import { Link2 } from "../icons";
 import { fmtShortDateTime } from "../time";
 import { useApi } from "../useApi";
@@ -36,14 +37,14 @@ export function InboxList() {
   return (
     <div className={styles.page}>
       <PageHead title={t("title")} sub={t("sub")} />
-      <div className={styles.tabs} role="navigation" aria-label={t("tabsLabel")}>
+      <ScrollTabs label={t("tabsLabel")}>
         {TABS.map((id) => (
           <Link key={id} href={hrefWith("/admin/inbox", params, { tab: id === "for_me" ? null : id })} className={styles.tab} aria-current={tab === id ? "page" : undefined}>
             {t(`tab.${id}`)}
             {counts ? <span className={id === "escalated" && counts[id] > 0 ? styles.tabCountHot : styles.tabCount}>{counts[id]}</span> : null}
           </Link>
         ))}
-      </div>
+      </ScrollTabs>
 
       {api.status === "loading" ? (
         <div className={styles.card}>

@@ -50,6 +50,8 @@ export interface FormsService {
   templateXlsx(actor: Actor, id: string, q: { samithi?: string; version?: number }): Promise<{ bytes: Uint8Array; filename: string }>;
   createChangeRequest(actor: Actor, id: string, body: ChangeRequestCreate): Promise<FormChangeRequest>;
   decideChangeRequest(actor: Actor, requestId: string, body: ChangeRequestDecision): Promise<FormChangeRequest>;
+  /** Archives the template (`active=false`): history, versions and submissions stay. 422 while it is still in use. */
+  remove(actor: Actor, id: string): Promise<void>;
 }
 
 interface ChangeRequestData {
@@ -242,7 +244,8 @@ export function createFormsService(ctx: PortalCtx): FormsService {
   return {
     async list(actor) {
       assertCan(actor, "forms.read");
-      const [templates, org] = await Promise.all([repo.links.templates(), loadOrg(repo)]);
+      const [all, org] = await Promise.all([repo.links.templates(), loadOrg(repo)]);
+      const templates = all.filter((x) => x.active);
       const edit = manage(actor);
       const rows: FormTemplateRow[] = [];
       for (const tpl of templates) rows.push(await row(tpl, await repo.links.versionsOf(tpl.id), org, edit));
@@ -265,6 +268,22 @@ export function createFormsService(ctx: PortalCtx): FormsService {
       }
       const tpl = await newTemplate(actor, { en: body.title.en, hi: body.title.hi ?? null }, body.sevaType, body.purpose ?? "report", source);
       return toDetail(actor, tpl);
+    },
+
+    async remove(actor, id) {
+      await assertEditable(actor);
+      const tpl = await templateOr404(id);
+      if (!tpl.active) throw new ApiError("NOT_FOUND");
+      const blocked = (message: string, reason: "links" | "pinned" | "last", count = 0) => new ApiError("VALIDATION_FAILED", { message, fields: { template: message }, details: { reason, count } });
+      const [versions, counts, types, all] = await Promise.all([repo.links.versionsOf(id), repo.links.activeLinkCounts(now()), repo.sevaTypes(), repo.links.templates()]);
+      const live = versions.reduce((n, v) => n + (counts.get(v.id) ?? 0), 0);
+      if (live > 0) throw blocked(`${live} live form link${live === 1 ? " uses" : "s use"} this form. Revoke ${live === 1 ? "it" : "them"} first.`, "links", live);
+      if (types.some((st) => st.templateId === id)) throw blocked("This form is chosen as a seva type's report form in Settings. Pick another form there first.", "pinned");
+      if (tpl.purpose === "report" && tpl.sevaType && !all.some((x) => x.id !== id && x.active && x.purpose === "report" && x.sevaType === tpl.sevaType)) {
+        throw blocked("This is the only report form for its seva type. Create or duplicate another one first.", "last");
+      }
+      await repo.links.updateTemplate(id, { active: false });
+      await repo.portal.insertAudit(auditRec(actor, { action: "form.delete", entity: "form_template", entityId: id, data: { title: tpl.titleEn, code: tpl.code } }));
     },
 
     async detail(actor, id) {

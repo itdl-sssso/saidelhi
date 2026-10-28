@@ -10,6 +10,7 @@ import { Icon, type IconName, icons } from "@/ui/Icon";
 import { SkeletonRows } from "@/ui/Skeleton";
 import { Switch } from "@/ui/Switch";
 import { Pill } from "./kit";
+import { ScrollTabs } from "./ScrollTabs";
 import type { UseApi } from "./useApi";
 import { hrefWith } from "./url";
 import styles from "./Admin.module.css";
@@ -59,14 +60,14 @@ export function LinkTabs<T extends string>({ path, tabs, current, label, labels,
   const sp = useSearchParams();
   const params = Object.fromEntries(sp.entries());
   return (
-    <div className={styles.tabs} role="navigation" aria-label={label}>
+    <ScrollTabs label={label}>
       {tabs.map((id, i) => (
         <Link key={id} href={hrefWith(path, params, { [param]: i === 0 ? null : id, page: null })} className={styles.tab} aria-current={current === id ? "page" : undefined}>
           {labels[id]}
           {counts?.[id] !== undefined ? <span className={styles.tabCount}>{counts[id]}</span> : null}
         </Link>
       ))}
-    </div>
+    </ScrollTabs>
   );
 }
 

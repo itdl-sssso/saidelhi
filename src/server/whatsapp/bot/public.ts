@@ -2,6 +2,7 @@
 // My events, Help and the human hand-off (spec 50 flows 1, 8, 9).
 import type { EventPublic, Locale } from "@/contract";
 import { newId } from "../../db/columns";
+import { pincodeCentroid } from "../../domain/geo";
 import { ApiError } from "../../http/errors";
 import type { OptInRec } from "../../repo/wa-types";
 import { COPY, LABEL, pick, STATUS_LABEL } from "./copy";
@@ -26,8 +27,10 @@ async function resolveDistrict(t: Turn, text: string): Promise<{ slug: string; i
     const d = org.districts().find((u) => [u.nameEn, u.nameHi ?? "", u.slug].some((n) => fold(n) === q || fold(n).includes(q)));
     if (d) return { slug: d.slug, id: d.id, name: nameOf(d) };
   }
-  const centres = await t.deps.centres.list({ q: text.trim(), page: 1, pageSize: 1 });
-  const c = centres.data[0];
+  const raw = text.trim();
+  let c = (await t.deps.centres.list({ q: raw, page: 1, pageSize: 1 })).data[0];
+  // A pincode no centre lists (e.g. 122003): use its centroid and take the nearest centre's district.
+  if (!c && /^\d{6}$/.test(raw) && pincodeCentroid(raw)) c = (await t.deps.centres.list({ pincode: raw, page: 1, pageSize: 1 })).data[0];
   if (!c) return null;
   const d = org.get(c.districtId);
   return d ? { slug: d.slug, id: d.id, name: nameOf(d) } : null;

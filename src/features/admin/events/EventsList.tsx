@@ -7,6 +7,7 @@ import { EmptyState } from "@/ui/EmptyState";
 import { Pagination } from "@/ui/Pagination";
 import { FilterBar, type FilterField } from "../FilterBar";
 import { PageHead } from "../kit";
+import { ScrollTabs } from "../ScrollTabs";
 import type { OrgOptions } from "../server";
 import { hrefWith, type Params } from "../url";
 import { EventsTable } from "./EventsTable";
@@ -71,14 +72,14 @@ export async function EventsList({
           ) : undefined
         }
       />
-      <div className={styles.tabs} role="navigation" aria-label={t("tabsLabel")}>
+      <ScrollTabs label={t("tabsLabel")}>
         {TAB_ORDER.filter((s) => !OPTIONAL_TABS.has(s) || (counts[s] ?? 0) > 0 || status === s).map((s) => (
           <Link key={s} href={hrefWith(path, sp, { status: s === "all" ? null : s })} className={styles.tab} aria-current={status === s ? "page" : undefined}>
             {s === "all" ? t("tabAll") : tStatus(EventStatus.parse(s))}
             <span className={s === "escalated" && (counts[s] ?? 0) > 0 ? styles.tabCountHot : styles.tabCount}>{counts[s] ?? 0}</span>
           </Link>
         ))}
-      </div>
+      </ScrollTabs>
       <FilterBar fields={fields} />
       <div className={styles.tblWrap}>
         {rows.length === 0 ? (

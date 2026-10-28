@@ -1486,6 +1486,10 @@
         "openSheet": "Open the sheet",
         "noPreview": "No preview available. Open the file to read it.",
         "private": "This file is private and never published. It is deleted after 12 months."
+      },
+      "blocked": {
+        "noForm": "The form for this event is not ready yet.",
+        "noChanges": "Nothing to save: you have not changed any answer."
       }
     },
     "whatsapp": {
@@ -1784,6 +1788,15 @@
         "errText": "Say what should change (at least 5 characters).",
         "send": "Send request",
         "sent": "Request sent to the state team."
+      },
+      "delete": "Delete",
+      "deleteTitle": "Delete \"{name}\"?",
+      "deleteBody": "The form is removed from this list and can no longer be used for new events or links. Reports already sent with it, and past versions, are kept.",
+      "deleted": "Form deleted.",
+      "deleteBlocked": {
+        "links": "{count, plural, one {# live form link uses} other {# live form links use}} this form. Revoke {count, plural, one {it} other {them}} first.",
+        "pinned": "This form is chosen as a seva type's report form in Settings. Pick another form there first.",
+        "last": "This is the only report form for its seva type. Create or duplicate another one first."
       }
     },
     "builder": {
@@ -2215,7 +2228,11 @@
       "doneText": "The reports now wait for district approval.",
       "tileNew": "New",
       "tileUpdated": "Updated",
-      "tileRejected": "Not loaded"
+      "tileRejected": "Not loaded",
+      "delete": "Delete",
+      "deleteTitle": "Delete \"{name}\"?",
+      "deleteBody": "The uploaded file and its preview are removed. Nothing has been loaded from it, so no reports change.",
+      "deleted": "Upload deleted."
     },
     "content": {
       "title": "Content",
@@ -2429,7 +2446,8 @@
       "errSource": "Say where this number comes from.",
       "delTitle": "Delete this estimate?",
       "delBody": "It disappears from the public totals. This is logged.",
-      "estDeleted": "Estimate deleted"
+      "estDeleted": "Estimate deleted",
+      "revert": "Revert changes"
     },
     "migration": {
       "title": "Migration",
@@ -3185,6 +3203,11 @@
       "liveNoCrop": "Crop removed",
       "liveAspect": "Crop shape: {aspect}",
       "liveCrop": "Crop {w} wide, {h} high, at {x} from the left and {y} from the top"
+    },
+    "notFound": {
+      "title": "We can't find that page.",
+      "body": "It may have been removed, or the link is wrong. It could also be outside your area.",
+      "toOverview": "Go to overview"
     }
   },
   "news": {
