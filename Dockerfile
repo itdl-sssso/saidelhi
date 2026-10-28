@@ -17,6 +17,8 @@ RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 FROM deps AS build
 COPY . .
 # Cache Components prerender "use cache" pages at build time, so the build reads the real DB.
+# DATA_STAMP changes every deploy so this layer is never reused: same code + new data must re-prerender.
+ARG DATA_STAMP
 # The env file comes in as a BuildKit secret (never stored in a layer); next build loads .env.production.local.
 RUN --mount=type=secret,id=app_env,target=/app/.env.production.local \
     NEXT_OUTPUT=standalone pnpm build

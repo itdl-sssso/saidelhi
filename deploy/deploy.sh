@@ -26,7 +26,7 @@ docker buildx build --target tools --tag "saidelhi-tools:$APP_TAG" --tag saidelh
 "${compose[@]}" --profile tools run --rm tools pnpm exec drizzle-kit migrate
 # Build after migrating: the build prerenders cached pages from the live DB.
 docker buildx build --network host --secret id=app_env,src=deploy/.env.staging \
-  --target runner --tag "saidelhi-app:$APP_TAG" --tag saidelhi-app:latest --load .
+  --build-arg DATA_STAMP="$(date +%s)" --target runner --tag "saidelhi-app:$APP_TAG" --tag saidelhi-app:latest --load .
 "${compose[@]}" up -d --wait app
 
 # Keep the last 5 app images for rollback.
