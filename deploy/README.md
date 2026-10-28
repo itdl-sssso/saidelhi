@@ -70,6 +70,9 @@ sudo nginx -t && sudo systemctl reload nginx
 sudo certbot --nginx -d staging.saidelhi.org -d api.staging.saidelhi.org --redirect
 ```
 
+certbot edits the installed site file in place (443 + redirects) and renews via `certbot.timer`. If you re-copy
+`saidelhi-staging.conf` from the repo later, run the certbot command again.
+
 ## 4. Cron
 
 ```bash
