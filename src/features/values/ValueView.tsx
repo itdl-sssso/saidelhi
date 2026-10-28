@@ -21,8 +21,8 @@ import { SectionHeading } from "@/ui/SectionHeading";
 import { PRACTICE_CTA, STRAND_ICONS } from "./model";
 import styles from "./ValueView.module.css";
 
-/** Hindi prose for the five pages is pending a native translation: until then HI shows the English text with a notice. */
-const HI_PROSE_READY = false;
+/** Hindi prose is agent-written (native review pending). Set false to fall back to English with a notice. */
+const HI_PROSE_READY = true;
 
 export function ValueView({ data }: { data: ValuePayload }) {
   const t = useTranslations("valuePage");

@@ -11,7 +11,6 @@ import { Input } from "@/ui/Input";
 import { Pagination } from "@/ui/Pagination";
 import { Select } from "@/ui/Select";
 import { OptInForm } from "./OptInForm";
-import { WhatsAppCard } from "./WhatsAppCard";
 import styles from "./Join.module.css";
 
 export const JOIN_SEVA_TYPES: SevaType[] = ["eye", "blood", "medical", "narayan_seva", "bal_vikas", "bhajan", "study_circle", "cleanliness", "disaster_relief"];
@@ -105,12 +104,6 @@ export function JoinView({ data, q, districts }: { data: JoinPayload; q: JoinQue
           </div>
 
           <aside className={styles.side} aria-label={t("sideLabel")}>
-            <div className={pub.card}>
-              <h2 className={pub.h3}>{t("waTitle")}</h2>
-              <p className={pub.small}>{t("waBody", { keyword: data.whatsapp.keyword })}</p>
-              <WhatsAppCard contact={data.whatsapp} />
-            </div>
-
             <div className={pub.card}>
               <h2 className={pub.h3}>{t("optinTitle")}</h2>
               <p className={pub.small}>{t("optinBody")}</p>

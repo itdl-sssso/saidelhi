@@ -41,3 +41,5 @@
 .resultsInline {
   margin-block: var(--space-6);
 }
+
+.readTime { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
