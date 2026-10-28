@@ -143,3 +143,23 @@ export function NoAccess() {
     </div>
   );
 }
+
+/** Portal 404: shown inside the shell when a record is unknown or outside the viewer's scope. */
+export function PortalNotFound() {
+  const t = useTranslations("admin.notFound");
+  return (
+    <div className={styles.denied}>
+      <EmptyState
+        icon="search-x"
+        headingLevel={2}
+        title={t("title")}
+        body={t("body")}
+        action={
+          <Button href="/admin" variant="outline">
+            {t("toOverview")}
+          </Button>
+        }
+      />
+    </div>
+  );
+}

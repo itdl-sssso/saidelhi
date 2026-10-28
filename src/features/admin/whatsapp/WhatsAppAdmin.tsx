@@ -11,6 +11,7 @@ import { EmptyState } from "@/ui/EmptyState";
 import { Switch } from "@/ui/Switch";
 import { SkeletonRows } from "@/ui/Skeleton";
 import { PageHead, Panel, Pill, type Tone } from "../kit";
+import { ScrollTabs } from "../ScrollTabs";
 import { useAction } from "../useAction";
 import { type UseApi, useApi } from "../useApi";
 import { hrefWith } from "../url";
@@ -53,13 +54,13 @@ export function WhatsAppAdmin({ canManage, canReminders }: { canManage: boolean;
     <div className={styles.page}>
       <PageHead title={t("title")} sub={t("sub")} />
       {tabs.length > 1 ? (
-        <div className={styles.tabs} role="navigation" aria-label={t("tabsLabel")}>
+        <ScrollTabs label={t("tabsLabel")}>
           {tabs.map((id) => (
             <Link key={id} href={hrefWith("/admin/whatsapp", params, { tab: id === "templates" ? null : id })} className={styles.tab} aria-current={tab === id ? "page" : undefined}>
               {t(`tab.${id}`)}
             </Link>
           ))}
-        </div>
+        </ScrollTabs>
       ) : null}
       {tab === "templates" ? <Templates /> : null}
       {tab === "reminders" ? <Reminders /> : null}
