@@ -53,6 +53,10 @@ export function LotusJourney() {
             aria-labelledby={`petal-${k}-title`}
           >
             <div className={styles.panel}>
+              {/* Phones: the photo that rides on the lotus heart on wide screens sits on the card instead. */}
+              <div className={styles.cardPhoto}>
+                <Image src={valuePhoto(k)} alt="" fill sizes="(min-width: 900px) 0px, 92vw" loading="lazy" className={styles.cardPhotoImg} />
+              </div>
               <div className={styles.crest}>
                 <Image src={valueEmblem(k)} alt="" width={52} height={52} />
               </div>

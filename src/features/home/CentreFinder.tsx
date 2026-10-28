@@ -3,14 +3,11 @@ import type { CentreListItem } from "@/contract";
 import { Link } from "@/i18n/navigation";
 import { type AppLocale, formatTime, istParts, tx, weekdayName } from "@/lib/format";
 import { Button } from "@/ui/Button";
+import { cx } from "@/ui/cx";
 import { Icon } from "@/ui/Icon";
 import { SectionHeading } from "@/ui/SectionHeading";
+import { HomeMapPreview } from "./HomeMapPreview";
 import styles from "./HomeSections.module.css";
-
-// Rough bounding box of Delhi NCR for the schematic preview (lat/lng → SVG units).
-const BOX = { west: 76.95, east: 77.45, north: 28.78, south: 28.38 };
-const W = 400;
-const H = 320;
 
 /**
  * Spec 01 §9: search by pincode or locality (goes to the centre map, M5) with a small
@@ -27,7 +24,7 @@ export function CentreFinder({ centres }: { centres: CentreListItem[] }) {
     .slice(0, 3);
 
   return (
-    <section id="where" className={styles.sec} aria-labelledby="finder-title">
+    <section id="where" className={cx(styles.sec, styles.white)} aria-labelledby="finder-title">
       <div className={`${styles.wrap} ${styles.finder}`}>
         <div>
           <SectionHeading titleId="finder-title" eyebrow={t("finderEyebrow")} title={t("finderTitle")} description={t("finderLead")} />
@@ -71,29 +68,7 @@ export function CentreFinder({ centres }: { centres: CentreListItem[] }) {
             </Button>
           </div>
         </div>
-        <Link href="/centres/map" className={styles.mapPreview} aria-label={t("allCentresMap")}>
-          <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={t("mapPreviewAlt", { count: pinned.length })}>
-            <defs>
-              <pattern id="finder-grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                <path d="M40 0H0V40" fill="none" stroke="var(--blue-100)" strokeWidth="1" />
-              </pattern>
-            </defs>
-            <rect width={W} height={H} fill="var(--surface-calm)" />
-            <rect width={W} height={H} fill="url(#finder-grid)" />
-            {/* The Yamuna, roughly. */}
-            <path d="M232 0 C 236 70, 250 120, 246 170 S 262 260, 280 320" fill="none" stroke="var(--blue-200)" strokeWidth="10" strokeLinecap="round" />
-            {pinned.map((c) => {
-              const x = ((c.geo!.lng - BOX.west) / (BOX.east - BOX.west)) * W;
-              const y = ((BOX.north - c.geo!.lat) / (BOX.north - BOX.south)) * H;
-              return (
-                <g key={c.id}>
-                  <circle cx={x} cy={y} r="11" fill="var(--white)" opacity="0.9" />
-                  <circle cx={x} cy={y} r="7" fill="var(--pink-500)" stroke="var(--white)" strokeWidth="2" />
-                </g>
-              );
-            })}
-          </svg>
-        </Link>
+        <HomeMapPreview pins={pinned.map((c) => ({ lat: c.geo!.lat, lng: c.geo!.lng }))} label={t("mapPreviewAlt", { count: pinned.length })} />
       </div>
     </section>
   );

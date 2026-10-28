@@ -70,6 +70,17 @@ function pickWings(items: readonly ContentItemRec[]): WingCard[] {
   return cards.sort((a, b) => a.at - b.at).map((c) => c.card);
 }
 
+/** Until editors attach a picture per thought: rotate the five value photos by day so it changes with the thought. */
+const THOUGHT_PHOTOS = ["sathya", "dharma", "shanti", "prema", "ahimsa"] as const;
+export function thoughtImage(date: string): NonNullable<Thought["image"]> {
+  const day = Math.floor(Date.parse(`${date}T00:00:00Z`) / 86_400_000);
+  const k = THOUGHT_PHOTOS[((day % THOUGHT_PHOTOS.length) + THOUGHT_PHOTOS.length) % THOUGHT_PHOTOS.length];
+  return {
+    url: `/images/values/photo-${k}.webp`,
+    alt: { en: "Bhagawan Sri Sathya Sai Baba", hi: "भगवान श्री सत्य साई बाबा" },
+  };
+}
+
 function pickThought(items: readonly ContentItemRec[], today: string): Thought | null {
   const t = items
     .filter((i) => i.status === "published" && i.bodyEn && i.date && i.date <= today)
@@ -79,6 +90,7 @@ function pickThought(items: readonly ContentItemRec[], today: string): Thought |
     date: t.date,
     text: i18n(t.bodyEn, t.bodyHi),
     source: t.sourceEn ? i18n(t.sourceEn, t.sourceHi) : null,
+    image: thoughtImage(t.date),
   };
 }
 
