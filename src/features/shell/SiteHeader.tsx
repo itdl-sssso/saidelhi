@@ -22,6 +22,7 @@ export function SiteHeader({ discourses = false, pathless = false }: SiteHeaderP
         { href: "/values/shanti", label: t("bhajans"), icon: "music" },
         ...(discourses ? [{ href: "/discourses", label: t("discourses"), icon: "book-open" as const }] : []),
         { href: "/news", label: t("news"), icon: "newspaper" },
+        { href: "/gallery", label: t("gallery"), icon: "image" },
       ],
     },
     {

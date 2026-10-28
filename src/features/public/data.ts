@@ -7,6 +7,7 @@ import type {
   CentreListItem,
   CentresQuery,
   EventsQuery,
+  GalleryQuery,
   ImpactPeriod,
   JoinQuery,
   SevaType,
@@ -21,6 +22,7 @@ export const TAGS = {
   impact: "impact",
   articles: "articles",
   centres: "centres",
+  gallery: "gallery",
 } as const;
 
 export async function getHome() {
@@ -131,4 +133,18 @@ export async function getDistricts() {
   cacheLife("hours");
   cacheTag(TAGS.centres);
   return services().districts.list();
+}
+
+export async function getGalleryAlbums(q: GalleryQuery) {
+  "use cache";
+  cacheLife("hours");
+  cacheTag(TAGS.gallery, TAGS.articles, TAGS.events, TAGS.centres);
+  return services().gallery.albums(q);
+}
+
+export async function getGalleryAlbum(slug: string) {
+  "use cache";
+  cacheLife("hours");
+  cacheTag(TAGS.gallery, TAGS.articles, TAGS.events, TAGS.centres, `gallery:${slug}`);
+  return services().gallery.album(slug);
 }

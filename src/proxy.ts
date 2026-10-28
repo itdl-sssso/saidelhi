@@ -13,12 +13,12 @@ const intl = createMiddleware(routing);
  * ones to the localised catch-all, which answers a real 404.
  */
 const DETAIL_PATH =
-  /^(?:\/(hi))?(?:\/(events|centres|news|districts|programs|values|discourses)\/([^/]+)|\/admin\/events\/([^/]+)(?:\/edit)?)\/?$/;
+  /^(?:\/(hi))?(?:\/(events|centres|news|districts|programs|values|discourses|gallery)\/([^/]+)|\/admin\/events\/([^/]+)(?:\/edit)?)\/?$/;
 const DISCOURSE_LIST = /^(?:\/(hi))?\/discourses$/;
 const PROBE_TTL_MS = 60_000;
 const found = new Map<string, number>(); // positive probes only: a new id must 404 -> 200 immediately
 
-type ProbeKind = "event" | "adminEvent" | "centre" | "article" | "district" | "program" | "value" | "discourse";
+type ProbeKind = "event" | "adminEvent" | "centre" | "article" | "district" | "program" | "value" | "discourse" | "gallery";
 
 const PROBE_KIND: Record<string, ProbeKind> = {
   events: "event",
@@ -28,6 +28,7 @@ const PROBE_KIND: Record<string, ProbeKind> = {
   programs: "program",
   values: "value",
   discourses: "discourse",
+  gallery: "gallery",
 };
 
 async function exists(kind: ProbeKind, key: string): Promise<boolean> {
@@ -50,6 +51,9 @@ async function exists(kind: ProbeKind, key: string): Promise<boolean> {
       break;
     case "article":
       ok = await svc.articles.exists(key);
+      break;
+    case "gallery":
+      ok = await svc.gallery.exists(key);
       break;
     case "district":
       ok = (await svc.districts.units({ kind: "district" })).some((u) => u.slug === key);

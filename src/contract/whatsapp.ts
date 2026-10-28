@@ -221,7 +221,8 @@ export const SimInboundBody = z.object({
   from: z.string(),
   text: z.string().nullable(),
   replyId: z.string().nullable(),
-  media: z.object({ kind: z.enum(["image", "pdf"]), name: z.string() }).nullable(),
+  /** v0.9.5: `data` = base64 file bytes (≤ ~14 MB string) so the simulator can send a real photo; absent = fake media without bytes. */
+  media: z.object({ kind: z.enum(["image", "pdf"]), name: z.string(), mime: z.string().max(100).optional(), data: z.string().max(14_000_000).optional() }).nullable(),
 });
 export type SimInboundBody = z.infer<typeof SimInboundBody>;
 /** GET /dev/whatsapp/messages?phone → both directions, oldest first. */

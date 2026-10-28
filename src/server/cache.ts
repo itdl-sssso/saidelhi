@@ -9,6 +9,7 @@ export const CACHE_TAGS = {
   centres: "centres",
   discourses: "discourses",
   home: "home",
+  gallery: "gallery",
   uiStrings: "ui-strings",
 } as const;
 

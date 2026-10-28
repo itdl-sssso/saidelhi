@@ -69,6 +69,20 @@ export function Simulator() {
     void send({ text: v, replyId: null, media: null });
   };
 
+  const fileRef = useRef<HTMLInputElement>(null);
+  /** Real photo: base64 bytes; the typed text rides along as the caption. */
+  const attach = async (file: File | null, input: HTMLInputElement) => {
+    input.value = "";
+    if (!file) return;
+    if (file.size > 10 * 1024 * 1024) return setNote("File is larger than 10 MB (the bot refuses it too).");
+    const bytes = new Uint8Array(await file.arrayBuffer());
+    let bin = "";
+    for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+    const caption = text.trim() || null;
+    setText("");
+    await send({ text: caption, replyId: null, media: { kind: "image", name: file.name, mime: file.type || undefined, data: btoa(bin) } });
+  };
+
   const reset = async () => {
     await apiRequest(devWhatsappEndpoints.reset(), { method: "POST", body: { phone } });
     setMessages([]);
@@ -150,7 +164,11 @@ export function Simulator() {
             submit();
           }}
         >
-          <button type="button" className={s.round} aria-label="Attach a fake photo" disabled={busy} onClick={() => void send({ text: null, replyId: null, media: { kind: "image", name: "register-photo.jpg" } })}>
+          <input ref={fileRef} type="file" accept="image/*" hidden onChange={(e) => void attach(e.target.files?.[0] ?? null, e.target)} />
+          <button type="button" className={s.round} aria-label="Attach a photo from disk (the message text becomes its caption)" disabled={busy} onClick={() => fileRef.current?.click()}>
+            <Icon name="paperclip" size={20} />
+          </button>
+          <button type="button" className={s.round} aria-label="Attach a fake photo (no bytes)" disabled={busy} onClick={() => void send({ text: null, replyId: null, media: { kind: "image", name: "register-photo.jpg" } })}>
             <Icon name="camera" size={20} />
           </button>
           <input value={text} onChange={(e) => setText(e.target.value)} placeholder="Message" aria-label="Message" />

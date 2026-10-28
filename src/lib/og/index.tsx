@@ -155,7 +155,7 @@ export async function renderOg(card: Card, headers?: Record<string, string>) {
 /** Section card: resolves labels, falls back to the site-wide card when the entity is unknown. */
 export async function sectionOg(
   localeRaw: string,
-  section: "events" | "news" | "discourses" | "values" | "programs" | "centres" | "districts",
+  section: "events" | "news" | "discourses" | "values" | "programs" | "centres" | "districts" | "gallery",
   content: { title: string; sub?: string } | null,
 ) {
   const locale = ogLocale(localeRaw);

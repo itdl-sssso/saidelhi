@@ -1,4 +1,7 @@
 import type {
+  GalleryAlbumDetail,
+  GalleryPage,
+  GalleryQuery,
   AnswerMap,
   FormDefinition,
   FormLink,
@@ -123,6 +126,13 @@ export interface ArticlesService {
   exists(slug: string): Promise<boolean>;
 }
 
+/** v0.9.5 public gallery (spec 52). */
+export interface GalleryService {
+  albums(q: GalleryQuery): Promise<GalleryPage>;
+  album(slug: string): Promise<GalleryAlbumDetail | null>;
+  exists(slug: string): Promise<boolean>;
+}
+
 export interface PrivacyRequestMeta {
   requestId: string;
   ipHash: string | null;
@@ -231,6 +241,7 @@ export interface Services {
   districts: DistrictsService;
   impact: ImpactService;
   articles: ArticlesService;
+  gallery: GalleryService;
   values: ValuesService;
   discourses: DiscoursesService;
   programs: ProgramsService;

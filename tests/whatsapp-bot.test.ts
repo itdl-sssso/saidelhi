@@ -332,8 +332,11 @@ describe("errors, timeout and hand-off", () => {
     const item = after.rows.find((i) => !before.rows.some((b) => b.id === i.id))!;
     expect(item.eventId).toBe(EVENT.eyeMayurCamp);
     expect(item.draftAnswers).toMatchObject({ registered: 120, spectacles_total: 80 });
+    // photos start the gallery flow (tests/gallery-intake.test.ts); a PDF still goes to review
     const photo = await t.say(phone(1), null, null, { kind: "image", name: "page.jpg" });
-    expect(texts(photo)).toBe(pick("hi", COPY.sentToReview));
+    expect(texts(photo)).toBe(pick("hi", COPY.galleryNoBytes));
+    const pdf = await t.say(phone(1), null, null, { kind: "pdf", name: "page.pdf" });
+    expect(texts(pdf)).toBe(pick("hi", COPY.sentToReview));
   });
 
   it("stops updates on STOP, even in the middle of a flow", async () => {

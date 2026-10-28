@@ -45,10 +45,11 @@ export type Samples = {
   centreSlug: string | null;
   districtSlug: string | null;
   articleSlug: string | null;
+  galleryAlbumSlug: string | null;
   programType: string | null;
   discourseSlug: string | null;
   tokens: Record<string, string>;
-  admin: { eventId?: string; centreId?: string; contentId?: string; inboxId?: string; formId?: string };
+  admin: { eventId?: string; centreId?: string; contentId?: string; inboxId?: string; formId?: string; galleryAlbumId?: string; galleryPhotoId?: string };
 };
 
 export const EMPTY_SAMPLES: Samples = {
@@ -56,6 +57,7 @@ export const EMPTY_SAMPLES: Samples = {
   centreSlug: null,
   districtSlug: null,
   articleSlug: null,
+  galleryAlbumSlug: null,
   programType: null,
   discourseSlug: null,
   tokens: {},
@@ -125,7 +127,7 @@ const SPEC_FILE: Record<number, string> = {
   29: "29-admin-approvals", 30: "30-admin-form-templates", 31: "31-admin-form-builder", 32: "32-admin-links", 33: "33-admin-uploads",
   34: "34-admin-org", 35: "35-admin-centres", 36: "36-admin-partners", 37: "37-admin-people", 38: "38-admin-content", 39: "39-admin-discourses",
   40: "40-admin-impact", 41: "41-admin-migration", 42: "42-admin-whatsapp", 43: "43-admin-sevadal", 44: "44-admin-reports",
-  45: "45-admin-health", 46: "46-admin-follow-up", 47: "47-admin-privacy", 48: "48-admin-audit", 49: "49-admin-settings", 50: "50-whatsapp-bot",
+  45: "45-admin-health", 46: "46-admin-follow-up", 47: "47-admin-privacy", 48: "48-admin-audit", 49: "49-admin-settings", 50: "50-whatsapp-bot", 52: "52-gallery",
 };
 
 export const specFile = (n: number) => `docs/specs/${SPEC_FILE[n]}.md`;
@@ -163,6 +165,7 @@ function publicRaw(s: Samples): Raw[] {
     { id: "impact", title: "Impact", path: "/impact", spec: 4, design: [D.pub2] },
     { id: "join", title: "Join", path: "/join", spec: 11, design: [D.pub4] },
     { id: "news", title: "News list", path: "/news", spec: 7, design: [D.articles, D.pub4] },
+    { id: "gallery", title: "Gallery", path: "/gallery", spec: 52, note: "No design board; follows News list + article photo grid." },
     { id: "privacy", title: "Privacy", path: "/privacy", spec: 17 },
     { id: "programs", title: "Programs list", path: "/programs", spec: 5, design: [D.pub4] },
   ];
@@ -171,6 +174,7 @@ function publicRaw(s: Samples): Raw[] {
   if (s.centreSlug) out.push({ id: "centre", title: `Centre (${s.centreSlug})`, path: `/centres/${s.centreSlug}`, spec: 14, design: [D.pub2] });
   if (s.articleSlug) out.push({ id: "article", title: "Article", path: `/news/${s.articleSlug}`, spec: 8, design: [D.article, D.pub4] });
   if (s.districtSlug) out.push({ id: "district", title: `District (${s.districtSlug})`, path: `/districts/${s.districtSlug}`, spec: 13, design: [D.pub2, D.pub4] });
+  if (s.galleryAlbumSlug) out.push({ id: "gallery-album", title: "Gallery album", path: `/gallery/${s.galleryAlbumSlug}`, spec: 52, note: "Lightbox: click a photo, check Esc, arrows, focus return, swipe at 375px." });
   for (const v of VALUES) out.push({ id: `value-${v}`, title: `Value: ${v}`, path: `/values/${v}`, spec: 2, design: [value(v)] });
   out.push(
     { id: "not-found", title: "404 page", path: "/this-page-does-not-exist", spec: 18, note: "Should show the localised not-found page with status 404." },
@@ -231,6 +235,10 @@ function portalRaw(s: Samples): PRaw[] {
     { id: "adm-partners", area: "Organisation", role: "state", title: "Partners", path: "/admin/partners", spec: 36, design: [D.b5b] },
     { id: "adm-people", area: "Organisation", role: "state", title: "People", path: "/admin/people", spec: 37, design: [D.b5b] },
     { id: "adm-content", area: "Publish", role: "editor", title: "Content", path: "/admin/content", spec: 38, design: [D.b5c] },
+    { id: "adm-gallery", area: "Publish", role: "editor", title: "Gallery review", path: "/admin/gallery", spec: 52 },
+    { id: "adm-gallery-albums", area: "Publish", role: "editor", title: "Gallery albums", path: "/admin/gallery?tab=albums", spec: 52 },
+    !!a.galleryAlbumId && { id: "adm-gallery-album", area: "Publish", role: "editor", title: "Gallery album", path: `/admin/gallery/albums/${a.galleryAlbumId}`, spec: 52 },
+    !!a.galleryPhotoId && { id: "adm-gallery-photo", area: "Publish", role: "editor", title: "Photo editor", path: `/admin/gallery/photos/${a.galleryPhotoId}`, spec: 52 },
     !!a.contentId && { id: "adm-content-item", area: "Publish", role: "editor", title: "Content editor", path: `/admin/content/${a.contentId}`, spec: 38, design: [D.b5c] },
     { id: "adm-thoughts", area: "Publish", role: "editor", title: "Thoughts for the day", path: "/admin/content/thoughts", spec: 38, design: [D.b5c] },
     { id: "adm-impact", area: "Publish", role: "state", title: "Impact controls", path: "/admin/impact", spec: 40, design: [D.b5c] },

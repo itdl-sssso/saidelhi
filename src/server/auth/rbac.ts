@@ -14,6 +14,7 @@ const COORD_COMMON: readonly Permission[] = [
   "centres.manage",
   "volunteers.read",
   "attachments.read",
+  "gallery.upload",
 ];
 
 export const ROLE_PERMISSIONS: Record<Role, readonly Permission[]> = {
@@ -32,9 +33,10 @@ export const ROLE_PERMISSIONS: Record<Role, readonly Permission[]> = {
     "forms.read",
     "partners.manage",
     "whatsapp.reminders",
+    "gallery.review",
   ],
   samithi_coord: COORD_COMMON,
-  content_editor: ["content.edit", "impact.manage", "partners.manage", "centres.manage", "discourses.edit", "discourses.review", "discourses.publish"],
+  content_editor: ["content.edit", "impact.manage", "partners.manage", "centres.manage", "discourses.edit", "discourses.review", "discourses.publish", "gallery.upload", "gallery.review"],
   translator: ["discourses.edit", "discourses.review"],
   pii_officer: ["followup.read", "followup.reveal", "privacy.manage", "audit.read"],
 };

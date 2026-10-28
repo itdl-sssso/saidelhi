@@ -43,6 +43,8 @@ export const endpoints = {
   program: (type: SevaType) => p(`/programs/${seg(type)}`),
   articles: (q?: { c?: ArticleCategoryFilter } & PageQuery) => withQuery(p("/articles"), q),
   article: (slug: string) => p(`/articles/${seg(slug)}`),
+  gallery: (q?: { year?: number; kind?: string } & PageQuery) => withQuery(p("/gallery"), q),
+  galleryAlbum: (slug: string) => p(`/gallery/${seg(slug)}`),
   events: (q?: EventsQueryParams) => withQuery(p("/events"), q),
   event: (id: string) => p(`/events/${seg(id)}`),
   join: (q?: { district?: string; sevaType?: SevaType; from?: string; to?: string } & PageQuery) => withQuery(p("/join"), q),
@@ -150,6 +152,14 @@ export const adminEndpoints = {
   centres: (q?: { q?: string; district?: string; active?: boolean } & PageQuery) => withQuery(p("/admin/centres"), q),
   centre: (id: string) => p(`/admin/centres/${seg(id)}`),
   centrePhotos: (id: string) => p(`/admin/centres/${seg(id)}/photos`),
+  // gallery (v0.9.5)
+  galleryPhotos: (q?: { status?: string; albumId?: string } & PageQuery) => withQuery(p("/admin/gallery/photos"), q),
+  galleryPhoto: (id: string) => p(`/admin/gallery/photos/${seg(id)}`),
+  galleryPhotoAction: (id: string, action: "approve" | "reject" | "edit") => p(`/admin/gallery/photos/${seg(id)}/${action}`),
+  galleryPhotoFile: (id: string, variant: "preview" | "original" = "preview") => withQuery(p(`/admin/gallery/photos/${seg(id)}/file`), { variant }),
+  galleryPhotosBulk: () => p("/admin/gallery/photos/bulk"),
+  galleryAlbums: (q?: { status?: string } & PageQuery) => withQuery(p("/admin/gallery/albums"), q),
+  galleryAlbum: (id: string) => p(`/admin/gallery/albums/${seg(id)}`),
   partners: (q?: { q?: string; kind?: string; city?: string; active?: boolean } & PageQuery) => withQuery(p("/admin/partners"), q),
   partner: (id: string) => p(`/admin/partners/${seg(id)}`),
   // content (38)

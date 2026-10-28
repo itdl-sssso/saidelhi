@@ -11,7 +11,7 @@ import { toEventRec } from "./event-row";
 import { partnerCols } from "./partner-cols";
 import { DbPortalRepo } from "./portal-db";
 import { DbWaRepo } from "./wa-db";
-import { postcontentContentpostimage as postImage, postcontentPostcontent as post } from "../db/legacy";
+import { postcontentContentpostimage as postImage, postcontentPostcontent as post, postcontentSliderimages as sliderImage } from "../db/legacy";
 import {
   articleI18n,
   auditLog,
@@ -315,6 +315,11 @@ export class DbRepo implements DataRepo {
       i18n: toI18n(i18n),
       gallery: images.filter((g) => g.postId === p.id).map(({ image, caption, order }) => ({ image, caption, order })),
     }));
+  }
+
+  async sliderImages() {
+    const rows = await this.db.select().from(sliderImage).orderBy(asc(sliderImage.order), asc(sliderImage.id));
+    return rows.map((r) => ({ id: r.id, image: r.slider, caption1: r.caption1, caption2: r.caption2, order: r.order }));
   }
 
   async listArticles(f: ArticleFilter) {

@@ -8,6 +8,7 @@ import { phoneHash, normalisePhone } from "../../security/phone";
 import { ensureConversation, recordMessage } from "../conversations";
 import { answerStep, approvalsStep, decide, showCard, startApprovals } from "./approvals";
 import { COPY, LABEL } from "./copy";
+import { galleryFlow, startGallery } from "./gallery";
 import { canApprove, isCoordinator, showMenu } from "./menu";
 import { words } from "./parse";
 import { planFlow } from "./plan";
@@ -34,6 +35,7 @@ const FLOWS: Record<string, Flow | undefined> = {
   join: joinFlow,
   approvals: { start: async (t) => startApprovals(t), step: approvalsStep },
   answer: { start: async () => undefined, step: answerStep },
+  gallery: galleryFlow,
 };
 
 const MENU_WORDS = new Set(["menu", "start", "hi", "hello", "hey", "namaste", "namaskar", "नमस्ते", "मेनू", "home", "back", "होम"]);
@@ -182,6 +184,8 @@ async function route(t: Turn, timedOut: boolean): Promise<void> {
     say(t, COPY.replyForwarded);
     return;
   }
+  // Photos: coordinators start the gallery flow (it can hand them on to the review inbox); others are told why not.
+  if (t.input.media?.kind === "image") return startGallery(t);
   const text = t.input.text?.trim() ?? "";
   if (isCoordinator(t) && (t.input.media || /\d/.test(text) || text.length > 40)) {
     await t.deps.ingest({ conversation: t.conv, actor: t.actor, text: t.input.text, media: t.input.media });

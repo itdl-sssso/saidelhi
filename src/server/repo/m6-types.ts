@@ -13,7 +13,7 @@ export type { DocTableName };
  * upload_row (batchId, rowKey) · article (slug, status) · followup_person (eventId, status) ·
  * followup_log (personId, -) · breach (status, -) · export_log (-, -) · migration_run (-, -) ·
  * kpi_definition (-, -) · ui_string (locale, -) · report_schedule (-, -) ·
- * monthly_report (month, scopeId) · retention_run (key, -) · user_pref (-, -).
+ * monthly_report (month, scopeId) · retention_run (key, -) · user_pref (-, -) · gallery_album (scopeId, status) · gallery_photo (albumId|"none", status).
  */
 export interface DocRec<T = unknown> {
   id: string;

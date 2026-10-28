@@ -69,3 +69,4 @@ export {
   ZoomOut,
 } from "lucide-react";
 export { Bold, Italic, ListOrdered, Link } from "lucide-react";
+export { Images, Star, RotateCcw, FlipHorizontal2, FlipVertical2, Crop, Undo2, Check, Maximize2 } from "lucide-react";

@@ -1,4 +1,4 @@
-import { articles, contentItems, settings } from "./content";
+import { articles, contentItems, settings, sliderImages } from "./content";
 import { estimates, events, kpiFacts, timeline } from "./events";
 import { centres, gatherings, orgUnits, partners, sevaTypes } from "./org";
 
@@ -21,6 +21,7 @@ export interface Fixtures {
   estimates: typeof estimates;
   articles: typeof articles;
   contentItems: typeof contentItems;
+  sliderImages: typeof sliderImages;
   settings: typeof settings;
 }
 
@@ -38,6 +39,7 @@ export function loadFixtures(): Fixtures {
     estimates,
     articles,
     contentItems,
+    sliderImages,
     settings,
   });
 }

@@ -199,6 +199,15 @@ export interface ArticleRec {
   gallery: { image: string; caption: string | null; order: number }[];
 }
 
+/** Legacy home slider image (public site asset; path relative to MEDIA_ROOT). */
+export interface SliderImageRec {
+  id: number;
+  image: string;
+  caption1: string | null;
+  caption2: string | null;
+  order: number;
+}
+
 export interface ContentItemRec {
   id: string;
   kind: ContentKind;
@@ -322,6 +331,8 @@ export interface DataRepo {
   articleNeighbours(article: ArticleRec): Promise<{ prev: ArticleRec | null; next: ArticleRec | null }>;
 
   contentItems(kind: ContentKind): Promise<ContentItemRec[]>;
+  /** Legacy home slider images, in display order (gallery "Highlights"). */
+  sliderImages(): Promise<SliderImageRec[]>;
 
   createPrivacyRequest(rec: PrivacyRequestRec, audit: AuditRec): Promise<void>;
 }

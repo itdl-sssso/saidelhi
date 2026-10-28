@@ -152,6 +152,10 @@ export class MockRepo implements DataRepo {
     return { prev: i >= 0 ? (list[i + 1] ?? null) : null, next: i > 0 ? list[i - 1] : null };
   }
 
+  async sliderImages() {
+    return [...this.fx.sliderImages].sort((a, b) => a.order - b.order || a.id - b.id);
+  }
+
   async contentItems(kind: ContentKind) {
     return this.fx.contentItems.filter((c) => c.kind === kind);
   }

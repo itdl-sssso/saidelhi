@@ -22,12 +22,12 @@ Main HEAD at handoff: see `git log -1` (after commit "docs: handoff"). All miles
 | Branch / worktree | State | Next |
 |---|---|---|
 | `worktree-agent-ae67270dd13934ac1` (`.claude/worktrees/agent-ae67270dd13934ac1`) — **/donate** | WIP `c9feaa2`: page, copy buttons, en/hi, OG, nav/footer, sitemap, routes.ts, review catalog, spec 51. **DoD not run.** No image (legacy image shows identifiable person). | Merge main, run `pnpm typecheck && pnpm lint && pnpm test && pnpm build`, screenshot 1280/375/hi, merge. ⚠ Footer says "Nothing is ever collected from the public" — contradicts Donate page; reword (e.g. "No fees for any programme"). |
-| `worktree-agent-a1640c5d1fadcd400` — **/gallery** (PARKED by user) | WIP `39681d4`: backend only (contract, service, repo, API). See `docs/progress/gallery.md` in that worktree for scope. | Resume later on user request. |
+| `worktree-agent-a1640c5d1fadcd400` — **/gallery** (spec 52, CONTRACT v0.9.5) | DONE 28 Oct 2026, squash-merged into main 28 Oct 2026 (not pushed until user says). Public `/gallery` + `/gallery/[slug]` (lightbox), portal `/admin/gallery` (review queue, albums, album page, photo editor), WhatsApp photo intake (bot `gallery` flow, coordinators only), migration 0010 (`gallery_album`, `gallery_photo` doc tables), perms `gallery.upload`/`gallery.review`. typecheck/lint/test green; browser-checked EN+/hi 1280+375. Logs: `docs/progress/gallery*.md`. | Merged; branch kept for reference. Open: no purge of rejected/orphaned originals; editor brightness/contrast preview approximates server render; HI strings (bot + `gallery.*`, `admin.gallery.*`) need native review; touch swipe not tested on a device. |
 
 ## Next steps (in order)
 1. Finish + merge /donate (above).
 2. **UI review round 1** with user via `/dev/review` (Home first — user reported design mismatches). Read `docs/feedback/round-1.md`, triage, fix in ≤2 parallel agents.
-3. Gallery when user un-parks.
+3. Gallery: review + approve merge of the gallery branch (see Open branches).
 4. Client inputs pending: Bhagawan photos (7), centre photos, seva photos, WhatsApp number + Meta creds, About text, Sadhana Trust permission, DPO name, samithi local names/addresses/pins.
 
 ## Process rules (user)

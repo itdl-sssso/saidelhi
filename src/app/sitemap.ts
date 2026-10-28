@@ -8,7 +8,7 @@ import { services } from "@/server/services";
 type Entry = MetadataRoute.Sitemap[number];
 
 /** Pages that exist once per site. Admin, form links, dev tools and the API are not listed. */
-const STATIC_PATHS = ["", "/calendar", "/impact", "/about", "/programs", "/news", "/join", "/centres/map", "/privacy"];
+const STATIC_PATHS = ["", "/calendar", "/impact", "/about", "/programs", "/news", "/gallery", "/join", "/centres/map", "/privacy"];
 
 /** All pages of a paged service call (100 per page, capped so a runaway table cannot hang the build). */
 async function all<T>(fetchPage: (page: number) => Promise<{ data: T[]; meta: { total: number } }>): Promise<T[]> {
@@ -24,7 +24,7 @@ async function all<T>(fetchPage: (page: number) => Promise<{ data: T[]; meta: { 
 async function build(): Promise<Entry[]> {
   "use cache";
   cacheLife("hours");
-  cacheTag("events", "articles", "centres");
+  cacheTag("events", "articles", "centres", "gallery");
 
   const base = env().APP_URL.replace(/\/$/, "");
   const svc = services();
@@ -35,12 +35,13 @@ async function build(): Promise<Entry[]> {
     alternates: { languages: { en: `${base}${path}`, hi: `${base}/hi${path}` } },
   });
 
-  const [articles, events, centres, districts, programs] = await Promise.all([
+  const [articles, events, centres, districts, programs, galleryAlbums] = await Promise.all([
     all((page) => svc.articles.list({ c: "all", page, pageSize: 100 })),
     all((page) => svc.events.list({ from: "2020-01-01", page, pageSize: 100 })),
     all((page) => svc.centres.list({ page, pageSize: 100 })),
     svc.districts.list(),
     svc.programs.list({}),
+    all((page) => svc.gallery.albums({ page, pageSize: 48 })),
   ]);
 
   return [
@@ -49,6 +50,7 @@ async function build(): Promise<Entry[]> {
     ...programs.map((p) => entry(p.href)),
     ...districts.map((d) => entry(`/districts/${d.district.slug}`)),
     ...centres.map((c) => entry(`/centres/${encodeURIComponent(c.slug)}`)),
+    ...galleryAlbums.map((a) => entry(`/gallery/${encodeURIComponent(a.slug)}`, a.date)),
     ...articles.map((a) => entry(`/news/${encodeURIComponent(a.slug)}`, a.publishedAt)),
     // Approved and planned events; weekly gathering rows and cancelled plans are not pages worth indexing.
     ...events.filter((e) => !e.recurring && e.status !== "cancelled").map((e) => entry(`/events/${e.id}`, e.approvedAt ?? e.startsAt)),

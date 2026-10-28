@@ -51,6 +51,11 @@ export function SiteFooter() {
                   </Link>
                 </li>
                 <li>
+                  <Link href="/gallery" className={styles.link}>
+                    {t("gallery")}
+                  </Link>
+                </li>
+                <li>
                   <Link href="/calendar" className={styles.link}>
                     {t("calendar")}
                   </Link>
