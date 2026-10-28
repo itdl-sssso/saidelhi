@@ -79,6 +79,19 @@ certbot edits the installed site file in place (443 + redirects) and renews via 
 sudo cp deploy/cron/saidelhi /etc/cron.d/saidelhi   # paths assume /opt/saidelhi
 ```
 
+## CI/CD
+
+`.github/workflows/ci-deploy.yml`: PRs into `main` run typecheck, lint and tests (MySQL in Docker, seeded). A push to
+`main` (merged PR) runs the same checks, then SSHes to the VM with a deploy-only key and runs `deploy.sh` for that SHA.
+
+- Repo secrets: `STAGING_HOST`, `STAGING_SSH_KEY` (private half), `STAGING_KNOWN_HOSTS` (`ssh-keyscan -t ed25519 <host>`).
+- On the VM the key is bound to a forced command (`deploy/ci-deploy.sh`, installed as
+  `/usr/local/bin/saidelhi-ci-deploy`): it accepts only a 40-char SHA that is on `origin/main`, skips it if `main`
+  has moved on, and serialises deploys with `flock`. Reinstall it after changing the script:
+  `sudo install -m 755 deploy/ci-deploy.sh /usr/local/bin/saidelhi-ci-deploy`.
+- Rotate: new keypair → replace the `saidelhi-ci` line in `~ubuntu/.ssh/authorized_keys` (keep the
+  `restrict,command=…` prefix) → update `STAGING_SSH_KEY`.
+
 ## Day to day
 
 | Task | Command |
