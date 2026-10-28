@@ -33,7 +33,7 @@ export function ArticleView({ article }: { article: ArticleDetail }) {
         crumbs={[
           { label: t("crumbHome"), href: "/" },
           { label: t("crumbNews"), href: "/news" },
-          { label: tc(article.category), href: `/news?c=${article.category === "news" || article.category === "activities" ? article.category : "all"}` },
+          { label: title.text },
         ]}
       >
         <div className={styles.head}>
@@ -48,8 +48,9 @@ export function ArticleView({ article }: { article: ArticleDetail }) {
             <time className={pub.cap} dateTime={article.publishedAt}>
               {formatDate(article.publishedAt, locale)}
             </time>
-            <span className={pub.cap}>
-              <Icon name="clock" size={16} /> {t("readingMinutes", { count: article.readingMinutes })}
+            <span className={cx(pub.cap, styles.readTime)}>
+              <Icon name="clock" size={16} />
+              {t("readingMinutes", { count: article.readingMinutes })}
             </span>
           </div>
           <h1 className={pub.h1} lang={title.fallback ? "en" : undefined}>

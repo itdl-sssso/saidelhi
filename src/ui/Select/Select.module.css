@@ -13,3 +13,30 @@
   color: var(--slate-500);
   display: inline-flex;
 }
+
+/* Rounded dropdown list (Chromium customizable select). Other browsers keep the native list. */
+@supports (appearance: base-select) {
+  .select,
+  .select::picker(select) {
+    appearance: base-select;
+  }
+  .select::picker-icon {
+    display: none;
+  }
+  .select::picker(select) {
+    border: 1px solid var(--slate-200, #e2e8f0);
+    border-radius: var(--radius-md);
+    padding: 6px;
+    margin-top: 4px;
+    background: var(--surface, #fff);
+    box-shadow: var(--shadow-md, 0 8px 24px rgb(0 0 0 / 0.12));
+  }
+  .select option {
+    border-radius: var(--radius-sm);
+    padding: 8px 10px;
+  }
+  .select option:hover,
+  .select option:checked {
+    background: var(--slate-100, #f1f5f9);
+  }
+}

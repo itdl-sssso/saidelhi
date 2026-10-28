@@ -21,7 +21,7 @@ export const VALUE_ORDER = ValueSlug.options;
  */
 export const VALUE_LINKS = {
   sathya: { sevaType: null, wing: null, sevaTypes: ["study_circle"], gathering: "study_circle" },
-  dharma: { sevaType: "bal_vikas", wing: "educational", sevaTypes: ["bal_vikas"], gathering: "bal_vikas" },
+  dharma: { sevaType: "medical", wing: "service", sevaTypes: ["medical"], gathering: null },
   shanti: { sevaType: "bhajan", wing: "spiritual", sevaTypes: ["bhajan", "study_circle"], gathering: "bhajan" },
   prema: { sevaType: "narayan_seva", wing: "service", sevaTypes: ["narayan_seva", "blood", "medical"], gathering: null },
   ahimsa: { sevaType: null, wing: null, sevaTypes: ["cleanliness"], gathering: null },

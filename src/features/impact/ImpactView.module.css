@@ -75,7 +75,7 @@
 /* Phone: the ranked list carries the data; the schematic map needs room to be legible. */
 div.mapCard { display: none; }
 @media (min-width: 900px) {
-  .mapLayout { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: var(--space-6); align-items: start; }
+  .mapLayout { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: var(--space-6); align-items: stretch; }
   div.mapCard { display: flex; }
 }
 .listTitle { font-weight: var(--weight-semibold); color: var(--slate-700); }
