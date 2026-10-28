@@ -63,8 +63,11 @@ jobs:
           docker run --rm -v "$PWD:/repo" -w /repo ghcr.io/gitleaks/gitleaks:v8.24.0 \
             git --no-banner --redact --verbose ${range:+--log-opts="$range"} /repo
 
+  # Disabled: dependency review needs the repo's dependency graph, which only an org admin can
+  # enable. Re-enable (delete the `if: false`) once it is on, and add it to the required checks.
   dependencies:
     name: Dependency audit
+    if: false
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
