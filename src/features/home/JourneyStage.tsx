@@ -8,6 +8,8 @@ import type { Starfield } from "./lotus/starfield";
 import { VALUE_KEYS } from "./values";
 import styles from "./LotusJourney.module.css";
 
+const VEIL_CAP_MS = 4000;
+
 const clamp = (v: number, a: number, b: number) => Math.min(b, Math.max(a, v));
 const smooth = (t: number) => t * t * (3 - 2 * t);
 
@@ -76,6 +78,9 @@ export function JourneyStage({ photos }: { photos: { key: string; src: string }[
       return;
     }
     root.dataset.mode = "enhanced";
+    // Never hold the page behind the loading veil: lift it after a few seconds even if the
+    // lotus is still loading (it fades in over the poster when ready).
+    const veilCap = window.setTimeout(() => (root.dataset.veil = "off"), VEIL_CAP_MS);
 
     let disposed = false;
     let stage: LotusStage | null = null;
@@ -208,11 +213,13 @@ export function JourneyStage({ photos }: { photos: { key: string; src: string }[
     return () => {
       disposed = true;
       cancelAnimationFrame(raf);
+      window.clearTimeout(veilCap);
       cleanups.forEach((c) => c());
       sky?.stop();
       stage?.dispose();
       delete root.dataset.mode;
       delete root.dataset.ready;
+      delete root.dataset.veil;
     };
   }, []);
 
