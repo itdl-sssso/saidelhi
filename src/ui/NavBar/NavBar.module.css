@@ -40,6 +40,18 @@
   :global(body:has([data-tone="dark"]:not([data-mode="static"]))) .bar .sep { background: rgba(255, 255, 255, 0.25); }
   :global(body:has([data-tone="dark"]:not([data-mode="static"]))) .bar .item:hover,
   :global(body:has([data-tone="dark"]:not([data-mode="static"]))) .bar .item[aria-expanded="true"] { background: rgba(253, 217, 226, 0.25); color: #fff; }
+  /* Language toggle follows the glass: translucent track, light labels, glass pill for the current one. */
+  :global(body:has([data-tone="dark"]:not([data-mode="static"]))) .barLang [role="group"] {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.22);
+  }
+  :global(body:has([data-tone="dark"]:not([data-mode="static"]))) .barLang a { color: rgba(234, 241, 248, 0.72); }
+  :global(body:has([data-tone="dark"]:not([data-mode="static"]))) .barLang a:hover { background: rgba(253, 217, 226, 0.25); color: #fff; }
+  :global(body:has([data-tone="dark"]:not([data-mode="static"]))) .barLang a[aria-current="true"] {
+    background: rgba(255, 255, 255, 0.92);
+    color: #14161c;
+    box-shadow: none;
+  }
 }
 
 .brand {
@@ -60,12 +72,11 @@
   display: grid;
   place-items: center;
   border-radius: 50%;
-  background: var(--white);
-  border: 1px solid var(--border-subtle);
+  background: transparent;
   overflow: hidden;
   transition: box-shadow var(--duration-base) var(--ease-serene);
 }
-.emblem img { width: 36px; height: 36px; object-fit: contain; }
+.emblem img { width: 42px; height: 42px; object-fit: contain; }
 .brand:hover .emblem { box-shadow: var(--shadow-glow-calm); }
 .wordmark { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; display: flex; flex-direction: column; line-height: 1.15; }
 .org { font-family: var(--font-serif-display); font-size: 17px; color: var(--text-heading); }
