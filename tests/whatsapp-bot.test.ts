@@ -362,6 +362,14 @@ describe("public flows", () => {
     expect(texts(await t.say(PUBLIC_PHONE, "zzzz"))).toBe(pick("en", COPY.nearUnknown));
   });
 
+  it("resolves a known NCR pincode no centre lists (122003) instead of 'couldn't match'", async () => {
+    const t = waSetup();
+    await t.tap(PUBLIC_PHONE, "lang:en");
+    await t.tap(PUBLIC_PHONE, "m:near");
+    const out = texts(await t.say(PUBLIC_PHONE, "122003"));
+    expect(out).not.toContain(pick("en", COPY.nearUnknown));
+  });
+
   it("joins updates in chat and records consent; shares a centre's number", async () => {
     const t = waSetup();
     await t.tap(PUBLIC_PHONE, "lang:en");

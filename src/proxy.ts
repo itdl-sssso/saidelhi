@@ -205,5 +205,6 @@ export default async function proxy(req: NextRequest) {
 }
 
 export const config = {
-  matcher: "/((?!api|media/|_next|_vercel|.*\\..*).*)",
+  // OG/Twitter image routes skip the proxy: /en/opengraph-image must answer 200, not redirect (crawlers do not follow).
+  matcher: "/((?!api|media/|_next|_vercel|.*\\..*|.*opengraph-image|.*twitter-image).*)",
 };

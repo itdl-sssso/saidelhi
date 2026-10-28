@@ -16,7 +16,7 @@ export default async function PublicLayout({ children }: LayoutProps<"/[locale]"
       <Suspense fallback={<SiteHeader pathless />}>
         <HeaderWithFlags />
       </Suspense>
-      <main id={MAIN_ID} tabIndex={-1} className="flex flex-1 flex-col focus-visible:shadow-none">
+      <main id={MAIN_ID} tabIndex={-1} className="flex flex-1 flex-col pt-[var(--header-h)] focus-visible:shadow-none">
         {children}
       </main>
       <SiteFooter />

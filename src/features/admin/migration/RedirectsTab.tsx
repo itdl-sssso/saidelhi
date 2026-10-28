@@ -57,17 +57,17 @@ export function RedirectsTab() {
   };
   return (
     <div className={styles.tblWrap}>
-      <div style={{ display: "flex", justifyContent: "flex-end", paddingBottom: "var(--space-3)" }}>
-        <Button icon="plus" onClick={() => open("new")}>
+      <div className={styles.tblBar}>
+        <FilterBar
+          fields={[
+            { kind: "search", key: "q", label: t("rdSearch") },
+            { kind: "select", key: "source", label: t("colSource"), options: RedirectSource.options.map((s) => ({ value: s, label: t(`rdSource.${s}`) })) },
+          ]}
+        />
+        <Button icon="plus" onClick={() => open("new")} className={styles.tblBarAct}>
           {t("rdAdd")}
         </Button>
       </div>
-      <FilterBar
-        fields={[
-          { kind: "search", key: "q", label: t("rdSearch") },
-          { kind: "select", key: "source", label: t("colSource"), options: RedirectSource.options.map((s) => ({ value: s, label: t(`rdSource.${s}`) })) },
-        ]}
-      />
       <Loadable api={api} rows={5}>
         {(rows, meta) =>
           rows.length === 0 ? (
@@ -106,7 +106,7 @@ export function RedirectsTab() {
                           <span className={styles.tblSub}>{formatDate(r.updatedAt, locale)}</span>
                         </td>
                         <td>{formatNumber(r.hits, locale)}</td>
-                        <td>
+                        <td style={{ textAlign: "right", whiteSpace: "nowrap" }}>
                           {r.source === "rule" ? (
                             <span className={styles.tblSub}>{t("ruleLocked")}</span>
                           ) : (

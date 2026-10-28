@@ -64,6 +64,16 @@ const registerPhoto = () =>
     ),
   });
 
+const eventPhotos = () =>
+  field("event_photos", "file", t("Photos of the event", "आयोजन की फ़ोटो"), {
+    photos: true,
+    max: 5,
+    help: t(
+      "Optional. Up to 5 photos, kept private for the district team. Location data is removed.",
+      "वैकल्पिक। अधिकतम 5 फ़ोटो, केवल ज़िला टीम के लिए निजी। स्थान की जानकारी हटा दी जाती है।",
+    ),
+  });
+
 const notesSection = () =>
   section("notes", t("Notes", "टिप्पणियाँ"), [
     field("notes", "text", t("Anything else the district should know", "कुछ और जो ज़िले को पता होना चाहिए"), { max: 2000 }),
@@ -146,7 +156,7 @@ export const eyeCampReport: FormDefinition = {
         checks: [err("lte", "cataract_surgeries", "cataract_referred", t("Can't be more than people referred.", "भेजे गए लोगों से अधिक नहीं हो सकते।"))],
       }),
     ]),
-    section("attach", t("Attach", "संलग्न करें"), [registerPhoto()]),
+    section("attach", t("Attach", "संलग्न करें"), [registerPhoto(), eventPhotos()]),
     section(
       "followup",
       t("Follow-up list", "फ़ॉलो-अप सूची"),

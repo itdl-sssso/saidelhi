@@ -10,7 +10,7 @@ export const CORE_FIELD_IDS = ["samithi", "date", "venue", "volunteers", "volunt
 export type CoreFieldId = (typeof CORE_FIELD_IDS)[number];
 
 /** Builder palette (spec 31 left panel). There is deliberately no ID-number type. */
-export const PALETTE_KINDS = ["number", "text", "date", "time", "select", "multiselect", "yesno", "repeater", "file", "heading", "help"] as const;
+export const PALETTE_KINDS = ["number", "text", "date", "time", "select", "multiselect", "yesno", "repeater", "photos", "file", "heading", "help"] as const;
 
 /** Default retention (days) for personal answers when a field sets none. */
 export const DEFAULT_PERSONAL_RETENTION_DAYS = 365;

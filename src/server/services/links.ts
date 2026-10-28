@@ -17,6 +17,7 @@ import {
   type OtpSent,
   type Submission,
   ATTACHMENT_LIMITS,
+  PHOTO_LIMITS,
   formLinkPath,
   issuesToFieldMap,
   kpiFactsFromAnswers,
@@ -27,6 +28,7 @@ import {
 import { newId } from "../db/columns";
 import { istDate, toIso } from "../domain/time";
 import { sniffMime } from "../files";
+import { normalizePhoto } from "../media/image";
 import { ApiError, notFound } from "../http/errors";
 import type { AttachmentRec, ConsentRec, LinkRec, LinkSessionRec, NewSubmissionWrite, SubmissionRec } from "../repo/links-types";
 import type { DataRepo, EventRec } from "../repo/types";
@@ -542,13 +544,23 @@ export function createLinksService(repo: DataRepo, deps: LinkServiceDeps): Links
         if (prior) return toDtoA(prior);
       }
       const def = await definitionOf(ctx.link);
-      if (!topLevelFields(def).some((f) => f.id === fieldId && f.kind === "file")) {
+      const fileField = topLevelFields(def).find((f) => f.id === fieldId && f.kind === "file");
+      if (!fileField) {
         throw new ApiError("VALIDATION_FAILED", { fields: { fieldId: loc(MSG.fileField, locale) } });
       }
+      const photos = fileField.photos === true;
       if (file.bytes.byteLength > ATTACHMENT_LIMITS.maxBytes) throw new ApiError("VALIDATION_FAILED", { fields: { file: loc(MSG.fileSize, locale) } });
-      const kind = sniffMime(file.bytes);
-      if (!kind || !(ATTACHMENT_LIMITS.mimes as readonly string[]).includes(kind.mime)) {
+      let kind = sniffMime(file.bytes);
+      const allowed: readonly string[] = photos ? PHOTO_LIMITS.mimes : ATTACHMENT_LIMITS.mimes;
+      if (!kind || !allowed.includes(kind.mime)) {
         throw new ApiError("VALIDATION_FAILED", { fields: { file: loc(MSG.fileType, locale) } });
+      }
+      if (photos) {
+        // Photos are re-encoded: EXIF/GPS never reach storage, and the size is capped even if the client skipped its resize.
+        const clean = await normalizePhoto(file.bytes, PHOTO_LIMITS.maxEdge);
+        if (!clean) throw new ApiError("VALIDATION_FAILED", { fields: { file: loc(MSG.fileType, locale) } });
+        file = { ...file, bytes: clean };
+        kind = { mime: "image/jpeg", ext: "jpg" };
       }
       const id = newId();
       const rel = `events/${ctx.ev.id}/${id}.${kind.ext}`;

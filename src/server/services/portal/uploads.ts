@@ -60,6 +60,8 @@ export interface UploadsService {
   errorsXlsx(actor: Actor, id: string): Promise<{ bytes: Uint8Array; filename: string }>;
   original(actor: Actor, id: string): Promise<{ bytes: Uint8Array; filename: string; mime: string }>;
   toInbox(actor: Actor, file: UploadFile, form: UploadToInboxForm): Promise<UploadToInboxResult>;
+  /** Removes a batch, its rows and the stored original. Loaded batches stay (they are the record of where reports came from): 422. */
+  remove(actor: Actor, id: string): Promise<void>;
 }
 
 interface BatchData {
@@ -665,6 +667,20 @@ export function createUploadsService(ctx: PortalCtx): UploadsService {
       headers.forEach((_, i) => (ws.getColumn(i + 1).width = 18));
       await repo.portal.insertAudit(auditRec(actor, { action: "upload.download_errors", entity: "upload_batch", entityId: id, scopeId: b.data.samithiId }));
       return { bytes: new Uint8Array(await wb.xlsx.writeBuffer()), filename: `${b.data.fileName.replace(/\.[^.]+$/, "")}-problems.xlsx` };
+    },
+
+    async remove(actor, id) {
+      assertCan(actor, "uploads.manage");
+      const b = await batchOr404(actor, id);
+      if (b.data.status === "loaded") {
+        const message = "This upload already created reports, so it stays as their record.";
+        throw new ApiError("VALIDATION_FAILED", { message, fields: { upload: message } });
+      }
+      for (const r of await repo.m6.docList("upload_row", { k1: id })) await repo.m6.docDelete("upload_row", r.id);
+      await repo.m6.docDelete("upload_batch", id, [
+        auditRec(actor, { action: "upload.delete", entity: "upload_batch", entityId: id, scopeId: b.data.samithiId ?? actor.scopeId, data: { fileName: b.data.fileName, status: b.data.status } }),
+      ]);
+      if (b.data.filePath) await deps.storage.delete?.(b.data.filePath).catch(() => false);
     },
 
     async original(actor, id) {

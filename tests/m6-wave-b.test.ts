@@ -153,7 +153,7 @@ describe("content", () => {
     if (th.kind !== "item") throw new Error("item");
     expect(th.status).toBe("draft");
     expect(await errCode(t.svc.portal.content.create(ed, ({ kind: "item", type: "thought_for_day", date: "2026-10-30", body: { en: "Again", hi: null } }) as never))).toBe("VALIDATION_FAILED");
-    expect(await errCode(t.svc.portal.content.create(ed, ({ kind: "item", type: "thought_for_day", body: { en: "No day", hi: null } }) as never))).toBe("VALIDATION_FAILED");
+    expect(await errCode(t.svc.portal.content.create(ed, ({ kind: "item", type: "thought_for_day", body: { en: "No day", hi: null } }) as never))).toBe("ok"); // v0.10: no day = a pool thought
     await t.svc.portal.content.patch(ed, th.id, { status: "published", version: th.version });
 
     const csv = "date,text_en,text_hi,source_en,source_hi\n2026-10-30,Updated,,Baba,\n2026-10-31,\"Love, always\",प्रेम,,\nnot-a-date,x,,,\n2026-11-02,,,,\n";

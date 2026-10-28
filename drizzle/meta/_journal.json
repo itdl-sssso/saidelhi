@@ -78,6 +78,13 @@
       "when": 1793130957742,
       "tag": "0010_gallery",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "5",
+      "when": 1793183601411,
+      "tag": "0011_content_type",
+      "breakpoints": true
     }
   ]
 }

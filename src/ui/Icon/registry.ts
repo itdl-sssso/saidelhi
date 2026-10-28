@@ -1,4 +1,5 @@
 import {
+  Mail,
   ArrowDown,
   Headphones,
   Play,
@@ -165,6 +166,7 @@ export const icons = {
   house: House,
   image: Image,
   headphones: Headphones,
+  mail: Mail,
   play: Play,
   video: Video,
   inbox: Inbox,

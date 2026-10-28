@@ -8,6 +8,7 @@ import { formatBytes } from "@/ui/FileUpload";
 import { ATTACHMENT_LIMITS } from "@/contract";
 import type { AppLocale } from "@/lib/format";
 import type { LinkApi } from "../api";
+import { shrinkPhoto } from "../photo";
 import { LOCAL_FILE_PREFIX, isLocalFileId } from "../model";
 import { type Draft, type FormStore, type StoredFile, newKey } from "../store";
 import type { FileHandlers } from "./FieldRenderer";
@@ -111,7 +112,7 @@ export function useUploads(args: {
         }));
         return [...done, ...up];
       },
-      add: (fieldId, files, max) => {
+      add: (fieldId, files, max, photos) => {
         setNote(fieldId, null);
         const have = (Array.isArray(answersRef.current[fieldId]) ? (answersRef.current[fieldId] as unknown[]).length : 0) + (pending[fieldId]?.length ?? 0);
         const room = max === null ? files.length : Math.max(0, max - have);
@@ -119,7 +120,11 @@ export function useUploads(args: {
           const key = `up-${newKey()}`;
           blobs.current.set(key, file);
           setPending((p) => ({ ...p, [fieldId]: [...(p[fieldId] ?? []), { key, name: file.name, size: file.size, mime: file.type, progress: 0 }] }));
-          void upload(fieldId, file, key, newKey());
+          void (photos ? shrinkPhoto(file) : Promise.resolve(file)).then((f) => {
+            blobs.current.set(key, f);
+            patchPending(fieldId, key, { name: f.name, size: f.size, mime: f.type });
+            return upload(fieldId, f, key, newKey());
+          });
         }
       },
       reject: (fieldId, _file, problem) =>

@@ -4,6 +4,7 @@ import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/lib/format";
 import { Pagination } from "@/ui/Pagination";
 import { PageHead } from "../kit";
+import { ScrollTabs } from "../ScrollTabs";
 import { hrefWith, type Params } from "../url";
 import { ApprovalCards } from "./ApprovalCards";
 import styles from "../Admin.module.css";
@@ -39,14 +40,14 @@ export async function ApprovalsPage({
     <div className={styles.page}>
       <PageHead title={t("title")} sub={t("sub")} />
       <div className={styles.row} style={{ justifyContent: "space-between" }}>
-        <div className={styles.tabs} role="navigation" aria-label={t("tabsLabel")}>
+        <ScrollTabs label={t("tabsLabel")}>
           {tabs.map((id) => (
             <Link key={id} href={hrefWith("/admin/approvals", sp, { tab: id === "plans" ? null : id })} className={styles.tab} aria-current={tab === id ? "page" : undefined}>
               {t(`tab.${id}`)}
               <span className={id === "escalated" && counts[id] > 0 ? styles.tabCountHot : styles.tabCount}>{counts[id]}</span>
             </Link>
           ))}
-        </div>
+        </ScrollTabs>
         <span className={styles.cap}>{t("oldestFirst")}</span>
       </div>
       <ApprovalCards cards={cards} nowIso={nowIso} canDecide={canDecide} tab={tab} />

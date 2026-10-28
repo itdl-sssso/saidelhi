@@ -76,8 +76,13 @@
 
 /* Actions and history */
 .actbar { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 16px; align-items: center; }
-.actbar > button, .actbar > a { flex: 1 1 auto; }
-@media (min-width: 640px) { .actbar > button, .actbar > a { flex: none; } }
+.actbar > button, .actbar > a, .actbar > .why { flex: 1 1 auto; }
+.why > span:first-child { flex: 1; }
+.why button { width: 100%; }
+@media (min-width: 640px) { .actbar > button, .actbar > a, .actbar > .why { flex: none; } .why > span:first-child { flex: none; } .why button { width: auto; } }
+/* Touch screens have no hover: show the reason as plain text. */
+.touchHint { display: none; }
+@media (hover: none) { .touchHint { display: block; } }
 .hint { margin: 0; padding: 0 16px 8px; font-size: var(--text-small); color: var(--slate-600); }
 .footNote { display: flex; gap: 8px; align-items: flex-start; margin: 0; padding: 12px 16px; border-top: 1px solid var(--border-subtle); background: var(--sand); border-radius: 0 0 var(--radius-lg) var(--radius-lg); font-size: var(--text-small); color: var(--slate-700); line-height: 1.5; }
 .history { list-style: none; margin: 0; padding: 4px 16px; }

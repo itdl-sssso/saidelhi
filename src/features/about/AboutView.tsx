@@ -163,9 +163,6 @@ export function AboutView({ districts }: { districts: DistrictSummary[] }) {
               <h2 className={pub.h3}>{t("contactTitle")}</h2>
               <p className={pub.small}>{t("contactBody")}</p>
             </div>
-            <Button href="/centres/map" variant="outline" icon="map-pin">
-              {t("contactCta")}
-            </Button>
           </div>
         </div>
       </section>

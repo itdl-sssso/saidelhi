@@ -3,13 +3,14 @@
 import { useLocale, useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import { useRef, useState } from "react";
-import { type ContentItemEditor, type ThoughtDay, type ThoughtsImportResult, adminEndpoints } from "@/contract";
+import { type ContentItemEditor, type Media, type ThoughtDay, type ThoughtsImportResult, UPLOAD_LIMITS, adminEndpoints } from "@/contract";
 import { Link } from "@/i18n/navigation";
 import { type AppLocale, formatIsoDate, tx } from "@/lib/format";
 import { Alert } from "@/ui/Alert";
 import { Button } from "@/ui/Button";
 import { cx } from "@/ui/cx";
 import { Dialog } from "@/ui/Dialog";
+import { Input } from "@/ui/Input";
 import { I18nFields, type I18nValue, emptyI18n, toI18n } from "../fields";
 import { PageHead } from "../kit";
 import { useAction } from "../useAction";
@@ -18,6 +19,10 @@ import { useUpload } from "../useUpload";
 import { Loadable, Note } from "../parts";
 import styles from "../Admin.module.css";
 import c from "./Content.module.css";
+
+/** A calendar day, or a pool thought (date null). */
+type Editing = { date: string | null; item: ContentItemEditor | null };
+type Pic = { url: string; alt: string } | null;
 
 const DAYS = 14;
 const iso = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
@@ -38,15 +43,23 @@ export function ThoughtsPage() {
   const api = useApi<ThoughtDay[]>(adminEndpoints.thoughts({ from, to }));
   const { run, pending } = useAction();
   const { upload, pending: importing } = useUpload();
-  const [edit, setEdit] = useState<ThoughtDay | null>(null);
+  const pool = useApi<ContentItemEditor[]>(adminEndpoints.thoughtsPool());
+  const [edit, setEdit] = useState<Editing | null>(null);
+  const [pic, setPic] = useState<Pic>(null);
+  const picFile = useRef<HTMLInputElement>(null);
   const [text, setText] = useState<I18nValue>(emptyI18n());
   const [source, setSource] = useState<I18nValue>(emptyI18n());
   const [err, setErr] = useState<string | null>(null);
   const [result, setResult] = useState<ThoughtsImportResult | null>(null);
   const file = useRef<HTMLInputElement>(null);
 
-  const open = (d: ThoughtDay) => {
+  const reloadAll = () => {
+    api.reload();
+    pool.reload();
+  };
+  const open = (d: Editing) => {
     setErr(null);
+    setPic(d.item?.image ? { url: d.item.image.url, alt: d.item.image.alt.en } : null);
     setText(d.item ? toI18n(d.item.body) : emptyI18n());
     setSource(d.item ? toI18n(d.item.source) : emptyI18n());
     setEdit(d);
@@ -57,23 +70,34 @@ export function ThoughtsPage() {
     const body = { en: text.en.trim(), hi: text.hi?.trim() || null };
     const src = source.en.trim() ? { en: source.en.trim(), hi: source.hi?.trim() || null } : null;
     let item = edit.item;
+    const image = pic ? { url: pic.url, alt: { en: pic.alt, hi: null } } : null;
     if (!item) {
-      const made = await run<ContentItemEditor>(adminEndpoints.content(), { body: { kind: "item", type: "thought_for_day", date: edit.date, body, source: src } }, { key: "save", quiet422: true, refresh: false });
+      const made = await run<ContentItemEditor>(adminEndpoints.content(), { body: { kind: "item", type: "thought_for_day", date: edit.date, body, source: src, image } }, { key: "save", quiet422: true, refresh: false });
       if (!made.ok) return made.status === 422 ? setErr(made.error.message) : undefined;
       item = made.data;
     }
-    const res = await run(adminEndpoints.contentItem(item.id), { method: "PATCH", body: { body, source: src, date: edit.date, status: "published", version: item.version } }, { key: "save", success: t("saved"), quiet422: true, onReload: api.reload });
+    const res = await run(adminEndpoints.contentItem(item.id), { method: "PATCH", body: { body, source: src, image, ...(edit.date ? { date: edit.date } : {}), status: "published", version: item.version } }, { key: "save", success: t("saved"), quiet422: true, onReload: reloadAll });
     if (res.ok) {
       setEdit(null);
-      api.reload();
+      reloadAll();
     } else if (res.status === 422) setErr(res.error.message);
+  };
+  const pickPic = async (f: File | undefined) => {
+    if (!f) return;
+    if (!(UPLOAD_LIMITS.photoMimes as readonly string[]).includes(f.type) || f.size > UPLOAD_LIMITS.photoBytes) return setErr(t("errImageFile"));
+    const fd = new FormData();
+    fd.append("file", f);
+    fd.append("alt", "");
+    const res = await upload<Media>(adminEndpoints.contentMedia(), fd, "pic");
+    if (picFile.current) picFile.current.value = "";
+    if (res.ok) setPic({ url: res.data.url, alt: pic?.alt ?? "" });
   };
   const remove = async () => {
     if (!edit?.item) return;
-    const res = await run(adminEndpoints.contentItem(edit.item.id), { method: "DELETE" }, { key: "del", success: t("deleted"), onReload: api.reload });
+    const res = await run(adminEndpoints.contentItem(edit.item.id), { method: "DELETE" }, { key: "del", success: t("deleted"), onReload: reloadAll });
     if (res.ok) {
       setEdit(null);
-      api.reload();
+      reloadAll();
     }
   };
   const onImport = async (f: File | undefined) => {
@@ -160,11 +184,35 @@ export function ThoughtsPage() {
           </ul>
         )}
       </Loadable>
+      <section className={c.typeAdd} aria-label={t("poolTitle")}>
+        <h2 className={c.typeH}>{t("poolTitle")}</h2>
+        <p className={styles.cap}>{t("poolSub")}</p>
+        <Loadable api={pool} rows={2}>
+          {(items) => (
+            <ul className={c.typeList}>
+              {items.map((it) => (
+                <li key={it.id}>
+                  <button type="button" className={c.day} style={{ width: "100%" }} onClick={() => open({ date: null, item: it })}>
+                    <span className={c.dayText}>{tx(it.body ?? { en: "", hi: null }, locale)}</span>
+                    {it.image ? <span className={styles.cap}>{t("poolHasPicture")}</span> : null}
+                  </button>
+                </li>
+              ))}
+              {items.length === 0 ? <li className={styles.cap}>{t("poolEmpty")}</li> : null}
+            </ul>
+          )}
+        </Loadable>
+        <div>
+          <Button variant="secondary" icon="plus" onClick={() => open({ date: null, item: null })}>
+            {t("poolAdd")}
+          </Button>
+        </div>
+      </section>
       <Note icon="info">{t("csvNote")}</Note>
       <Dialog
         open={edit !== null}
         onClose={() => setEdit(null)}
-        title={edit ? t("dayTitle", { date: formatIsoDate(edit.date, locale) }) : ""}
+        title={edit ? (edit.date ? t("dayTitle", { date: formatIsoDate(edit.date, locale) }) : t("poolThoughtTitle")) : ""}
         width={560}
         footer={
           <div className={styles.dialogFoot}>
@@ -186,6 +234,27 @@ export function ThoughtsPage() {
           {err ? <Alert tone="error">{err}</Alert> : null}
           <I18nFields label={t("fThought")} value={text} onChange={setText} multiline rows={4} maxLength={600} />
           <I18nFields label={t("fSource")} value={source} onChange={setSource} requiredEn={false} maxLength={200} />
+          <div className={c.stack}>
+            <span className={styles.cap}>{t("fPicture")}</span>
+            {pic ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={pic.url} alt="" style={{ maxWidth: 200, borderRadius: 8 }} />
+            ) : (
+              <span className={styles.cap}>{t("pictureDefault")}</span>
+            )}
+            {pic ? <Input label={t("fPictureAlt")} value={pic.alt} maxLength={200} onChange={(e) => setPic({ ...pic, alt: e.target.value })} /> : null}
+            <input ref={picFile} type="file" accept={UPLOAD_LIMITS.photoMimes.join(",")} hidden tabIndex={-1} onChange={(e) => pickPic(e.target.files?.[0])} />
+            <div className={c.typeActions}>
+              <Button variant="secondary" icon="upload" pending={importing === "pic"} onClick={() => picFile.current?.click()}>
+                {pic ? t("pictureChange") : t("pictureAdd")}
+              </Button>
+              {pic ? (
+                <Button variant="ghost" onClick={() => setPic(null)}>
+                  {t("pictureRemove")}
+                </Button>
+              ) : null}
+            </div>
+          </div>
         </div>
       </Dialog>
     </div>
