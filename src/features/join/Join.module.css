@@ -46,3 +46,8 @@
 .lang button { min-height: 38px; min-width: 64px; padding: 0 14px; border: 0; border-radius: var(--radius-pill); background: transparent; font: inherit; font-size: var(--text-small); color: var(--slate-700); cursor: pointer; }
 .lang button[aria-pressed="true"] { background: var(--white); color: var(--slate-900); box-shadow: var(--shadow-sm); font-weight: var(--weight-medium); }
 .lang button:focus-visible { outline: none; box-shadow: var(--ring-focus); }
+
+.heroGrid { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-6); align-items: center; }
+@media (min-width: 900px) { .heroGrid { grid-template-columns: minmax(0, 1fr) 360px; gap: var(--space-12); } }
+.heroImg { position: relative; aspect-ratio: 4 / 3; border-radius: var(--radius-xl); overflow: hidden; background: var(--sand); box-shadow: var(--shadow-md); }
+.heroImg img { object-fit: cover; }

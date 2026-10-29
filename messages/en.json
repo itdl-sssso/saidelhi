@@ -259,26 +259,26 @@
     "storiesEmptyTitle": "Stories are on their way",
     "storiesEmpty": "Sevadals are writing up recent seva from the districts. Their stories will appear here soon.",
     "readStory": "Read story",
-    "centenaryImageSlot": "Centenary image to come",
     "answersEyebrow": "Sri Sathya Sai Answers",
     "answersTitle": "Questions answered from his discourses",
     "answersBody": "Throughout his life, Bhagawan gave nearly 5,000 discourses. This channel draws on them to answer the questions people ask most, about duty, devotion, suffering and peace.",
     "answersYoutube": "View more on YouTube",
     "answersDiscourses": "Read the discourses",
     "answersWatch": "Watch Sri Sathya Sai Answers on YouTube",
-    "answersPoster": "Video poster to come",
     "audEyebrow": "Auditorium reservation",
     "audTitle": "Sri Sathya Sai International Centre",
-    "audBody": "A domed landmark on Lodhi Road with a meditation hall, conference rooms and a 520-seat auditorium, available for cultural and educational programmes.",
+    "audBody": "A domed landmark on Bhisham Pitamah Marg in Pragati Vihar, New Delhi, with a meditation hall, conference rooms and a 520-seat auditorium, available for cultural and educational programmes.",
     "audSeats": "seats in all",
     "audLower": "lower level",
     "audUpper": "upper level",
     "audHours": "All days, 10:00 AM to 6:00 PM",
     "audKnow": "Know more",
-    "audImageSlot": "Photograph of the International Centre to come",
     "waLang": "Message language",
     "waSubmit": "Send me updates",
-    "waPrivacyShort": "How we look after your number:"
+    "waPrivacyShort": "How we look after your number:",
+    "centenaryImageAlt": "Centenary artwork: Bhagawan Sri Sathya Sai Baba among yellow flowers, with the words 100 glorious years of pure love",
+    "answersPosterAlt": "Thumbnail of a Sri Sathya Sai Answers video: Bhagawan speaking at a microphone, with the question Rights or Responsibilities",
+    "audImageAlt": "The Sri Sathya Sai International Centre, lit up at dusk"
   },
   "events": {
     "volunteersNeeded": "Sevadal needed: {count}"
@@ -3507,7 +3507,6 @@
     "englishOnly": "This page is available in English only.",
     "schedEmpty": "No gatherings are scheduled yet. Check the calendar soon.",
     "everyWeek": "every week",
-    "portraitAlt": "Bhagawan Sri Sathya Sai Baba, hands raised in blessing",
     "attribution": "Bhagawan Sri Sathya Sai Baba",
     "sathya": {
       "introTitle": "One person, all the way through",
@@ -3538,7 +3537,8 @@
       "t2a": "Bhagawan Sri Sathya Sai Baba",
       "t3q": "Sathyam vada, dharmam chara: speak the truth, walk in right conduct.",
       "t3l": "Taittiriya Upanishad",
-      "t3a": "Taittiriya Upanishad"
+      "t3a": "Taittiriya Upanishad",
+      "portraitAlt": "Bhagawan Sri Sathya Sai Baba smiling, both palms raised in blessing"
     },
     "dharma": {
       "introTitle": "The duty in front of us",
@@ -3569,7 +3569,8 @@
       "t2a": "Bhagawan Sri Sathya Sai Baba",
       "t3q": "Dharmo rakshati rakshitah: dharma protects those who protect it.",
       "t3l": "Manusmriti",
-      "t3a": "Manusmriti"
+      "t3a": "Manusmriti",
+      "portraitAlt": "Bhagawan Sri Sathya Sai Baba bending to serve food from a pail to people seated on the ground"
     },
     "shanti": {
       "introTitle": "A calm we carry with us",
@@ -3600,7 +3601,8 @@
       "t2a": "Bhagawan Sri Sathya Sai Baba",
       "t3q": "Om shanti, shanti, shantih: peace within, peace around, peace everywhere.",
       "t3l": "Vedic invocation",
-      "t3a": "Vedic invocation"
+      "t3a": "Vedic invocation",
+      "portraitAlt": "Bhagawan Sri Sathya Sai Baba resting his cheek on his hand, eyes calm"
     },
     "prema": {
       "introTitle": "Love that has hands",
@@ -3631,7 +3633,8 @@
       "t2a": "Bhagawan Sri Sathya Sai Baba",
       "t3q": "There is only one religion, the religion of love.",
       "t3l": "On unity",
-      "t3a": "Bhagawan Sri Sathya Sai Baba"
+      "t3a": "Bhagawan Sri Sathya Sai Baba",
+      "portraitAlt": "Bhagawan Sri Sathya Sai Baba bending toward children seated on the ground, a paper in his hand"
     },
     "ahimsa": {
       "introTitle": "Gentleness toward all that lives",
@@ -3662,7 +3665,8 @@
       "t2a": "Bhagawan Sri Sathya Sai Baba",
       "t3q": "Ahimsa paramo dharmah: non-violence is the highest duty.",
       "t3l": "Mahabharata",
-      "t3a": "Mahabharata"
+      "t3a": "Mahabharata",
+      "portraitAlt": "Bhagawan Sri Sathya Sai Baba standing beside a calf, one hand resting on its back"
     }
   },
   "about": {
@@ -3679,7 +3683,7 @@
     "founderP1": "Bhagawan taught that service to people is service to God, and that all faiths lead to the same truth. He asked that nothing be collected from those we serve.",
     "founderP2": "The organisation he founded now works in more than 100 countries. In Delhi NCR, it began with a handful of bhajan groups in the 1960s.",
     "founderQuote": "Love all, serve all. Help ever, hurt never.",
-    "founderPhotoAlt": "Bhagawan Sri Sathya Sai Baba",
+    "founderPhotoAlt": "Bhagawan Sri Sathya Sai Baba smiling, seated in front of microphones",
     "wingsTitle": "Five wings, one organisation",
     "wingsSub": "Every activity sits in one wing. Open one to see its programmes.",
     "wingProgrammes": "Programmes",
@@ -3715,7 +3719,14 @@
     "findButton": "Find",
     "contactTitle": "Contact",
     "contactBody": "For questions about seva or classes, call or message the centre nearest to you. Each centre page lists its number.",
-    "contactCta": "Find your centre"
+    "contactCta": "Find your centre",
+    "contactOfficeTitle": "State office",
+    "contactOfficeName": "Sri Sathya Sai Seva Organisations Delhi-NCR",
+    "contactOfficeAddress": "Pragati Vihar, Bhisham Pitamah Marg, New Delhi 110003",
+    "contactAudTitle": "Auditorium booking",
+    "contactAudBody": "Sri Sathya Sai International Centre. Open all days, 10:00 AM to 6:00 PM.",
+    "centreImageAlt": "The Sri Sathya Sai International Centre building",
+    "audImageAlt": "The auditorium hall, with rows of red seats facing the stage"
   },
   "join": {
     "metaTitle": "Get involved",
@@ -3768,7 +3779,8 @@
     "expect2": "Wear comfortable clothes. Bring water.",
     "expect3": "You’ll work with others; no experience needed.",
     "expect4": "Nothing to pay, nothing to buy.",
-    "privacyLink": "How we use your information"
+    "privacyLink": "How we use your information",
+    "heroAlt": "Sevadal volunteers in white uniforms and blue scarves at a tree-planting site in Noida"
   },
   "discourses": {
     "metaTitle": "Words for young people",
