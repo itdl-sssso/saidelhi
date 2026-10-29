@@ -61,15 +61,23 @@ function roleForTitle(title: string): { role: Role | null; unit: string } {
   return { role: null, unit: "delhi-ncr" };
 }
 
+/** Drops everything between `<` and `>` (inclusive), char by char, so no partial tag survives. */
+function textOnly(s: string): string {
+  let out = "";
+  let inTag = false;
+  for (const ch of s) {
+    if (ch === "<") inTag = true;
+    else if (ch === ">") inTag = false;
+    else if (!inTag) out += ch;
+  }
+  return out;
+}
+
 /** KML description → contacts as [{name, label, phone}]; entries are "<name> (<label>)<br>Mob-<digits>". */
 function contacts(desc: string): { name: string; label: string; phone: string | null }[] {
   const lines = desc
-    .replace(/<br\s*\/?>/gi, "\n")
-    .replace(/<[^>]+>/g, "")
-    .replace(/[<>]/g, "")
-    .replace(/&nbsp;/g, " ")
-    .split("\n")
-    .map((l) => l.trim())
+    .split(/<br\s*\/?>|\n/i)
+    .map((l) => textOnly(l).replace(/&nbsp;/g, " ").trim())
     .filter(Boolean);
   const out: { name: string; label: string; phone: string | null }[] = [];
   let cur: { name: string; label: string; phone: string | null } | null = null;
