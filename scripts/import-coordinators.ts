@@ -66,6 +66,7 @@ function contacts(desc: string): { name: string; label: string; phone: string | 
   const lines = desc
     .replace(/<br\s*\/?>/gi, "\n")
     .replace(/<[^>]+>/g, "")
+    .replace(/[<>]/g, "")
     .replace(/&nbsp;/g, " ")
     .split("\n")
     .map((l) => l.trim())

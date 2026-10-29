@@ -40,7 +40,7 @@ export function resolveKml(arg?: string): string {
   throw new Error(`KML not found. Tried: ${cands.join(", ")}`);
 }
 
-const unCdata = (s: string) => s.replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1").replace(/&amp;/g, "&").replace(/&#39;/g, "'").trim();
+const unCdata = (s: string) => s.replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1").replace(/&#39;/g, "'").replace(/&amp;/g, "&").trim();
 
 export function parseKml(xml: string): KmlPin[] {
   const out: KmlPin[] = [];
