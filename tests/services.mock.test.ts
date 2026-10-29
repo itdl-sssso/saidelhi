@@ -170,7 +170,7 @@ describe("home, centres, districts (mock)", () => {
   it("centres list/search and detail", async () => {
     const { svc } = mockServices();
     const all = Paged(CentreListItem).parse(await svc.centres.list({ page: 1, pageSize: 100 }));
-    expect(all.meta.total).toBe(30); // 11 dev centres + 19 real samithis with address and coordinates
+    expect(all.meta.total).toBe(62); // 11 dev centres + 42 real samithi pins (dev-hung samithis skipped) + 9 map buildings
     const hit = await svc.centres.list({ page: 1, pageSize: 100, q: "MAYUR" });
     expect(hit.data.map((c) => c.slug)).toEqual(["mayur-vihar"]);
     expect((await svc.centres.list({ page: 1, pageSize: 100, q: "110091" })).data).toHaveLength(1);

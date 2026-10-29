@@ -14,7 +14,9 @@
      "code": "S-CEN1",
      "num": 1,
      "kind": "samithi",
-     "sourceId": "5300"
+     "sourceId": "5300",
+     "lat": 28.572135,
+     "lng": 77.213929
     },
     {
      "name": "Central 2",
@@ -23,7 +25,9 @@
      "code": "S-CEN2",
      "num": 2,
      "kind": "samithi",
-     "sourceId": "3804"
+     "sourceId": "3804",
+     "lat": 28.564903,
+     "lng": 77.240332
     },
     {
      "name": "Central 3",
@@ -32,7 +36,9 @@
      "code": "S-CEN3",
      "num": 3,
      "kind": "samithi",
-     "sourceId": "4964"
+     "sourceId": "4964",
+     "lat": 28.574032,
+     "lng": 77.199067
     },
     {
      "name": "Central 4",
@@ -41,7 +47,9 @@
      "code": "S-CEN4",
      "num": 4,
      "kind": "samithi",
-     "sourceId": "5531"
+     "sourceId": "5531",
+     "lat": 28.645507,
+     "lng": 77.228244
     },
     {
      "name": "Central 5",
@@ -50,7 +58,9 @@
      "code": "S-CEN5",
      "num": 5,
      "kind": "samithi",
-     "sourceId": "3661"
+     "sourceId": "3661",
+     "lat": 28.645605,
+     "lng": 77.212778
     },
     {
      "name": "Central 6",
@@ -65,6 +75,17 @@
      "pincode": "110060",
      "lat": 28.634855,
      "lng": 77.179073
+    }
+   ],
+   "centres": [
+    {
+     "slug": "sai-international-centre",
+     "name": "Sri Sathya Sai International Centre",
+     "address": "Bhisham Pitamah Marg, Pragati Vihar, New Delhi 110003",
+     "pincode": "110003",
+     "lat": 28.587865,
+     "lng": 77.231131,
+     "samithi": "central-1"
     }
    ]
   },
@@ -109,7 +130,9 @@
      "code": "S-EAS3",
      "num": 3,
      "kind": "samithi",
-     "sourceId": "3656"
+     "sourceId": "3656",
+     "lat": 28.612392,
+     "lng": 77.283974
     },
     {
      "name": "East 4",
@@ -118,7 +141,9 @@
      "code": "S-EAS4",
      "num": 4,
      "kind": "samithi",
-     "sourceId": "3623"
+     "sourceId": "3623",
+     "lat": 28.654882,
+     "lng": 77.305698
     },
     {
      "name": "East 5",
@@ -127,7 +152,9 @@
      "code": "S-EAS5",
      "num": 5,
      "kind": "samithi",
-     "sourceId": "3898"
+     "sourceId": "3898",
+     "lat": 28.639425,
+     "lng": 77.310904
     }
    ]
   },
@@ -158,7 +185,9 @@
      "code": "S-NOR2",
      "num": 2,
      "kind": "samithi",
-     "sourceId": "3599"
+     "sourceId": "3599",
+     "lat": 28.690979,
+     "lng": 77.176524
     },
     {
      "name": "North 3",
@@ -167,7 +196,9 @@
      "code": "S-NOR3",
      "num": 3,
      "kind": "samithi",
-     "sourceId": "3999"
+     "sourceId": "3999",
+     "lat": 28.69897,
+     "lng": 77.138723
     },
     {
      "name": "North 4",
@@ -190,7 +221,9 @@
      "code": "S-NOR5",
      "num": 5,
      "kind": "samithi",
-     "sourceId": "3866"
+     "sourceId": "3866",
+     "lat": 28.669126,
+     "lng": 77.092866
     }
    ]
   },
@@ -221,7 +254,9 @@
      "code": "S-SEA2",
      "num": 2,
      "kind": "samithi",
-     "sourceId": "4048"
+     "sourceId": "4048",
+     "lat": 28.539952,
+     "lng": 77.259158
     },
     {
      "name": "South East 3",
@@ -244,7 +279,9 @@
      "code": "S-SEA4",
      "num": 4,
      "kind": "samithi",
-     "sourceId": "3714"
+     "sourceId": "3714",
+     "lat": 28.541506,
+     "lng": 77.216085
     },
     {
      "name": "South East 5",
@@ -253,7 +290,19 @@
      "code": "S-SEA5",
      "num": 5,
      "kind": "samithi",
-     "sourceId": "3306"
+     "sourceId": "3306",
+     "lat": 28.548202,
+     "lng": 77.238016
+    }
+   ],
+   "centres": [
+    {
+     "slug": "sai-vidya-vihar-south-east-delhi",
+     "name": "Sri Sathya Sai Vidya Vihar",
+     "address": "South East Delhi",
+     "lat": 28.529353,
+     "lng": 77.273605,
+     "samithi": "south-east-2"
     }
    ]
   },
@@ -270,7 +319,9 @@
      "code": "S-SWE1",
      "num": 1,
      "kind": "samithi",
-     "sourceId": "4055"
+     "sourceId": "4055",
+     "lat": 28.583419,
+     "lng": 77.168146
     },
     {
      "name": "South West 2",
@@ -293,7 +344,9 @@
      "code": "S-SWE3",
      "num": 3,
      "kind": "samithi",
-     "sourceId": "3754"
+     "sourceId": "3754",
+     "lat": 28.529312,
+     "lng": 77.148444
     },
     {
      "name": "South West 4",
@@ -302,7 +355,9 @@
      "code": "S-SWE4",
      "num": 4,
      "kind": "samithi",
-     "sourceId": "8159"
+     "sourceId": "8159",
+     "lat": 28.558449,
+     "lng": 77.202938
     },
     {
      "name": "South West 5",
@@ -311,7 +366,9 @@
      "code": "S-SWE5",
      "num": 5,
      "kind": "samithi",
-     "sourceId": "4438"
+     "sourceId": "4438",
+     "lat": 28.534233,
+     "lng": 77.209447
     }
    ]
   },
@@ -328,7 +385,9 @@
      "code": "S-WES1",
      "num": 1,
      "kind": "samithi",
-     "sourceId": "3446"
+     "sourceId": "3446",
+     "lat": 28.638644,
+     "lng": 77.07206
     },
     {
      "name": "West 2",
@@ -337,7 +396,9 @@
      "code": "S-WES2",
      "num": 2,
      "kind": "samithi",
-     "sourceId": "3815"
+     "sourceId": "3815",
+     "lat": 28.62486,
+     "lng": 77.110868
     },
     {
      "name": "West 3",
@@ -346,7 +407,9 @@
      "code": "S-WES3",
      "num": 3,
      "kind": "samithi",
-     "sourceId": "3617"
+     "sourceId": "3617",
+     "lat": 28.649378,
+     "lng": 77.1437
     },
     {
      "name": "West 4",
@@ -386,7 +449,19 @@
      "sourceId": "3964",
      "area": "New Delhi",
      "address": "Dwarka Sector 9, Dwarka, Prashanti Dham Sai Mandir, Opp Center for Sight Hospital, New Delhi, 110077",
-     "pincode": "110077"
+     "pincode": "110077",
+     "lat": 28.5823,
+     "lng": 77.049976
+    }
+   ],
+   "centres": [
+    {
+     "slug": "prashanti-dham-sai-mandir-dwarka",
+     "name": "Prashanti Dham Sai Mandir, Dwarka",
+     "address": "Dwarka, New Delhi",
+     "lat": 28.58116,
+     "lng": 77.06451,
+     "samithi": "west-6"
     }
    ]
   },
@@ -403,7 +478,10 @@
      "code": "S-FAR1",
      "num": 1,
      "kind": "samithi",
-     "sourceId": "4844"
+     "sourceId": "4844",
+     "localName": "Sector 7, 8, 9, 10 & 11",
+     "lat": 28.361738,
+     "lng": 77.326878
     },
     {
      "name": "Faridabad 2",
@@ -417,7 +495,8 @@
      "address": "B-33, Manglam Regency, Sector 21D, Near g b n school, Faridabad, 121012",
      "pincode": "121012",
      "lat": 28.425556,
-     "lng": 77.292368
+     "lng": 77.292368,
+     "localName": "NIT"
     },
     {
      "name": "Faridabad 3",
@@ -431,7 +510,8 @@
      "address": "457, Block A, ADB PWD Colony, Sector 16 A, Faridabad, 121002",
      "pincode": "121002",
      "lat": 28.407523,
-     "lng": 77.316546
+     "lng": 77.316546,
+     "localName": "Sector 14, 15, 16"
     },
     {
      "name": "Faridabad 4",
@@ -445,7 +525,8 @@
      "address": "530 sec 37, 1st floor, Faridabad, 121003",
      "pincode": "121003",
      "lat": 28.470025,
-     "lng": 77.314669
+     "lng": 77.314669,
+     "localName": "Sector 37, 91, IP Colony"
     },
     {
      "name": "Faridabad 5",
@@ -454,7 +535,10 @@
      "code": "S-FAR5",
      "num": 5,
      "kind": "samithi",
-     "sourceId": "4861"
+     "sourceId": "4861",
+     "localName": "Green Field, Charmwood",
+     "lat": 28.458023,
+     "lng": 77.29641
     },
     {
      "name": "Faridabad 6",
@@ -464,6 +548,24 @@
      "num": 6,
      "kind": "samithi",
      "sourceId": "8408"
+    }
+   ],
+   "centres": [
+    {
+     "slug": "sai-centre-faridabad",
+     "name": "Sathya Sai Centre, Faridabad",
+     "address": "Faridabad, Haryana",
+     "lat": 28.404977,
+     "lng": 77.326049,
+     "samithi": "faridabad-3"
+    },
+    {
+     "slug": "bhajan-mandali-neher-par",
+     "name": "Bhajan Mandali, Neher Par",
+     "address": "Neher Par, Faridabad, Haryana",
+     "lat": 28.412777,
+     "lng": 77.353928,
+     "samithi": "faridabad-3"
     }
    ]
   },
@@ -480,7 +582,10 @@
      "code": "S-GUR1",
      "num": 1,
      "kind": "samithi",
-     "sourceId": "4224"
+     "sourceId": "4224",
+     "localName": "Laxman Vihar, Sector 4, 5, 7, 10, 37D, New Colony",
+     "lat": 28.473804,
+     "lng": 77.010676
     },
     {
      "name": "Gurugram 2",
@@ -489,7 +594,10 @@
      "code": "S-GUR2",
      "num": 2,
      "kind": "samithi",
-     "sourceId": "3807"
+     "sourceId": "3807",
+     "localName": "DLF 4, South City 1, Sector 31, 40, 45, 46, 50–57",
+     "lat": 28.463441,
+     "lng": 77.076756
     },
     {
      "name": "Gurugram 3",
@@ -503,7 +611,8 @@
      "address": "7603, 2nd Floor, DLF Phase 4, Gurugram, 122009",
      "pincode": "122009",
      "lat": 28.460452,
-     "lng": 77.087646
+     "lng": 77.087646,
+     "localName": "DLF Phase 1–5, Golf Course"
     },
     {
      "name": "Gurugram 4",
@@ -512,7 +621,10 @@
      "code": "S-GUR4",
      "num": 4,
      "kind": "samithi",
-     "sourceId": "4332"
+     "sourceId": "4332",
+     "localName": "Palam Vihar, Ashok Vihar, Brijwasan, Kapashera",
+     "lat": 28.515197,
+     "lng": 77.035247
     },
     {
      "name": "Gurugram 5",
@@ -521,7 +633,10 @@
      "code": "S-GUR5",
      "num": 5,
      "kind": "samithi",
-     "sourceId": "4303"
+     "sourceId": "4303",
+     "localName": "Sohna Road, Rajiv Chowk to Badshahpur",
+     "lat": 28.433932,
+     "lng": 77.035701
     },
     {
      "name": "Gurugram 6",
@@ -530,7 +645,10 @@
      "code": "S-GUR6",
      "num": 6,
      "kind": "samithi",
-     "sourceId": "8591"
+     "sourceId": "8591",
+     "localName": "Sector 12–17",
+     "lat": 28.471081,
+     "lng": 77.045414
     },
     {
      "name": "Gurugram 7",
@@ -539,7 +657,28 @@
      "code": "S-GUR7",
      "num": 7,
      "kind": "samithi",
-     "sourceId": "8386"
+     "sourceId": "8386",
+     "localName": "Manesar, Sector 83–89",
+     "lat": 28.40852,
+     "lng": 76.936938
+    }
+   ],
+   "centres": [
+    {
+     "slug": "sai-nilayam-palam-vihar",
+     "name": "Sri Sathya Sai Nilayam, Palam Vihar",
+     "address": "Palam Vihar, Gurugram, Haryana",
+     "lat": 28.505128,
+     "lng": 77.035313,
+     "samithi": "gurugram-4"
+    },
+    {
+     "slug": "sai-seva-centre-badshahpur",
+     "name": "Sri Sathya Sai Seva Centre, Badshahpur",
+     "address": "Badshahpur, Sohna Road, Gurugram, Haryana",
+     "lat": 28.393727,
+     "lng": 77.046571,
+     "samithi": "gurugram-5"
     }
    ]
   },
@@ -570,7 +709,9 @@
      "code": "S-GBN2",
      "num": 2,
      "kind": "samithi",
-     "sourceId": "3752"
+     "sourceId": "3752",
+     "lat": 28.504393,
+     "lng": 77.380432
     },
     {
      "name": "Gautam Buddh Nagar 3",
@@ -593,7 +734,9 @@
      "code": "S-GBN4",
      "num": 4,
      "kind": "samithi",
-     "sourceId": "8506"
+     "sourceId": "8506",
+     "lat": 28.646018,
+     "lng": 77.369517
     },
     {
      "name": "Gautam Buddh Nagar 5",
@@ -612,6 +755,24 @@
      "num": 99,
      "kind": "bhajan_mandali",
      "sourceId": "8818"
+    }
+   ],
+   "centres": [
+    {
+     "slug": "sai-centre-sector-21-noida",
+     "name": "Sai Centre, Sector 21",
+     "address": "Sector 21, Noida, Uttar Pradesh",
+     "lat": 28.587509,
+     "lng": 77.335111,
+     "samithi": "gautam-buddh-nagar-1"
+    },
+    {
+     "slug": "sai-centre-sector-31-noida",
+     "name": "Sai Centre, Sector 31",
+     "address": "Sector 31, Noida, Uttar Pradesh",
+     "lat": 28.575217,
+     "lng": 77.347609,
+     "samithi": "gautam-buddh-nagar-1"
     }
    ]
   },
@@ -670,7 +831,9 @@
      "code": "S-GHA4",
      "num": 4,
      "kind": "samithi",
-     "sourceId": "3723"
+     "sourceId": "3723",
+     "lat": 28.653564,
+     "lng": 77.460283
     },
     {
      "name": "Ghaziabad 5",
@@ -679,7 +842,9 @@
      "code": "S-GHA5",
      "num": 5,
      "kind": "samithi",
-     "sourceId": "5187"
+     "sourceId": "5187",
+     "lat": 28.819476,
+     "lng": 77.558411
     }
    ]
   }

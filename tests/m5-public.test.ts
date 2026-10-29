@@ -247,7 +247,7 @@ describe("centres by pincode", () => {
     const { svc } = mockServices();
     const res = await svc.centres.list({ pincode: "110091", q: "noida", page: 1, pageSize: 100 });
     expect(res.data.map((c) => c.slug)).toContain("noida-sector-62");
-    expect(res.data.every((c) => (c.distanceKm ?? 99) > 5)).toBe(true);
+    expect(res.data.find((c) => c.slug === "noida-sector-62")?.distanceKm ?? 0).toBeGreaterThan(5);
   });
 });
 
