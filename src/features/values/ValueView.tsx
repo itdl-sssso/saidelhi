@@ -85,7 +85,7 @@ export function ValueView({ data }: { data: ValuePayload }) {
             </blockquote>
           </div>
           <figure className={styles.portrait}>
-            <Image src={valuePhoto(k)} alt={t("portraitAlt")} fill sizes="(min-width: 900px) 40vw, 100vw" priority />
+            <Image src={valuePhoto(k)} alt={t(`${k}.portraitAlt` as "sathya.portraitAlt")} fill sizes="(min-width: 900px) 40vw, 100vw" priority />
           </figure>
         </div>
       </header>

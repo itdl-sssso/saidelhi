@@ -2,7 +2,7 @@
 @media (min-width: 900px) { .founder { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: var(--space-12); } }
 .portrait { position: relative; margin: 0; aspect-ratio: 4 / 3; border-radius: var(--radius-xl); overflow: hidden; background: var(--sand); box-shadow: var(--shadow-md); }
 @media (min-width: 900px) { .portrait { aspect-ratio: 4 / 5; } }
-.portrait img { object-fit: cover; object-position: 50% 30%; }
+.portrait img { object-fit: cover; object-position: 50% 12%; }
 .prose { display: flex; flex-direction: column; gap: 12px; max-width: var(--measure-prose); color: var(--slate-700); line-height: var(--leading-body); }
 .prose p { margin: 0; }
 .quote { margin: 8px 0 0; font-family: var(--font-serif-display); font-style: italic; font-size: 22px; line-height: 1.45; color: var(--slate-800); }
@@ -36,3 +36,14 @@
 .ctl:focus-within { outline: 2px solid var(--blue-500); outline-offset: 2px; }
 .ctl input { flex: 1; min-width: 0; border: 0; background: transparent; font: inherit; color: var(--text-body); min-height: 44px; }
 .ctl input:focus { outline: none; }
+
+.contactGrid { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4); margin-top: var(--space-4); }
+@media (min-width: 768px) { .contactGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-6); } }
+.contactCard { display: flex; flex-direction: column; border-radius: var(--radius-xl); overflow: hidden; background: var(--white); border: 1px solid var(--border-calm); }
+.contactImg { position: relative; aspect-ratio: 16 / 9; background: var(--sand); }
+.contactImg img { object-fit: cover; }
+.contactBody { display: flex; flex-direction: column; gap: 8px; padding: 20px; }
+.contactBody p { margin: 0; }
+.contactList { list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-direction: column; gap: 8px; font-size: var(--text-small); }
+.contactList li { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 10px; align-items: start; }
+.contactList svg { color: var(--blue-600); margin-top: 2px; }
