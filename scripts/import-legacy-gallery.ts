@@ -151,7 +151,8 @@ async function main() {
   await closeDb();
 }
 
-main().catch((err) => {
+main().catch(async (err) => {
   console.error(err instanceof Error ? err.message : err);
   process.exitCode = 1;
+  await closeDb();
 });

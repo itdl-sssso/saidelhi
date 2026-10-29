@@ -260,7 +260,8 @@ async function main() {
 
 const pretty = (e164: string) => `+91 ${e164.slice(3, 8)} ${e164.slice(8)}`;
 
-main().catch((err) => {
+main().catch(async (err) => {
   console.error(err instanceof Error ? err.message : err);
   process.exitCode = 1;
+  await closeDb();
 });
