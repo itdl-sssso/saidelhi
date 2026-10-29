@@ -26,7 +26,6 @@ import { FigureValue } from "@/ui/Figure";
 import { QuoteCard } from "@/ui/QuoteCard";
 import { SectionHeading } from "@/ui/SectionHeading";
 import { CentreFinder } from "./CentreFinder";
-import { ImageSlot } from "./ImageSlot";
 import type { HomeStory } from "./stories";
 import { OptInForm } from "@/features/join/OptInForm";
 import { FACEBOOK_URL, SAICONNECT_URL, SAI_ANSWERS_URL, YOUTUBE_URL } from "@/features/shell/links";
@@ -41,7 +40,7 @@ const WING_ICON: Record<Wing, IconName> = {
 };
 
 /** Only when there is no thought at all; otherwise the picture is part of the thought data. */
-const FALLBACK_THOUGHT_PHOTO = "/images/values/photo-sathya.webp";
+const FALLBACK_THOUGHT_PHOTO = "/images/home/thought.webp";
 
 const KPI_ICON: Record<string, IconName> = {
   activities: "calendar-days",
@@ -438,8 +437,7 @@ function Centenary({ articles }: { articles: Article[] }) {
       <Wrap>
         <div className={styles.cent}>
           <div className={styles.centArt}>
-            {/* TODO(user): centenary artwork. Pass `src` (and `alt`) here when the image is supplied. */}
-            <ImageSlot label={t("centenaryImageSlot")} icon="sparkles" />
+            <Image src="/images/home/centenary.webp" alt={t("centenaryImageAlt")} width={536} height={298} sizes="(min-width: 900px) 50vw, 100vw" className={styles.slotImg} />
           </div>
           <div className={styles.centCopy}>
             <Eyebrow>{t("centenaryEyebrow")}</Eyebrow>
@@ -491,8 +489,7 @@ function Answers({ discourses }: { discourses: boolean }) {
           </div>
         </div>
         <a href={SAI_ANSWERS_URL} target="_blank" rel="noopener noreferrer" className={styles.video} aria-label={`${t("answersWatch")} (${tc("opensNewTab")})`}>
-          {/* TODO(user): poster frame of a featured answer video; pass `src` to ImageSlot. */}
-          <ImageSlot label={t("answersPoster")} icon="video" />
+          <Image src="/images/home/sai-answers.webp" alt={t("answersPosterAlt")} width={960} height={540} sizes="(min-width: 900px) 50vw, 100vw" className={styles.slotImg} />
           <span className={styles.play} aria-hidden="true">
             <Icon name="play" size={24} />
           </span>
@@ -513,8 +510,7 @@ function Auditorium() {
     <section className={cx(styles.sec, styles.pt0)} aria-labelledby="aud-title">
       <Wrap className={styles.split}>
         <div className={styles.audImg}>
-          {/* TODO(user): photograph of the International Centre; pass `src` to ImageSlot. */}
-          <ImageSlot label={t("audImageSlot")} icon="building-2" />
+          <Image src="/images/home/international.webp" alt={t("audImageAlt")} width={1400} height={940} sizes="(min-width: 900px) 50vw, 100vw" className={styles.slotImg} />
         </div>
         <div>
           <SectionHeading titleId="aud-title" eyebrow={t("audEyebrow")} title={t("audTitle")} description={t("audBody")} />

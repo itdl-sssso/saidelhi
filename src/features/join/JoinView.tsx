@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import type { DistrictSummary, JoinEvent, JoinPayload, JoinQuery, SevaType } from "@/contract";
 import { Link } from "@/i18n/navigation";
@@ -37,8 +38,15 @@ export function JoinView({ data, q, districts }: { data: JoinPayload; q: JoinQue
   return (
     <>
       <PageHero crumbs={[{ label: t("crumbHome"), href: "/" }, { label: t("crumbJoin") }]}>
-        <h1 className={pub.h1}>{t("title")}</h1>
-        <p className={pub.lead}>{t("lead")}</p>
+        <div className={styles.heroGrid}>
+          <div className={pub.col} style={{ gap: 14 }}>
+            <h1 className={pub.h1}>{t("title")}</h1>
+            <p className={pub.lead}>{t("lead")}</p>
+          </div>
+          <div className={styles.heroImg}>
+            <Image src="/images/join/sevadal.webp" alt={t("heroAlt")} fill sizes="(min-width: 900px) 360px, 100vw" priority />
+          </div>
+        </div>
       </PageHero>
 
       <section className={pub.section} style={{ paddingTop: "var(--space-6)" }}>

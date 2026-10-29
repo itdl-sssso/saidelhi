@@ -54,6 +54,18 @@ interface RealSamithi {
   pincode?: string;
   lat?: number;
   lng?: number;
+  /** Locality text from the old public map (public data). */
+  localName?: string;
+  area?: string;
+}
+interface RealBuilding {
+  slug: string;
+  name: string;
+  address: string;
+  pincode?: string;
+  lat: number;
+  lng: number;
+  samithi: string;
 }
 interface RealDistrict {
   name: string;
@@ -61,6 +73,7 @@ interface RealDistrict {
   slug: string;
   code: string;
   samithis: RealSamithi[];
+  centres?: RealBuilding[];
 }
 const REAL = (realUnits as { districts: RealDistrict[] }).districts;
 const EAST_INTRO: [string, string] = [
@@ -94,6 +107,9 @@ export const SAMITHI = {
   noida62: realId("gautam-buddh-nagar-2"),
   faridabad: realId("faridabad-1"),
 } as const;
+
+const DEV_SAMITHI_IDS = new Set<string>(Object.values(SAMITHI));
+const DISTRICT_NAMES: Record<string, string> = Object.fromEntries(REAL.map((d, i) => [DISTRICT_IDS[i], d.name]));
 
 export const orgUnits: OrgUnitRec[] = [
   unit(1, "ncr", "NCR", "delhi-ncr", "Delhi NCR", "दिल्ली एनसीआर", null),
@@ -170,18 +186,33 @@ export const centres: CentreRec[] = [
   centre(9, SAMITHI.gurugram31, "gurugram-sector-31", "Sai Centre Gurugram", "साई केंद्र गुरुग्राम", "Sector 31, Gurugram, Haryana", "सेक्टर 31, गुरुग्राम, हरियाणा", "122001", [28.4520, 77.0490]),
   centre(10, SAMITHI.noida62, "noida-sector-62", "Sai Centre Noida", "साई केंद्र नोएडा", "Sector 62, Noida, Uttar Pradesh", "सेक्टर 62, नोएडा, उत्तर प्रदेश", "201309", [28.6270, 77.3650]),
   centre(11, SAMITHI.faridabad, "faridabad-sector-15", "Sai Centre Faridabad", "साई केंद्र फ़रीदाबाद", "Sector 15, Faridabad, Haryana", "सेक्टर 15, फ़रीदाबाद, हरियाणा", "121007", [28.4010, 77.3150]),
-  // Real published samithi addresses and coordinates (only samithis that have both).
-  ...realSamithis.flatMap((s, i) =>
-    s.address && s.lat != null && s.lng != null
-      ? [
-          {
-            ...centre(100 + i, fx("ORG", 200 + i), s.slug, `${s.name} Samithi`, `समिति ${s.nameHi}`, s.address, s.address, s.pincode ?? "", [s.lat, s.lng]),
-            addressHi: null,
-            pincode: s.pincode ?? null,
-            contactPhone: null,
-          } satisfies CentreRec,
-        ]
-      : [],
+  // Real samithis with published coordinates (ssssoindia address and/or old public-map pin).
+  // Samithis that carry a fictional dev centre above are skipped so the map never shows two pins for one unit.
+  ...realSamithis.flatMap((s, i) => {
+    if (s.lat == null || s.lng == null || DEV_SAMITHI_IDS.has(fx("ORG", 200 + i))) return [];
+    const where = s.address ?? [s.localName, s.area ?? DISTRICT_NAMES[s.districtId]].filter(Boolean).join(", ");
+    return [
+      {
+        ...centre(100 + i, fx("ORG", 200 + i), s.slug, `${s.name} Samithi`, `समिति ${s.nameHi}`, where, where, s.pincode ?? "", [s.lat, s.lng]),
+        addressHi: null,
+        pincode: s.pincode ?? null,
+        contactPhone: null,
+      } satisfies CentreRec,
+    ];
+  }),
+  // Buildings pinned on the old public map (Sai centres, mandirs, International Centre), on the nearest samithi.
+  ...REAL.flatMap((d) =>
+    (d.centres ?? []).map((b, k) => {
+      const si = realSamithis.findIndex((s) => s.slug === b.samithi);
+      if (si < 0) throw new Error(`unknown samithi ${b.samithi}`);
+      return {
+        ...centre(400 + REAL.indexOf(d) * 10 + k, fx("ORG", 200 + si), b.slug, b.name, b.name, b.address, b.address, b.pincode ?? "", [b.lat, b.lng]),
+        nameHi: null,
+        addressHi: null,
+        pincode: b.pincode ?? null,
+        contactPhone: null,
+      } satisfies CentreRec;
+    }),
   ),
 ];
 

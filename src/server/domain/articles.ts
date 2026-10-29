@@ -125,6 +125,7 @@ export function toArticle(rec: ArticleRec, ctx: ArticleContext): Article {
   const bodyEn = sanitizeBody(rec.content, ctx.mediaBase);
   const bodyHi = i18n?.bodyHi ? sanitizeBody(i18n.bodyHi, ctx.mediaBase) : null;
   const district = i18n?.districtId ? ctx.districts.get(i18n.districtId) : undefined;
+  const sortedGallery = [...rec.gallery].sort((a, b) => a.order - b.order);
   return {
     slug: rec.slug,
     category: mapLegacyCategory(rec.category),
@@ -132,10 +133,9 @@ export function toArticle(rec: ArticleRec, ctx: ArticleContext): Article {
     title: { en: rec.title, hi: i18n?.titleHi ?? null },
     summary: { en: rec.shortDescription, hi: i18n?.summaryHi ?? null },
     bodyHtml: { en: bodyEn, hi: bodyHi },
-    cover: rec.featuredImage ? legacyMedia(ctx, rec.featuredImage, rec.title) : null,
-    gallery: [...rec.gallery]
-      .sort((a, b) => a.order - b.order)
-      .map((g) => legacyMedia(ctx, g.image, g.caption ?? rec.title)),
+    // Legacy posts with no featured image fall back to their first gallery image (mapping only; legacy rows stay as they are).
+    cover: rec.featuredImage ? legacyMedia(ctx, rec.featuredImage, rec.title) : (sortedGallery[0] ? legacyMedia(ctx, sortedGallery[0].image, sortedGallery[0].caption ?? rec.title) : null),
+    gallery: sortedGallery.map((g) => legacyMedia(ctx, g.image, g.caption ?? rec.title)),
     publishedAt: rec.createdAt.toISOString(),
     district: district ? { slug: district.slug, name: district.name } : null,
     eventId: i18n?.eventId ?? null,

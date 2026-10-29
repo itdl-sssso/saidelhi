@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import type { ProgramDetail, SevaType } from "@/contract";
 import { Link } from "@/i18n/navigation";
@@ -22,6 +23,17 @@ const STEP_ICONS: Record<Variant, IconName[]> = {
   narayan_seva: ["utensils", "hand", "hand-heart", "sparkles"],
   bal_vikas: ["clipboard-list", "book-open", "sparkles", "users"],
   generic: ["calendar-days", "map-pin", "hand-heart"],
+};
+
+/** Representative photo per seva type (legacy site media); types without one keep the icon tile. */
+const HERO_PHOTO: Partial<Record<SevaType, string>> = {
+  eye: "/images/programs/eye.webp",
+  blood: "/images/programs/blood.webp",
+  medical: "/images/programs/medical.webp",
+  narayan_seva: "/images/programs/narayan_seva.webp",
+  bal_vikas: "/images/programs/bal_vikas.webp",
+  study_circle: "/images/programs/study_circle.webp",
+  cleanliness: "/images/programs/cleanliness.webp",
 };
 
 const variantOf = (type: SevaType): Variant =>
@@ -68,7 +80,11 @@ export function ProgramView({ program: p }: { program: ProgramDetail }) {
             <p className={pub.lead}>{t(`lead.${p.sevaType}`)}</p>
           </div>
           <div className={styles.heroArt} aria-hidden="true">
-            <Icon name={icon} size={24} />
+            {HERO_PHOTO[p.sevaType] ? (
+              <Image src={HERO_PHOTO[p.sevaType]!} alt="" fill sizes="280px" priority className={styles.heroImg} />
+            ) : (
+              <Icon name={icon} size={24} />
+            )}
           </div>
         </div>
       </PageHero>
