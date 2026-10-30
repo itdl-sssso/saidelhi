@@ -179,7 +179,6 @@ export const icons = {
   landmark: Landmark,
   lock: Lock,
   "log-in": LogIn,
-  mail: Mail,
   map: MapIcon,
   "map-pin": MapPin,
   menu: Menu,
