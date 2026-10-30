@@ -2,7 +2,7 @@
 
 # SSSSO Delhi NCR platform — project state & handoff
 
-Rebuild of saidelhi.org (Sri Sathya Sai Seva Organisation, Delhi NCR): bilingual public site + coordinator portal (`/admin`) + event form links (`/f/<token>`) + WhatsApp bot. Last updated **25 Oct 2026** (M7 + post-M7 fixes). **Start with `docs/progress/HANDOFF.md`** (open branches: /donate WIP, /gallery parked).
+Rebuild of saidelhi.org (Sri Sathya Sai Seva Organisation, Delhi NCR): bilingual public site + coordinator portal (`/admin`) + event form links (`/f/<token>`) + WhatsApp bot. Last updated **25 Oct 2026** (M7 + post-M7 fixes). **Start with `docs/progress/HANDOFF.md`** (/donate and /gallery merged).
 
 ## Read these first
 | File | What |
@@ -48,7 +48,6 @@ Run `pnpm db:seed` before `pnpm test` if the DB was mutated by a walkthrough (li
 | G | Gallery: public `/gallery` + lightbox, portal `/admin/gallery` review/albums/editor, WhatsApp photo intake (spec 52, CONTRACT v0.9.5) | ✅ | ✅ | squash-merged from `worktree-agent-a1640c5d1fadcd400` (see git log) |
 
 ### Immediate next steps (in order)
-0. Finish + merge `/donate` branch (see HANDOFF.md).
 1. **UI feedback session with user** via `/dev/review` (round-1; Home page first).
 2. Then TODO(user) items below (real districts/coords, WhatsApp creds + public number, About text, Sadhana Trust permission for discourses).
 
