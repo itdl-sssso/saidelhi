@@ -11,6 +11,7 @@ export function publicRoutes(d: E2EData): RouteDef[] {
     "/centres/map",
     "/impact",
     "/join",
+    "/donate",
     "/news",
     "/privacy",
     "/discourses",

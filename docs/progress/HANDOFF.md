@@ -21,17 +21,16 @@ Main HEAD at handoff: see `git log -1` (after commit "docs: handoff"). All miles
 ## Open branches (NOT merged)
 | Branch / worktree | State | Next |
 |---|---|---|
-| `worktree-agent-ae67270dd13934ac1` (`.claude/worktrees/agent-ae67270dd13934ac1`) — **/donate** | WIP `c9feaa2`: page, copy buttons, en/hi, OG, nav/footer, sitemap, routes.ts, review catalog, spec 51. **DoD not run.** No image (legacy image shows identifiable person). | Merge main, run `pnpm typecheck && pnpm lint && pnpm test && pnpm build`, screenshot 1280/375/hi, merge. ⚠ Footer says "Nothing is ever collected from the public" — contradicts Donate page; reword (e.g. "No fees for any programme"). |
+| `donate-page` — **/donate** (spec 51) | DONE 30 Oct 2026. Page, copy buttons, en/hi, OG, nav/footer, sitemap, routes.ts, review catalog. Footer reworded so it no longer contradicts Donate. No image (legacy image shows identifiable person). | Open: HI strings need native review. |
 | `worktree-agent-a1640c5d1fadcd400` — **/gallery** (spec 52, CONTRACT v0.9.5) | DONE 28 Oct 2026, squash-merged into main 28 Oct 2026 (not pushed until user says). Public `/gallery` + `/gallery/[slug]` (lightbox), portal `/admin/gallery` (review queue, albums, album page, photo editor), WhatsApp photo intake (bot `gallery` flow, coordinators only), migration 0010 (`gallery_album`, `gallery_photo` doc tables), perms `gallery.upload`/`gallery.review`. typecheck/lint/test green; browser-checked EN+/hi 1280+375. Logs: `docs/progress/gallery*.md`. | Merged; branch kept for reference. Open: no purge of rejected/orphaned originals; editor brightness/contrast preview approximates server render; HI strings (bot + `gallery.*`, `admin.gallery.*`) need native review; touch swipe not tested on a device. |
 
 ## Review round 1 (28 Oct 2026) — merged
 All 26 tickets of `docs/feedback/round-1.md` fixed in 4 tracks (logs `docs/progress/review1-{public,portal,home,features}.md`), plus admin emblem and OG link-preview fix (metadataBase = APP_URL; OG image routes skip proxy). CONTRACT v0.9.6 + v0.10. User decisions: thought of the day = official daily pull behind flag `thought_official` (off in prod until Sadhana Trust permission) + pool rotation; Join shows "Sevadal needed" badge, never counts or coordinator phones; content types admin-managed, Golden Stories feed Home stories; photos = generic form field. Open: HI strings agent-written (values, home sections, features); auditorium phone/email/hours and social URLs on Home unconfirmed; value photos ~200px (soft on mobile); uploads delete 422 text EN only; legacy `stories` type vs new `golden-stories` may be redundant.
 
 ## Next steps (in order)
-1. Finish + merge /donate (above).
-2. **UI review round 1** with user via `/dev/review` (Home first — user reported design mismatches). Read `docs/feedback/round-1.md`, triage, fix in ≤2 parallel agents.
-3. Gallery: review + approve merge of the gallery branch (see Open branches).
-4. Client inputs pending: Bhagawan photos (7), centre photos, seva photos, WhatsApp number + Meta creds, About text, Sadhana Trust permission, DPO name, samithi local names/addresses/pins.
+1. **UI review round 1** with user via `/dev/review` (Home first — user reported design mismatches). Read `docs/feedback/round-1.md`, triage, fix in ≤2 parallel agents.
+2. Gallery: review + approve merge of the gallery branch (see Open branches).
+3. Client inputs pending: Bhagawan photos (7), centre photos, seva photos, WhatsApp number + Meta creds, About text, Sadhana Trust permission, DPO name, samithi local names/addresses/pins.
 
 ## Process rules (user)
 - Subagents for work, caveman briefs; Opus plan/lead, Sonnet implement, Haiku small tasks.

@@ -169,6 +169,7 @@ Menu items a role can't use are hidden, not disabled.
 | 47 | Privacy (restricted) | `/admin/privacy` | P1 |
 | 48 | Audit log | `/admin/audit` | P1 |
 | 49 | Settings | `/admin/settings` | P1 |
+| 51 | Donate | `/donate` | P1 |
 
 ### WhatsApp
 | # | Spec | Priority |

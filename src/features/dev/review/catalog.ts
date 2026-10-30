@@ -164,6 +164,7 @@ function publicRaw(s: Samples): Raw[] {
     { id: "map", title: "Centres map", path: "/centres/map", spec: 12, design: [D.map] },
     { id: "impact", title: "Impact", path: "/impact", spec: 4, design: [D.pub2] },
     { id: "join", title: "Join", path: "/join", spec: 11, design: [D.pub4] },
+    { id: "donate", title: "Donate", path: "/donate", spec: 51 },
     { id: "news", title: "News list", path: "/news", spec: 7, design: [D.articles, D.pub4] },
     { id: "gallery", title: "Gallery", path: "/gallery", spec: 52, note: "No design board; follows News list + article photo grid." },
     { id: "privacy", title: "Privacy", path: "/privacy", spec: 17 },

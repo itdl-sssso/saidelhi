@@ -8,7 +8,7 @@ import { services } from "@/server/services";
 type Entry = MetadataRoute.Sitemap[number];
 
 /** Pages that exist once per site. Admin, form links, dev tools and the API are not listed. */
-const STATIC_PATHS = ["", "/calendar", "/impact", "/about", "/programs", "/news", "/gallery", "/join", "/centres/map", "/privacy"];
+const STATIC_PATHS = ["", "/calendar", "/impact", "/about", "/programs", "/news", "/gallery", "/join", "/donate", "/centres/map", "/privacy"];
 
 /** All pages of a paged service call (100 per page, capped so a runaway table cannot hang the build). */
 async function all<T>(fetchPage: (page: number) => Promise<{ data: T[]; meta: { total: number } }>): Promise<T[]> {

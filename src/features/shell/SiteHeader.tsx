@@ -1,7 +1,7 @@
 import { useTranslations } from "next-intl";
 import { NavBar, type NavBarProps, NavBarView, type NavGroup } from "@/ui/NavBar";
 import { LanguageToggle, LanguageToggleView } from "./LanguageToggle";
-import { DONATE_URL, EMBLEM_SRC, SAICONNECT_URL } from "./links";
+import { EMBLEM_SRC, SAICONNECT_URL } from "./links";
 
 export type SiteHeaderProps = {
   /** Feature flag `discourses`: the nav item stays hidden until the Trust grants permission. */
@@ -38,7 +38,7 @@ export function SiteHeader({ discourses = false, pathless = false }: SiteHeaderP
       items: [
         { href: "/programs", label: t("programs"), icon: "hand-heart" },
         { href: "/join", label: t("getInvolved"), icon: "heart-handshake" },
-        { href: DONATE_URL, label: t("donate"), icon: "heart", external: true },
+        { href: "/donate", label: t("donate"), icon: "heart" },
       ],
     },
   ];
@@ -52,7 +52,7 @@ export function SiteHeader({ discourses = false, pathless = false }: SiteHeaderP
       { href: "/centres/map", label: t("findCentre"), icon: "map-pin" },
     ],
     groups,
-    donate: { href: DONATE_URL, label: t("donate") },
+    donate: { href: "/donate", label: t("donate") },
     utilityLinks: [
       { href: SAICONNECT_URL, label: t("saiConnectLabel"), icon: "log-in", external: true },
       { href: "/admin/login", label: t("coordinatorLogin"), icon: "lock", quiet: true },
