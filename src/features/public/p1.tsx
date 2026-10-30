@@ -48,6 +48,8 @@ const CATEGORY_TONE: Record<Article["category"], BadgeTone> = {
   special_programs: "sathya",
   stories: "prem",
 };
+/** Admin-managed name of the article's type (falls back to the built-in strings). */
+export const articleTypeName = (a: Article, locale: AppLocale, tc: (c: Article["category"]) => string): string => (a.type ? tx(a.type.label, locale) : tc(a.category));
 export const categoryTone = (c: Article["category"]) => CATEGORY_TONE[c];
 
 export function ArticleCard({ article }: { article: Article }) {
@@ -73,7 +75,7 @@ export function ArticleCard({ article }: { article: Article }) {
       </span>
       <span className={styles.acardBody}>
         <span className={styles.acardMeta}>
-          <Badge tone={CATEGORY_TONE[article.category]}>{tc(article.category)}</Badge>
+          <Badge tone={CATEGORY_TONE[article.category]}>{articleTypeName(article, locale, tc)}</Badge>
           <time dateTime={article.publishedAt}>{formatDate(article.publishedAt, locale)}</time>
         </span>
         <LocalText value={article.title} className={styles.acardTitle} />

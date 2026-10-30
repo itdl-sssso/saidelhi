@@ -120,7 +120,7 @@ export function FieldSettings({ def, field: f, kpiOptions, publishedIds, onChang
             <Input label={t("maxLen")} type="number" optional value={f.max ?? ""} onChange={(e) => patch({ max: e.target.value === "" ? null : Number(e.target.value) })} />
           </div>
         ) : null}
-        {f.kind === "file" ? <Input label={t("maxFiles")} type="number" value={f.max ?? ""} onChange={(e) => patch({ max: e.target.value === "" ? null : Number(e.target.value) })} /> : null}
+        {f.kind === "file" ? <Input label={t(f.photos ? "maxPhotos" : "maxFiles")} type="number" value={f.max ?? ""} onChange={(e) => patch({ max: e.target.value === "" ? null : Number(e.target.value) })} /> : null}
 
         {f.kind === "select" || f.kind === "multiselect" ? (
           <div className={s.grp}>

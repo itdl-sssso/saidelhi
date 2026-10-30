@@ -35,6 +35,9 @@ export const reportSchedule = docTable("report_schedule");
 export const monthlyReport = docTable("monthly_report");
 export const retentionRun = docTable("retention_run");
 export const userPref = docTable("user_pref");
+export const galleryAlbum = docTable("gallery_album");
+export const galleryPhoto = docTable("gallery_photo");
+export const contentType = docTable("content_type");
 
 export const M6_DOC_TABLES = {
   form_change_request: formChangeRequest,
@@ -52,5 +55,8 @@ export const M6_DOC_TABLES = {
   monthly_report: monthlyReport,
   retention_run: retentionRun,
   user_pref: userPref,
+  gallery_album: galleryAlbum,
+  gallery_photo: galleryPhoto,
+  content_type: contentType,
 } as const;
 export type DocTableName = keyof typeof M6_DOC_TABLES;

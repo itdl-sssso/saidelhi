@@ -152,4 +152,30 @@ describe("uploads", () => {
     const item = await t.repo.wa.inboxById(res.inboxItemId);
     expect(item).toMatchObject({ source: "upload", rawKind: "spreadsheet", state: "for_me" });
   });
+
+  it("deletes a preview batch (rows, file, audit) but keeps a loaded one", async () => {
+    const t = m6Setup();
+    const coord = await t.actor(USER.coordA);
+    const code = (await t.repo.orgUnits()).find((u) => u.id === SAMITHI.mayurVihar)!.code;
+    const { bytes } = await eyeSheet(code, [camp(code, 0), camp(code, 1)], t);
+    const p = await t.svc.portal.uploads.create(coord, { name: "del.xlsx", bytes }, { sevaType: "eye" });
+    await t.svc.portal.uploads.remove(coord, p.id);
+    expect(await errCode(t.svc.portal.uploads.get(coord, p.id))).toBe("NOT_FOUND");
+    expect(await t.repo.m6.docList("upload_row", { k1: p.id })).toHaveLength(0);
+
+    const { bytes: b2 } = await eyeSheet(code, [camp(code, 3)], t);
+    const q = await t.svc.portal.uploads.create(coord, { name: "keep.xlsx", bytes: b2 }, { sevaType: "eye" });
+    await t.svc.portal.uploads.confirm(coord, q.id, q.version);
+    expect(await errCode(t.svc.portal.uploads.remove(coord, q.id))).toBe("VALIDATION_FAILED");
+  });
+
+  it("deletes a form template (archive) unless live links or the last report form depend on it", async () => {
+    const t = m6Setup();
+    const admin = await t.actor(USER.stateC);
+    expect(await errCode(t.svc.portal.forms.remove(admin, FORM_IDS.templates.eye))).toBe("VALIDATION_FAILED");
+    const copy = await t.svc.portal.forms.duplicate(admin, FORM_IDS.templates.eye, { title: { en: "Eye copy", hi: null } });
+    await t.svc.portal.forms.remove(admin, copy.template.id);
+    expect((await t.svc.portal.forms.list(admin)).templates.some((r) => r.id === copy.template.id)).toBe(false);
+    expect(await errCode(t.svc.portal.forms.remove(await t.actor(USER.coordA), FORM_IDS.templates.eye))).toBe("FORBIDDEN");
+  });
 });

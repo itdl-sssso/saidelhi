@@ -3,7 +3,7 @@
 import { z } from "zod";
 import { Confidence, InboxState, Role, SevaType, Source } from "./enums";
 import { FormDefinition, InboxRaw } from "./forms";
-import { I18nText, ISODateTime, Id, Locale, MaskedPhone, PageMeta } from "./primitives";
+import { I18nText, ISODate, ISODateTime, Id, Locale, MaskedPhone, PageMeta } from "./primitives";
 import { opt, Pagination } from "./queries";
 
 // ── Review inbox (spec 28) ───────────────────────────────────────────────────
@@ -221,9 +221,111 @@ export const SimInboundBody = z.object({
   from: z.string(),
   text: z.string().nullable(),
   replyId: z.string().nullable(),
-  media: z.object({ kind: z.enum(["image", "pdf"]), name: z.string() }).nullable(),
+  /** v0.9.5: `data` = base64 file bytes (≤ ~14 MB string) so the simulator can send a real photo; absent = fake media without bytes. */
+  media: z.object({ kind: z.enum(["image", "pdf"]), name: z.string(), mime: z.string().max(100).optional(), data: z.string().max(14_000_000).optional() }).nullable(),
 });
 export type SimInboundBody = z.infer<typeof SimInboundBody>;
 /** GET /dev/whatsapp/messages?phone → both directions, oldest first. */
 export const SimMessage = z.object({ dir: z.enum(["in", "out"]), at: ISODateTime, text: z.string().nullable(), out: WaOutbound.nullable() });
 export type SimMessage = z.infer<typeof SimMessage>;
+
+/**
+ * Event details read from a WhatsApp message, one shape for every seva type
+ * (bhajan, eye camp, blood donation, Narayan Seva, Bal Vikas, relief drive…).
+ * Only a draft for Plan event / the review inbox: a person checks it before
+ * anything is saved. Fields the message does not state are null (lists empty).
+ * Values are copied as written, except dates/times, which are normalised (v0.9.3).
+ */
+export const EventExtractKind = z.enum(["announcement", "report", "other"]);
+export type EventExtractKind = z.infer<typeof EventExtractKind>;
+
+const HHMM = z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/);
+const Written = z.string().min(1).max(300);
+
+export const EventExtract = z.object({
+  /** announcement = upcoming event; report = something that already happened; other = no event (greeting, quote, question). */
+  kind: EventExtractKind,
+  sevaType: SevaType.nullable(),
+  /** Headline as written, greeting dropped ("GGN 4 Samithi bhajan"). */
+  title: Written.nullable(),
+  /** `raw` as written ("GGN 4"); `slug`/`name` of the matched samithi in sssso-units, null when unknown. */
+  samithi: z.object({ raw: Written, slug: z.string().nullable(), name: z.string().nullable() }).nullable(),
+
+  // When — IST. `endDate` only for multi-day events.
+  date: ISODate.nullable(),
+  endDate: ISODate.nullable(),
+  /** 'HH:MM', 24 h. */
+  startTime: HHMM.nullable(),
+  endTime: HHMM.nullable(),
+  /** date + time as instants, ready for EventInput.startsAt / endsAt. */
+  startsAt: ISODateTime.nullable(),
+  endsAt: ISODateTime.nullable(),
+  /** Repeats ("every Thursday"): text as written + weekday (0 = Sunday) when one is named. */
+  recurrence: z.object({ text: Written, weekday: z.number().int().min(0).max(6).nullable() }).nullable(),
+
+  // Where
+  venueName: Written.nullable(),
+  venueAddress: Written.nullable(),
+
+  // What
+  /** Hospital, blood bank, school or NGO running it with us. */
+  partner: Written.nullable(),
+  /** Study circle topic, bhajan theme, talk subject. */
+  topic: Written.nullable(),
+  /** Who it is for ("children 5–9 years", "ladies", "all devotees"). */
+  audience: Written.nullable(),
+  /** What is offered ("free eye check-up", "spectacles", "medicines"). */
+  services: z.array(Written).max(20),
+  /** What to bring (attendees or sevadals): "Aadhaar card", "old clothes". */
+  bring: z.array(Written).max(20),
+
+  // Who
+  volunteersNeeded: z.number().int().min(0).max(10_000).nullable(),
+  /** Goal stated in the message ("100 donors", "500 meals"). */
+  target: z.object({ count: z.number().int().min(0), unit: Written }).nullable(),
+  /** Contact as written in the message (public announcement text). */
+  contact: z.object({ name: Written.nullable(), phone: z.string().max(20).nullable() }).nullable(),
+  /** Instruction for sevadals ("Please reach before 10 minutes"). */
+  sevadalNote: Written.nullable(),
+
+  /** Keyed by field name above; only fields that were filled. */
+  fieldConfidence: z.record(z.string(), z.object({ level: Confidence, why: I18nText.nullable() })),
+  /** Model values that failed the type check or could not be found in the message (dropped). */
+  rejected: z.array(z.object({ field: z.string(), value: z.string(), reason: z.string() })),
+  /** "rules" or "rules+LFM2.5-350M-ONNX". */
+  model: z.string(),
+});
+export type EventExtract = z.infer<typeof EventExtract>;
+
+/** POST /admin/events/extract — a pasted WhatsApp message, or the text of an inbox item the viewer can review. */
+export const EventFromMessageBody = z.union([z.object({ text: z.string().trim().min(3).max(4000) }), z.object({ inboxId: Id })]);
+export type EventFromMessageBody = z.infer<typeof EventFromMessageBody>;
+
+/** Plan event fields the form may still need checked (blank, or not certain). */
+export const PlanField = z.enum(["sevaType", "title", "startsAt", "endsAt", "samithiId", "venueName", "venueAddress", "volunteersNeeded", "bring", "description"]);
+export type PlanField = z.infer<typeof PlanField>;
+
+/** Plan event prefill read from a message. Nothing is saved; the coordinator reviews the form. */
+export const EventFromMessage = z.object({
+  extract: EventExtract,
+  prefill: z.object({
+    sevaType: SevaType.nullable(),
+    title: z.string().nullable(),
+    /** IST day and 'HH:MM' times, as the Plan event form takes them. */
+    date: ISODate.nullable(),
+    startTime: z.string().nullable(),
+    endTime: z.string().nullable(),
+    /** Only when the samithi named in the message is in the viewer's scope. */
+    samithiId: Id.nullable(),
+    venueName: z.string().nullable(),
+    venueAddress: z.string().nullable(),
+    volunteersNeeded: z.number().int().nullable(),
+    bring: z.array(z.string()),
+    /** English description lines from topic, audience, partner, services, recurrence and the sevadal note. Contact is left out. */
+    description: z.string(),
+    recurring: z.boolean(),
+  }),
+  /** Fields the message gave with less than high confidence, or that the form still needs. */
+  check: z.array(PlanField),
+});
+export type EventFromMessage = z.infer<typeof EventFromMessage>;

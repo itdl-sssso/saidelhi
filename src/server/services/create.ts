@@ -5,6 +5,7 @@ import { createCentresService } from "./centres";
 import { createDiscoursesService } from "./discourses";
 import { createDistrictsService } from "./districts";
 import { createEventsService } from "./events";
+import { createGalleryService } from "./gallery";
 import { createHomeService } from "./home";
 import { DiskStorage } from "../files";
 import { ConsoleEmail } from "../providers/email";
@@ -14,6 +15,7 @@ import { createImpactService } from "./impact";
 import { createJoinService } from "./join";
 import { createProgramsService } from "./programs";
 import { createRedirectsService } from "./redirects";
+import { createThoughtService } from "./thought";
 import { createValuesService } from "./values";
 import { RulesExtractor } from "../ai";
 import { createLinksService } from "./links";
@@ -51,11 +53,13 @@ export function createServices(repo: DataRepo, deps: ServiceDeps): Services {
   return {
     dataSource: repo.kind,
     home: createHomeService(repo, deps),
+    thought: createThoughtService(repo, deps),
     events,
     centres,
     districts: createDistrictsService(repo, deps),
     impact: createImpactService(repo, deps),
     articles: createArticlesService(repo, deps),
+    gallery: createGalleryService(repo, deps),
     values: createValuesService(repo, deps, events, discourses),
     discourses,
     programs: createProgramsService(repo, deps, events),

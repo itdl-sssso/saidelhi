@@ -23,9 +23,23 @@ type State = { kind: "idle" } | { kind: "sending" } | { kind: "done" } | { kind:
  * Optional "send me seva updates on WhatsApp" form (spec 11 + decision of 23 Oct).
  * POST /whatsapp/optin always answers 202 with a neutral message, whether or not the number is new.
  */
-export function OptInForm({ districts, sevaTypes }: { districts: OptInOption[]; sevaTypes: Array<{ value: SevaType; label: string }> }) {
+export function OptInForm({
+  districts,
+  sevaTypes,
+  compact = false,
+  submitLabel,
+  languageLabel,
+}: {
+  districts: OptInOption[];
+  sevaTypes: Array<{ value: SevaType; label: string }>;
+  /** Home page variant (design: number, message language, button): no district or seva-type pickers. */
+  compact?: boolean;
+  submitLabel?: string;
+  languageLabel?: string;
+}) {
   const t = useTranslations("join");
-  const locale = useLocale() as AppLocale;
+  const pageLocale = useLocale() as AppLocale;
+  const [locale, setLocale] = useState<AppLocale>(pageLocale);
   const id = useId();
   const [digits, setDigits] = useState("");
   const [district, setDistrict] = useState("");
@@ -93,21 +107,31 @@ export function OptInForm({ districts, sevaTypes }: { districts: OptInOption[]; 
         messages={state.kind === "error" && state.phone ? [{ type: "error", text: state.phone }] : undefined}
         onEnter={() => undefined}
       />
-      <Select
+      {compact ? (
+        <div className={styles.lang} role="group" aria-label={languageLabel}>
+          <button type="button" lang="hi" aria-pressed={locale === "hi"} onClick={() => setLocale("hi")}>
+            हिंदी
+          </button>
+          <button type="button" lang="en" aria-pressed={locale === "en"} onClick={() => setLocale("en")}>
+            English
+          </button>
+        </div>
+      ) : null}
+      {compact ? null : <Select
         label={t("optinDistrict")}
         optional
         value={district}
         onChange={(e) => setDistrict(e.target.value)}
         options={[{ value: "", label: t("anyDistrict") }, ...districts]}
-      />
-      <fieldset className={styles.types}>
+      />}
+      {compact ? null : <fieldset className={styles.types}>
         <legend>{t("optinTypes")}</legend>
         <div className={styles.typeList}>
           {sevaTypes.map((s) => (
             <Checkbox key={s.value} label={s.label} checked={types.includes(s.value)} onChange={(e) => toggle(s.value, e.target.checked)} />
           ))}
         </div>
-      </fieldset>
+      </fieldset>}
       <p className={styles.cap}>{t("optinConsent")}</p>
       {state.kind === "error" && !state.phone ? (
         <Alert tone="attention" role="alert">
@@ -115,7 +139,7 @@ export function OptInForm({ districts, sevaTypes }: { districts: OptInOption[]; 
         </Alert>
       ) : null}
       <Button type="submit" pending={state.kind === "sending"} icon="send">
-        {t("optinSubmit")}
+        {submitLabel ?? t("optinSubmit")}
       </Button>
     </form>
   );

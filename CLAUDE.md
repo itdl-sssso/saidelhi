@@ -2,7 +2,7 @@
 
 # SSSSO Delhi NCR platform — project state & handoff
 
-Rebuild of saidelhi.org (Sri Sathya Sai Seva Organisation, Delhi NCR): bilingual public site + coordinator portal (`/admin`) + event form links (`/f/<token>`) + WhatsApp bot. Last updated **24 Oct 2026** (M7 done).
+Rebuild of saidelhi.org (Sri Sathya Sai Seva Organisation, Delhi NCR): bilingual public site + coordinator portal (`/admin`) + event form links (`/f/<token>`) + WhatsApp bot. Last updated **25 Oct 2026** (M7 + post-M7 fixes). **Start with `docs/progress/HANDOFF.md`** (open branches: /donate WIP, /gallery parked).
 
 ## Read these first
 | File | What |
@@ -45,9 +45,11 @@ Run `pnpm db:seed` before `pnpm test` if the DB was mutated by a walkthrough (li
 | M5 | Public P1: Values ×5, About, Programs, Program, News/Article, Join (number+QR+opt-in form), Map (Leaflet+OSM), District, legacy 301 redirects (`redirect` table, migration 0005), sitemap/robots, legacy polish | ✅ | ✅ | merges `08e80b2`…`4127b36` + integration |
 | M6 | Portal P1: form templates/builder, uploads (xlsx), centres, partners, content (native `article`, tiptap), impact controls, migration, volunteers, reports/exports, health, follow-up, privacy, settings; crons publish-scheduled/monthly-report/retention | ✅ | ✅ | merges `556cd5e` + integration |
 | M7 | Discourses (flag) import + pages + workspace; a11y/perf pass; Playwright e2e (`pnpm e2e:journeys`, `e2e:a11y`, `e2e:perf`) | ✅ | ✅ | merges `df5cb12`…`c0825d8` + fixes |
+| G | Gallery: public `/gallery` + lightbox, portal `/admin/gallery` review/albums/editor, WhatsApp photo intake (spec 52, CONTRACT v0.9.5) | ✅ | ✅ | squash-merged from `worktree-agent-a1640c5d1fadcd400` (see git log) |
 
 ### Immediate next steps (in order)
-1. **UI feedback session with user** (user 23 Oct: UI mismatches vs design, at least Home page first).
+0. Finish + merge `/donate` branch (see HANDOFF.md).
+1. **UI feedback session with user** via `/dev/review` (round-1; Home page first).
 2. Then TODO(user) items below (real districts/coords, WhatsApp creds + public number, About text, Sadhana Trust permission for discourses).
 
 ### Known open issues
@@ -62,12 +64,14 @@ Run `pnpm db:seed` before `pnpm test` if the DB was mutated by a walkthrough (li
 - Review round tracker: `/dev/review` (dev only) → `docs/feedback/<round>.{json,md}` + `shots/`.
 - M5 TODO(user): `WHATSAPP_PUBLIC_NUMBER`, real districts + centre coords, NCR pincode table (approx, `src/server/data/ncr-pincodes.json`), About contact/auditorium/founder text+photo, llms.txt.
 - M6 leftovers: new entities stored as JSON doc tables (`repo.m6`, migrations 0006/0007); monthly PDF ASCII-only (Hindi → `?`, needs Devanagari font); centre photo EXIF not stripped; privacy `PR-nnnn` ref derived by order (unstable if deleted); redirects cache 5 min; retention purge only tested on mock repo; 375px/`/hi` not fully browser-checked on all M6 pages (cover in M7 a11y pass).
+- Gallery leftovers: photos stored as doc tables (`gallery_album`, `gallery_photo`, migration 0010); originals private (`gallery/orig/`), edits = new derived files (`gallery/derived/<id>-r<n>.jpg`), approved → public media `gallery/<id>-r<n>.jpg` (sharp, metadata stripped, ≤2400 px); no purge job for rejected/orphaned originals; WhatsApp photo outside a flow now goes to the gallery flow (PDFs and "Not for the gallery" still go to the review inbox); bot replies "Added. N photos so far" per extra photo; HI strings agent-written (native review). Browser pane hidden → client fetches stall (looks like stuck skeletons / blank `/hi/admin`); open a fresh foreground tab.
 - M7 leftovers: `discourses` flag defaults ON only in development (prod stays off until Sadhana Trust written permission); e2e global-setup turns it on via settings API. Discourse audio/video (M7.1): `discourse_media` (migration 0009) imported from `$DISCOURSES_DIR/media/index.json` (7 official Radio Sai audio + 103 YouTube candidates; official audio + high-confidence video auto-approved, rest approved in workspace side panel); YouTube click-to-load nocookie facade; no reorder UI. Portal prefetch hang fixed (LanguageSwitch `prefetch={false}`). Proxy probe retries once, fails open on DB down. `tests/e2e/known.ts` empty (a11y 230/230, perf 20/20 budgets). Home CLS 0.074 (<0.1). M6 portal pages got automated 375px overflow check only, no manual /hi pass. e2e global-setup reseeds shared DB (wipes sessions) — run `pnpm db:seed` before `pnpm test` after e2e. Dev server sometimes dies during long e2e runs → agents used `pnpm build && pnpm start` for e2e.
 - Dev: if `next dev` hangs on "Compiling" after merges/new deps → `rm -rf .next/dev` and restart.
+- Process: max 2 background agents at once (crashes); LAN dev: `DEV_ORIGINS=<ips> DEV_INSECURE_COOKIES=1 pnpm dev --port 4100 -H 0.0.0.0`.
 - Root-owned stale dir `.claude/worktrees/agent-aec2e1a718ded6454` (Docker-created) — `sudo rm -rf` it.
 
 ## How work is run (process the user asked for)
-- **Two tracks per milestone** (backend / frontend) as parallel subagents in git worktrees (`isolation: worktree`); lead merges, runs the definition of done, commits **one commit per milestone on `main`, local only (no push)**.
+- **Two tracks per milestone** (backend / frontend) as parallel subagents in git worktrees (`isolation: worktree`); lead merges, runs the definition of done, commits **one commit per milestone on `main`** (push to public `origin` only when user asks; never commit server details/creds).
 - **Models:** Sonnet for implementation agents, Opus for planning/lead, Haiku for small atomic tasks (run tests/typecheck/lint/build, dev servers, merges with explicit steps). Lead delegates; briefs written caveman-style (agents answer terse caveman). Be credit-conscious: tight briefs, selective reading (`graft ask/skeleton`), short reports, few screenshots.
 - **Context hygiene / resumability (required for every subagent):**
   - Keep a progress log at `docs/progress/<milestone>-<track>.md` in the worktree: done / in progress / next / decisions / blockers. Update it after each sub-task.

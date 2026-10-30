@@ -1,11 +1,13 @@
 import { z } from "zod";
-import { ArticleCategory, DiscourseBlockType, DiscourseTheme, Wing } from "./enums";
+import { ArticleCategory, ContentTypeSlug, DiscourseBlockType, DiscourseTheme, Wing } from "./enums";
 import { EventPublic } from "./events";
 import { I18nText, ISODate, ISODateTime, Id, Media } from "./primitives";
 
 export const Article = z.object({
   slug: z.string(),
   category: ArticleCategory,
+  /** v0.10: the article's admin-managed type (slug + display name). `category` is its nearest built-in. */
+  type: z.object({ slug: ContentTypeSlug, label: I18nText }).nullable().optional(),
   title: I18nText,
   summary: I18nText,
   /** Sanitised HTML. */
@@ -36,6 +38,8 @@ export const Thought = z.object({
   date: ISODate,
   text: I18nText,
   source: I18nText.nullable(),
+  /** The picture that belongs to this thought (coordinator-uploaded); null/absent = the page uses its default. */
+  image: z.object({ url: z.string(), alt: I18nText }).nullable().optional(),
 });
 export type Thought = z.infer<typeof Thought>;
 

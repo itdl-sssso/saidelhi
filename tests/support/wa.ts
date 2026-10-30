@@ -15,12 +15,13 @@ export function waSetup(start: Date = NOW) {
   const repo = new MockRepo();
   const whatsapp = new FakeWhatsApp();
   const storage = new MemoryStorage();
-  const svc = createServices(repo, { now: () => clock.t, mediaBase: "/media", whatsapp, storage });
+  const publicMedia = new MemoryStorage();
+  const svc = createServices(repo, { now: () => clock.t, mediaBase: "/media", whatsapp, storage, publicMedia });
   const rc = { requestId: "t", ipHash: null };
   const actor = async (userId: string) => (await svc.auth.actorFor(userId, rc))!;
 
   /** One message from `from`; returns the bot's replies. */
-  const say = (from: string, text: string | null, replyId: string | null = null, media: { kind: "image" | "pdf"; name: string } | null = null) =>
+  const say = (from: string, text: string | null, replyId: string | null = null, media: { kind: "image" | "pdf"; name: string; bytes?: Uint8Array; mime?: string } | null = null) =>
     svc.wa.handle({ from, text, replyId, media });
 
   return {
@@ -28,6 +29,7 @@ export function waSetup(start: Date = NOW) {
     svc,
     whatsapp,
     storage,
+    publicMedia,
     clock,
     rc,
     actor,

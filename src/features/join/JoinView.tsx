@@ -1,5 +1,6 @@
+import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
-import type { DistrictSummary, EventPublic, JoinPayload, JoinQuery, SevaType } from "@/contract";
+import type { DistrictSummary, JoinEvent, JoinPayload, JoinQuery, SevaType } from "@/contract";
 import { Link } from "@/i18n/navigation";
 import { type AppLocale, formatTime, tx } from "@/lib/format";
 import { DateChip, LocalText, PageHero, pub } from "@/features/public/parts";
@@ -11,7 +12,6 @@ import { Input } from "@/ui/Input";
 import { Pagination } from "@/ui/Pagination";
 import { Select } from "@/ui/Select";
 import { OptInForm } from "./OptInForm";
-import { WhatsAppCard } from "./WhatsAppCard";
 import styles from "./Join.module.css";
 
 export const JOIN_SEVA_TYPES: SevaType[] = ["eye", "blood", "medical", "narayan_seva", "bal_vikas", "bhajan", "study_circle", "cleanliness", "disaster_relief"];
@@ -38,8 +38,15 @@ export function JoinView({ data, q, districts }: { data: JoinPayload; q: JoinQue
   return (
     <>
       <PageHero crumbs={[{ label: t("crumbHome"), href: "/" }, { label: t("crumbJoin") }]}>
-        <h1 className={pub.h1}>{t("title")}</h1>
-        <p className={pub.lead}>{t("lead")}</p>
+        <div className={styles.heroGrid}>
+          <div className={pub.col} style={{ gap: 14 }}>
+            <h1 className={pub.h1}>{t("title")}</h1>
+            <p className={pub.lead}>{t("lead")}</p>
+          </div>
+          <div className={styles.heroImg}>
+            <Image src="/images/join/sevadal.webp" alt={t("heroAlt")} fill sizes="(min-width: 900px) 360px, 100vw" priority />
+          </div>
+        </div>
       </PageHero>
 
       <section className={pub.section} style={{ paddingTop: "var(--space-6)" }}>
@@ -106,12 +113,6 @@ export function JoinView({ data, q, districts }: { data: JoinPayload; q: JoinQue
 
           <aside className={styles.side} aria-label={t("sideLabel")}>
             <div className={pub.card}>
-              <h2 className={pub.h3}>{t("waTitle")}</h2>
-              <p className={pub.small}>{t("waBody", { keyword: data.whatsapp.keyword })}</p>
-              <WhatsAppCard contact={data.whatsapp} />
-            </div>
-
-            <div className={pub.card}>
               <h2 className={pub.h3}>{t("optinTitle")}</h2>
               <p className={pub.small}>{t("optinBody")}</p>
               <OptInForm districts={districtOptions.map((d, i) => ({ value: districts[i].district.id, label: d.label }))} sevaTypes={JOIN_SEVA_TYPES.map((s) => ({ value: s, label: ts(s) }))} />
@@ -145,12 +146,9 @@ export function JoinView({ data, q, districts }: { data: JoinPayload; q: JoinQue
   );
 }
 
-function Need({ event: e }: { event: EventPublic }) {
+function Need({ event: e }: { event: JoinEvent }) {
   const t = useTranslations("join");
   const locale = useLocale() as AppLocale;
-  const needed = e.volunteersNeeded ?? 0;
-  const left = Math.max(0, needed - e.volunteersJoined);
-  const pct = needed > 0 ? Math.min(100, Math.round((e.volunteersJoined / needed) * 100)) : 0;
   return (
     <li>
       <Link href={`/events/${e.id}`} className={styles.need}>
@@ -168,19 +166,9 @@ function Need({ event: e }: { event: EventPublic }) {
           </span>
         </span>
         <span className={styles.needFoot}>
-          <span
-            className={styles.track}
-            role="progressbar"
-            aria-label={t("progressLabel", { joined: e.volunteersJoined, needed })}
-            aria-valuemin={0}
-            aria-valuemax={100}
-            aria-valuenow={pct}
-          >
-            <i style={{ width: `${pct}%` }} />
-          </span>
           <span className={pub.volb}>
             <Icon name="hand-heart" size={16} />
-            {t("moreNeeded", { count: left })}
+            {t("sevadalNeeded")}
           </span>
         </span>
       </Link>

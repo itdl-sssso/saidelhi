@@ -1,0 +1,17 @@
+# /etc/cron.d/saidelhi — app jobs over loopback (nginx blocks /api/v1/cron publicly).
+# Times are UTC (set the VM to UTC). IST = UTC+5:30. Output → /var/log/saidelhi-cron.log
+SHELL=/bin/bash
+R=/opt/saidelhi/deploy/cron/run-job.sh
+L=/var/log/saidelhi-cron.log
+
+*/5  * * * * root $R publish-scheduled >>$L 2>&1
+*/15 * * * * root $R reminders         >>$L 2>&1
+*/15 * * * * root $R escalations       >>$L 2>&1
+5    * * * * root $R event-status      >>$L 2>&1
+30   3 * * * root $R report-reminders  >>$L 2>&1
+# 7th of the month, 06:00 IST
+30   0 7 * * root $R monthly-report    >>$L 2>&1
+# Official Sai Message for the Day (flag thought_official): 00:20 IST, retry 06:05 IST (skips once stored)
+50  18 * * * root $R official-thought >>$L 2>&1
+35   0 * * * root $R official-thought >>$L 2>&1
+0   21 * * * root $R retention         >>$L 2>&1

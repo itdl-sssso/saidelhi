@@ -1,0 +1,1558 @@
+[
+  {
+    "id": "bhajan-ggn4-labelled",
+    "sentAt": "2026-10-22",
+    "tags": [
+      "labelled"
+    ],
+    "text": "OM SRI SAI RAM\n\n GGN 4 Samithi bhajan    \n\n Date : 24th October 2026    Saturday \n\n Address :    Palam Vihar Sai Centre. \n\n Timings :    6.00 p.m. to 7.00 p.m \n \nAll are requested to kindly join and partake the blessings of our beloved swami.\n\nSevadal: Please reach before 10 minutes.\n \nSairam 🙏 🌹",
+    "expect": {
+      "kind": "announcement",
+      "sevaType": "bhajan",
+      "title": "GGN 4 Samithi bhajan",
+      "samithi": "gurugram-4",
+      "date": "2026-10-24",
+      "endDate": null,
+      "startTime": "18:00",
+      "endTime": "19:00",
+      "recurrenceWeekday": null,
+      "venueName": "Palam Vihar Sai Centre",
+      "venueAddress": null,
+      "partner": null,
+      "topic": null,
+      "audience": null,
+      "services": [],
+      "bring": [],
+      "volunteersNeeded": null,
+      "target": null,
+      "contactName": null,
+      "contactPhone": null,
+      "sevadalNote": "Please reach before 10 minutes"
+    }
+  },
+  {
+    "id": "eye-fbd1-labelled",
+    "sentAt": "2026-10-26",
+    "tags": [
+      "labelled",
+      "contact",
+      "hard"
+    ],
+    "text": "OM SRI SAI RAM\n\nFARIDABAD 1 SAMITHI - FREE EYE CAMP\n\nDate: 8th November 2026 (Sunday)\nTime: 9:00 AM to 1:00 PM\nVenue: Sri Sathya Sai Mandir\nAddress: H-12, Sector 21, Faridabad\nIn association with Shroff Eye Hospital\nFree spectacles for needy patients. Free medicines.\nPatients please bring Aadhaar card and old prescription.\nContact: Ravi Mehra 98100 00011\n\nSai Ram",
+    "expect": {
+      "kind": "announcement",
+      "sevaType": "eye",
+      "title": "FARIDABAD 1 SAMITHI - FREE EYE CAMP",
+      "samithi": "faridabad-1",
+      "date": "2026-11-08",
+      "endDate": null,
+      "startTime": "09:00",
+      "endTime": "13:00",
+      "recurrenceWeekday": null,
+      "venueName": "Sri Sathya Sai Mandir",
+      "venueAddress": "H-12, Sector 21, Faridabad",
+      "partner": "Shroff Eye Hospital",
+      "topic": null,
+      "audience": null,
+      "services": [
+        "Free spectacles for needy patients",
+        "Free medicines"
+      ],
+      "bring": [
+        "Aadhaar card",
+        "old prescription"
+      ],
+      "volunteersNeeded": null,
+      "target": null,
+      "contactName": "Ravi Mehra",
+      "contactPhone": "98100 00011",
+      "sevadalNote": null
+    }
+  },
+  {
+    "id": "eye-gurgaon2-hinglish",
+    "sentAt": "2026-11-03",
+    "tags": [
+      "hinglish",
+      "relative-date",
+      "range"
+    ],
+    "text": "Jai Sai Ram 🙏\nGurgaon 2 Samithi - Free Aankhon ki jaanch camp\nParso subah 9 baje se dopahar 1 baje tak\nSthan: Sai Mandir, DLF Phase 3\nAnkit Eye Care ke saath. Mareez apna purana chashma lekar aayein.\nSab aayiye aur laabh uthayiye.",
+    "expect": {
+      "kind": "announcement",
+      "sevaType": "eye",
+      "title": "Gurgaon 2 Samithi - Free Aankhon ki jaanch camp",
+      "samithi": "gurugram-2",
+      "date": "2026-11-05",
+      "endDate": null,
+      "startTime": "09:00",
+      "endTime": "13:00",
+      "recurrenceWeekday": null,
+      "venueName": "Sai Mandir, DLF Phase 3",
+      "venueAddress": null,
+      "partner": "Ankit Eye Care",
+      "topic": null,
+      "audience": null,
+      "services": [],
+      "bring": [
+        "purana chashma"
+      ],
+      "volunteersNeeded": null,
+      "target": null,
+      "contactName": null,
+      "contactPhone": null,
+      "sevadalNote": null
+    }
+  },
+  {
+    "id": "eye-west3-devanagari",
+    "sentAt": "2026-11-10",
+    "tags": [
+      "devanagari",
+      "labelled",
+      "range"
+    ],
+    "text": "ॐ श्री साई राम\n\nनि:शुल्क नेत्र जाँच शिविर\n\nदिनांक: १५ नवंबर २०२६ (रविवार)\nसमय: सुबह ९ बजे से दोपहर १ बजे तक\nस्थान: साई मंदिर, राजौरी गार्डन\nसमिति: वेस्ट 3\nनि:शुल्क चश्मा एवं दवाइयाँ\nसभी भक्तगण पधारें।\n\nजय साई राम",
+    "expect": {
+      "kind": "announcement",
+      "sevaType": "eye",
+      "title": "नि:शुल्क नेत्र जाँच शिविर",
+      "samithi": "west-3",
+      "date": "2026-11-15",
+      "endDate": null,
+      "startTime": "09:00",
+      "endTime": "13:00",
+      "recurrenceWeekday": null,
+      "venueName": "साई मंदिर, राजौरी गार्डन",
+      "venueAddress": null,
+      "partner": null,
+      "topic": null,
+      "audience": null,
+      "services": [
+        "नि:शुल्क चश्मा एवं दवाइयाँ"
+      ],
+      "bring": [],
+      "volunteersNeeded": null,
+      "target": null,
+      "contactName": null,
+      "contactPhone": null,
+      "sevadalNote": null
+    }
+  },
+  {
+    "id": "blood-central3-labelled",
+    "sentAt": "2026-10-28",
+    "tags": [
+      "labelled",
+      "contact",
+      "range"
+    ],
+    "text": "SAI RAM\n\nBLOOD DONATION CAMP - Central 3 Samithi\n\nDate: 1st Nov 2026\nTime: 10 AM - 3 PM\nVenue: Sai Seva Bhawan, Karol Bagh\nIn association with Rotary Blood Bank\nOpen to all healthy adults 18 to 60 years\nPlease eat before donating and bring ID proof.\nTarget: 100 donors\nSevadals needed: 10\nContact: Sunita Arora 98100 00012",
+    "expect": {
+      "kind": "announcement",
+      "sevaType": "blood",
+      "title": "BLOOD DONATION CAMP - Central 3 Samithi",
+      "samithi": "central-3",
+      "date": "2026-11-01",
+      "endDate": null,
+      "startTime": "10:00",
+      "endTime": "15:00",
+      "recurrenceWeekday": null,
+      "venueName": "Sai Seva Bhawan, Karol Bagh",
+      "venueAddress": null,
+      "partner": "Rotary Blood Bank",
+      "topic": null,
+      "audience": "all healthy adults 18 to 60 years",
+      "services": [],
+      "bring": [
+        "ID proof"
+      ],
+      "volunteersNeeded": 10,
+      "target": {
+        "count": 100,
+        "unit": "donors"
+      },
+      "contactName": "Sunita Arora",
+      "contactPhone": "98100 00012",
+      "sevadalNote": null
+    }
+  },
+  {
+    "id": "blood-gbn3-prose-thissunday",
+    "sentAt": "2026-11-12",
+    "tags": [
+      "prose",
+      "relative-date"
+    ],
+    "text": "Sai Ram everyone. Noida Samithi (GBN 3) is organising a blood donation camp this Sunday at Sai Centre, Sector 62, in association with Red Cross blood bank. Timing is 9.30 am onwards. Kindly donate and encourage family and friends. Please carry Aadhaar and have a light breakfast. 🙏",
+    "expect": {
+      "kind": "announcement",
+      "sevaType": "blood",
+      "title": "Noida Samithi (GBN 3) is organising a blood donation camp this Sunday at Sai Centre, Sector 62, in association with Red Cross blood bank",
+      "samithi": "gautam-buddh-nagar-3",
+      "date": "2026-11-15",
+      "endDate": null,
+      "startTime": "09:30",
+      "endTime": null,
+      "recurrenceWeekday": null,
+      "venueName": "Sai Centre, Sector 62",
+      "venueAddress": null,
+      "partner": "Red Cross blood bank",
+      "topic": null,
+      "audience": null,
+      "services": [],
+      "bring": [
+        "Aadhaar"
+      ],
+      "volunteersNeeded": null,
+      "target": null,
+      "contactName": null,
+      "contactPhone": null,
+      "sevadalNote": null
+    }
+  },
+  {
+    "id": "blood-ghaziabad2-hard",
+    "sentAt": "2026-12-01",
+    "tags": [
+      "hard",
+      "labelled",
+      "contact"
+    ],
+    "text": "OM SRI SAI RAM\nGHAZIABAD 2 SAMITHI - BLOOD DONATION CAMP\nSaturday 12/12\nCamp: 9 am to 2 pm\nVenue: Sai Bhawan, Vaishali\nAddress: Plot 21/B, Sector 4, Vaishali\nSevadals: reporting time 8 am sharp\nFor registration call Mr. Anil Gupta - 98100 00013 (after 6 pm)\nSai Ram",
+    "expect": {
+      "kind": "announcement",
+      "sevaType": "blood",
+      "title": "GHAZIABAD 2 SAMITHI - BLOOD DONATION CAMP",
+      "samithi": "ghaziabad-2",
+      "date": "2026-12-12",
+      "endDate": null,
+      "startTime": "09:00",
+      "endTime": "14:00",
+      "recurrenceWeekday": null,
+      "venueName": "Sai Bhawan, Vaishali",
+      "venueAddress": "Plot 21/B, Sector 4, Vaishali",
+      "partner": null,
+      "topic": null,
+      "audience": null,
+      "services": [],
+      "bring": [],
+      "volunteersNeeded": null,
+      "target": null,
+      "contactName": "Mr. Anil Gupta",
+      "contactPhone": "98100 00013",
+      "sevadalNote": "reporting time 8 am sharp"
+    }
+  },
+  {
+    "id": "medical-east2-labelled",
+    "sentAt": "2026-10-30",
+    "tags": [
+      "labelled",
+      "contact",
+      "range"
+    ],
+    "text": "SAI RAM\n\nFREE MEDICAL CAMP - EAST 2 SAMITHI\n\nDate : 8 November 2026\nTime : 9.30 am to 1.30 pm\nVenue : Sai Dispensary, Mayur Vihar Phase 1\nDoctors: General physician, dentist, ENT, gynaecologist\nFree medicines will be distributed\nVolunteers needed: 15 (doctors, nurses, sevadals)\nContact: Dr. Neha Kapoor 98100 00016",
+    "expect": {
+      "kind": "announcement",
+      "sevaType": "medical",
+      "title": "FREE MEDICAL CAMP - EAST 2 SAMITHI",
+      "samithi": "east-2",
+      "date": "2026-11-08",
+      "endDate": null,
+      "startTime": "09:30",
+      "endTime": "13:30",
+      "recurrenceWeekday": null,
+      "venueName": "Sai Dispensary, Mayur Vihar Phase 1",
+      "venueAddress": null,
+      "partner": null,
+      "topic": null,
+      "audience": null,
+      "services": [
+        "General physician",
+        "dentist",
+        "ENT",
+        "gynaecologist",
+        "Free medicines"
+      ],
+      "bring": [],
+      "volunteersNeeded": 15,
+      "target": null,
+      "contactName": "Dr. Neha Kapoor",
+      "contactPhone": "98100 00016",
+      "sevadalNote": null
+    }
+  },
+  {
+    "id": "medical-okhla-multiday-prose",
+    "sentAt": "2026-11-20",
+    "tags": [
+      "prose",
+      "multi-day",
+      "range"
+    ],
+    "text": "Sai Ram. Health camp for slum children and families, 5th, 6th and 7th December 2026, daily 10 am to 4 pm at Sai Seva Kendra, Okhla. Sathya Sai Medical Trust team will attend. Free checkups, blood tests, medicines. Kindly send volunteers: 20 needed.",
+    "expect": {
+      "kind": "announcement",
+      "sevaType": "medical",
+      "title": "Health camp for slum children and families, 5th, 6th and 7th December 2026, daily 10 am to 4 pm at Sai Seva Kendra, Okhla",
+      "samithi": null,
+      "date": "2026-12-05",
+      "endDate": "2026-12-07",
+      "startTime": "10:00",
+      "endTime": "16:00",
+      "recurrenceWeekday": null,
+      "venueName": "Sai Seva Kendra, Okhla",
+      "venueAddress": null,
+      "partner": "Sathya Sai Medical Trust",
+      "topic": null,
+      "audience": "slum children and families",
+      "services": [
+        "Free checkups",
+        "blood tests",
+        "medicines"
+      ],
+      "bring": [],
+      "volunteersNeeded": 20,
+      "target": null,
+      "contactName": null,
+      "contactPhone": null,
+      "sevadalNote": null
+    }
+  },
+  {
+    "id": "medical-sw4-caps-noon",
+    "sentAt": "2026-12-09",
+    "tags": [
+      "caps",
+      "hard",
+      "range"
+    ],
+    "text": "OM SRI SAI RAM\nFREE DIABETES AND BP CHECKUP - SOUTH WEST 4 SAMITHI\nSUNDAY 13 DECEMBER 2026\n8 AM TO 12 NOON\nSAI MANDIR, DWARKA SECTOR 7\nPLEASE COME EMPTY STOMACH FOR SUGAR TEST\nSAI RAM",
+    "expect": {
+      "kind": "announcement",
+      "sevaType": "medical",
+      "title": "FREE DIABETES AND BP CHECKUP - SOUTH WEST 4 SAMITHI",
+      "samithi": "south-west-4",
+      "date": "2026-12-13",
+      "endDate": null,
+      "startTime": "08:00",
+      "endTime": "12:00",
+      "recurrenceWeekday": null,
+      "venueName": "SAI MANDIR, DWARKA SECTOR 7",
+      "venueAddress": null,
+      "partner": null,
+      "topic": null,
+      "audience": null,
+      "services": [
+        "FREE DIABETES AND BP CHECKUP"
+      ],
+      "bring": [],
+      "volunteersNeeded": null,
+      "target": null,
+      "contactName": null,
+      "contactPhone": null,
+      "sevadalNote": null
+    }
+  },
+  {
+    "id": "medical-fbd5-forwarded-phone",
+    "sentAt": "2026-11-24",
+    "tags": [
+      "forwarded",
+      "hard",
+      "contact",
+      "range"
+    ],
+    "text": "Forwarded\n\n[24/11/2026, 7:42 pm] Rajesh Verma: Sai Ram 🙏\nHomeopathy free medical camp Faridabad 5 samithi\n29 Nov Sunday 10 to 1\nSai Centre NIT 3\nDr Meenakshi 98100 00023 will attend, call after 5.30 pm\n\nForwarded many times",
+    "expect": {
+      "kind": "announcement",
+      "sevaType": "medical",
+      "title": "Homeopathy free medical camp Faridabad 5 samithi",
+      "samithi": "faridabad-5",
+      "date": "2026-11-29",
+      "endDate": null,
+      "startTime": "10:00",
+      "endTime": "13:00",
+      "recurrenceWeekday": null,
+      "venueName": "Sai Centre NIT 3",
+      "venueAddress": null,
+      "partner": null,
+      "topic": null,
+      "audience": null,
+      "services": [],
+      "bring": [],
+      "volunteersNeeded": null,
+      "target": null,
+      "contactName": "Dr Meenakshi",
+      "contactPhone": "98100 00023",
+      "sevadalNote": null
+    }
+  },
+  {
+    "id": "narayan-north2-tworeports",
+    "sentAt": "2026-11-05",
+    "tags": [
+      "hard",
+      "labelled",
+      "contact",
+      "range"
+    ],
+    "text": "Jai Sai Ram\n\nNARAYAN SEVA - North 2 Samithi\nDate: Sunday, 8th November 2026\nReporting: 8.30 am at Sai Mandir, Model Town\nSeva: Food distribution at Subzi Mandi slum, 10 am to 12 noon\nMenu: Puri, Sabzi, Halwa. 300 packets.\nSevadals please bring: steel buckets, ladles, aprons\nContact Kiran Malhotra 98100 00017",
+    "expect": {
+      "kind": "announcement",
+      "sevaType": "narayan_seva",
+      "title": "NARAYAN SEVA - North 2 Samithi",
+      "samithi": "north-2",
+      "date": "2026-11-08",
+      "endDate": null,
+      "startTime": "10:00",
+      "endTime": "12:00",
+      "recurrenceWeekday": null,
+      "venueName": "Subzi Mandi slum",
+      "venueAddress": null,
+      "partner": null,
+      "topic": null,
+      "audience": null,
+      "services": [
+        "Food distribution"
+      ],
+      "bring": [
+        "steel buckets",
+        "ladles",
+        "aprons"
+      ],
+      "volunteersNeeded": null,
+      "target": {
+        "count": 300,
+        "unit": "packets"
+      },
+      "contactName": "Kiran Malhotra",
+      "contactPhone": "98100 00017",
+      "sevadalNote": "Reporting: 8.30 am at Sai Mandir, Model Town"
+    }
+  },
+  {
+    "id": "narayan-central1-recurring",
+    "sentAt": "2026-11-02",
+    "tags": [
+      "recurring",
+      "prose"
+    ],
+    "text": "Sai Ram. Every Thursday Narayan Seva at Hanuman Mandir, Connaught Place - hot khichdi to 150 people at 12.30 pm. Central 1 Samithi. All welcome to join.",
+    "expect": {
+      "kind": "announcement",
+      "sevaType": "narayan_seva",
+      "title": "Every Thursday Narayan Seva at Hanuman Mandir, Connaught Place - hot khichdi to 150 people at 12.30 pm",
+      "samithi": "central-1",
+      "date": "2026-11-05",
+      "endDate": null,
+      "startTime": "12:30",
+      "endTime": null,
+      "recurrenceWeekday": 4,
+      "venueName": "Hanuman Mandir, Connaught Place",
+      "venueAddress": null,
+      "partner": null,
+      "topic": null,
+      "audience": null,
+      "services": [
+        "hot khichdi"
+      ],
+      "bring": [],
+      "volunteersNeeded": null,
+      "target": {
+        "count": 150,
+        "unit": "people"
+      },
+      "contactName": null,
+      "contactPhone": null,
+      "sevadalNote": null
+    }
+  },
+  {
+    "id": "narayan-gnw-devanagari-digits",
+    "sentAt": "2026-12-15",
+    "tags": [
+      "devanagari",
+      "labelled",
+      "contact",
+      "range"
+    ],
+    "text": "ॐ श्री साई राम\n\nनारायण सेवा – ग्रेटर नोएडा वेस्ट\nदिनांक: २० दिसंबर २०२६, रविवार\nसमय: दोपहर १२ बजे से २ बजे तक\nस्थान: साई मंदिर, गौर सिटी\n५०० ज़रूरतमंदों को भोजन एवं कंबल वितरण\nसेवादल: कृपया १० मिनट पहले पहुँचें\nसंपर्क: सुरेश शर्मा ९८१०० ०००१८",
+    "expect": {
+      "kind": "announcement",
+      "sevaType": "narayan_seva",
+      "title": "नारायण सेवा – ग्रेटर नोएडा वेस्ट",
+      "samithi": "greater-noida-west",
+      "date": "2026-12-20",
+      "endDate": null,
+      "startTime": "12:00",
+      "endTime": "14:00",
+      "recurrenceWeekday": null,
+      "venueName": "साई मंदिर, गौर सिटी",
+      "venueAddress": null,
+      "partner": null,
+      "topic": null,
+      "audience": null,
+      "services": [
+        "भोजन एवं कंबल वितरण"
+      ],
+      "bring": [],
+      "volunteersNeeded": null,
+      "target": {
+        "count": 500,
+        "unit": "ज़रूरतमंदों"
+      },
+      "contactName": "सुरेश शर्मा",
+      "contactPhone": "९८१०० ०००१८",
+      "sevadalNote": "कृपया १० मिनट पहले पहुँचें"
+    }
+  },
+  {
+    "id": "balvikas-west1-labelled",
+    "sentAt": "2026-10-23",
+    "tags": [
+      "labelled",
+      "recurring",
+      "contact",
+      "range"
+    ],
+    "text": "OM SRI SAI RAM\n\nBAL VIKAS GROUP 1 CLASSES - West 1 Samithi\nCommencing from 1st November 2026\nEvery Sunday 9.30 am to 11.00 am\nVenue : Sai Mandir, Janakpuri C-Block\nFor children 5 to 8 years\nParents please contact Mrs. Poonam Sethi 98100 00019\nSai Ram",
+    "expect": {
+      "kind": "announcement",
+      "sevaType": "bal_vikas",
+      "title": "BAL VIKAS GROUP 1 CLASSES - West 1 Samithi",
+      "samithi": "west-1",
+      "date": "2026-11-01",
+      "endDate": null,
+      "startTime": "09:30",
+      "endTime": "11:00",
+      "recurrenceWeekday": 0,
+      "venueName": "Sai Mandir, Janakpuri C-Block",
+      "venueAddress": null,
+      "partner": null,
+      "topic": null,
+      "audience": "children 5 to 8 years",
+      "services": [],
+      "bring": [],
+      "volunteersNeeded": null,
+      "target": null,
+      "contactName": "Mrs. Poonam Sethi",
+      "contactPhone": "98100 00019",
+      "sevadalNote": null
+    }
+  },
+  {
+    "id": "balvikas-gbn1-annualday-prose",
+    "sentAt": "2026-11-16",
+    "tags": [
+      "prose"
+    ],
+    "text": "Sai Ram. The Annual Day of Bal Vikas children of Gautam Buddh Nagar 1 Samithi will be held on Saturday 12 December 2026 at 4 pm at Sai Auditorium, Sector 19 Noida. Children are requested to come in white dress and reach by 3 pm. Parents and all devotees are cordially invited.",
+    "expect": {
+      "kind": "announcement",
+      "sevaType": "bal_vikas",
+      "title": "The Annual Day of Bal Vikas children of Gautam Buddh Nagar 1 Samithi will be held on Saturday 12 December 2026 at 4 pm at Sai Auditorium, Sector 19 Noida",
+      "samithi": "gautam-buddh-nagar-1",
+      "date": "2026-12-12",
+      "endDate": null,
+      "startTime": "16:00",
+      "endTime": null,
+      "recurrenceWeekday": null,
+      "venueName": "Sai Auditorium, Sector 19 Noida",
+      "venueAddress": null,
+      "partner": null,
+      "topic": null,
+      "audience": "Parents and all devotees",
+      "services": [],
+      "bring": [
+        "white dress"
+      ],
+      "volunteersNeeded": null,
+      "target": null,
+      "contactName": null,
+      "contactPhone": null,
+      "sevadalNote": null
+    }
+  },
+  {
+    "id": "balvikas-central5-newyear",
+    "sentAt": "2026-12-28",
+    "tags": [
+      "hard",
+      "range"
+    ],
+    "text": "Jai Sai Ram\nBal Vikas Group 3 Class - Central 5\nSaturday 2nd Jan, 4 pm to 5.30 pm\nTopic: Ramayana quiz\nSai Centre, Pusa Road",
+    "expect": {
+      "kind": "announcement",
+      "sevaType": "bal_vikas",
+      "title": "Bal Vikas Group 3 Class - Central 5",
+      "samithi": "central-5",
+      "date": "2027-01-02",
+      "endDate": null,
+      "startTime": "16:00",
+      "endTime": "17:30",
+      "recurrenceWeekday": null,
+      "venueName": "Sai Centre, Pusa Road",
+      "venueAddress": null,
+      "partner": null,
+      "topic": "Ramayana quiz",
+      "audience": null,
+      "services": [],
+      "bring": [],
+      "volunteersNeeded": null,
+      "target": null,
+      "contactName": null,
+      "contactPhone": null,
+      "sevadalNote": null
+    }
+  },
+  {
+    "id": "bhajan-ggn1-akhand-multiday",
+    "sentAt": "2026-11-09",
+    "tags": [
+      "multi-day",
+      "labelled",
+      "contact"
+    ],
+    "text": "SAI RAM\nAKHAND BHAJAN - GURUGRAM 1 SAMITHI\n\n14th Nov 6 pm to 15th Nov 6 pm (24 hours)\nVenue : Sai Mandir, Sector 14 Gurgaon\nMahila wing will do prasadam seva.\nAll devotees are requested to take a slot. Contact Mr. Vinod Bhatia 98100 00020",
+    "expect": {
+      "kind": "announcement",
+      "sevaType": "bhajan",
+      "title": "AKHAND BHAJAN - GURUGRAM 1 SAMITHI",
+      "samithi": "gurugram-1",
+      "date": "2026-11-14",
+      "endDate": "2026-11-15",
+      "startTime": "18:00",
+      "endTime": "18:00",
+      "recurrenceWeekday": null,
+      "venueName": "Sai Mandir, Sector 14 Gurgaon",
+      "venueAddress": null,
+      "partner": null,
+      "topic": null,
+      "audience": null,
+      "services": [],
+      "bring": [],
+      "volunteersNeeded": null,
+      "target": null,
+      "contactName": "Mr. Vinod Bhatia",
+      "contactPhone": "98100 00020",
+      "sevadalNote": null
+    }
+  },
+  {
+    "id": "bhajan-gzb4-nagarsankirtan",
+    "sentAt": "2026-11-30",
+    "tags": [
+      "labelled",
+      "contact"
+    ],
+    "text": "OM SRI SAI RAM\n\nNagarsankirtan - Ghaziabad 4 Samithi\n\nDate: 6th December 2026, Sunday\nStart: 6.00 am from Sai Mandir, Raj Nagar\nRoute: Raj Nagar - Nehru Nagar - Kavi Nagar - return to Mandir\nPlease wear white. Bring Sai flag and bhajan books.\nSevadal: Reporting at 5.45 am\n\nSai Ram",
+    "expect": {
+      "kind": "announcement",
+      "sevaType": "bhajan",
+      "title": "Nagarsankirtan - Ghaziabad 4 Samithi",
+      "samithi": "ghaziabad-4",
+      "date": "2026-12-06",
+      "endDate": null,
+      "startTime": "06:00",
+      "endTime": null,
+      "recurrenceWeekday": null,
+      "venueName": "Sai Mandir, Raj Nagar",
+      "venueAddress": null,
+      "partner": null,
+      "topic": null,
+      "audience": null,
+      "services": [],
+      "bring": [
+        "Sai flag",
+        "bhajan books"
+      ],
+      "volunteersNeeded": null,
+      "target": null,
+      "contactName": null,
+      "contactPhone": null,
+      "sevadalNote": "Reporting at 5.45 am"
+    }
+  },
+  {
+    "id": "bhajan-east4-two-samithis",
+    "sentAt": "2026-12-02",
+    "tags": [
+      "hard",
+      "relative-date",
+      "range"
+    ],
+    "text": "Sai Ram\nEast 4 Samithi Bhajan\nThis Friday 4 Dec, 6.30 pm to 7.45 pm\nVenue: Sai Centre, Preet Vihar\n(Samithi members of East 3 are also invited to join us)",
+    "expect": {
+      "kind": "announcement",
+      "sevaType": "bhajan",
+      "title": "East 4 Samithi Bhajan",
+      "samithi": "east-4",
+      "date": "2026-12-04",
+      "endDate": null,
+      "startTime": "18:30",
+      "endTime": "19:45",
+      "recurrenceWeekday": null,
+      "venueName": "Sai Centre, Preet Vihar",
+      "venueAddress": null,
+      "partner": null,
+      "topic": null,
+      "audience": null,
+      "services": [],
+      "bring": [],
+      "volunteersNeeded": null,
+      "target": null,
+      "contactName": null,
+      "contactPhone": null,
+      "sevadalNote": null
+    }
+  },
+  {
+    "id": "bhajan-east9-unknown-samithi",
+    "sentAt": "2026-11-11",
+    "tags": [
+      "labelled"
+    ],
+    "text": "Sai Ram\nEast 9 Samithi Bhajan\nDate: 14.11.2026\nTime: 6.00 pm onwards\nPlace: Sai Kutir, Shahdara",
+    "expect": {
+      "kind": "announcement",
+      "sevaType": "bhajan",
+      "title": "East 9 Samithi Bhajan",
+      "samithi": {
+        "raw": "East 9"
+      },
+      "date": "2026-11-14",
+      "endDate": null,
+      "startTime": "18:00",
+      "endTime": null,
+      "recurrenceWeekday": null,
+      "venueName": "Sai Kutir, Shahdara",
+      "venueAddress": null,
+      "partner": null,
+      "topic": null,
+      "audience": null,
+      "services": [],
+      "bring": [],
+      "volunteersNeeded": null,
+      "target": null,
+      "contactName": null,
+      "contactPhone": null,
+      "sevadalNote": null
+    }
+  },
+  {
+    "id": "studycircle-ggn6-labelled",
+    "sentAt": "2026-10-27",
+    "tags": [
+      "labelled",
+      "range"
+    ],
+    "text": "OM SRI SAI RAM\n\nSTUDY CIRCLE - Gurugram 6 Samithi\nDate: Saturday 31st October 2026\nTime: 5.00 pm to 6.30 pm\nVenue: Sai Satsang Hall, Sushant Lok Phase 1\nTopic: Sathya Sai Speaks - Discourse on Selfless Service\nYouth and adults are requested to read the chapter beforehand.",
+    "expect": {
+      "kind": "announcement",
+      "sevaType": "study_circle",
+      "title": "STUDY CIRCLE - Gurugram 6 Samithi",
+      "samithi": "gurugram-6",
+      "date": "2026-10-31",
+      "endDate": null,
+      "startTime": "17:00",
+      "endTime": "18:30",
+      "recurrenceWeekday": null,
+      "venueName": "Sai Satsang Hall, Sushant Lok Phase 1",
+      "venueAddress": null,
+      "partner": null,
+      "topic": "Sathya Sai Speaks - Discourse on Selfless Service",
+      "audience": "Youth and adults",
+      "services": [],
+      "bring": [],
+      "volunteersNeeded": null,
+      "target": null,
+      "contactName": null,
+      "contactPhone": null,
+      "sevadalNote": null
+    }
+  },
+  {
+    "id": "studycircle-se3-devanagari",
+    "sentAt": "2026-12-08",
+    "tags": [
+      "devanagari",
+      "labelled",
+      "range"
+    ],
+    "text": "ॐ श्री साई राम\n\nस्टडी सर्कल – साउथ ईस्ट 3 समिति\nदिनांक: 12 दिसंबर 2026, शनिवार\nसमय: सायं 5:00 से 6:30 बजे\nस्थान: साई सत्संग भवन, नेहरू प्लेस\nविषय: निष्काम सेवा",
+    "expect": {
+      "kind": "announcement",
+      "sevaType": "study_circle",
+      "title": "स्टडी सर्कल – साउथ ईस्ट 3 समिति",
+      "samithi": "south-east-3",
+      "date": "2026-12-12",
+      "endDate": null,
+      "startTime": "17:00",
+      "endTime": "18:30",
+      "recurrenceWeekday": null,
+      "venueName": "साई सत्संग भवन, नेहरू प्लेस",
+      "venueAddress": null,
+      "partner": null,
+      "topic": "निष्काम सेवा",
+      "audience": null,
+      "services": [],
+      "bring": [],
+      "volunteersNeeded": null,
+      "target": null,
+      "contactName": null,
+      "contactPhone": null,
+      "sevadalNote": null
+    }
+  },
+  {
+    "id": "studycircle-youth-range-1030",
+    "sentAt": "2026-11-13",
+    "tags": [
+      "range",
+      "hard"
+    ],
+    "text": "Sai Ram\nStudy Circle (Youth)\nSun 22 Nov | 10:30 to 1\nSai Mandir, Rohini Sector 9\nTopic: Gita and Swami",
+    "expect": {
+      "kind": "announcement",
+      "sevaType": "study_circle",
+      "title": "Study Circle (Youth)",
+      "samithi": null,
+      "date": "2026-11-22",
+      "endDate": null,
+      "startTime": "10:30",
+      "endTime": "13:00",
+      "recurrenceWeekday": null,
+      "venueName": "Sai Mandir, Rohini Sector 9",
+      "venueAddress": null,
+      "partner": null,
+      "topic": "Gita and Swami",
+      "audience": "Youth",
+      "services": [],
+      "bring": [],
+      "volunteersNeeded": null,
+      "target": null,
+      "contactName": null,
+      "contactPhone": null,
+      "sevadalNote": null
+    }
+  },
+  {
+    "id": "disaster-flood-collection",
+    "sentAt": "2026-10-27",
+    "tags": [
+      "labelled",
+      "multi-day",
+      "contact",
+      "range"
+    ],
+    "text": "OM SRI SAI RAM\n\nFLOOD RELIEF COLLECTION DRIVE\n\nCollection dates: 28th to 31st October 2026\nTime: 10 am to 5 pm\nCollection point: Sai Mandir, Lodhi Road\nItems needed: dry ration, blankets, tarpaulin, sanitary pads, medicines\nSevadals: 10 needed for sorting and packing.\nContact: Mr. Harish Rawat 98100 00021",
+    "expect": {
+      "kind": "announcement",
+      "sevaType": "disaster_relief",
+      "title": "FLOOD RELIEF COLLECTION DRIVE",
+      "samithi": null,
+      "date": "2026-10-28",
+      "endDate": "2026-10-31",
+      "startTime": "10:00",
+      "endTime": "17:00",
+      "recurrenceWeekday": null,
+      "venueName": "Sai Mandir, Lodhi Road",
+      "venueAddress": null,
+      "partner": null,
+      "topic": null,
+      "audience": null,
+      "services": [],
+      "bring": [
+        "dry ration",
+        "blankets",
+        "tarpaulin",
+        "sanitary pads",
+        "medicines"
+      ],
+      "volunteersNeeded": 10,
+      "target": null,
+      "contactName": "Mr. Harish Rawat",
+      "contactPhone": "98100 00021",
+      "sevadalNote": null
+    }
+  },
+  {
+    "id": "disaster-blankets-north4",
+    "sentAt": "2026-12-10",
+    "tags": [
+      "prose",
+      "emoji-heavy"
+    ],
+    "text": "Sai Ram 🙏 Winter blanket distribution by North 4 Samithi on Sunday 20 Dec, 7 am onwards, near Yamuna Pushta shelters. Target 500 blankets. Kindly donate new or washed blankets at Sai Mandir, Ashok Vihar by 18th Dec. Volunteers - 25 required for distribution.",
+    "expect": {
+      "kind": "announcement",
+      "sevaType": "disaster_relief",
+      "title": "Winter blanket distribution by North 4 Samithi on Sunday 20 Dec, 7 am onwards, near Yamuna Pushta shelters",
+      "samithi": "north-4",
+      "date": "2026-12-20",
+      "endDate": null,
+      "startTime": "07:00",
+      "endTime": null,
+      "recurrenceWeekday": null,
+      "venueName": "Yamuna Pushta shelters",
+      "venueAddress": null,
+      "partner": null,
+      "topic": null,
+      "audience": null,
+      "services": [],
+      "bring": [
+        "new or washed blankets"
+      ],
+      "volunteersNeeded": 25,
+      "target": {
+        "count": 500,
+        "unit": "blankets"
+      },
+      "contactName": null,
+      "contactPhone": null,
+      "sevadalNote": null
+    }
+  },
+  {
+    "id": "disaster-baadh-ghaziabad5-hinglish",
+    "sentAt": "2026-11-08",
+    "tags": [
+      "hinglish",
+      "multi-day",
+      "relative-date",
+      "range"
+    ],
+    "text": "JAI SAI RAM\nBaadh peediton ke liye rahat samagri sangrah\nAap sab se anurodh hai ki chaaval, daal, aata, tel, kapde aur dawaiyan dein.\nKal se Shukravaar tak, subah 10 baje se shaam 6 baje tak\nSthan: Sai Bhawan, Indirapuram\nGhaziabad 5 Samithi",
+    "expect": {
+      "kind": "announcement",
+      "sevaType": "disaster_relief",
+      "title": "Baadh peediton ke liye rahat samagri sangrah",
+      "samithi": "ghaziabad-5",
+      "date": "2026-11-09",
+      "endDate": "2026-11-13",
+      "startTime": "10:00",
+      "endTime": "18:00",
+      "recurrenceWeekday": null,
+      "venueName": "Sai Bhawan, Indirapuram",
+      "venueAddress": null,
+      "partner": null,
+      "topic": null,
+      "audience": null,
+      "services": [],
+      "bring": [
+        "chaaval",
+        "daal",
+        "aata",
+        "tel",
+        "kapde",
+        "dawaiyan"
+      ],
+      "volunteersNeeded": null,
+      "target": null,
+      "contactName": null,
+      "contactPhone": null,
+      "sevadalNote": null
+    }
+  },
+  {
+    "id": "cleanliness-sw2-labelled",
+    "sentAt": "2026-11-10",
+    "tags": [
+      "labelled",
+      "range"
+    ],
+    "text": "OM SRI SAI RAM\n\nSWACHHTA ABHIYAN - South West 2 Samithi\nDate: 15th November 2026\nTime: 7.00 am to 9.00 am\nVenue: Central Park, Dwarka Sector 10\nBring: gloves, brooms, garbage bags\nRefreshments will be provided\nVolunteers needed: 50",
+    "expect": {
+      "kind": "announcement",
+      "sevaType": "cleanliness",
+      "title": "SWACHHTA ABHIYAN - South West 2 Samithi",
+      "samithi": "south-west-2",
+      "date": "2026-11-15",
+      "endDate": null,
+      "startTime": "07:00",
+      "endTime": "09:00",
+      "recurrenceWeekday": null,
+      "venueName": "Central Park, Dwarka Sector 10",
+      "venueAddress": null,
+      "partner": null,
+      "topic": null,
+      "audience": null,
+      "services": [
+        "Refreshments"
+      ],
+      "bring": [
+        "gloves",
+        "brooms",
+        "garbage bags"
+      ],
+      "volunteersNeeded": 50,
+      "target": null,
+      "contactName": null,
+      "contactPhone": null,
+      "sevadalNote": null
+    }
+  },
+  {
+    "id": "cleanliness-rohini-hinglish",
+    "sentAt": "2026-11-25",
+    "tags": [
+      "hinglish",
+      "relative-date"
+    ],
+    "text": "Sai Ram! Swachhta Seva - shaniwar subah 7 baje park ki safai. Sai Centre ke saamne wale park mein, Sector 5 Rohini. Jhadu aur dastaane le aayein. Sab pahunchiye.",
+    "expect": {
+      "kind": "announcement",
+      "sevaType": "cleanliness",
+      "title": "Swachhta Seva - shaniwar subah 7 baje park ki safai",
+      "samithi": null,
+      "date": "2026-11-28",
+      "endDate": null,
+      "startTime": "07:00",
+      "endTime": null,
+      "recurrenceWeekday": null,
+      "venueName": "Sai Centre ke saamne wale park, Sector 5 Rohini",
+      "venueAddress": null,
+      "partner": null,
+      "topic": null,
+      "audience": null,
+      "services": [],
+      "bring": [
+        "jhadu",
+        "dastaane"
+      ],
+      "volunteersNeeded": null,
+      "target": null,
+      "contactName": null,
+      "contactPhone": null,
+      "sevadalNote": null
+    }
+  },
+  {
+    "id": "cleanliness-gbn2-emoji-caps",
+    "sentAt": "2026-12-21",
+    "tags": [
+      "emoji-heavy",
+      "caps",
+      "range"
+    ],
+    "text": "🧹🧹 SAI RAM 🧹🧹\n♻️ CLEANLINESS DRIVE ♻️\n📅 27 DEC 2026 (SUNDAY)\n⏰ 8 AM - 10 AM\n📍 SAI PARK, NOIDA SECTOR 62\n🧤 BRING: GLOVES, MASKS, SACKS\nGBN 2 SAMITHI",
+    "expect": {
+      "kind": "announcement",
+      "sevaType": "cleanliness",
+      "title": "CLEANLINESS DRIVE",
+      "samithi": "gautam-buddh-nagar-2",
+      "date": "2026-12-27",
+      "endDate": null,
+      "startTime": "08:00",
+      "endTime": "10:00",
+      "recurrenceWeekday": null,
+      "venueName": "SAI PARK, NOIDA SECTOR 62",
+      "venueAddress": null,
+      "partner": null,
+      "topic": null,
+      "audience": null,
+      "services": [],
+      "bring": [
+        "GLOVES",
+        "MASKS",
+        "SACKS"
+      ],
+      "volunteersNeeded": null,
+      "target": null,
+      "contactName": null,
+      "contactPhone": null,
+      "sevadalNote": null
+    }
+  },
+  {
+    "id": "other-mahila-sammelan",
+    "sentAt": "2026-11-17",
+    "tags": [
+      "labelled",
+      "contact",
+      "range"
+    ],
+    "text": "Sai Ram\nMAHILA WING SAMMELAN - Delhi NCR\nSunday, 22 November 2026, 10 am to 1 pm\nAt Sai Auditorium, Lodhi Road\nLadies from all samithis invited. Lunch prasadam will be served.\nRegister with Mrs. Radha Iyer 98100 00022 by 18th Nov",
+    "expect": {
+      "kind": "announcement",
+      "sevaType": "other",
+      "title": "MAHILA WING SAMMELAN - Delhi NCR",
+      "samithi": null,
+      "date": "2026-11-22",
+      "endDate": null,
+      "startTime": "10:00",
+      "endTime": "13:00",
+      "recurrenceWeekday": null,
+      "venueName": "Sai Auditorium, Lodhi Road",
+      "venueAddress": null,
+      "partner": null,
+      "topic": null,
+      "audience": "Ladies from all samithis",
+      "services": [
+        "Lunch prasadam"
+      ],
+      "bring": [],
+      "volunteersNeeded": null,
+      "target": null,
+      "contactName": "Mrs. Radha Iyer",
+      "contactPhone": "98100 00022",
+      "sevadalNote": null
+    }
+  },
+  {
+    "id": "other-diwali-midnight",
+    "sentAt": "2026-11-04",
+    "tags": [
+      "hard",
+      "range"
+    ],
+    "text": "Jai Sai Ram\nDiwali Deepotsav & Bhajan - Youth Wing\n8 Nov 2026 (Sunday), 6 pm to 12 midnight\nSai Mandir, Kalkaji\nLet's light 1001 diyas. Please bring diyas and oil.",
+    "expect": {
+      "kind": "announcement",
+      "sevaType": "other",
+      "title": "Diwali Deepotsav & Bhajan - Youth Wing",
+      "samithi": null,
+      "date": "2026-11-08",
+      "endDate": null,
+      "startTime": "18:00",
+      "endTime": "00:00",
+      "recurrenceWeekday": null,
+      "venueName": "Sai Mandir, Kalkaji",
+      "venueAddress": null,
+      "partner": null,
+      "topic": null,
+      "audience": null,
+      "services": [],
+      "bring": [
+        "diyas",
+        "oil"
+      ],
+      "volunteersNeeded": null,
+      "target": {
+        "count": 1001,
+        "unit": "diyas"
+      },
+      "contactName": null,
+      "contactPhone": null,
+      "sevadalNote": null
+    }
+  },
+  {
+    "id": "other-christmas-devanagari",
+    "sentAt": "2026-12-14",
+    "tags": [
+      "devanagari",
+      "no-time"
+    ],
+    "text": "जय साई राम\n\nसाई केंद्र, गुरुग्राम में क्रिसमस पर बच्चों के लिए खेल-कूद प्रतियोगिता\n25 दिसंबर 2026 (शुक्रवार), समय बाद में बताया जाएगा\nसभी बच्चे सादर आमंत्रित हैं।",
+    "expect": {
+      "kind": "announcement",
+      "sevaType": "other",
+      "title": "साई केंद्र, गुरुग्राम में क्रिसमस पर बच्चों के लिए खेल-कूद प्रतियोगिता",
+      "samithi": null,
+      "date": "2026-12-25",
+      "endDate": null,
+      "startTime": null,
+      "endTime": null,
+      "recurrenceWeekday": null,
+      "venueName": "साई केंद्र, गुरुग्राम",
+      "venueAddress": null,
+      "partner": null,
+      "topic": null,
+      "audience": "सभी बच्चे",
+      "services": [],
+      "bring": [],
+      "volunteersNeeded": null,
+      "target": null,
+      "contactName": null,
+      "contactPhone": null,
+      "sevadalNote": null
+    }
+  },
+  {
+    "id": "report-eye-east1",
+    "sentAt": "2026-11-09",
+    "tags": [
+      "report",
+      "prose"
+    ],
+    "text": "Sai Ram\nEye camp report - East 1 Samithi\nHeld on Sunday 8th November 2026 at Sai Mandir, Anand Vihar.\n312 patients examined, 95 cataract cases identified, 140 spectacles distributed.\nIn association with Lions Eye Hospital.\nThanks to 40 sevadals and doctors. Jai Sai Ram",
+    "expect": {
+      "kind": "report",
+      "sevaType": "eye",
+      "title": "Eye camp report - East 1 Samithi",
+      "samithi": "east-1",
+      "date": "2026-11-08",
+      "endDate": null,
+      "startTime": null,
+      "endTime": null,
+      "recurrenceWeekday": null,
+      "venueName": "Sai Mandir, Anand Vihar",
+      "venueAddress": null,
+      "partner": "Lions Eye Hospital",
+      "topic": null,
+      "audience": null,
+      "services": [],
+      "bring": [],
+      "volunteersNeeded": null,
+      "target": null,
+      "contactName": null,
+      "contactPhone": null,
+      "sevadalNote": null
+    }
+  },
+  {
+    "id": "report-blood-faridabad-hinglish",
+    "sentAt": "2026-11-22",
+    "tags": [
+      "report",
+      "hinglish",
+      "relative-date"
+    ],
+    "text": "Jai Sai Ram\nRaktdaan shivir safaltapoorvak sampann hua. Kal Sai Mandir, Sector 15, Faridabad mein 86 units blood collect hua. Sabhi donors aur sevadals ka dhanyavaad.",
+    "expect": {
+      "kind": "report",
+      "sevaType": "blood",
+      "title": "Raktdaan shivir safaltapoorvak sampann hua",
+      "samithi": null,
+      "date": "2026-11-21",
+      "endDate": null,
+      "startTime": null,
+      "endTime": null,
+      "recurrenceWeekday": null,
+      "venueName": "Sai Mandir, Sector 15, Faridabad",
+      "venueAddress": null,
+      "partner": null,
+      "topic": null,
+      "audience": null,
+      "services": [],
+      "bring": [],
+      "volunteersNeeded": null,
+      "target": null,
+      "contactName": null,
+      "contactPhone": null,
+      "sevadalNote": null
+    }
+  },
+  {
+    "id": "report-narayan-gnw-devanagari",
+    "sentAt": "2026-12-21",
+    "tags": [
+      "report",
+      "devanagari"
+    ],
+    "text": "जय साई राम\n\nनारायण सेवा रिपोर्ट\nदिनांक 20 दिसंबर 2026 को ग्रेटर नोएडा वेस्ट में 480 लोगों को भोजन कराया गया।",
+    "expect": {
+      "kind": "report",
+      "sevaType": "narayan_seva",
+      "title": "नारायण सेवा रिपोर्ट",
+      "samithi": "greater-noida-west",
+      "date": "2026-12-20",
+      "endDate": null,
+      "startTime": null,
+      "endTime": null,
+      "recurrenceWeekday": null,
+      "venueName": null,
+      "venueAddress": null,
+      "partner": null,
+      "topic": null,
+      "audience": null,
+      "services": [],
+      "bring": [],
+      "volunteersNeeded": null,
+      "target": null,
+      "contactName": null,
+      "contactPhone": null,
+      "sevadalNote": null
+    }
+  },
+  {
+    "id": "report-cleanliness-central2",
+    "sentAt": "2026-10-27",
+    "tags": [
+      "report",
+      "relative-date",
+      "emoji-heavy"
+    ],
+    "text": "Swachhta Abhiyan done at Lodhi Garden yesterday by Central 2 Samithi. 60 sevadals, 120 bags of garbage collected 🙏🌹🧹. Pictures attached.",
+    "expect": {
+      "kind": "report",
+      "sevaType": "cleanliness",
+      "title": "Swachhta Abhiyan done at Lodhi Garden yesterday by Central 2 Samithi",
+      "samithi": "central-2",
+      "date": "2026-10-26",
+      "endDate": null,
+      "startTime": null,
+      "endTime": null,
+      "recurrenceWeekday": null,
+      "venueName": "Lodhi Garden",
+      "venueAddress": null,
+      "partner": null,
+      "topic": null,
+      "audience": null,
+      "services": [],
+      "bring": [],
+      "volunteersNeeded": null,
+      "target": null,
+      "contactName": null,
+      "contactPhone": null,
+      "sevadalNote": null
+    }
+  },
+  {
+    "id": "report-medical-ggn3-labelled",
+    "sentAt": "2026-11-30",
+    "tags": [
+      "report",
+      "labelled"
+    ],
+    "text": "Report - FREE MEDICAL CAMP\nSamithi: Gurugram 3\nDate: 29/11/2026\nVenue: Sai School, Sector 40\nPatients: 410\nDoctors: 12\nMedicines distributed worth Rs 80,000\nSai Ram",
+    "expect": {
+      "kind": "report",
+      "sevaType": "medical",
+      "title": "Report - FREE MEDICAL CAMP",
+      "samithi": "gurugram-3",
+      "date": "2026-11-29",
+      "endDate": null,
+      "startTime": null,
+      "endTime": null,
+      "recurrenceWeekday": null,
+      "venueName": "Sai School, Sector 40",
+      "venueAddress": null,
+      "partner": null,
+      "topic": null,
+      "audience": null,
+      "services": [],
+      "bring": [],
+      "volunteersNeeded": null,
+      "target": null,
+      "contactName": null,
+      "contactPhone": null,
+      "sevadalNote": null
+    }
+  },
+  {
+    "id": "report-bhajan-gzb3-forwarded",
+    "sentAt": "2026-10-26",
+    "tags": [
+      "report",
+      "forwarded",
+      "multi-day"
+    ],
+    "text": "Forwarded\n\nAkhand Bhajan at Ghaziabad 3 Samithi was held on 24th and 25th October 2026 and concluded with Mangala Arati. Around 200 devotees took part.",
+    "expect": {
+      "kind": "report",
+      "sevaType": "bhajan",
+      "title": "Akhand Bhajan at Ghaziabad 3 Samithi was held on 24th and 25th October 2026 and concluded with Mangala Arati",
+      "samithi": "ghaziabad-3",
+      "date": "2026-10-24",
+      "endDate": "2026-10-25",
+      "startTime": null,
+      "endTime": null,
+      "recurrenceWeekday": null,
+      "venueName": null,
+      "venueAddress": null,
+      "partner": null,
+      "topic": null,
+      "audience": null,
+      "services": [],
+      "bring": [],
+      "volunteersNeeded": null,
+      "target": null,
+      "contactName": null,
+      "contactPhone": null,
+      "sevadalNote": null
+    }
+  },
+  {
+    "id": "other-thought-for-day",
+    "sentAt": "2026-11-02",
+    "tags": [
+      "other"
+    ],
+    "text": "🌹 Thought for the day 🌹\n\n\"Love all, serve all. Help ever, hurt never.\"\n- Sri Sathya Sai Baba\n\nSai Ram",
+    "expect": {
+      "kind": "other",
+      "sevaType": null,
+      "title": null,
+      "samithi": null,
+      "date": null,
+      "endDate": null,
+      "startTime": null,
+      "endTime": null,
+      "recurrenceWeekday": null,
+      "venueName": null,
+      "venueAddress": null,
+      "partner": null,
+      "topic": null,
+      "audience": null,
+      "services": [],
+      "bring": [],
+      "volunteersNeeded": null,
+      "target": null,
+      "contactName": null,
+      "contactPhone": null,
+      "sevadalNote": null
+    }
+  },
+  {
+    "id": "other-birthday",
+    "sentAt": "2026-11-19",
+    "tags": [
+      "other",
+      "emoji-heavy"
+    ],
+    "text": "Happy Birthday Mrs. Sharma ji! 🎂🎉🌹 May Swami bless you with good health and happiness always. - Sai family 🙏",
+    "expect": {
+      "kind": "other",
+      "sevaType": null,
+      "title": null,
+      "samithi": null,
+      "date": null,
+      "endDate": null,
+      "startTime": null,
+      "endTime": null,
+      "recurrenceWeekday": null,
+      "venueName": null,
+      "venueAddress": null,
+      "partner": null,
+      "topic": null,
+      "audience": null,
+      "services": [],
+      "bring": [],
+      "volunteersNeeded": null,
+      "target": null,
+      "contactName": null,
+      "contactPhone": null,
+      "sevadalNote": null
+    }
+  },
+  {
+    "id": "other-question",
+    "sentAt": "2026-12-03",
+    "tags": [
+      "other"
+    ],
+    "text": "Sai Ram. Is there bhajan today at the centre? What time?",
+    "expect": {
+      "kind": "other",
+      "sevaType": null,
+      "title": null,
+      "samithi": null,
+      "date": null,
+      "endDate": null,
+      "startTime": null,
+      "endTime": null,
+      "recurrenceWeekday": null,
+      "venueName": null,
+      "venueAddress": null,
+      "partner": null,
+      "topic": null,
+      "audience": null,
+      "services": [],
+      "bring": [],
+      "volunteersNeeded": null,
+      "target": null,
+      "contactName": null,
+      "contactPhone": null,
+      "sevadalNote": null
+    }
+  },
+  {
+    "id": "other-poll",
+    "sentAt": "2026-11-26",
+    "tags": [
+      "other"
+    ],
+    "text": "POLL: Which day suits for the next study circle?\n1. Saturday\n2. Sunday\nReply with number only please.",
+    "expect": {
+      "kind": "other",
+      "sevaType": null,
+      "title": null,
+      "samithi": null,
+      "date": null,
+      "endDate": null,
+      "startTime": null,
+      "endTime": null,
+      "recurrenceWeekday": null,
+      "venueName": null,
+      "venueAddress": null,
+      "partner": null,
+      "topic": null,
+      "audience": null,
+      "services": [],
+      "bring": [],
+      "volunteersNeeded": null,
+      "target": null,
+      "contactName": null,
+      "contactPhone": null,
+      "sevadalNote": null
+    }
+  },
+  {
+    "id": "other-goodmorning",
+    "sentAt": "2026-12-18",
+    "tags": [
+      "other",
+      "emoji-heavy"
+    ],
+    "text": "Good morning everyone 🌞🙏 Sai Ram. Have a blessed day 🌸🌸",
+    "expect": {
+      "kind": "other",
+      "sevaType": null,
+      "title": null,
+      "samithi": null,
+      "date": null,
+      "endDate": null,
+      "startTime": null,
+      "endTime": null,
+      "recurrenceWeekday": null,
+      "venueName": null,
+      "venueAddress": null,
+      "partner": null,
+      "topic": null,
+      "audience": null,
+      "services": [],
+      "bring": [],
+      "volunteersNeeded": null,
+      "target": null,
+      "contactName": null,
+      "contactPhone": null,
+      "sevadalNote": null
+    }
+  },
+  {
+    "id": "other-diwali-wish-devanagari",
+    "sentAt": "2026-11-07",
+    "tags": [
+      "other",
+      "devanagari"
+    ],
+    "text": "सभी को दीपावली की हार्दिक शुभकामनाएँ। स्वामी की कृपा सब पर बनी रहे। जय साई राम 🪔",
+    "expect": {
+      "kind": "other",
+      "sevaType": null,
+      "title": null,
+      "samithi": null,
+      "date": null,
+      "endDate": null,
+      "startTime": null,
+      "endTime": null,
+      "recurrenceWeekday": null,
+      "venueName": null,
+      "venueAddress": null,
+      "partner": null,
+      "topic": null,
+      "audience": null,
+      "services": [],
+      "bring": [],
+      "volunteersNeeded": null,
+      "target": null,
+      "contactName": null,
+      "contactPhone": null,
+      "sevadalNote": null
+    }
+  }
+]

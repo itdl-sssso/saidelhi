@@ -139,6 +139,8 @@ export function createInboxService(ctx: WaCtx): InboxService {
     let best: { ev: EventRec; score: number; why: string[] } | null = null;
     let tied = false;
     for (const ev of events) {
+      // A message that names a seva type never matches an event of another type.
+      if (hints.sevaType && hints.sevaType !== ev.sevaType) continue;
       let score = 0;
       const why: string[] = [];
       if (hints.date && istDate(ev.startsAt) === hints.date.date) {

@@ -1,7 +1,7 @@
 // Native `article` documents (M6, spec 38): editor-written articles and copy-on-write
 // copies of legacy posts. Public reads overlay these on the Django posts.
-import { type Article, type ArticleCategory, type I18nText, LEGACY_ARTICLE_CATEGORY, type Media, type UnitRef } from "@/contract";
-import { type ArticleContext, mapLegacyCategory, readingMinutes, sanitizeBody, toArticle } from "../domain/articles";
+import { type Article, type ArticleCategory, type I18nText, LEGACY_ARTICLE_CATEGORY, isBuiltinCategory, type Media, type UnitRef } from "@/contract";
+import { type ArticleContext, typeOf, mapLegacyCategory, readingMinutes, sanitizeBody, toArticle } from "../domain/articles";
 import { toIso } from "../domain/time";
 import type { DocRec } from "../repo/m6-types";
 import type { ArticleRec, DataRepo } from "../repo/types";
@@ -10,7 +10,8 @@ export type NativeStatus = "draft" | "scheduled" | "published" | "hidden";
 
 export interface NativeArticle {
   slug: string;
-  category: ArticleCategory;
+  /** Slug of a `content_type`: one of the built-ins or a type added in the portal. */
+  category: string;
   title: I18nText;
   summary: I18nText;
   bodyHtml: I18nText;
@@ -29,7 +30,7 @@ export interface NativeArticle {
 
 export type NativeDoc = DocRec<NativeArticle>;
 
-const LETTER_BY_CATEGORY = Object.fromEntries(Object.entries(LEGACY_ARTICLE_CATEGORY).map(([l, c]) => [c, l])) as Record<ArticleCategory, string>;
+const LETTER_BY_CATEGORY = Object.fromEntries(Object.entries(LEGACY_ARTICLE_CATEGORY).map(([l, c]) => [c, l])) as Record<string, string>;
 
 export const isLive = (a: NativeArticle, now: Date) =>
   a.status === "published" || (a.status === "scheduled" && !!a.publishAt && new Date(a.publishAt).getTime() <= now.getTime());
@@ -69,7 +70,8 @@ export function nativeToArticle(d: NativeDoc, ctx: ArticleContext): Article {
   const bodyEn = sanitizeBody(a.bodyHtml.en, ctx.mediaBase);
   return {
     ...base,
-    category: a.category,
+    category: isBuiltinCategory(a.category) ? a.category : "news",
+    type: typeOf(ctx, a.category),
     bodyHtml: { en: bodyEn, hi: a.bodyHtml.hi ? sanitizeBody(a.bodyHtml.hi, ctx.mediaBase) : null },
     cover: a.cover,
     gallery: a.gallery,

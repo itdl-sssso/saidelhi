@@ -1,4 +1,4 @@
-import type { JoinPayload, JoinQuery, WhatsAppContact } from "@/contract";
+import type { JoinEvent, JoinPayload, JoinQuery, WhatsAppContact } from "@/contract";
 import { addDays, istDate, istDayStart } from "../domain/time";
 import type { DataRepo } from "../repo/types";
 import { assembleEvents } from "./event-assembler";
@@ -38,7 +38,21 @@ export function createJoinService(repo: DataRepo, deps: ServiceDeps): JoinServic
         limit: q.pageSize,
         offset: pageOffset(q.page, q.pageSize),
       });
-      return { events: { data: await assembleEvents(repo, org, rows), meta: { ...meta, total } }, whatsapp };
+      const data: JoinEvent[] = (await assembleEvents(repo, org, rows)).map((e) => ({
+        id: e.id,
+        title: e.title,
+        sevaType: e.sevaType,
+        status: e.status,
+        startsAt: e.startsAt,
+        endsAt: e.endsAt,
+        postponedTo: e.postponedTo,
+        venue: e.venue,
+        samithi: e.samithi,
+        district: e.district,
+        recurring: e.recurring,
+        sevadalNeeded: true,
+      }));
+      return { events: { data, meta: { ...meta, total } }, whatsapp };
     },
   };
 }

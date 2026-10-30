@@ -3,11 +3,12 @@ import { describe, expect, it, vi } from "vitest";
 import { PORTAL_COOKIES } from "@/contract/auth";
 
 const events = { exists: vi.fn(async () => false) };
+const gallery = { exists: vi.fn(async (slug: string) => slug === "guru-poornima-abc123") };
 const districts = { units: vi.fn(async () => [{ slug: "east" }]) };
 const redirects = {
   resolve: vi.fn(async (p: string) => (p.endsWith("/districts/south") ? { to: "/impact", permanent: true } : null)),
 };
-vi.mock("@/server/services", () => ({ services: () => ({ events, districts, redirects }) }));
+vi.mock("@/server/services", () => ({ services: () => ({ events, districts, redirects, gallery }) }));
 
 vi.mock("next-intl/middleware", () => ({ default: () => () => new Response(null, { status: 200 }) }));
 vi.mock("@/i18n/routing", () => ({ routing: {} }));
@@ -34,6 +35,13 @@ describe("proxy existence probe", () => {
       expect(r.status).toBe(301);
       expect(r.headers.get("location")).toBe(to);
     }
+  });
+  it("probes /gallery/<slug>: known album passes, unknown 404s (EN and HI)", async () => {
+    expect(rewrittenToNotFound(await get("/gallery/guru-poornima-abc123"))).toBe(false);
+    expect(rewrittenToNotFound(await get("/hi/gallery/guru-poornima-abc123"))).toBe(false);
+    expect(rewrittenToNotFound(await get("/gallery/nope"))).toBe(true);
+    expect(rewrittenToNotFound(await get("/hi/gallery/nope"))).toBe(true);
+    expect(rewrittenToNotFound(await get("/gallery"))).toBe(false);
   });
   it("still 404s a district slug with no redirect rule", async () => {
     const r = await get("/districts/atlantis");

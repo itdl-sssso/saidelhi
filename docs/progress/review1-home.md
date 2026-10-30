@@ -1,0 +1,17 @@
+# review1-home (Home / EN+HI round-1 fixes)
+Status per item (done/next). Resume from here.
+1 navbar island: done (fixed island, dark glass over hero via body:has data-tone, main pt, journey -margin, DharmaRule removed) – 1280 checked
+2 scroll snap: HomeSnap.tsx (port of a2-snap.js) mounted in LotusJourney; flow id home-flow; needs browser check
+3 impact: done in code (local tiles, pink highlighted icon, title "This year so far")
+4 wings: 5 emblem colours + SaiConnect + FB/YT in code
+5 centenary: ImageSlot wired
+6 stories: section + empty state done; wiring point src/features/home/stories.ts getHomeStories()
+7 map: HomeMapPreview.tsx+PreviewCanvas.tsx (lazy leaflet, non-interactive, link) wired in CentreFinder – browser check pending
+8 Answers + Auditorium sections done (answers links /discourses only if flag on; else YouTube only)
+9 WhatsApp card: compact OptInForm (number+lang toggle+button) per design
+10 mobile swami photo on card: code done (card photo <900px, heart hidden) – browser check pending
+11 thought: contract Thought.image optional; services/home.ts thoughtImage(); UI uses thought.image
+12 dharma copy done (en+hi)
+
+ALL ITEMS DONE. Checked 1280, 375, /hi, snap glide (synthetic wheel), CLS 0.078 dev.
+Unresolved: social URLs from legacy site (verify); auditorium contact copy from design (unconfirmed); poster/auditorium/centenary images = ImageSlot placeholders; HI agent-written; value photos ~200px (soft on card).

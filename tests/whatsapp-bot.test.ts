@@ -332,8 +332,11 @@ describe("errors, timeout and hand-off", () => {
     const item = after.rows.find((i) => !before.rows.some((b) => b.id === i.id))!;
     expect(item.eventId).toBe(EVENT.eyeMayurCamp);
     expect(item.draftAnswers).toMatchObject({ registered: 120, spectacles_total: 80 });
+    // photos start the gallery flow (tests/gallery-intake.test.ts); a PDF still goes to review
     const photo = await t.say(phone(1), null, null, { kind: "image", name: "page.jpg" });
-    expect(texts(photo)).toBe(pick("hi", COPY.sentToReview));
+    expect(texts(photo)).toBe(pick("hi", COPY.galleryNoBytes));
+    const pdf = await t.say(phone(1), null, null, { kind: "pdf", name: "page.pdf" });
+    expect(texts(pdf)).toBe(pick("hi", COPY.sentToReview));
   });
 
   it("stops updates on STOP, even in the middle of a flow", async () => {
@@ -357,6 +360,14 @@ describe("public flows", () => {
     expect(byPin[0].text).toContain("Coming up in");
     await t.tap(PUBLIC_PHONE, "m:near");
     expect(texts(await t.say(PUBLIC_PHONE, "zzzz"))).toBe(pick("en", COPY.nearUnknown));
+  });
+
+  it("resolves a known NCR pincode no centre lists (122003) instead of 'couldn't match'", async () => {
+    const t = waSetup();
+    await t.tap(PUBLIC_PHONE, "lang:en");
+    await t.tap(PUBLIC_PHONE, "m:near");
+    const out = texts(await t.say(PUBLIC_PHONE, "122003"));
+    expect(out).not.toContain(pick("en", COPY.nearUnknown));
   });
 
   it("joins updates in chat and records consent; shares a centre's number", async () => {

@@ -2,7 +2,7 @@
 
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { type EventAdmin, type EventInput, type SevaType, SevaType as SevaTypeEnum, adminEndpoints } from "@/contract";
+import { type EventAdmin, type EventFromMessage, type EventInput, type PlanField, type SevaType, SevaType as SevaTypeEnum, adminEndpoints } from "@/contract";
 import { SEVA_ICON } from "@/features/public/seva";
 import { useRouter } from "@/i18n/navigation";
 import { type AppLocale, formatDateLong, formatTimeRange } from "@/lib/format";
@@ -48,13 +48,62 @@ function initialState(e: EventAdmin | undefined, samithi: string) {
   };
 }
 
-export function EventForm({ event, samithis, defaultSamithi }: { event?: EventAdmin; samithis: SamithiOption[]; defaultSamithi: string }) {
+/** Form fields filled from a message; `check` lists the ones to look at. */
+function applyPrefill(s: ReturnType<typeof initialState>, p: EventFromMessage, samithis: SamithiOption[]): ReturnType<typeof initialState> {
+  const v = p.prefill;
+  return {
+    ...s,
+    sevaType: v.sevaType ?? s.sevaType,
+    titleEn: v.title ?? s.titleEn,
+    titleTouched: v.title ? true : s.titleTouched,
+    date: v.date ?? s.date,
+    start: v.startTime ?? s.start,
+    end: v.endTime ?? s.end,
+    samithiId: v.samithiId && samithis.some((x) => x.value === v.samithiId) ? v.samithiId : s.samithiId,
+    venueName: v.venueName ?? s.venueName,
+    venueAddress: v.venueAddress ?? s.venueAddress,
+    volunteers: v.volunteersNeeded != null ? String(v.volunteersNeeded) : s.volunteers,
+    bring: v.bring.length ? v.bring.join("\n") : s.bring,
+    descEn: v.description || s.descEn,
+  };
+}
+
+const CHECK_LABEL: Record<PlanField, "seva" | "title" | "date" | "ends" | "samithi" | "venue" | "address" | "volunteers" | "bring" | "descEn"> = {
+  sevaType: "seva",
+  title: "title",
+  startsAt: "date",
+  endsAt: "ends",
+  samithiId: "samithi",
+  venueName: "venue",
+  venueAddress: "address",
+  volunteersNeeded: "volunteers",
+  bring: "bring",
+  description: "descEn",
+};
+
+export function EventForm({
+  event,
+  samithis,
+  defaultSamithi,
+  prefill,
+}: {
+  event?: EventAdmin;
+  samithis: SamithiOption[];
+  defaultSamithi: string;
+  /** Read from an inbox item's message (`?from=<inboxId>`). */
+  prefill?: EventFromMessage | null;
+}) {
   const t = useTranslations("admin.form");
   const tSeva = useTranslations("seva");
   const locale = useLocale() as AppLocale;
   const router = useRouter();
   const { run, pending } = useAction();
-  const [f, setF] = useState(() => initialState(event, defaultSamithi));
+  const [f, setF] = useState(() => {
+    const s = initialState(event, defaultSamithi);
+    return prefill ? applyPrefill(s, prefill, samithis) : s;
+  });
+  const [message, setMessage] = useState("");
+  const [check, setCheck] = useState<PlanField[] | null>(prefill?.check ?? null);
   const [errors, setErrors] = useState<Errors>({});
   const [previewLang, setPreviewLang] = useState<AppLocale>(locale);
   const formRef = useRef<HTMLFormElement>(null);
@@ -139,6 +188,14 @@ export function EventForm({ event, samithis, defaultSamithi }: { event?: EventAd
     router.refresh();
   };
 
+  const fillFromMessage = async () => {
+    const res = await run<EventFromMessage>(adminEndpoints.eventFromMessage(), { body: { text: message } }, { key: "extract", refresh: false });
+    if (!res.ok) return;
+    setF((s) => applyPrefill(s, res.data, samithis));
+    setCheck(res.data.check);
+    setErrors({});
+  };
+
   const errCount = Object.keys(errors).length;
   const pv = previewLang;
   const previewTitle = (pv === "hi" && f.titleHi.trim()) || titleEn || t("untitled");
@@ -151,6 +208,28 @@ export function EventForm({ event, samithis, defaultSamithi }: { event?: EventAd
         {errCount ? (
           <Alert tone="error" title={t("fixErrors", { count: errCount })}>
             {errors.form ?? t("fixErrorsBody")}
+          </Alert>
+        ) : null}
+        {!event ? (
+          <Panel title={t("fromMessage.title")}>
+            <Textarea
+              label={t("fromMessage.label")}
+              hint={t("fromMessage.hint")}
+              rows={4}
+              maxLength={4000}
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+            />
+            <div className={styles.row}>
+              <Button variant="outline" icon="sparkles" pending={pending === "extract"} disabled={message.trim().length < 3} onClick={() => void fillFromMessage()}>
+                {t("fromMessage.fill")}
+              </Button>
+            </div>
+          </Panel>
+        ) : null}
+        {check ? (
+          <Alert tone="note" title={t("fromMessage.filled")}>
+            {check.length ? t("fromMessage.check", { fields: check.map((c) => t(CHECK_LABEL[c])).join(", ") }) : t("fromMessage.checkAll")}
           </Alert>
         ) : null}
         <Panel title={t("what")}>

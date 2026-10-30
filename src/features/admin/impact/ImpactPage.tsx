@@ -118,12 +118,17 @@ function Controls({ d, reload }: { d: ImpactAdminPayload; reload: () => void }) 
           </Panel>
         </div>
       </div>
-      <div className={p.stickySave}>
-        <Button pending={pending === "save"} disabled={!dirty} onClick={save}>
-          {t("save")}
-        </Button>
-        <span className={styles.cap}>{dirty ? t("unsaved") : t("logged")}</span>
-      </div>
+      {dirty ? (
+        <div className={p.saveIsland} role="region" aria-label={t("unsaved")}>
+          <span className={p.saveIslandMsg}>{t("unsaved")}</span>
+          <Button variant="ghost" size="sm" disabled={pending === "save"} onClick={() => setS(init())}>
+            {t("revert")}
+          </Button>
+          <Button size="sm" pending={pending === "save"} onClick={save}>
+            {t("save")}
+          </Button>
+        </div>
+      ) : null}
     </>
   );
 }

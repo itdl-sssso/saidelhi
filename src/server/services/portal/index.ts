@@ -3,6 +3,9 @@ import { type AttachmentsService, type AuditService, createAttachmentsService, c
 import { type AdminEventsService, createAdminEventsService } from "./events";
 import { type CentresAdminService, createCentresAdminService } from "./centres";
 import { type ContentAdminService, createContentAdminService } from "./content";
+import { type ContentTypesAdminService, createContentTypesAdminService } from "./content-types";
+import { createGalleryAdminService } from "./gallery";
+import type { AdminGalleryService } from "./gallery-types";
 import { createFollowUpService, type FollowUpService } from "./followup";
 import { createFormsService, type FormsService } from "./forms";
 import { createPrivacyService, type PrivacyService } from "./privacy";
@@ -24,6 +27,7 @@ import { createVolunteersService, type VolunteersService } from "./volunteers";
 import type { PortalCtx } from "./shared";
 
 export type { AdminEventsService, AdminLinksService, ApprovalsService, AttachmentsService, AuditService, JobsService, FormsService, OrgService, OverviewService, PeopleService, SettingsService, UploadsService, CentresAdminService, PartnersAdminService, DiscoursesAdminService, VolunteersService, ImpactAdminService, ContentAdminService, MigrationService, FollowUpService, PrivacyService, ReportsService, HealthService };
+export type { AdminGalleryService };
 export type { PortalCtx, PortalDeps } from "./shared";
 
 /** Coordinator portal services (§5.4). Every method takes the acting `Actor` and enforces RBAC + scope. */
@@ -46,11 +50,13 @@ export interface PortalServices {
   volunteers: VolunteersService;
   impact: ImpactAdminService;
   content: ContentAdminService;
+  contentTypes: ContentTypesAdminService;
   migration: MigrationService;
   followUp: FollowUpService;
   privacy: PrivacyService;
   reports: ReportsService;
   health: HealthService;
+  gallery: AdminGalleryService;
   /** Hook for the form-link flow after a report is received. */
   onReportSubmitted(eventId: string): Promise<void>;
 }
@@ -77,11 +83,13 @@ export function createPortalServices(ctx: PortalCtx): PortalServices {
     volunteers: createVolunteersService(ctx),
     impact: createImpactAdminService(ctx),
     content: createContentAdminService(ctx),
+    contentTypes: createContentTypesAdminService(ctx),
     migration: createMigrationService(ctx),
     followUp: createFollowUpService(ctx),
     privacy: createPrivacyService(ctx),
     reports: createReportsService(ctx),
     health: createHealthService(ctx),
+    gallery: createGalleryAdminService(ctx),
     onReportSubmitted: (eventId) => reportReceived(ctx, eventId),
   };
 }

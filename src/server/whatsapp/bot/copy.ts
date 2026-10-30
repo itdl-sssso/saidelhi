@@ -34,6 +34,9 @@ export const LABEL = {
   yes: b("Yes", "हाँ"),
   no: b("No", "नहीं"),
   choose: b("Choose", "चुनें"),
+  galleryNone: b("Not for the gallery", "गैलरी के लिए नहीं"),
+  galleryNoneHint: b("Send to review instead", "इसके बजाय जाँच को भेजें"),
+  galleryRecent: b("Recent", "हाल के"),
 } as const;
 
 export const STATUS_LABEL: Record<EventStatus, Bi> = {
@@ -83,6 +86,17 @@ export const COPY = {
     "Thanks, we've sent this to your district to check. A person approves it before it counts.",
     "धन्यवाद, हमने इसे जाँच के लिए आपके ज़िले को भेज दिया है। गिने जाने से पहले कोई व्यक्ति इसे स्वीकृत करता है।",
   ),
+  // Gallery intake (spec 52). Hindi written by an agent: needs native review.
+  galleryOnlyCoordinators: b("Only coordinators can send photos here.", "यहाँ केवल समन्वयक ही फ़ोटो भेज सकते हैं।"),
+  galleryNoBytes: b("I couldn't download that photo. Please send it again.", "वह फ़ोटो डाउनलोड नहीं हो सकी। कृपया उसे फिर से भेजें।"),
+  galleryBadType: b("I can only take JPG, PNG or WebP photos. Please send it as a photo, not a file.", "मैं केवल JPG, PNG या WebP फ़ोटो ले सकता हूँ। कृपया इसे फ़ाइल नहीं, फ़ोटो के रूप में भेजें।"),
+  galleryTooLarge: b("That photo is larger than 10 MB. Please send a smaller one.", "वह फ़ोटो 10 MB से बड़ी है। कृपया छोटी फ़ोटो भेजें।"),
+  galleryAsk: b("Which event or album are these photos for?", "ये फ़ोटो किस कार्यक्रम या एल्बम के लिए हैं?"),
+  galleryAskMatch: (title: string) => b(`Are these photos for ${title}? Or choose another event or album.`, `क्या ये फ़ोटो ${title} के लिए हैं? या कोई और कार्यक्रम या एल्बम चुनें।`),
+  galleryPick: b("Please choose from the list.", "कृपया सूची में से चुनें।"),
+  galleryAdded: (n: number) => b(`Added. ${n} photos so far. Choose where they go, or send more.`, `जुड़ गई। अब तक ${n} फ़ोटो। चुनें कि कहाँ जाएँ, या और भेजें।`),
+  galleryThanks: (n: number) =>
+    b(n === 1 ? "Thank you — 1 photo is waiting for review." : `Thank you — ${n} photos are waiting for review.`, n === 1 ? "धन्यवाद — 1 फ़ोटो जाँच की प्रतीक्षा में है।" : `धन्यवाद — ${n} फ़ोटो जाँच की प्रतीक्षा में हैं।`),
   replyForwarded: b("Thanks, your reply has been passed on.", "धन्यवाद, आपका जवाब आगे भेज दिया गया है।"),
 
   // Plan

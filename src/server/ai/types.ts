@@ -1,7 +1,7 @@
 // Extractor port: turns a coordinator's free-text report into a draft answer
 // set. Every extraction is only a draft in the review inbox; a person approves
 // it before it counts (contract v0.5 #8).
-import type { Confidence, I18nText, SevaType } from "@/contract";
+import type { Confidence, EventExtract, I18nText, SevaType } from "@/contract";
 
 export interface ExtractField {
   id: string;
@@ -35,6 +35,8 @@ export interface ExtractResult {
 export interface Extractor {
   /** Fills number fields from the text. Never throws: falls back to rules. */
   extractFields(input: ExtractInput): Promise<ExtractResult>;
+  /** Reads an event message (announcement or report) into an EventExtract draft. Never throws: falls back to rules. */
+  extractEvent(input: { text: string; now: Date }): Promise<EventExtract>;
 }
 
 export interface DateHint {

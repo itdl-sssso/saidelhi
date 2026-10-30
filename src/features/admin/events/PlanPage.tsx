@@ -1,5 +1,5 @@
 import { getTranslations } from "next-intl/server";
-import type { EventAdmin } from "@/contract";
+import type { EventAdmin, EventFromMessage } from "@/contract";
 import type { AppLocale } from "@/lib/format";
 import type { PortalSession } from "@/server/auth/session";
 import { PageHead } from "../kit";
@@ -8,7 +8,7 @@ import { EventForm } from "./EventForm";
 import styles from "../Admin.module.css";
 
 /** Plan / edit event page body (spec 27): samithis come from the viewer's scope. */
-export async function PlanPage({ session, locale, event }: { session: PortalSession; locale: AppLocale; event?: EventAdmin }) {
+export async function PlanPage({ session, locale, event, prefill }: { session: PortalSession; locale: AppLocale; event?: EventAdmin; prefill?: EventFromMessage | null }) {
   const t = await getTranslations({ locale, namespace: "admin.form" });
   const org = await orgOptions(session, locale);
   const districtName = new Map(org.districts.map((d) => [d.value, d.label]));
@@ -21,7 +21,7 @@ export async function PlanPage({ session, locale, event }: { session: PortalSess
         title={event ? t("editTitle") : t("newTitle")}
         sub={event ? t("editSub") : t("newSub")}
       />
-      <EventForm event={event} samithis={samithis} defaultSamithi={own} />
+      <EventForm event={event} samithis={samithis} defaultSamithi={own} prefill={prefill} />
     </div>
   );
 }

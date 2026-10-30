@@ -12,6 +12,7 @@ import { linkState } from "../../security/link-token";
 import type { ReminderRuleRec } from "../../repo/wa-types";
 import { loadReminderRules } from "../wa/rules";
 import { publishScheduled } from "./content";
+import { pullOfficialThought } from "./official-thought";
 import { createPrivacyService } from "./privacy";
 import { createReportsService } from "./reports";
 import { transition } from "./lifecycle";
@@ -162,6 +163,9 @@ export function createJobsService(ctx: PortalCtx): JobsService {
         case "publish-scheduled":
           out.ids.push(...(await publishScheduled(ctx, by)));
           break;
+        case "official-thought":
+          out.ids.push(...(await pullOfficialThought(ctx, by)));
+          break;
         case "reminders":
           await dayBefore(out);
           await reportReminders(out);
@@ -189,7 +193,7 @@ export function createJobsService(ctx: PortalCtx): JobsService {
         }
       }
       out.ids = [...new Set(out.ids)];
-      if (job === "publish-scheduled") out.changed = out.ids.length;
+      if (job === "publish-scheduled" || job === "official-thought") out.changed = out.ids.length;
       return out;
     },
   };

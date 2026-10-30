@@ -1,0 +1,22 @@
+# Build context = repo root. Keep secrets, personal data and dev-only bulk out of the image.
+.git
+.gitignore
+.claude
+.cache
+.next
+node_modules
+.env*
+!.env.example
+.local-dumps
+media
+media-private
+docs
+graft
+test-results
+playwright-report
+tests
+coverage
+deploy
+*.tsbuildinfo
+Dockerfile
+.dockerignore

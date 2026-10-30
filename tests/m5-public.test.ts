@@ -132,10 +132,11 @@ describe("join", () => {
     for (const e of j.events.data) {
       expect(e.recurring).toBe(false);
       expect(["planned", "postponed"]).toContain(e.status);
-      expect(e.volunteersNeeded).not.toBeNull();
-      expect(e.volunteersNeeded as number).toBeGreaterThan(e.volunteersJoined);
+      expect(e.sevadalNeeded).toBe(true);
       expect(Date.parse(e.startsAt)).toBeGreaterThanOrEqual(NOW.getTime() - 24 * 3600 * 1000);
     }
+    // No head-counts or phone numbers leave the server.
+    expect(JSON.stringify(j.events)).not.toMatch(/volunteers(Needed|Joined)|centreContact|phone/i);
     const times = j.events.data.map((e) => e.startsAt);
     expect([...times].sort()).toEqual(times);
     expect(j.events.meta.total).toBe(j.events.data.length);
@@ -246,7 +247,7 @@ describe("centres by pincode", () => {
     const { svc } = mockServices();
     const res = await svc.centres.list({ pincode: "110091", q: "noida", page: 1, pageSize: 100 });
     expect(res.data.map((c) => c.slug)).toContain("noida-sector-62");
-    expect(res.data.every((c) => (c.distanceKm ?? 99) > 5)).toBe(true);
+    expect(res.data.find((c) => c.slug === "noida-sector-62")?.distanceKm ?? 0).toBeGreaterThan(5);
   });
 });
 

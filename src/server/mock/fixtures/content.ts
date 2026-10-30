@@ -1,4 +1,4 @@
-import type { ArticleRec, ContentItemRec } from "../../repo/types";
+import type { ArticleRec, ContentItemRec, SliderImageRec } from "../../repo/types";
 import { EVENT } from "./events";
 import { fx } from "./ids";
 import { DISTRICT } from "./org";
@@ -92,6 +92,11 @@ export const articles: ArticleRec[] = [
     eventId: null,
     status: "hidden",
   }),
+];
+
+export const sliderImages: SliderImageRec[] = [
+  { id: 1, image: "content_slider_gallery/001.jpg", caption1: "Love All", caption2: "Serve All", order: 1 },
+  { id: 2, image: "content_slider_gallery/002.jpg", caption1: "Help Ever", caption2: "Hurt Never", order: 2 },
 ];
 
 export const settings: Record<string, unknown> = {

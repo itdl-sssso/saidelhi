@@ -13,7 +13,7 @@ export const STRAND_ICONS: Record<ValueKey, [IconName, IconName, IconName]> = {
 /** Closing call to action per value: where it leads and its icon. */
 export const PRACTICE_CTA: Record<ValueKey, { href: string; icon: IconName }> = {
   sathya: { href: "/centres/map", icon: "book-open" },
-  dharma: { href: "/programs/bal_vikas", icon: "graduation-cap" },
+  dharma: { href: "/programs/medical", icon: "stethoscope" },
   shanti: { href: "/calendar?sevaType=bhajan", icon: "music" },
   prema: { href: "/join", icon: "hand-heart" },
   ahimsa: { href: "/join?sevaType=cleanliness", icon: "sprout" },

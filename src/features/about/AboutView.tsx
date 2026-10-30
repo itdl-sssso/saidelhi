@@ -2,7 +2,6 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import type { DistrictSummary, Wing } from "@/contract";
 import { Link } from "@/i18n/navigation";
-import { valuePhoto } from "@/features/home/values";
 import { WINGS } from "@/features/programs/ProgramsView";
 import { LocalText, PageHero, SectionHead, pub } from "@/features/public/parts";
 import { p1 } from "@/features/public/p1";
@@ -40,7 +39,7 @@ export function AboutView({ districts }: { districts: DistrictSummary[] }) {
       <section className={pub.section}>
         <div className={cx(pub.wrap, styles.founder)}>
           <figure className={styles.portrait}>
-            <Image src={valuePhoto("sathya")} alt={t("founderPhotoAlt")} fill sizes="(min-width: 900px) 40vw, 100vw" />
+            <Image src="/images/about/founder.webp" alt={t("founderPhotoAlt")} fill sizes="(min-width: 900px) 40vw, 100vw" />
           </figure>
           <div className={pub.col} style={{ gap: 14 }}>
             <Eyebrow>{t("founderEyebrow")}</Eyebrow>
@@ -155,7 +154,6 @@ export function AboutView({ districts }: { districts: DistrictSummary[] }) {
         </div>
       </section>
 
-      {/* TODO(user): state office phone, email and address, and whether auditorium booking is still needed (plan Q5). */}
       <section className={pub.section} id="contact" style={{ paddingTop: "var(--space-8)" }}>
         <div className={pub.wrap}>
           <div className={p1.band}>
@@ -163,9 +161,52 @@ export function AboutView({ districts }: { districts: DistrictSummary[] }) {
               <h2 className={pub.h3}>{t("contactTitle")}</h2>
               <p className={pub.small}>{t("contactBody")}</p>
             </div>
-            <Button href="/centres/map" variant="outline" icon="map-pin">
-              {t("contactCta")}
-            </Button>
+          </div>
+          <div className={styles.contactGrid}>
+            <article className={styles.contactCard}>
+              <div className={styles.contactImg}>
+                <Image src="/images/about/international.webp" alt={t("centreImageAlt")} fill sizes="(min-width: 900px) 45vw, 100vw" />
+              </div>
+              <div className={styles.contactBody}>
+                <h3 className={pub.h3}>{t("contactOfficeTitle")}</h3>
+                <p className={pub.small}>
+                  <strong>{t("contactOfficeName")}</strong>
+                  <br />
+                  {t("contactOfficeAddress")}
+                </p>
+                <ul className={styles.contactList}>
+                  <li>
+                    <Icon name="phone" size={16} />
+                    <a href="tel:+919971999991">+91 99719 99991</a>
+                  </li>
+                  <li>
+                    <Icon name="mail" size={16} />
+                    <a href="mailto:sp.dl@ssssoindia.org">sp.dl@ssssoindia.org</a>
+                  </li>
+                </ul>
+              </div>
+            </article>
+            <article className={styles.contactCard}>
+              <div className={styles.contactImg}>
+                <Image src="/images/about/auditorium.webp" alt={t("audImageAlt")} fill sizes="(min-width: 900px) 45vw, 100vw" />
+              </div>
+              <div className={styles.contactBody}>
+                <h3 className={pub.h3}>{t("contactAudTitle")}</h3>
+                <p className={pub.small}>{t("contactAudBody")}</p>
+                <ul className={styles.contactList}>
+                  <li>
+                    <Icon name="phone" size={16} />
+                    <span>
+                      <a href="tel:+911124363221">011-2436 3221</a> · <a href="tel:+911124360190">011-2436 0190</a>
+                    </span>
+                  </li>
+                  <li>
+                    <Icon name="mail" size={16} />
+                    <a href="mailto:bookings.sssic@gmail.com">bookings.sssic@gmail.com</a>
+                  </li>
+                </ul>
+              </div>
+            </article>
           </div>
         </div>
       </section>

@@ -7,7 +7,7 @@ export type NavGroupId = "operate" | "collect" | "org" | "publish" | "comms" | "
 
 export type NavItemId =
   | "overview" | "events" | "inbox" | "approvals" | "links" | "forms" | "uploads" | "volunteers" | "org" | "centres" | "partners" | "people"
-  | "content" | "impact" | "discourses" | "whatsapp" | "reports" | "health" | "followup" | "privacy" | "audit" | "migration" | "settings";
+  | "content" | "gallery" | "impact" | "discourses" | "whatsapp" | "reports" | "health" | "followup" | "privacy" | "audit" | "migration" | "settings";
 
 export interface NavItemDef {
   id: NavItemId;
@@ -54,6 +54,7 @@ export const NAV: Array<{ id: NavGroupId; items: NavItemDef[] }> = [
     id: "publish",
     items: [
       { id: "content", href: "/admin/content", icon: I.Newspaper, permission: "content.edit" },
+      { id: "gallery", href: "/admin/gallery", icon: I.Images, permission: "gallery.review", alsoFor: ["gallery.upload"], built: true },
       { id: "impact", href: "/admin/impact", icon: I.ChartColumn, permission: "impact.manage" },
       { id: "discourses", href: "/admin/discourses", icon: I.BookOpen, permission: "discourses.edit" },
     ],

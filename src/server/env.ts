@@ -32,9 +32,14 @@ const EnvSchema = z
     WHATSAPP_PUBLIC_KEYWORD: z.preprocess(blank, z.string().default("JOIN")),
     WA_COEXISTENCE: z.preprocess(blank, z.enum(["true", "false"]).default("false").transform((v) => v === "true")),
     WA_GRAPH_VERSION: z.preprocess(blank, z.string().default("v23.0")),
-    EXTRACTOR_PROVIDER: z.preprocess(blank, z.enum(["rules", "ollama"]).default("rules")),
+    EXTRACTOR_PROVIDER: z.preprocess(blank, z.enum(["rules", "ollama", "hf"]).default("rules")),
     OLLAMA_URL: z.preprocess(blank, z.url().default("http://127.0.0.1:11434")),
     OLLAMA_MODEL: z.preprocess(blank, z.string().default("smollm2:1.7b")),
+    /** EXTRACTOR_PROVIDER=hf: ONNX chat model run in-process by transformers.js (downloaded once from the Hub). */
+    HF_MODEL: z.preprocess(blank, z.string().default("onnx-community/LFM2.5-350M-ONNX")),
+    HF_DTYPE: z.preprocess(blank, z.enum(["q4", "q4f16", "q8", "int8", "uint8", "fp16", "fp32"]).default("q4")),
+    /** Weights cache (relative to the app dir); kept outside node_modules so reinstalls do not re-download. */
+    HF_CACHE_DIR: z.preprocess(blank, z.string().default(".cache/huggingface")),
   })
   .superRefine((env, ctx) => {
     if (env.DATA_SOURCE === "db" && !env.DATABASE_URL) {

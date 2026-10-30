@@ -28,6 +28,8 @@ export const Permission = z.enum([
   "people.invite",
   "people.manage",
   "content.edit",
+  /** v0.10: add/rename/reorder/deactivate article types (state admin). */
+  "content.types",
   "impact.manage",
   "discourses.edit",
   /** v0.8: approve paragraphs/discourses, assign reviewers. */
@@ -48,6 +50,10 @@ export const Permission = z.enum([
   "audit.read",
   "settings.manage",
   "attachments.read",
+  /** v0.9.5: send/upload gallery photos (they land pending). */
+  "gallery.upload",
+  /** v0.9.5: approve/edit/reject photos, publish albums. */
+  "gallery.review",
 ]);
 export type Permission = z.infer<typeof Permission>;
 export const PERMISSIONS = Permission.options;

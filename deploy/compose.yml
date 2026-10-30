@@ -1,0 +1,97 @@
+# Staging/prod stack. Run from the repo root:
+#   docker compose -f deploy/compose.yml <cmd>
+# nginx + certbot run on the host and proxy to 127.0.0.1:3000 (deploy/nginx/).
+# The app uses host networking so MySQL (127.0.0.1:3307) and Ollama resolve the same at build time and at
+# runtime. Keep port 3000 closed in the host firewall (nginx is the only way in).
+name: saidelhi
+
+x-data: &data
+  - ${SAIDELHI_DATA:-/srv/saidelhi}/media:/data/media
+  - ${SAIDELHI_DATA:-/srv/saidelhi}/media-private:/data/media-private
+  - ${SAIDELHI_DATA:-/srv/saidelhi}/hf-cache:/data/hf-cache
+
+x-app-env: &app-env
+  NODE_ENV: production
+  PORT: "3000"
+  # 0.0.0.0, not 127.0.0.1/localhost: Next renames loopback to "localhost" in middleware URLs, so any other
+  # value makes next-intl rewrites look cross-origin (proxied → loops/500). Host firewall keeps :3000 private.
+  HOSTNAME: 0.0.0.0
+  MEDIA_ROOT: /data/media
+  MEDIA_PRIVATE_ROOT: /data/media-private
+  HF_CACHE_DIR: /data/hf-cache
+
+services:
+  mysql:
+    image: mysql:8.0
+    restart: unless-stopped
+    env_file: .env.staging
+    environment:
+      MYSQL_DATABASE: saidelhi
+      TZ: UTC
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_0900_ai_ci
+      - --default-time-zone=+00:00
+      - --innodb-buffer-pool-size=512M
+    ports:
+      # Loopback only: Docker-published ports bypass ufw/iptables INPUT rules.
+      - "127.0.0.1:3307:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ../docs/db/saidelhi-schema.sql:/docker-entrypoint-initdb.d/01-legacy-schema.sql:ro
+    healthcheck:
+      # mysqladmin ping exits 0 whenever the server is up, even on access denied, so no password here.
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
+      interval: 5s
+      timeout: 3s
+      retries: 40
+      start_period: 20s
+
+  app:
+    # Built by deploy.sh (`docker buildx build --network host --secret …`): compose's bake builder refuses
+    # host networking without an entitlement flag.
+    image: saidelhi-app:${APP_TAG:-latest}
+    restart: unless-stopped
+    network_mode: host
+    env_file: .env.staging
+    environment: *app-env
+    volumes: *data
+    depends_on:
+      mysql: { condition: service_healthy }
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/').then(r=>process.exit(r.status<500?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  # One-off jobs: docker compose -f deploy/compose.yml run --rm tools [pnpm exec drizzle-kit migrate]
+  tools:
+    image: saidelhi-tools:${APP_TAG:-latest}
+    build:
+      context: ..
+      target: tools
+    profiles: [tools]
+    network_mode: host
+    env_file: .env.staging
+    environment: *app-env
+    volumes:
+      - ${SAIDELHI_DATA:-/srv/saidelhi}/media:/data/media
+      - ${SAIDELHI_DATA:-/srv/saidelhi}/media-private:/data/media-private
+      # Put legacy dumps / discourse exports here for one-off imports (LEGACY_DUMP=/imports/…).
+      - ${SAIDELHI_DATA:-/srv/saidelhi}/imports:/imports:ro
+
+  # Optional local model for EXTRACTOR_PROVIDER=ollama: docker compose -f deploy/compose.yml --profile ai up -d
+  ollama:
+    image: ollama/ollama:latest
+    profiles: [ai]
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      OLLAMA_HOST: 127.0.0.1:11434
+    volumes:
+      - ollama-data:/root/.ollama
+
+volumes:
+  mysql-data:
+  ollama-data:

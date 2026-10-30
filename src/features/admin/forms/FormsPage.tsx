@@ -21,8 +21,9 @@ import { Dialog } from "@/ui/Dialog";
 import { EmptyState } from "@/ui/EmptyState";
 import { Select } from "@/ui/Select";
 import { Textarea } from "@/ui/Input";
-import { ReasonDialog } from "../Dialogs";
-import { Copy, FileSpreadsheet, History } from "../icons";
+import { useToast } from "@/ui/Toast";
+import { ConfirmDialog, ReasonDialog } from "../Dialogs";
+import { Copy, FileSpreadsheet, History, Trash2 } from "../icons";
 import { I18nFields, type I18nValue } from "../fields";
 import { PageHead, Panel, Pill } from "../kit";
 import { RowMenu } from "../Menu";
@@ -53,7 +54,8 @@ function Body({ data, api, t }: { data: FormsPayload; api: UseApi<FormsPayload, 
   const locale = useLocale() as AppLocale;
   const router = useRouter();
   const { run, pending } = useAction();
-  const [dlg, setDlg] = useState<null | { kind: "new" } | { kind: "dup" | "versions" | "preview" | "request"; row: FormTemplateRow } | { kind: "decline"; req: FormChangeRequest }>(null);
+  const toast = useToast();
+  const [dlg, setDlg] = useState<null | { kind: "new" } | { kind: "dup" | "versions" | "preview" | "request" | "delete"; row: FormTemplateRow } | { kind: "decline"; req: FormChangeRequest }>(null);
   const close = () => setDlg(null);
   const openReqs = data.changeRequests.filter((r) => r.status === "open");
 
@@ -117,6 +119,8 @@ function Body({ data, api, t }: { data: FormsPayload; api: UseApi<FormsPayload, 
                     { icon: History, label: t("versions"), onClick: () => setDlg({ kind: "versions", row: r }) },
                     { icon: FileSpreadsheet, label: t("downloadXlsx"), href: undefined, onClick: () => download(adminEndpoints.formTemplateXlsx(r.id), `${r.code}.xlsx`) },
                     { icon: Copy, label: t("duplicate"), onClick: () => setDlg({ kind: "dup", row: r }), hidden: !data.can.build },
+                    "-",
+                    { icon: Trash2, label: t("delete"), danger: true, onClick: () => setDlg({ kind: "delete", row: r }), hidden: !data.can.build },
                   ]}
                 />
               </div>
@@ -174,6 +178,26 @@ function Body({ data, api, t }: { data: FormsPayload; api: UseApi<FormsPayload, 
       {dlg?.kind === "versions" ? <VersionsDialog row={dlg.row} onClose={close} /> : null}
       {dlg?.kind === "preview" ? <PreviewLoader row={dlg.row} onClose={close} /> : null}
       {dlg?.kind === "request" ? <RequestDialog row={dlg.row} onClose={close} onDone={api.reload} /> : null}
+      {dlg?.kind === "delete" ? (
+        <ConfirmDialog
+          open
+          onClose={close}
+          title={t("deleteTitle", { name: tx(dlg.row.title, locale) })}
+          body={t("deleteBody")}
+          confirmLabel={t("delete")}
+          danger
+          pending={pending === "del"}
+          onConfirm={async () => {
+            const res = await run(adminEndpoints.form(dlg.row.id), { method: "DELETE" }, { key: "del", success: t("deleted"), refresh: false, quiet422: true, onReload: api.reload });
+            if (res.ok) api.reload();
+            else if (res.status === 422) {
+              const d = res.error.details as { reason?: "links" | "pinned" | "last"; count?: number } | undefined;
+              toast.show({ tone: "error", message: d?.reason ? t(`deleteBlocked.${d.reason}`, { count: d.count ?? 0 }) : res.error.message });
+            }
+            return res.ok;
+          }}
+        />
+      ) : null}
       {dlg?.kind === "decline" ? (
         <ReasonDialog
           open

@@ -66,6 +66,19 @@ export const ArticleCategory = z.enum([
   "stories",
 ]);
 export type ArticleCategory = z.infer<typeof ArticleCategory>;
+/** Legacy posts and the seven original types. */
+export const BuiltinArticleCategory = ArticleCategory;
+export type BuiltinArticleCategory = ArticleCategory;
+
+/**
+ * v0.10: an article TYPE is a slug from the admin-managed `content_type` list (GET /admin/content/types).
+ * The seven built-ins keep their slugs (legacy posts map onto them); state admins add more.
+ * `Article.category` stays one of the built-ins (custom types report their nearest built-in, `news`),
+ * the real type is `Article.type`.
+ */
+export const ContentTypeSlug = z.string().regex(/^[a-z][a-z0-9_-]{1,39}$/, "Use lowercase letters, digits, - or _");
+export type ContentTypeSlug = z.infer<typeof ContentTypeSlug>;
+export const isBuiltinCategory = (s: string): s is ArticleCategory => ArticleCategory.safeParse(s).success;
 
 export const LEGACY_ARTICLE_CATEGORY = {
   N: "news",
@@ -75,11 +88,11 @@ export const LEGACY_ARTICLE_CATEGORY = {
   K: "key_programs",
   S: "special_programs",
   P: "stories",
-} as const satisfies Record<string, ArticleCategory>;
+} as const satisfies Record<string, BuiltinArticleCategory>;
 export type LegacyArticleCategory = keyof typeof LEGACY_ARTICLE_CATEGORY;
 
 /** `?c=` filter on /articles: a category, the `centenary` group (both centenary_*), or `all`. */
-export const ArticleCategoryFilter = z.union([ArticleCategory, z.enum(["all", "centenary"])]);
+export const ArticleCategoryFilter = z.union([ContentTypeSlug, z.enum(["all", "centenary"])]);
 export type ArticleCategoryFilter = z.infer<typeof ArticleCategoryFilter>;
 
 export const Role = z.enum([
@@ -168,7 +181,7 @@ export type PrivacyRequestStatus = z.infer<typeof PrivacyRequestStatus>;
 export const ContentKind = z.enum(["thought_for_day", "announcement", "home_section"]);
 export type ContentKind = z.infer<typeof ContentKind>;
 
-export const FeatureFlag = z.enum(["discourses", "offline_mode", "ai_extraction"]);
+export const FeatureFlag = z.enum(["discourses", "offline_mode", "ai_extraction", "thought_official"]);
 export type FeatureFlag = z.infer<typeof FeatureFlag>;
 
 export const ValueSlug = z.enum(["sathya", "dharma", "shanti", "prema", "ahimsa"]);

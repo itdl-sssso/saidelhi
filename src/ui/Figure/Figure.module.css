@@ -1,6 +1,6 @@
 .dash { color: var(--slate-400); }
 .lt5 { font-family: var(--font-sans-body); font-size: 0.6em; font-weight: var(--weight-medium); color: var(--slate-700); }
-.inline .lt5 { font-size: inherit; }
+.inline .lt5 { font-family: inherit; font-size: inherit; font-weight: inherit; color: inherit; }
 
 .estimate {
   display: inline-flex;

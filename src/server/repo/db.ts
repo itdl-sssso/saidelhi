@@ -11,7 +11,7 @@ import { toEventRec } from "./event-row";
 import { partnerCols } from "./partner-cols";
 import { DbPortalRepo } from "./portal-db";
 import { DbWaRepo } from "./wa-db";
-import { postcontentContentpostimage as postImage, postcontentPostcontent as post } from "../db/legacy";
+import { postcontentContentpostimage as postImage, postcontentPostcontent as post, postcontentSliderimages as sliderImage } from "../db/legacy";
 import {
   articleI18n,
   auditLog,
@@ -317,6 +317,11 @@ export class DbRepo implements DataRepo {
     }));
   }
 
+  async sliderImages() {
+    const rows = await this.db.select().from(sliderImage).orderBy(asc(sliderImage.order), asc(sliderImage.id));
+    return rows.map((r) => ({ id: r.id, image: r.slider, caption1: r.caption1, caption2: r.caption2, order: r.order }));
+  }
+
   async listArticles(f: ArticleFilter) {
     const where = and(
       articlePublished,
@@ -398,6 +403,7 @@ export class DbRepo implements DataRepo {
         date: contentItem.date,
         status: contentItem.status,
         sortOrder: contentItem.sortOrder,
+        data: contentItem.data,
       })
       .from(contentItem)
       .where(eq(contentItem.kind, kind))

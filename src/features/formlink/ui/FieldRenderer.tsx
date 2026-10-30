@@ -2,7 +2,7 @@
 
 import type { ReactNode } from "react";
 import { useTranslations } from "next-intl";
-import { ATTACHMENT_LIMITS, type AnswerMap, type FormDefinition, type FormField, type FormSection } from "@/contract";
+import { ATTACHMENT_LIMITS, PHOTO_LIMITS, type AnswerMap, type FormDefinition, type FormField, type FormSection } from "@/contract";
 import { DateField } from "@/ui/DateField";
 import { FieldMessage } from "@/ui/FieldMessage";
 import { ReadOnlyValue, TextAreaField, TextField, type FieldNote } from "@/ui/FormField";
@@ -33,9 +33,11 @@ import styles from "./formlink.module.css";
 
 export const fieldDomId = (path: string) => `f-${path.replaceAll(".", "-")}`;
 
+const PHOTO_FILE_LIMITS = { maxBytes: PHOTO_LIMITS.maxInputBytes, mimes: PHOTO_LIMITS.mimes };
+
 export interface FileHandlers {
   items: (fieldId: string) => UploadItem[];
-  add: (fieldId: string, files: File[], max: number | null) => void;
+  add: (fieldId: string, files: File[], max: number | null, photos?: boolean) => void;
   reject: (fieldId: string, file: File, problem: "type" | "size" | "empty") => void;
   remove: (fieldId: string, key: string) => void;
   retry: (fieldId: string, key: string) => void;
@@ -215,10 +217,10 @@ export function FieldView({ f, path, ctx, scope }: { f: FormField; path: string;
           optional={optional}
           messages={msgs.length ? msgs : undefined}
           items={ctx.files.items(f.id)}
-          limits={ATTACHMENT_LIMITS}
+          limits={f.photos ? PHOTO_FILE_LIMITS : ATTACHMENT_LIMITS}
           maxFiles={f.max}
           disabled={disabled}
-          onAdd={(files) => ctx.files.add(f.id, files, f.max)}
+          onAdd={(files) => ctx.files.add(f.id, files, f.max, f.photos === true)}
           onReject={(file, problem) => ctx.files.reject(f.id, file, problem)}
           onRemove={(key) => ctx.files.remove(f.id, key)}
           onRetry={(key) => ctx.files.retry(f.id, key)}

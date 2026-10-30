@@ -8,6 +8,8 @@ const nextConfig: NextConfig = {
   partialPrefetching: true,
   // Legacy URLs like /about-us/ must 301 once (proxy); other trailing slashes are normalised in the proxy.
   skipTrailingSlashRedirect: true,
+  // Docker image (deploy/) copies .next/standalone; local `next start` and e2e keep the default output.
+  output: process.env.NEXT_OUTPUT === "standalone" ? "standalone" : undefined,
   // LAN testing (`pnpm dev -H 0.0.0.0`): comma-separated hosts, e.g. DEV_ORIGINS=192.168.1.20
   allowedDevOrigins: process.env.DEV_ORIGINS?.split(",").map((h) => h.trim()).filter(Boolean),
   experimental: {
