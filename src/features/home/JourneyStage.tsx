@@ -78,6 +78,7 @@ export function JourneyStage({ photos }: { photos: { key: string; src: string }[
       return;
     }
     root.dataset.mode = "enhanced";
+    root.dataset.tone = "dark";
     // Never hold the page behind the loading veil: lift it after a few seconds even if the
     // lotus is still loading (it fades in over the poster when ready).
     const veilCap = window.setTimeout(() => (root.dataset.veil = "off"), VEIL_CAP_MS);
@@ -220,6 +221,9 @@ export function JourneyStage({ photos }: { photos: { key: string; src: string }[
       delete root.dataset.mode;
       delete root.dataset.ready;
       delete root.dataset.veil;
+      // Next keeps this route in the DOM (hidden) after leaving, and the navbar's dark glass reads
+      // data-tone from anywhere on the page.
+      delete root.dataset.tone;
     };
   }, []);
 
