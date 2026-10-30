@@ -261,7 +261,8 @@
   overflow: hidden;
   background: var(--slate-900);
 }
-.cardPhotoImg { object-fit: cover; object-position: 50% 22%; }
+.cardPhotoFill { object-fit: cover; filter: blur(16px) brightness(0.85); transform: scale(1.2); }
+.cardPhotoImg { object-fit: contain; }
 @media (max-width: 899.98px) {
   .cardPhoto { display: block; }
   .journey[data-mode="static"] .cardPhoto { display: none; }
