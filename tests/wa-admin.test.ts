@@ -250,6 +250,18 @@ describe("webhook", () => {
 
 describe("reminders honour the rules and are idempotent", () => {
   const run = (t: ReturnType<typeof waSetup>) => t.svc.portal.jobs.run("reminders");
+
+  it("sends nothing while flag wa_reminders is off, and never replays the missed report stages", async () => {
+    const t = waSetup(new Date("2026-10-28T08:00:00Z"), { reminders: false });
+    const off = await run(t);
+    expect(off.notified).toBe(0);
+    expect(t.whatsapp.sent).toHaveLength(0);
+    await t.repo.m6.setSetting("flags", { wa_outreach: true, wa_reminders: true }, null);
+    await run(t);
+    // the day-before checklist was not claimed, so it still goes; report stages already due stay recorded
+    expect(t.whatsapp.sent.some((s) => s.template === "event_reminder_day_before")).toBe(true);
+    expect(t.whatsapp.sent.filter((s) => s.template === "report_reminder")).toHaveLength(0);
+  });
   const dayBefore = (t: ReturnType<typeof waSetup>) => t.whatsapp.sent.filter((s) => s.template === "event_reminder_day_before");
 
   it("sends the day-before checklist once per event", async () => {

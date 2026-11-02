@@ -48,6 +48,8 @@ export interface Turn {
   actor: Actor | null;
   locale: Locale;
   replies: OutboundMessage[];
+  /** Flag `wa_outreach`. Off: public menu, near/join/contact, chat opt-in and hand-off are closed to the public. */
+  outreach: boolean;
 }
 
 export type Flow = {

@@ -10,9 +10,12 @@ export const phone = (n: number) => devUserPhone(n);
 export { EVENT, USER };
 
 /** Services over the in-memory repo with a controllable clock and a recording WhatsApp. */
-export function waSetup(start: Date = NOW) {
+/** `outreach`, `reminders`: flags `wa_outreach`, `wa_reminders` (off in production; most tests cover the full feature set). */
+export function waSetup(start: Date = NOW, { outreach = true, reminders = true }: { outreach?: boolean; reminders?: boolean } = {}) {
   const clock = { t: start };
   const repo = new MockRepo();
+  // The mock stores settings synchronously, so the flag is set before the first message.
+  void repo.m6.setSetting("flags", { wa_outreach: outreach, wa_reminders: reminders }, null);
   const whatsapp = new FakeWhatsApp();
   const storage = new MemoryStorage();
   const publicMedia = new MemoryStorage();

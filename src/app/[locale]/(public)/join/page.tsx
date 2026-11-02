@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import { getTranslations } from "next-intl/server";
 import { JoinQuery } from "@/contract";
 import { JoinView } from "@/features/join/JoinView";
-import { getDistricts, getJoin } from "@/features/public/data";
+import { getDistricts, getJoin, getWaOutreachFlag } from "@/features/public/data";
 import Loading from "./loading";
 import { initLocale } from "@/i18n/server";
 
@@ -29,8 +29,8 @@ async function JoinContent({ searchParams }: PageProps<"/[locale]/join">) {
         from: JoinQuery.shape.from.safeParse(raw.from).data,
         to: JoinQuery.shape.to.safeParse(raw.to).data,
       });
-  const [data, districts] = await Promise.all([getJoin(q), getDistricts()]);
-  return <JoinView data={data} q={q} districts={districts} />;
+  const [data, districts, waOutreach] = await Promise.all([getJoin(q), getDistricts(), getWaOutreachFlag()]);
+  return <JoinView data={data} q={q} districts={districts} waOutreach={waOutreach} />;
 }
 
 export default function JoinPage(props: PageProps<"/[locale]/join">) {

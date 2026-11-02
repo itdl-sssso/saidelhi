@@ -9,7 +9,7 @@ import { encryptField } from "../../security/crypto";
 import { BOT_MIN_AGE_MS, issueBotChallenge, verifyBotChallenge } from "../../security/link-token";
 import { maskPhone, normalisePhone, phoneHash } from "../../security/phone";
 import { ensureConversation } from "../../whatsapp/conversations";
-import { loadOrg } from "../shared";
+import { flagOn, loadOrg } from "../shared";
 import type { WaCtx } from "./shared";
 
 const BOT_SCOPE = "optin";
@@ -31,6 +31,8 @@ export function createOptInService(ctx: WaCtx): OptInService {
     },
 
     async request(body, meta) {
+      // Outreach off: no opt-ins taken (the forms are hidden too).
+      if (!(await flagOn(repo, "wa_outreach"))) throw new ApiError("NOT_FOUND");
       if (!verifyBotChallenge(deps.secret, BOT_SCOPE, body.botToken, deps.now())) {
         throw new ApiError("VALIDATION_FAILED", { fields: { botToken: "Please wait a moment and try again." } });
       }

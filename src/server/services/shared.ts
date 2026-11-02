@@ -10,7 +10,14 @@ export async function loadOrg(repo: DataRepo): Promise<OrgIndex> {
 }
 
 // discourses and thought_official: on in `next dev` for local work, off everywhere else until the Trust grants permission.
-export const DEFAULT_FLAGS: FeatureFlags = { discourses: process.env.NODE_ENV === "development", offline_mode: false, ai_extraction: false, thought_official: process.env.NODE_ENV === "development" };
+// wa_outreach, wa_reminders: off everywhere; WhatsApp is a data funnel (plans, reports, photos, approvals, OTP) until the state turns them on.
+export const DEFAULT_FLAGS: FeatureFlags = { discourses: process.env.NODE_ENV === "development", offline_mode: false, ai_extraction: false, thought_official: process.env.NODE_ENV === "development", wa_outreach: false, wa_reminders: false };
+
+/** One flag (e.g. `wa_outreach` for the bot): one settings read, no KPI work. */
+export async function flagOn(repo: DataRepo, key: keyof FeatureFlags): Promise<boolean> {
+  const flags = FeatureFlags.partial().safeParse((await repo.settings(["flags"])).get("flags"));
+  return (flags.success ? flags.data[key] : undefined) ?? DEFAULT_FLAGS[key];
+}
 
 export interface PublicSettings {
   flags: FeatureFlags;

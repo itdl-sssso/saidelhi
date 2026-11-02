@@ -263,6 +263,6 @@ describe("privacy + flags (mock)", () => {
 
   it("discourses flag is off", async () => {
     const { svc } = mockServices();
-    expect(await svc.flags.flags()).toEqual({ discourses: false, offline_mode: false, ai_extraction: false, thought_official: false });
+    expect(await svc.flags.flags()).toEqual({ discourses: false, offline_mode: false, ai_extraction: false, thought_official: false, wa_outreach: false, wa_reminders: false });
   });
 });

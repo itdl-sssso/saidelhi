@@ -2,7 +2,7 @@
 // skipped when unreachable. Restores what it touches.
 import { and, eq, gte, inArray } from "drizzle-orm";
 import type { Pool } from "mysql2/promise";
-import { afterAll, describe, expect, it } from "vitest";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { createDb, createPool } from "@/server/db/client";
 import { auditLog, inboxItem, whatsappConversation, whatsappMessage, whatsappOptin, reminderRule } from "@/server/db/tables";
 import { DISTRICT, EVENT, USER, devUserPhone } from "@/server/mock/fixtures";
@@ -33,14 +33,25 @@ describe.skipIf(!pool)("WhatsApp on MySQL (integration)", () => {
   const started = new Date(Date.now() - 1000);
   const db = pool ? createDb(pool) : null;
   const whatsapp = new FakeWhatsApp();
-  const svc = db ? createServices(new DbRepo(db), { now: () => new Date(), mediaBase: "/media", whatsapp, storage: new MemoryStorage() }) : null;
+  const repo = db ? new DbRepo(db) : null;
+  const svc = repo ? createServices(repo, { now: () => new Date(), mediaBase: "/media", whatsapp, storage: new MemoryStorage() }) : null;
   const rc = { requestId: "it-wa", ipHash: null };
   const TEST_PHONE = "+919810000099";
   const hashA = phoneHash(DEV_SESSION_SECRET, devUserPhone(1));
   let convBackup: typeof whatsappConversation.$inferSelect | undefined;
   const optinPhone = "+919810000098";
+  // Public flows, broadcasts and opt-in need flag `wa_outreach`; the stored flags are put back after.
+  let flagsBefore: unknown;
+
+  beforeAll(async () => {
+    if (!repo) return;
+    flagsBefore = (await repo.settings(["flags"])).get("flags");
+    const prior = typeof flagsBefore === "object" && flagsBefore !== null ? flagsBefore : {};
+    await repo.m6.setSetting("flags", { ...prior, wa_outreach: true }, null);
+  });
 
   afterAll(async () => {
+    if (repo) await repo.m6.setSetting("flags", flagsBefore ?? {}, null);
     if (db) {
       const created = await db.select({ id: inboxItem.id }).from(inboxItem).where(gte(inboxItem.createdAt, started));
       if (created.length) {

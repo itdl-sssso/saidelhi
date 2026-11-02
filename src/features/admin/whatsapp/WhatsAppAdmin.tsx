@@ -43,10 +43,10 @@ export function Loadable<T, M>({ api, children }: { api: UseApi<T, M>; children:
   return <>{children(api.data, api.meta)}</>;
 }
 
-export function WhatsAppAdmin({ canManage, canReminders }: { canManage: boolean; canReminders: boolean }) {
+export function WhatsAppAdmin({ canManage, canReminders, outreach, reminders }: { canManage: boolean; canReminders: boolean; outreach: boolean; reminders: boolean }) {
   const t = useTranslations("admin.whatsapp");
   const sp = useSearchParams();
-  const tabs = canManage ? ALL_TABS : canReminders ? (["reminders"] as TabId[]) : [];
+  const tabs = canManage ? ALL_TABS.filter((id) => outreach || id !== "broadcasts") : canReminders ? (["reminders"] as TabId[]) : [];
   const raw = sp.get("tab") as TabId | null;
   const tab: TabId = raw && tabs.includes(raw) ? raw : tabs[0];
   const params = Object.fromEntries(sp.entries());
@@ -63,7 +63,7 @@ export function WhatsAppAdmin({ canManage, canReminders }: { canManage: boolean;
         </ScrollTabs>
       ) : null}
       {tab === "templates" ? <Templates /> : null}
-      {tab === "reminders" ? <Reminders /> : null}
+      {tab === "reminders" ? <Reminders flagOn={reminders} /> : null}
       {tab === "broadcasts" ? <Broadcasts /> : null}
       {tab === "log" ? <ConversationLog /> : null}
       {tab === "status" ? <Status /> : null}
@@ -117,7 +117,8 @@ function Templates() {
   );
 }
 
-function Reminders() {
+/** `flagOn`: feature flag `wa_reminders`; while off the rules can be edited but nothing is sent. */
+function Reminders({ flagOn }: { flagOn: boolean }) {
   const t = useTranslations("admin.whatsapp");
   const locale = useLocale() as AppLocale;
   const api = useApi<ReminderRule[]>(adminEndpoints.waReminders());
@@ -138,6 +139,7 @@ function Reminders() {
     <Loadable api={api}>
       {(rows) => (
         <Panel title={t("reminders.title")} flush>
+          {flagOn ? null : <Alert tone="attention">{t("reminders.flagOff")}</Alert>}
           <ul className={s.rules}>
             {rows.map((r) => (
               <li key={r.id} className={s.rule}>

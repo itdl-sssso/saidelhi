@@ -80,6 +80,10 @@ export const COPY = {
   unrecognisedAgain: b("I still didn't get that. Would you like to talk to a person?", "मैं अब भी समझ नहीं पाया। क्या आप किसी व्यक्ति से बात करना चाहेंगे?"),
   timeout: b("It has been quiet for a while, so let's start again.", "कुछ देर से कोई संदेश नहीं आया, इसलिए चलिए फिर से शुरू करते हैं।"),
   cancelled: b("Okay, cancelled.", "ठीक है, रद्द कर दिया।"),
+  coordinatorsOnly: b(
+    "Namaste. This WhatsApp number is for Sri Sathya Sai Seva Organisation coordinators to plan and report seva. For events and centres near you, please visit saidelhi.org.",
+    "नमस्ते। यह व्हाट्सऐप नंबर श्री सत्य साई सेवा संगठन के समन्वयकों के लिए है, ताकि वे सेवा की योजना और रिपोर्ट भेज सकें। अपने पास के कार्यक्रम और केंद्र जानने के लिए saidelhi.org देखें।",
+  ),
   notAllowed: b("Your number can't do that. Please ask your district coordinator.", "आपका नंबर यह नहीं कर सकता। कृपया अपने ज़िला समन्वयक से पूछें।"),
   trouble: b("Something went wrong on our side. Please try again in a moment.", "हमारी ओर से कुछ गड़बड़ हो गई। कृपया थोड़ी देर में फिर कोशिश करें।"),
   sentToReview: b(

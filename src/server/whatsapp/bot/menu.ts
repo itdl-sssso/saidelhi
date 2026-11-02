@@ -3,7 +3,7 @@ import { decryptField } from "../../security/crypto";
 import type { PersonRec } from "../../repo/portal-types";
 import type { Role } from "@/contract";
 import { COPY, LABEL } from "./copy";
-import { buttons, list, resetFlow } from "./reply";
+import { buttons, list, resetFlow, say } from "./reply";
 import type { BotDeps, Turn } from "./types";
 
 const COORD_ROLES: ReadonlySet<Role> = new Set<Role>(["samithi_coord", "district_coord", "state_admin"]);
@@ -25,6 +25,7 @@ export function showMenu(t: Turn, withIntro = true): void {
     list(t, withIntro ? COPY.menuCoordinator(t.actor.name) : COPY.menuNext, LABEL.menu, rows, LABEL.menu);
     return;
   }
+  if (!t.outreach) return say(t, COPY.coordinatorsOnly);
   buttons(t, withIntro ? COPY.menuPublic : COPY.menuNext, [
     { id: "m:near", label: LABEL.near },
     { id: "m:join", label: LABEL.join },

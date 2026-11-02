@@ -23,6 +23,7 @@ export const TAGS = {
   articles: "articles",
   centres: "centres",
   gallery: "gallery",
+  flags: "flags",
 } as const;
 
 export async function getHome() {
@@ -119,6 +120,14 @@ export async function getProgram(type: SevaType) {
   cacheLife("hours");
   cacheTag(TAGS.events, TAGS.impact, TAGS.articles);
   return services().programs.byType(type);
+}
+
+/** Flag `wa_outreach`: the WhatsApp opt-in forms (Home, Join) show only when it is on. */
+export async function getWaOutreachFlag(): Promise<boolean> {
+  "use cache";
+  cacheLife("minutes");
+  cacheTag(TAGS.flags);
+  return (await services().flags.flags()).wa_outreach;
 }
 
 export async function getJoin(q: JoinQuery) {

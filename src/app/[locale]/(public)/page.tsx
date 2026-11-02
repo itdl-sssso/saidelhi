@@ -4,7 +4,7 @@ import { HomeSections } from "@/features/home/HomeSections";
 import { LotusJourney } from "@/features/home/LotusJourney";
 import { getDiscourseFlag } from "@/features/discourses/data";
 import { getHomeStories } from "@/features/home/stories";
-import { getCentres, getHome } from "@/features/public/data";
+import { getCentres, getHome, getWaOutreachFlag } from "@/features/public/data";
 import { initLocale } from "@/i18n/server";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -17,11 +17,11 @@ export async function generateMetadata(): Promise<Metadata> {
 // is part of the static shell and revalidates on those tags.
 export default async function HomePage() {
   await initLocale();
-  const [data, centres, stories, discourses] = await Promise.all([getHome(), getCentres(), getHomeStories(), getDiscourseFlag()]);
+  const [data, centres, stories, discourses, waOutreach] = await Promise.all([getHome(), getCentres(), getHomeStories(), getDiscourseFlag(), getWaOutreachFlag()]);
   return (
     <>
       <LotusJourney />
-      <HomeSections data={data} centres={centres} stories={stories} discourses={discourses} />
+      <HomeSections data={data} centres={centres} stories={stories} discourses={discourses} waOutreach={waOutreach} />
     </>
   );
 }

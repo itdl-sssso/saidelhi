@@ -324,6 +324,7 @@
 .involve { display: grid; gap: var(--space-6); }
 @media (min-width: 900px) {
   .involve { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); }
+  .involveSolo { grid-template-columns: minmax(0, 1fr); }
 }
 .involveCard { border-radius: var(--radius-lg); border: 1px solid; padding: 28px; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
 @media (min-width: 900px) {
