@@ -7,6 +7,10 @@ export const FeatureFlags = z.object({
   ai_extraction: z.boolean(),
   /** v0.10: pull the official "Sai Message for the Day" daily (needs Sadhana Trust permission, like `discourses`). */
   thought_official: z.boolean(),
+  /** v0.10.1: WhatsApp outreach (public bot menu near/join/contact, opt-in form + YES, Sevadal broadcasts). Off: the bot only collects plans, reports and photos from coordinators. */
+  wa_outreach: z.boolean(),
+  /** v0.10.1: automatic WhatsApp reminders and alerts (reminder rules, day-3 escalation notice, Sevadal sign-up alert, monthly report by WhatsApp). Off: only OTP, approval requests/decisions, report links and review questions are sent. */
+  wa_reminders: z.boolean(),
 });
 export type FeatureFlags = z.infer<typeof FeatureFlags>;
 

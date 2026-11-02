@@ -24,6 +24,7 @@ import type { EventRec, KpiFactRec } from "../../repo/types";
 import { decryptField } from "../../security/crypto";
 import type { OrgIndex } from "../org-index";
 import { embedEmblem } from "./letterhead";
+import { flagOn } from "../shared";
 import { holders, loadOrg, type PortalCtx, portalUrl } from "./shared";
 
 export interface ReportsService {
@@ -404,7 +405,8 @@ export function createReportsService(ctx: PortalCtx): ReportsService {
             if (p.user.email) {
               await deps.email.send({ to: p.user.email, subject: `Seva report, ${monthName}`, text: `The ${monthName} seva report for ${org.ref(s.data.scopeId).name.en} is ready: ${link}` });
               out.notified++;
-            } else {
+            } else if (await flagOn(repo, "wa_reminders")) {
+              // No email: WhatsApp only while flag `wa_reminders` is on (the report is in the portal either way).
               const phone = decryptField(deps.secret, p.user.phoneEnc);
               if (phone) {
                 await deps.whatsapp.sendTemplate(phone, "monthly_report_ready", p.user.locale, [monthName, link]);

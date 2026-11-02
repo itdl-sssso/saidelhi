@@ -6,6 +6,7 @@ import { type Actor, assertCan } from "../../auth/rbac";
 import { addDays, istDate, toIso } from "../../domain/time";
 import { i18n } from "../org-index";
 import { maskPhone, normalisePhone } from "../../security/phone";
+import { flagOn } from "../shared";
 import { DAY_MS, eventInScope, holders, loadOrg, notify, type PortalCtx, scopeSamithiIds } from "./shared";
 
 export interface VolunteersService {
@@ -107,6 +108,8 @@ export function createVolunteersService(ctx: PortalCtx): VolunteersService {
     },
 
     async onSignup(eventId) {
+      // Sign-up alerts are automatic WhatsApp alerts: off with flag `wa_reminders`.
+      if (!(await flagOn(repo, "wa_reminders"))) return;
       const ev = await repo.eventById(eventId);
       if (!ev) return;
       const [samithiCoords, districtCoords] = await Promise.all([holders(ctx, "samithi_coord", ev.samithiId), holders(ctx, "district_coord", ev.districtId)]);

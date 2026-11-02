@@ -13,6 +13,7 @@ import type { ApprovalRec, EventWrite, TimelineWrite } from "../../repo/portal-t
 import type { EventRec } from "../../repo/types";
 import { decryptField } from "../../security/crypto";
 import type { CacheTag } from "../../cache";
+import { flagOn } from "../shared";
 import { DAY_MS, escalationSettings, fmtDate, holders, loc, notify, type PortalCtx, portalUrl } from "./shared";
 
 export interface TransitionInput {
@@ -185,6 +186,8 @@ async function sideEffects(ctx: PortalCtx, before: EventRec, ev: EventRec, input
       }
       break;
     case "escalate": {
+      // The move to "escalated" always happens (Approvals → Escalated); the WhatsApp notice is a reminder.
+      if (!(await flagOn(ctx.repo, "wa_reminders"))) break;
       const admins = await holders(ctx, "state_admin", null);
       const unit = (await ctx.repo.orgUnits()).find((u) => u.id === ev.districtId);
       const where = unit ? ` (${unit.nameEn})` : "";

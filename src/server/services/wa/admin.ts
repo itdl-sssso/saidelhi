@@ -24,6 +24,7 @@ import { COST_PAISE_PER_MESSAGE } from "../../providers/whatsapp/templates";
 import type { ConversationRec, ReminderRuleRec, WaMessageRec, WaTemplateRec } from "../../repo/wa-types";
 import { decryptField } from "../../security/crypto";
 import { maskPhone } from "../../security/phone";
+import { flagOn } from "../shared";
 import { loadReminderRules, templateRecords } from "./rules";
 import type { WaCtx } from "./shared";
 
@@ -107,6 +108,8 @@ export function createWaAdminService(ctx: WaCtx): WaAdminService {
 
     async broadcast(actor, body) {
       requireManage(actor);
+      // Broadcasts are outreach: closed (and the tab hidden) while flag `wa_outreach` is off.
+      if (!(await flagOn(repo, "wa_outreach"))) throw new ApiError("NOT_FOUND");
       const recipients = await repo.wa.optedIn({ districtIds: body.districtIds, sevaTypes: body.sevaTypes });
       const estimatedCostInr = Math.round(recipients.length * COST_PAISE_PER_MESSAGE.marketing) / 100;
       if (body.dryRun) return { recipients: recipients.length, estimatedCostInr, sent: false, broadcastId: null };

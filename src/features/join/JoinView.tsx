@@ -27,7 +27,8 @@ const query = (q: Pick<JoinQuery, "district" | "sevaType" | "from" | "to">, page
   return s ? `/join?${s}` : "/join";
 };
 
-export function JoinView({ data, q, districts }: { data: JoinPayload; q: JoinQuery; districts: DistrictSummary[] }) {
+/** `waOutreach` (feature flag `wa_outreach`): the WhatsApp opt-in card shows only when it is on. */
+export function JoinView({ data, q, districts, waOutreach }: { data: JoinPayload; q: JoinQuery; districts: DistrictSummary[]; waOutreach: boolean }) {
   const t = useTranslations("join");
   const ts = useTranslations("seva");
   const locale = useLocale() as AppLocale;
@@ -112,11 +113,13 @@ export function JoinView({ data, q, districts }: { data: JoinPayload; q: JoinQue
           </div>
 
           <aside className={styles.side} aria-label={t("sideLabel")}>
-            <div className={pub.card}>
-              <h2 className={pub.h3}>{t("optinTitle")}</h2>
-              <p className={pub.small}>{t("optinBody")}</p>
-              <OptInForm districts={districtOptions.map((d, i) => ({ value: districts[i].district.id, label: d.label }))} sevaTypes={JOIN_SEVA_TYPES.map((s) => ({ value: s, label: ts(s) }))} />
-            </div>
+            {waOutreach ? (
+              <div className={pub.card}>
+                <h2 className={pub.h3}>{t("optinTitle")}</h2>
+                <p className={pub.small}>{t("optinBody")}</p>
+                <OptInForm districts={districtOptions.map((d, i) => ({ value: districts[i].district.id, label: d.label }))} sevaTypes={JOIN_SEVA_TYPES.map((s) => ({ value: s, label: ts(s) }))} />
+              </div>
+            ) : null}
 
             <div className={pub.card}>
               <h2 className={pub.h3}>{t("expectTitle")}</h2>

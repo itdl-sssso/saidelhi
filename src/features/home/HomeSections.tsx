@@ -54,12 +54,15 @@ export function HomeSections({
   centres,
   stories,
   discourses,
+  waOutreach,
 }: {
   data: HomePayload;
   centres: CentreListItem[];
   stories: HomeStory[];
   /** Feature flag `discourses`: the Answers section only links into /discourses when it is on. */
   discourses: boolean;
+  /** Feature flag `wa_outreach`: the WhatsApp updates card shows only when it is on. */
+  waOutreach: boolean;
 }) {
   // Order follows the design (Home v2): thought, upcoming, impact, find a centre, wings,
   // stories, centenary, news, answers, auditorium, get involved.
@@ -75,7 +78,7 @@ export function HomeSections({
       <News articles={data.articles} />
       <Answers discourses={discourses} />
       <Auditorium />
-      <GetInvolved />
+      <GetInvolved waOutreach={waOutreach} />
     </div>
   );
 }
@@ -547,11 +550,11 @@ function Auditorium() {
   );
 }
 
-function GetInvolved() {
+function GetInvolved({ waOutreach }: { waOutreach: boolean }) {
   const t = useTranslations("home");
   return (
     <section id="involve" className={styles.sec} aria-labelledby="involve-title">
-      <Wrap className={styles.involve}>
+      <Wrap className={cx(styles.involve, !waOutreach && styles.involveSolo)}>
         <div className={cx(styles.involveCard, styles.involveWarm)}>
           <Eyebrow>{t("involveEyebrow")}</Eyebrow>
           <h2 id="involve-title" className={styles.h2}>
@@ -564,19 +567,21 @@ function GetInvolved() {
             </Button>
           </div>
         </div>
-        <div className={cx(styles.involveCard, styles.involveCalm)}>
-          <span className={styles.waIc} aria-hidden="true">
-            <Icon name="message-circle" size={20} />
-          </span>
-          <h3 className={styles.h3}>{t("waTitle")}</h3>
-          <p className={styles.small}>{t("waBody")}</p>
-          <div className={styles.waForm}>
-            <OptInForm compact districts={[]} sevaTypes={[]} submitLabel={t("waSubmit")} languageLabel={t("waLang")} />
+        {waOutreach ? (
+          <div className={cx(styles.involveCard, styles.involveCalm)}>
+            <span className={styles.waIc} aria-hidden="true">
+              <Icon name="message-circle" size={20} />
+            </span>
+            <h3 className={styles.h3}>{t("waTitle")}</h3>
+            <p className={styles.small}>{t("waBody")}</p>
+            <div className={styles.waForm}>
+              <OptInForm compact districts={[]} sevaTypes={[]} submitLabel={t("waSubmit")} languageLabel={t("waLang")} />
+            </div>
+            <p className={styles.fine}>
+              {t("waPrivacyShort")} <Link href="/privacy">{t("privacyLink")}</Link>
+            </p>
           </div>
-          <p className={styles.fine}>
-            {t("waPrivacyShort")} <Link href="/privacy">{t("privacyLink")}</Link>
-          </p>
-        </div>
+        ) : null}
       </Wrap>
     </section>
   );

@@ -533,6 +533,8 @@ function FlagsAndLinks({ which }: { which: "flags" | "links" }) {
               <TogRow label={t("flags.offline")} desc={t("flags.offlineDesc")} checked={s.flags.offline_mode} disabled={pending === "offline"} onChange={(v) => patch(s, { flags: { offline_mode: v } }, "offline")} />
               <TogRow label={t("flags.ai")} desc={t("flags.aiDesc")} checked={s.flags.ai_extraction} disabled={pending === "ai"} onChange={(v) => patch(s, { flags: { ai_extraction: v } }, "ai")} />
               <TogRow label={t("flags.thoughtOfficial")} desc={t("flags.thoughtOfficialDesc")} checked={s.flags.thought_official} disabled={pending === "thought"} onChange={(v) => patch(s, { flags: { thought_official: v } }, "thought")} />
+              <TogRow label={t("flags.waOutreach")} desc={t("flags.waOutreachDesc")} checked={s.flags.wa_outreach} disabled={pending === "outreach"} onChange={(v) => patch(s, { flags: { wa_outreach: v } }, "outreach")} />
+              <TogRow label={t("flags.waReminders")} desc={t("flags.waRemindersDesc")} checked={s.flags.wa_reminders} disabled={pending === "reminders"} onChange={(v) => patch(s, { flags: { wa_reminders: v } }, "reminders")} />
             </div>
             <Note>{t("logged")}</Note>
           </Panel>

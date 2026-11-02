@@ -1561,6 +1561,7 @@
       },
       "reminders": {
         "title": "Reminder rules",
+        "flagOff": "WhatsApp reminders are switched off in Settings → Feature flags. You can still set these rules; nothing is sent until the flag is on.",
         "saved": "Reminder updated.",
         "copyDistrict": "Also copied to the district coordinator.",
         "global": "These rules apply to every district.",
@@ -1724,7 +1725,11 @@
         "ai": "AI suggestions for scans",
         "aiDesc": "Suggests numbers from photos in the review inbox. A person always confirms.",
         "thoughtOfficial": "Official thought of the day",
-        "thoughtOfficialDesc": "Fetches the official Sai Message for the Day from sathyasai.org once a day and shows it instead of the pool. Keep off until the Sadhana Trust has given written permission."
+        "thoughtOfficialDesc": "Fetches the official Sai Message for the Day from sathyasai.org once a day and shows it instead of the pool. Keep off until the Sadhana Trust has given written permission.",
+        "waOutreach": "WhatsApp outreach",
+        "waOutreachDesc": "Public bot menu (what's on near me, join updates, contact a centre), the WhatsApp opt-in forms on Home and Join, and Sevadal broadcasts. Off: WhatsApp only collects plans, reports and photos from coordinators.",
+        "waReminders": "WhatsApp reminders and alerts",
+        "waRemindersDesc": "Reminder rules (day before, report reminders, approval day 2), the day-3 escalation notice to state admins, Sevadal sign-up alerts and the monthly report by WhatsApp. Off: WhatsApp only sends login codes, approval requests and decisions, report links and review questions."
       },
       "links": {
         "title": "Link defaults and escalation",

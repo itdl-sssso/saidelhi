@@ -4,6 +4,7 @@ import { NoAccess } from "@/features/admin/kit";
 import { requirePortal, withParams } from "@/features/admin/server";
 import { Streamed } from "@/features/admin/Streamed";
 import { WhatsAppAdmin } from "@/features/admin/whatsapp/WhatsAppAdmin";
+import { services } from "@/server/services";
 
 export async function generateMetadata() {
   const locale = await initLocale();
@@ -19,7 +20,9 @@ async function Content({ searchParams }: PageProps<"/[locale]/admin/whatsapp">) 
   const canManage = perms.has("whatsapp.manage");
   const canReminders = canManage || perms.has("whatsapp.reminders");
   if (!canReminders) return <NoAccess />;
-  return <WhatsAppAdmin canManage={canManage} canReminders={canReminders} />;
+  // Broadcasts are outreach: the tab shows only while flag `wa_outreach` is on. Rules stay editable with `wa_reminders` off, with a note.
+  const flags = await services().flags.flags();
+  return <WhatsAppAdmin canManage={canManage} canReminders={canReminders} outreach={flags.wa_outreach} reminders={flags.wa_reminders} />;
 }
 
 export default function Page(props: PageProps<"/[locale]/admin/whatsapp">) {

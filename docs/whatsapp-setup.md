@@ -29,6 +29,8 @@ What the platform needs from Meta, in order. Pricing and policy change often —
 
 ## 5. Message templates (need Meta approval, EN + HI each)
 Messages the bot *starts* (outside a 24-hour reply window) must be approved templates.
+
+With flags `wa_outreach` and `wa_reminders` off (default: WhatsApp collects plans, reports and photos, asks districts for approval, and sends login codes) only these are sent: `login_code`, `plan_approval_request`, `report_approval_request`, `form_link_sent`, `invite_coordinator`, plus `review_message` and `privacy_reply` (listed in Admin → WhatsApp). Submit the rest (`event_reminder_day_before`, `report_reminder`, `escalation_notice`, `volunteer_reminder`, `seva_broadcast`, …) only before turning those flags on in Admin → Settings.
 | Template | Category | Used for |
 |---|---|---|
 | `login_code` | Authentication (OTP, copy-code button) | portal login + report-link verification |

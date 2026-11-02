@@ -11,6 +11,7 @@ import { decryptField } from "../../security/crypto";
 import { linkState } from "../../security/link-token";
 import type { ReminderRuleRec } from "../../repo/wa-types";
 import { loadReminderRules } from "../wa/rules";
+import { flagOn } from "../shared";
 import { publishScheduled } from "./content";
 import { pullOfficialThought } from "./official-thought";
 import { createPrivacyService } from "./privacy";
@@ -35,9 +36,10 @@ export function createJobsService(ctx: PortalCtx): JobsService {
     }
   }
 
-  /** Admin-controlled reminder rules (spec 42); all on until someone switches one off. */
+  /** Admin-controlled reminder rules (spec 42); all on until someone switches one off. All off while flag `wa_reminders` is off. */
   async function rules(): Promise<Map<ReminderRuleRec["key"], ReminderRuleRec>> {
-    return new Map((await loadReminderRules(repo.wa)).map((r) => [r.key, r]));
+    const on = await flagOn(repo, "wa_reminders");
+    return new Map((await loadReminderRules(repo.wa)).map((r) => [r.key, on ? r : { ...r, enabled: false }]));
   }
 
   async function escalations(by: SystemActor, out: JobResult) {

@@ -5,6 +5,7 @@ import { ulid } from "ulidx";
 import type { WaOutbound } from "@/contract";
 import type { OutboundMessage } from "../../providers/whatsapp/types";
 import { phoneHash, normalisePhone } from "../../security/phone";
+import { flagOn } from "../../services/shared";
 import { ensureConversation, recordMessage } from "../conversations";
 import { answerStep, approvalsStep, decide, showCard, startApprovals } from "./approvals";
 import { COPY, LABEL } from "./copy";
@@ -37,6 +38,9 @@ const FLOWS: Record<string, Flow | undefined> = {
   answer: { start: async () => undefined, step: answerStep },
   gallery: galleryFlow,
 };
+
+/** Flows that hand out information rather than collect it: closed while `wa_outreach` is off. */
+const OUTREACH_FLOWS: ReadonlySet<string> = new Set(["near", "contact", "join"]);
 
 const MENU_WORDS = new Set(["menu", "start", "hi", "hello", "hey", "namaste", "namaskar", "नमस्ते", "मेनू", "home", "back", "होम"]);
 const HELP_WORDS = new Set(["help", "मदद", "सहायता", "sahayata", "madad"]);
@@ -72,6 +76,7 @@ async function startFlow(t: Turn, name: string): Promise<void> {
     return startApprovals(t);
   }
   if ((name === "plan" || name === "report") && !isCoordinator(t)) return say(t, COPY.notAllowed);
+  if (OUTREACH_FLOWS.has(name) && !t.outreach) return showMenu(t);
   const flow = FLOWS[name];
   if (!flow) return showMenu(t);
   resetFlow(t);
@@ -90,6 +95,7 @@ function commandOf(input: BotInput): string | null {
 }
 
 async function unrecognised(t: Turn): Promise<void> {
+  if (!t.outreach && !isCoordinator(t)) return showMenu(t);
   const strikes = Number(t.conv.state.data.strikes ?? 0) + 1;
   if (strikes >= 2) {
     buttons(t, COPY.unrecognisedAgain, [
@@ -116,7 +122,7 @@ async function optInKeywords(t: Turn): Promise<boolean> {
     say(t, COPY.optOutDone);
     return true;
   }
-  if (YES_WORDS.has(w) && rec?.status === "pending" && !t.conv.state.flow) {
+  if (t.outreach && YES_WORDS.has(w) && rec?.status === "pending" && !t.conv.state.flow) {
     await repo.saveOptIn({ ...rec, status: "opted_in", consentAt: t.deps.now(), stoppedAt: null });
     t.conv.locale ??= rec.locale;
     t.locale = t.conv.locale;
@@ -148,14 +154,16 @@ async function route(t: Turn, timedOut: boolean): Promise<void> {
   const card = rid ? /^ap:(yes|no|ask):(.+)$/.exec(rid) : null;
   if (card) return decide(t, card[1] as "yes" | "no" | "ask", card[2]);
   if (rid?.startsWith("ap:")) return showCard(t, rid.slice(3));
-  if (rid === "h:human") return handoff(t, "Asked to talk to a person");
+  // Hand-off and help for the public are outreach too; coordinators keep them.
+  const publicClosed = !t.outreach && !isCoordinator(t);
+  if (rid === "h:human") return publicClosed ? showMenu(t) : handoff(t, "Asked to talk to a person");
 
   const cmd = commandOf(t.input);
   if (timedOut && !cmd) return showMenu(t);
   if (cmd) {
     if (cmd === "menu") return showMenu(t);
-    if (cmd === "help") return help(t);
-    if (cmd === "human") return handoff(t, t.input.text ?? "Asked to talk to a person");
+    if (cmd === "help") return publicClosed ? showMenu(t) : help(t);
+    if (cmd === "human") return publicClosed ? showMenu(t) : handoff(t, t.input.text ?? "Asked to talk to a person");
     return startFlow(t, cmd);
   }
   if (CANCEL_WORDS.has(w) || (rid === "c:no" && !t.conv.state.flow)) {
@@ -164,6 +172,8 @@ async function route(t: Turn, timedOut: boolean): Promise<void> {
     return showMenu(t, false);
   }
 
+  // A near/join/contact flow begun before outreach was switched off ends here.
+  if (!t.outreach && t.conv.state.flow && OUTREACH_FLOWS.has(t.conv.state.flow)) return showMenu(t);
   const flow = t.conv.state.flow ? FLOWS[t.conv.state.flow] : undefined;
   if (flow) return flow.step(t);
 
@@ -228,7 +238,7 @@ export async function handleInbound(deps: BotDeps, msg: InboundMessage): Promise
       return item;
     },
   };
-  const t: Turn = { deps: wrapped, conv, input: { text: msg.text, replyId: msg.replyId, media: msg.media }, user: actor ? active : null, actor, locale: conv.locale ?? "en", replies: [] };
+  const t: Turn = { deps: wrapped, conv, input: { text: msg.text, replyId: msg.replyId, media: msg.media }, user: actor ? active : null, actor, locale: conv.locale ?? "en", replies: [], outreach: await flagOn(deps.repo, "wa_outreach") };
 
   const now = deps.now();
   const timedOut = !!conv.state.flow && !!conv.expiresAt && now > conv.expiresAt;

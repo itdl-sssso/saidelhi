@@ -388,3 +388,35 @@ describe("public flows", () => {
     expect(reply[0].text).toContain("•");
   });
 });
+
+describe("outreach off (flag wa_outreach): data funnel only", () => {
+  it("answers the public with a coordinators-only note: no menu, flows, help, hand-off or chat opt-in", async () => {
+    const t = waSetup(undefined, { outreach: false });
+    await t.tap(PUBLIC_PHONE, "lang:en");
+    const inboxBefore = await t.repo.wa.inboxCounts({});
+    const note = pick("en", COPY.coordinatorsOnly);
+    for (const reply of [await t.say(PUBLIC_PHONE, "menu"), await t.tap(PUBLIC_PHONE, "m:near"), await t.tap(PUBLIC_PHONE, "m:join"), await t.say(PUBLIC_PHONE, "contact"), await t.say(PUBLIC_PHONE, "help"), await t.tap(PUBLIC_PHONE, "h:human"), await t.say(PUBLIC_PHONE, "what time is bhajan")]) {
+      expect(texts(reply)).toBe(note);
+      expect(buttonIds(reply)).toEqual([]);
+    }
+    expect(texts(await t.say(PUBLIC_PHONE, "YES"))).toBe(note);
+    expect(await t.repo.wa.inboxCounts({})).toEqual(inboxBefore);
+    // STOP is always honoured
+    expect(texts(await t.say(PUBLIC_PHONE, "STOP"))).toBe(pick("en", COPY.optOutDone));
+  });
+
+  it("keeps the coordinator work menu, without outreach commands", async () => {
+    const t = waSetup(undefined, { outreach: false });
+    const menu = await t.say(phone(1), "menu");
+    expect(rowIds(menu)).toContain("m:report");
+    expect(rowIds(await t.say(phone(1), "near"))).toContain("m:report");
+  });
+
+  it("refuses broadcasts and web opt-ins", async () => {
+    const t = waSetup(undefined, { outreach: false });
+    const state = await t.actor((await t.repo.portal.people()).find((p) => p.role?.role === "state_admin")!.user.id);
+    await expect(t.svc.wa.admin.broadcast(state, { districtIds: [], sevaTypes: [], text: { en: "x", hi: null }, dryRun: true })).rejects.toMatchObject({ code: "NOT_FOUND" });
+    const { botToken } = t.svc.wa.optin.challenge();
+    await expect(t.svc.wa.optin.request({ phone: "9810000011", districtId: null, sevaTypes: [], locale: "en", botToken }, t.rc)).rejects.toMatchObject({ code: "NOT_FOUND" });
+  });
+});

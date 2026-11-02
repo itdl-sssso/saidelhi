@@ -1316,7 +1316,7 @@ export type AnalyticsStatus = z.infer<typeof AnalyticsStatus>;
 
 /** GET /admin/settings — flags, link defaults, escalation, analytics (seva types/KPIs/strings have their own lists). */
 export const SettingsPayload = z.object({
-  flags: z.object({ discourses: z.boolean(), offline_mode: z.boolean(), ai_extraction: z.boolean(), thought_official: z.boolean() }),
+  flags: z.object({ discourses: z.boolean(), offline_mode: z.boolean(), ai_extraction: z.boolean(), thought_official: z.boolean(), wa_outreach: z.boolean(), wa_reminders: z.boolean() }),
   links: LinkDefaults,
   escalation: EscalationSettings,
   analytics: AnalyticsStatus,
@@ -1326,7 +1326,7 @@ export type SettingsPayload = z.infer<typeof SettingsPayload>;
 
 /** PATCH /admin/settings → SettingsPayload. Applies to new links / future escalations only. */
 export const SettingsPatch = z.object({
-  flags: z.object({ discourses: z.boolean(), offline_mode: z.boolean(), ai_extraction: z.boolean(), thought_official: z.boolean() }).partial().optional(),
+  flags: z.object({ discourses: z.boolean(), offline_mode: z.boolean(), ai_extraction: z.boolean(), thought_official: z.boolean(), wa_outreach: z.boolean(), wa_reminders: z.boolean() }).partial().optional(),
   links: LinkDefaults.partial().optional(),
   escalation: EscalationSettings.partial().optional(),
   version: Version,

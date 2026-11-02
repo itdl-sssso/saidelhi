@@ -11,6 +11,7 @@ export const CACHE_TAGS = {
   home: "home",
   gallery: "gallery",
   uiStrings: "ui-strings",
+  flags: "flags",
 } as const;
 
 export type CacheTag = (typeof CACHE_TAGS)[keyof typeof CACHE_TAGS];
