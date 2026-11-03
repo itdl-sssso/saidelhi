@@ -43,6 +43,9 @@ export const KPI_DEFS: readonly KpiDef[] = [
   def("narayan.meals", "Meals served", "परोसे गए भोजन", "narayan_seva", true, true),
   def("narayan.ration_kits", "Ration kits", "राशन किट", "narayan_seva", true, true),
   def("balvikas.classes", "Classes held", "आयोजित कक्षाएँ", "bal_vikas", false),
+  def("bhajan.attendees", "Attendance at bhajans", "भजन में उपस्थिति", "bhajan", true),
+  def("study.attendees", "Study circle attendance", "अध्ययन मंडल में उपस्थिति", "study_circle", true),
+  def("relief.people", "People helped", "सहायता पाए लोग", "disaster_relief", true, true),
   def("balvikas.children", "Children enrolled", "नामांकित बच्चे", "bal_vikas", true),
 ];
 

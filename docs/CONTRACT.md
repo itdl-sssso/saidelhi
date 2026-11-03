@@ -124,7 +124,7 @@ type Figure = { value: PublicCount | null; estimate: boolean };  // null = not r
 ```ts
 EventStatus = 'draft'|'awaiting_approval'|'planned'|'awaiting_report'|'report_submitted'|'approved'|'cancelled'|'postponed'|'escalated'
 SevaType    = 'eye'|'blood'|'medical'|'narayan_seva'|'bal_vikas'|'bhajan'|'study_circle'|'disaster_relief'|'cleanliness'|'other'   // extensible via settings
-Wing        = 'service'|'educational'|'spiritual'|'mahila'|'youth'
+Wing        = 'service'|'educational'|'spiritual'   // 3 wings (v0.10.2)
 LinkPurpose = 'report'|'desk'|'public'
 LinkState   = 'active'|'expired'|'revoked'|'used_up'
 Source      = 'form'|'upload'|'whatsapp'|'scan'|'portal'
@@ -504,3 +504,8 @@ Spec `docs/specs/52-gallery.md`. (The WIP note said v0.9.3; that number is taken
 ### v0.10.1 (WhatsApp as a data funnel)
 1. **Flag `wa_outreach`** (`FeatureFlags`, `FeatureFlag` enum, `SettingsPayload/SettingsPatch.flags`; default **off** in every environment). Off: the bot answers anyone who is not a coordinator with `COPY.coordinatorsOnly` (no public menu, no near/join/contact flows, no public help or hand-off, chat `YES` opt-in ignored; `STOP` always honoured); `POST /whatsapp/optin` → 404 `NOT_FOUND`; `POST /admin/whatsapp/broadcasts` (dry run too) → 404 `NOT_FOUND` and the Broadcasts tab is hidden; Home "WhatsApp updates" card and Join opt-in card hidden. Unchanged: coordinator plan/report/events/approvals/gallery, review inbox, OTP, approval/report/day-before reminders. Cache tag `flags` (revalidated on any flags PATCH); `services/shared.flagOn(repo, key)`.
 2. **Flag `wa_reminders`** (same places; default **off**). Off: cron jobs treat every reminder rule as disabled (day before, day after/+3/+7 no report, approval day 2; report stages that fall due are still recorded, so turning the flag on never replays them); the day-3 move to `escalated` still happens but no `escalation_notice`; no `volunteer_signup_alert`; monthly report goes by email only (no `monthly_report_ready`). Reminders tab shows a notice (`admin.whatsapp.reminders.flagOff`). Always sent: `login_code`, `plan/report_approval_request` on submit (+ bot approval cards, decision/ask replies to the planner), `form_link_sent`, `review_message`, `invite_coordinator`, `privacy_reply`.
+
+### v0.10.2 (review round 2: wings and programme pages)
+1. **`Wing` enum is three wings**: `service | educational | spiritual` (`mahila`, `youth` removed everywhere; UI name of `educational` is "Education", as on the legacy site). DB `seva_type.wing` rows already only used these three. Home wing cards (`DEFAULT_WINGS`) now 3; stale `wing.mahila` / `wing.youth` home_section items are ignored.
+2. **`ProgramDetail.related`**: `ProgramLink[]` (`{sevaType,label,icon,wing,href}`) = every other active seva type, in `sort_order`. UI groups "More in <Wing> wing" (same wing) and "All sevas".
+3. **Programme metrics**: every seva type has a KPI set (`kpiKeysFor` in `services/programs.ts`); new KPI defs `bhajan.attendees`, `study.attendees`, `relief.people`. No data -> empty state, never 0.

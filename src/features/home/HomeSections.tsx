@@ -35,8 +35,6 @@ const WING_ICON: Record<Wing, IconName> = {
   service: "hand-heart",
   educational: "graduation-cap",
   spiritual: "music",
-  mahila: "heart",
-  youth: "sprout",
 };
 
 /** Only when there is no thought at all; otherwise the picture is part of the thought data. */

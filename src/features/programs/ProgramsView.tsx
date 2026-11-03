@@ -13,7 +13,7 @@ import { FigureValue } from "@/ui/Figure";
 import { Icon, type IconName, icons } from "@/ui/Icon";
 import styles from "./Programs.module.css";
 
-export const WINGS = ["service", "educational", "spiritual", "mahila", "youth"] as const satisfies readonly Wing[];
+export const WINGS = ["service", "educational", "spiritual"] as const satisfies readonly Wing[];
 
 const iconFor = (c: ProgramCard): IconName => (c.icon in icons ? (c.icon as IconName) : SEVA_ICON[c.sevaType]);
 
@@ -37,6 +37,7 @@ export function ProgramsView({ wing, cards }: { wing: Wing | null; cards: Progra
 
       <section className={pub.section} style={{ paddingTop: "var(--space-6)" }}>
         <div className={cx(pub.wrap, pub.stack)} style={{ gap: "var(--space-8)" }}>
+          {wing ? <WingIntro wing={wing} /> : <ThreeWings />}
           {cards.length ? (
             <ul className={p1.grid3}>
               {cards.map((c) => (
@@ -108,5 +109,55 @@ function Card({ card: c }: { card: ProgramCard }) {
         ) : null}
       </dl>
     </article>
+  );
+}
+
+function ThreeWings() {
+  const t = useTranslations("programs");
+  return (
+    <div className={styles.intro}>
+      <h2 className={pub.h2}>{t("threeWingsTitle")}</h2>
+      <p>{t("threeWingsBody")}</p>
+    </div>
+  );
+}
+
+type Block = { kind: "p" | "q"; n: number };
+const BLOCKS: Record<Wing, Block[]> = {
+  spiritual: [{ kind: "p", n: 1 }, { kind: "p", n: 2 }, { kind: "q", n: 1 }],
+  educational: [{ kind: "p", n: 1 }],
+  service: [{ kind: "q", n: 1 }, { kind: "q", n: 2 }, { kind: "p", n: 1 }, { kind: "p", n: 2 }, { kind: "q", n: 3 }, { kind: "q", n: 4 }],
+};
+
+/** Legacy saidelhi.org wing page wording (docs/content/legacy-wings.md). */
+function WingIntro({ wing }: { wing: Wing }) {
+  const t = useTranslations("programs");
+  const k = (s: string) => `wingIntro.${wing}.${s}` as "wingIntro.service.p1";
+  return (
+    <div className={styles.intro}>
+      <ThreeWings />
+      <h2 className={pub.h2}>{t(k("heading"))}</h2>
+      {wing === "service" ? <p className={styles.motto}>{t(k("motto"))}</p> : null}
+      {BLOCKS[wing].map((b) =>
+        b.kind === "p" ? (
+          <p key={`p${b.n}`}>{t(k(`p${b.n}`))}</p>
+        ) : (
+          <blockquote key={`q${b.n}`} className={styles.introQuote}>
+            <p>“{t(k(`q${b.n}`))}”</p>
+            <footer>{t(k(`c${b.n}`))}</footer>
+          </blockquote>
+        ),
+      )}
+      {wing === "service" ? (
+        <>
+          <h3 className={pub.h3}>{t(k("activitiesTitle"))}</h3>
+          <ul className={styles.actList}>
+            {[1, 2, 3, 4, 5, 6, 7].map((n) => (
+              <li key={n}>{t(k(`a${n}`))}</li>
+            ))}
+          </ul>
+        </>
+      ) : null}
+    </div>
   );
 }

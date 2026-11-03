@@ -1646,9 +1646,7 @@
       "wing": {
         "service": "Service",
         "educational": "Education",
-        "spiritual": "Spiritual",
-        "mahila": "Mahila",
-        "youth": "Youth"
+        "spiritual": "Spiritual"
       },
       "seva": {
         "count": "{count, plural, one {# seva type} other {# seva types}} · each has a fixed code",
@@ -3368,10 +3366,8 @@
     "tabsLabel": "Wings",
     "tab_all": "All",
     "wing_service": "Service",
-    "wing_educational": "Educational",
+    "wing_educational": "Education",
     "wing_spiritual": "Spiritual",
-    "wing_mahila": "Mahila",
-    "wing_youth": "Youth",
     "wingBadge": "{wing} Wing",
     "next": "Next",
     "thisYear": "This year",
@@ -3394,6 +3390,43 @@
       "disaster_relief": "Relief supplies and Sevadal when floods or other disasters strike.",
       "cleanliness": "Planting, clean-ups and water-saving drives.",
       "other": "Other seva by our centres."
+    },
+    "threeWingsTitle": "Three Wings: Spiritual Wing, Service Wing, Education Wing",
+    "threeWingsBody": "The Sri Sathya Sai Seva Organisations, Delhi-NCR is a spiritual organisation established and founded by Bhagwan Sri Sathya Sai Baba. A key highlight pertains to the word ‘Seva’ as the underlying guiding light that sets the context and foundation of the Organisation’s true mission. Each of the three wings function seamlessly to put into practice the ‘Seva’ aspect.",
+    "wingIntro": {
+      "spiritual": {
+        "heading": "Sri Sathya Sai Seva Organisations Delhi-NCR: Spiritual Wing",
+        "p1": "Spirituality is an inherent quality in every person but in the hectic, fast-paced rush of life, it is either dormant or not awakened. The true power of spirituality is such that it can transform an animal into man and man into divine. Bhagawan’s teachings often refer to how Valmiki transformed his dacoit existence into a divine journey by chanting the holy name of ‘Rama’ and how the young Prahlad overcame his fear by constantly chanting the name of Lord Vishnu. These divine teachings highlight the importance of nurturing spiritual practices and weaving it into our daily lives, transmuting every moment into something more sublime for ourselves.",
+        "p2": "Thus, the Spiritual Wing undertakes activities that strengthen our deepest self through the contemplation of the divine by different means - Veda chanting, Bhajans, Jyoti Meditation, - all of which deepen our inner yearning to reconnect with the Divine and experience peace and love within.",
+        "q1": "The Sai Organisations were set up to make people realise their true divine nature. What is the primary purpose of the Sai Organisations? It is to make the people realise that they are sparks of the Divine and not embodiments of the physical products of Nature. The inherent divinity of man has been clearly proclaimed in the Geetha.",
+        "c1": "Sri Sathya Sai Speaks, Vol 28, 1995"
+      },
+      "educational": {
+        "heading": "Sri Sathya Sai Seva Organisations Delhi-NCR: Education Wing",
+        "p1": "The focus of education in the Sai system is in the holistic development of the human personality. This education is aimed at bringing out the latent divinity in man by teaching human values like truth, righteousness, peace, love, and non-violence. Such education is not confined to any particular age, but is to be given throughout life, so that man can become what he truly is - a divine being."
+      },
+      "service": {
+        "heading": "Sri Sathya Sai Seva Organisations Delhi-NCR: Service Wing",
+        "q1": "Neither by penance nor by taking baths in sacred waters; neither by the study of scriptures nor through meditation can one cross this ocean of worldly life. This ocean of worldly life can only be crossed by rendering service to the good.",
+        "c1": "Bhagawan Sri Sathya Sai Baba (Divine Discourse, 19th November 1987)",
+        "motto": "“Manava Seva, Madhava Seva”",
+        "p1": "The divine life, message and teachings of Bhagawan Sri Sathya Sai Baba has always been ‘Love All, Serve All’ and ‘Help Ever, Hurt Never’.",
+        "q2": "Service done with reverence and selflessness leads man to ‘Sakshatkara’ - Realisation of the Divine.",
+        "c2": "Bhagawan Sri Sathya Sai Baba (Sanathana Sarathi, 1986)",
+        "p2": "The emphasis on serving humanity with love forms the crux of Bhagawan’s divine mission and teachings. In Bhagawan’s divine words, “Hands that serve are holier than lips that pray.”",
+        "q3": "Wherever you are, whatever the time, when you meet situations that require help, render it to the best of your capacity.",
+        "c3": "Bhagawan Sri Sathya Sai Baba (Divine Discourse, 4th March 1960)",
+        "q4": "Know that selfless service is a better form of spiritual discipline than even meditation. How can God appreciate the meditation you do when adjacent to you, you have someone in agony, whom you do not treat kindly, for whom you do not make all efforts to help?",
+        "c4": "Sri Sathya Sai Speaks, February 1, 1970",
+        "activitiesTitle": "Service Wing: Activities",
+        "a1": "Narayana Seva",
+        "a2": "Medical Camps",
+        "a3": "Vocational Training",
+        "a4": "Visit to Hospitals",
+        "a5": "Visit to Old Age Homes",
+        "a6": "Visit to Orphanages",
+        "a7": "Grama Seva"
+      }
     }
   },
   "program": {
@@ -3493,7 +3526,17 @@
         "s3t": "Take part",
         "s3d": "Join in, or simply watch. Everything is free."
       }
-    }
+    },
+    "moreInWing": "More in the {wing} Wing",
+    "allSevas": "All sevas",
+    "practicesTitle": "Practice in the Spiritual Wing",
+    "practicesLead": "The Spiritual Wing strengthens our deepest self through the contemplation of the divine by different means, all of which deepen our inner yearning to reconnect with the Divine and experience peace and love within.",
+    "practice_veda": "Veda chanting",
+    "practice_bhajans": "Bhajans",
+    "practice_jyoti": "Jyoti Meditation",
+    "findCentreTitle": "Find a bhajan near you",
+    "findCentreBody": "Days and timings vary by samithi. Find your nearest centre and ask when they sing.",
+    "findCentreButton": "Find a centre"
   },
   "valuePage": {
     "metaSuffix": "One of the five human values",
@@ -3690,19 +3733,15 @@
     "founderP2": "The organisation he founded now works in more than 100 countries. In Delhi NCR, it began with a handful of bhajan groups in the 1960s.",
     "founderQuote": "Love all, serve all. Help ever, hurt never.",
     "founderPhotoAlt": "Bhagawan Sri Sathya Sai Baba smiling, seated in front of microphones",
-    "wingsTitle": "Five wings, one organisation",
-    "wingsSub": "Every activity sits in one wing. Open one to see its programmes.",
+    "wingsTitle": "Three wings, one organisation",
+    "wingsSub": "The Sri Sathya Sai Seva Organisations, Delhi-NCR is a spiritual organisation established and founded by Bhagwan Sri Sathya Sai Baba. A key highlight pertains to the word ‘Seva’ as the underlying guiding light that sets the context and foundation of the Organisation’s true mission. Each of the three wings function seamlessly to put into practice the ‘Seva’ aspect.",
     "wingProgrammes": "Programmes",
     "wing_service": "Service",
-    "wing_educational": "Educational",
+    "wing_educational": "Education",
     "wing_spiritual": "Spiritual",
-    "wing_mahila": "Mahila",
-    "wing_youth": "Youth",
-    "wingDesc_service": "Medical camps, Narayan Seva, blood donation and village seva.",
-    "wingDesc_educational": "Bal Vikas classes for children and values education in schools.",
-    "wingDesc_spiritual": "Bhajans (devotional singing), study circles and Nagar Sankirtan.",
-    "wingDesc_mahila": "Seva and study led by the women of each centre.",
-    "wingDesc_youth": "Seva, study and leadership for 18 to 40 year olds.",
+    "wingDesc_service": "Medical camps, blood donation, Narayan Seva, Annaprasadam and village service projects.",
+    "wingDesc_educational": "Sri Sathya Sai Bal Vikas, Education in Human Values and holistic, values-based learning for all ages.",
+    "wingDesc_spiritual": "Bhajans, festivals and spiritual programmes that help members awaken the divinity within.",
     "orgTitle": "How we are organised",
     "orgSub": "A samithi is a local centre. Each one belongs to a district.",
     "orgTop": "Delhi NCR",

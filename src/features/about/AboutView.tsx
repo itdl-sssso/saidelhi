@@ -15,8 +15,6 @@ const WING_ICON: Record<Wing, IconName> = {
   service: "hand-heart",
   educational: "graduation-cap",
   spiritual: "music",
-  mahila: "flower-2",
-  youth: "heart-handshake",
 };
 const PRINCIPLES: Array<{ n: 1 | 2 | 3; icon: IconName }> = [
   { n: 1, icon: "gift" },

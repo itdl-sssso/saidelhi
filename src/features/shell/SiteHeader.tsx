@@ -19,7 +19,7 @@ export function SiteHeader({ discourses = false, pathless = false }: SiteHeaderP
       title: t("groupLearn"),
       items: [
         { href: "/about", label: t("about"), icon: "info" },
-        { href: "/values/shanti", label: t("bhajans"), icon: "music" },
+        { href: "/programs/bhajan", label: t("bhajans"), icon: "music" },
         ...(discourses ? [{ href: "/discourses", label: t("discourses"), icon: "book-open" as const }] : []),
         { href: "/news", label: t("news"), icon: "newspaper" },
         { href: "/gallery", label: t("gallery"), icon: "image" },
