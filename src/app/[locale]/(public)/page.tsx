@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { HomeSections } from "@/features/home/HomeSections";
 import { LotusJourney } from "@/features/home/LotusJourney";
 import { getDiscourseFlag } from "@/features/discourses/data";
+import { getHomeDiscourses, getUpcomingBhajans } from "@/features/home/data";
 import { getHomeStories } from "@/features/home/stories";
 import { getCentres, getHome, getWaOutreachFlag } from "@/features/public/data";
 import { initLocale } from "@/i18n/server";
@@ -17,11 +18,27 @@ export async function generateMetadata(): Promise<Metadata> {
 // is part of the static shell and revalidates on those tags.
 export default async function HomePage() {
   await initLocale();
-  const [data, centres, stories, discourses, waOutreach] = await Promise.all([getHome(), getCentres(), getHomeStories(), getDiscourseFlag(), getWaOutreachFlag()]);
+  const [data, centres, stories, discourses, waOutreach, bhajans] = await Promise.all([
+    getHome(),
+    getCentres(),
+    getHomeStories(),
+    getDiscourseFlag(),
+    getWaOutreachFlag(),
+    getUpcomingBhajans(),
+  ]);
+  const discoursePicks = discourses ? await getHomeDiscourses() : [];
   return (
     <>
       <LotusJourney />
-      <HomeSections data={data} centres={centres} stories={stories} discourses={discourses} waOutreach={waOutreach} />
+      <HomeSections
+        data={data}
+        centres={centres}
+        stories={stories}
+        discourses={discourses}
+        discoursePicks={discoursePicks}
+        bhajans={bhajans}
+        waOutreach={waOutreach}
+      />
     </>
   );
 }

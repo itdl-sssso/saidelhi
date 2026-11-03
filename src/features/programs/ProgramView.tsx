@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
-import type { ProgramDetail, SevaType } from "@/contract";
+import type { ProgramDetail, ProgramLink, SevaType } from "@/contract";
 import { Link } from "@/i18n/navigation";
 import { type AppLocale, formatPeriodRange, formatTime, tx } from "@/lib/format";
 import { ArticleCard, p1 } from "@/features/public/p1";
@@ -49,6 +49,7 @@ export function ProgramView({ program: p }: { program: ProgramDetail }) {
   const period = p.kpis?.[0]?.period;
   const periodText = period ? formatPeriodRange(period.from, period.to, locale, (to) => t("upTo", { date: to })) : null;
   const hasEstimate = p.kpis?.some((k) => k.figure.estimate && k.figure.value !== null) ?? false;
+  const sameWing = p.related.filter((r) => r.wing === p.wing);
   const funnel = p.funnel && p.funnel.length >= 2 ? p.funnel : null;
 
   const steps = Array.from({ length: stepCount }, (_, i) => {
@@ -105,6 +106,30 @@ export function ProgramView({ program: p }: { program: ProgramDetail }) {
               ))}
             </ol>
           </div>
+
+          {p.sevaType === "bhajan" ? (
+            <div className={pub.card}>
+              <h2 className={pub.h3}>{t("practicesTitle")}</h2>
+              <p className={pub.small}>{t("practicesLead")}</p>
+              <ul className={styles.practices}>
+                {(["veda", "bhajans", "jyoti"] as const).map((k, i) => (
+                  <li key={k} className={styles.chip}>
+                    <Icon name={(["book-open", "music", "sparkles"] as const)[i]} size={18} />
+                    {t(`practice_${k}`)}
+                  </li>
+                ))}
+              </ul>
+              <div className={pub.row} style={{ marginTop: "var(--space-4)", flexWrap: "wrap" }}>
+                <div style={{ flex: "1 1 240px" }}>
+                  <h3 className={pub.h3}>{t("findCentreTitle")}</h3>
+                  <p className={pub.small}>{t("findCentreBody")}</p>
+                </div>
+                <Button href="/centres/map" icon="map-pin">
+                  {t("findCentreButton")}
+                </Button>
+              </div>
+            </div>
+          ) : null}
 
           {p.sevaType === "blood" ? (
             <div className={pub.card}>
@@ -230,6 +255,33 @@ export function ProgramView({ program: p }: { program: ProgramDetail }) {
           </div>
         </div>
       </section>
+
+      {p.related.length ? (
+        <section className={pub.section} style={{ paddingTop: 0 }}>
+          <div className={cx(pub.wrap, pub.stack)}>
+            {sameWing.length ? <SevaChips title={t("moreInWing", { wing: tp(`wing_${p.wing}`) })} items={sameWing} /> : null}
+            <SevaChips title={t("allSevas")} items={p.related} />
+          </div>
+        </section>
+      ) : null}
     </>
+  );
+}
+
+function SevaChips({ title, items }: { title: string; items: ProgramLink[] }) {
+  return (
+    <div>
+      <SectionHead title={title} />
+      <ul className={styles.chips}>
+        {items.map((r) => (
+          <li key={r.sevaType}>
+            <Link href={r.href} className={styles.chip}>
+              <Icon name={r.icon in icons ? (r.icon as IconName) : SEVA_ICON[r.sevaType]} size={18} />
+              <LocalText value={r.label} />
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }

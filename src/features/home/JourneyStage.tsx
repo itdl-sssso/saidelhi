@@ -228,25 +228,30 @@ export function JourneyStage({ photos }: { photos: { key: string; src: string }[
   }, []);
 
   return (
-    <div ref={stageRef} className={styles.stage}>
-      <div className={styles.poster} aria-hidden="true" />
-      <canvas ref={skyRef} className={styles.canvas} aria-hidden="true" />
-      <canvas ref={glRef} className={cx(styles.canvas, styles.gl)} aria-hidden="true" />
-      <div ref={glowRef} className={styles.glow} aria-hidden="true" />
-      <div ref={heartRef} className={styles.heart} aria-hidden="true">
-        {photos.map((p) => (
-          // eslint-disable-next-line @next/next/no-img-element -- positioned every frame; next/image adds nothing here
-          <img key={p.key} src={p.src} alt="" loading="lazy" decoding="async" />
-        ))}
+    <>
+      <div ref={stageRef} className={styles.stage}>
+        <div className={styles.poster} aria-hidden="true" />
+        <canvas ref={skyRef} className={styles.canvas} aria-hidden="true" />
+        <canvas ref={glRef} className={cx(styles.canvas, styles.gl)} aria-hidden="true" />
+        <div ref={glowRef} className={styles.glow} aria-hidden="true" />
+        <div ref={heartRef} className={styles.heart} aria-hidden="true">
+          {photos.map((p) => (
+            // eslint-disable-next-line @next/next/no-img-element -- positioned every frame; next/image adds nothing here
+            <img key={p.key} src={p.src} alt="" loading="lazy" decoding="async" />
+          ))}
+        </div>
       </div>
+      {/* Outside the stage so it paints above the petal cards (the stage is the bottom layer). */}
       <nav ref={railRef} className={styles.rail} aria-label={t("valuesNav")}>
-        {VALUE_KEYS.map((k) => (
-          <a key={k} href={`#petal-${k}`}>
-            <span className={styles.railLabel}>{t(`values.${k}.name`)}</span>
-            <span className={styles.railDot} aria-hidden="true" />
-          </a>
-        ))}
+        <div className={styles.railList}>
+          {VALUE_KEYS.map((k) => (
+            <a key={k} href={`#petal-${k}`}>
+              <span className={styles.railLabel}>{t(`values.${k}.name`)}</span>
+              <span className={styles.railDot} aria-hidden="true" />
+            </a>
+          ))}
+        </div>
       </nav>
-    </div>
+    </>
   );
 }

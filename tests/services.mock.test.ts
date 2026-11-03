@@ -159,7 +159,7 @@ describe("home, centres, districts (mock)", () => {
     expect(tileByKey(home.kpis, "eye.spectacles").value).toBe(63);
     expect(home.articles).toHaveLength(3);
     expect(home.centenary.every((a) => a.category.startsWith("centenary"))).toBe(true);
-    expect(home.wings).toHaveLength(5);
+    expect(home.wings).toHaveLength(3);
   });
 
   it("home hides KPI tiles when nothing is approved yet", async () => {

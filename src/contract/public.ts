@@ -76,6 +76,10 @@ export type ProgramCard = z.infer<typeof ProgramCard>;
 
 export const ProgramParams = z.object({ type: SevaType });
 
+/** Compact link to a seva (cross-links on programme pages). */
+export const ProgramLink = ProgramCard.pick({ sevaType: true, label: true, icon: true, wing: true, href: true });
+export type ProgramLink = z.infer<typeof ProgramLink>;
+
 /** GET /programs/:type */
 export const ProgramDetail = ProgramCard.omit({ next: true, thisYear: true }).extend({
   /** 3–4 tiles, this year, approved (+estimates labelled). null → "Results will appear here". */
@@ -90,6 +94,8 @@ export const ProgramDetail = ProgramCard.omit({ next: true, thisYear: true }).ex
   articles: z.array(Article).max(3),
   /** Partners who worked events of this type (fallback: by partner kind). Names as text. */
   partners: z.array(Partner),
+  /** Every other active seva type (v0.10.2), `sort_order`. */
+  related: z.array(ProgramLink),
 });
 export type ProgramDetail = z.infer<typeof ProgramDetail>;
 

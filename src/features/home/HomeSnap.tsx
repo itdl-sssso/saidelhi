@@ -1,6 +1,9 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import { useTranslations } from "next-intl";
+import { Icon } from "@/ui/Icon";
+import styles from "./LotusJourney.module.css";
 
 // Eased one-gesture-per-section snapping for the hero: the four acts of Act I, then each of
 // the five petals. Releases to free scrolling once the page flow (thought, upcoming, ...) starts.
@@ -30,6 +33,9 @@ function bezier(x: number, [p1x, p1y, p2x, p2y]: [number, number, number, number
 const INTERACTIVE = "input, textarea, select, button, [contenteditable='true']";
 
 export function HomeSnap() {
+  const t = useTranslations("home");
+  const moveRef = useRef<(dir: 1 | -1) => void>(() => {});
+
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
     const journey = document.getElementById("act1")?.parentElement;
@@ -54,12 +60,17 @@ export function HomeSnap() {
       document
         .querySelectorAll<HTMLElement>("#act2 > section")
         .forEach((el) => targets.push(Math.round(top(el) + Math.max(0, el.offsetHeight - window.innerHeight))));
-      flowTop = Math.round(top(flow));
+      // Never hold the wheel where the page cannot scroll yet (content below still loading):
+      // the snap region ends at the real bottom, and stops past it are dropped.
+      const maxY = document.documentElement.scrollHeight - window.innerHeight;
+      flowTop = Math.min(Math.round(top(flow)), maxY);
+      targets = targets.filter((t) => t < flowTop);
       return targets.length > 1;
     };
     // Only while the WebGL stage drives the acts (static / no-JS poster scrolls freely).
     const active = () => journey.dataset.mode === "enhanced" && !reduce.matches;
-    const inRegion = () => active() && window.scrollY < flowTop - 6;
+    // Re-measure on every input (cheap) so a stale page height never traps the wheel.
+    const inRegion = () => active() && (anim !== 0 || measure()) && window.scrollY < flowTop - 6;
 
     const glide = (target: number) => {
       const to = Math.max(0, Math.min(target, document.documentElement.scrollHeight - window.innerHeight));
@@ -100,9 +111,17 @@ export function HomeSnap() {
       glide(to);
     };
 
+    moveRef.current = (dir) => {
+      lockUntil = 0; // a tap is deliberate: no inertia tail to swallow
+      move(dir);
+    };
+    // Phone step buttons show only inside the snap region; "back" hides at the very top.
+    const syncNav = () => {
+      journey.dataset.snapnav = !inRegion() ? "off" : window.scrollY < 8 ? "top" : "on";
+    };
+
     const onWheel = (e: WheelEvent) => {
       if (e.ctrlKey || !inRegion()) return;
-      if (!anim && !measure()) return;
       // Scrolling up from below the region (flow) must stay native: only take over inside it.
       e.preventDefault();
       if (anim || Math.abs(e.deltaY) < 2) return;
@@ -128,6 +147,22 @@ export function HomeSnap() {
       const dy = ty - (e.changedTouches[0]?.clientY ?? ty);
       if (Math.abs(dy) > 28) move(dy > 0 ? 1 : -1);
     };
+    // Rail dots: glide to the petal's snap stop instead of the native jump, which lands
+    // off-grid (scroll-padding) and makes the next gesture snap back to the same petal.
+    const onClick = (e: MouseEvent) => {
+      const link = (e.target as Element | null)?.closest?.<HTMLAnchorElement>('a[href^="#petal-"]');
+      if (!link || !active() || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey) return;
+      const sections = [...document.querySelectorAll<HTMLElement>("#act2 > section")];
+      const i = sections.findIndex((el) => `#${el.id}` === link.hash);
+      if (i < 0 || !measure()) return;
+      const target = targets[ACT_STOPS.length + i];
+      if (target === undefined) return;
+      e.preventDefault();
+      cancel();
+      lockUntil = 0;
+      history.replaceState(null, "", link.hash);
+      glide(target);
+    };
     // The user grabbed the scrollbar or jumped via a link: stop fighting them.
     const cancel = () => {
       if (anim) {
@@ -138,26 +173,40 @@ export function HomeSnap() {
 
     window.addEventListener("wheel", onWheel, { passive: false });
     window.addEventListener("keydown", onKey);
+    document.addEventListener("click", onClick);
     window.addEventListener("touchstart", onTouchStart, { passive: true });
     window.addEventListener("touchmove", onTouchMove, { passive: false });
     window.addEventListener("touchend", onTouchEnd, { passive: true });
     window.addEventListener("pointerdown", cancel);
     window.addEventListener("resize", measure);
-    const t1 = window.setTimeout(measure, 400);
-    const t2 = window.setTimeout(measure, 1500);
+    window.addEventListener("scroll", syncNav, { passive: true });
+    const t1 = window.setTimeout(() => (measure(), syncNav()), 400);
+    const t2 = window.setTimeout(() => (measure(), syncNav()), 1500);
     return () => {
       cancelAnimationFrame(anim);
       window.clearTimeout(t1);
       window.clearTimeout(t2);
       window.removeEventListener("wheel", onWheel);
       window.removeEventListener("keydown", onKey);
+      document.removeEventListener("click", onClick);
       window.removeEventListener("touchstart", onTouchStart);
       window.removeEventListener("touchmove", onTouchMove);
       window.removeEventListener("touchend", onTouchEnd);
       window.removeEventListener("pointerdown", cancel);
       window.removeEventListener("resize", measure);
+      window.removeEventListener("scroll", syncNav);
+      delete journey.dataset.snapnav;
     };
   }, []);
 
-  return null;
+  return (
+    <div className={styles.snapNav}>
+      <button type="button" className={styles.snapBtn} data-dir="prev" onClick={() => moveRef.current(-1)}>
+        <Icon name="chevron-down" size={20} label={t("snapPrev")} />
+      </button>
+      <button type="button" className={styles.snapBtn} data-dir="next" onClick={() => moveRef.current(1)}>
+        <Icon name="chevron-down" size={20} label={t("snapNext")} />
+      </button>
+    </div>
+  );
 }

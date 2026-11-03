@@ -587,21 +587,21 @@ describe("home wings", () => {
   it("editable home sections override the static wing cards", async () => {
     const t = m6Setup();
     const staticWings = (await t.svc.home.get()).wings;
-    expect(staticWings).toHaveLength(5);
+    expect(staticWings).toHaveLength(3);
     const content = await t.actor(USER.contentD);
     const created = await t.svc.portal.content.create(content, {
       kind: "item",
       type: "home_section",
-      key: "wing.youth",
+      key: "wing.spiritual",
       title: { en: "Young seva", hi: null },
       body: { en: "New summary for youth.", hi: null },
-      href: "/programs?wing=youth",
+      href: "/programs?wing=spiritual",
     } as never);
     // Drafts never show.
-    expect((await t.svc.home.get()).wings).toHaveLength(5);
+    expect((await t.svc.home.get()).wings).toHaveLength(3);
     await t.svc.portal.content.patch(content, created.id, { status: "published", version: created.version } as never);
     const wings = (await t.svc.home.get()).wings;
-    expect(wings[0]).toMatchObject({ wing: "youth", title: { en: "Young seva" }, summary: { en: "New summary for youth." } });
-    expect(wings).toHaveLength(5);
+    expect(wings[0]).toMatchObject({ wing: "spiritual", title: { en: "Young seva" }, summary: { en: "New summary for youth." } });
+    expect(wings).toHaveLength(3);
   });
 });
