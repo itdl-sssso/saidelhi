@@ -424,10 +424,10 @@ function Bhajans({ events }: { events: EventPublic[] }) {
   const t = useTranslations("home");
   return (
     <section id="bhajans" className={cx(styles.sec, styles.warm)} aria-labelledby="bhajans-title">
-      <Wrap className={styles.split}>
-        <div>
+      <Wrap>
+        <div className={styles.secHead}>
           <SectionHeading titleId="bhajans-title" eyebrow={t("bhajansEyebrow")} title={t("bhajansTitle")} description={t("bhajansLead")} />
-          <div className={styles.acts}>
+          <div className={styles.headActs}>
             <Button href="/programs/bhajan" icon="music" iconAfter="arrow-right">
               {t("bhajansAbout")}
             </Button>
@@ -436,20 +436,20 @@ function Bhajans({ events }: { events: EventPublic[] }) {
             </Button>
           </div>
         </div>
-        <div>
-          <h3 className={styles.h3}>{t("bhajansNext")}</h3>
-          {events.length ? (
-            <ul className={styles.bhajanList} aria-label={t("bhajansList")}>
+        {events.length ? (
+          <>
+            <ul className={styles.strip} aria-label={t("bhajansList")}>
               {events.map((e) => (
                 <UpcomingCard key={e.id} event={e} />
               ))}
             </ul>
-          ) : (
-            <div className={styles.emptyCard}>
-              <EmptyState icon="music" title={t("bhajansNoneTitle")} body={t("bhajansNone")} />
-            </div>
-          )}
-        </div>
+            {events.length > 1 ? <p className={styles.swipe}>{t("swipe")}</p> : null}
+          </>
+        ) : (
+          <div className={styles.emptyCard}>
+            <EmptyState icon="music" title={t("bhajansNoneTitle")} body={t("bhajansNone")} />
+          </div>
+        )}
       </Wrap>
     </section>
   );

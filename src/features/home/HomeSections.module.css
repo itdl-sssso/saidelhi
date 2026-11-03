@@ -114,7 +114,7 @@
 .emptyCard { background: var(--white); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); }
 
 /* Bhajans: next gatherings stacked in the right column */
-.bhajanList { list-style: none; margin: var(--space-4) 0 0; padding: 0; display: grid; gap: var(--space-4); }
+.headActs { display: flex; gap: 12px; flex-wrap: wrap; }
 /* Discourse picks */
 .discList { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-4); }
 @media (min-width: 768px) {
