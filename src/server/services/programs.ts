@@ -49,8 +49,14 @@ export function headlineFigure(slice: ImpactData, type: SevaType): LabelledFigur
 }
 
 /** 3-4 tiles per type: its card keys plus volunteer hours. */
+const EXTRA_KEYS: Partial<Record<SevaType, readonly string[]>> = {
+  bhajan: [ACTIVITIES, "bhajan.attendees"],
+  study_circle: [ACTIVITIES, "study.attendees"],
+  disaster_relief: [ACTIVITIES, "relief.people"],
+};
+
 function kpiKeysFor(type: SevaType): string[] {
-  const keys = SEVA_TYPE_CARDS.find((c) => c.sevaType === type)?.keys ?? [ACTIVITIES];
+  const keys = SEVA_TYPE_CARDS.find((c) => c.sevaType === type)?.keys ?? EXTRA_KEYS[type] ?? [ACTIVITIES];
   return [...new Set([...keys, "volunteer_hours"])].slice(0, 4);
 }
 
@@ -141,6 +147,9 @@ export function createProgramsService(repo: DataRepo, deps: ServiceDeps, events:
         upcoming: upcoming.data,
         articles,
         partners: await partnersFor(repo, type, recent.rows),
+        related: types
+          .filter((s) => s.code !== type)
+          .map((s) => ({ sevaType: s.code, label: org.sevaType(s.code).label, icon: s.icon, wing: s.wing, href: `/programs/${s.code}` })),
       };
     },
   };

@@ -10,37 +10,34 @@ import { i18n } from "./org-index";
 import { loadOrg, loadSettings } from "./shared";
 import type { HomeService, ServiceDeps } from "./types";
 
-/** Defaults until editors manage wing cards as content_item home sections (M6). */
+/** Defaults until editors manage wing cards as content_item home sections (M6). Summaries: legacy site wording. */
 export const DEFAULT_WINGS: readonly WingCard[] = [
   {
     wing: "service",
     title: { en: "Service", hi: "सेवा" },
-    summary: { en: "Medical and eye camps, blood donation, food seva and relief.", hi: "चिकित्सा व नेत्र शिविर, रक्तदान, भोजन सेवा और राहत कार्य।" },
+    summary: {
+      en: "The divine life, message and teachings of Bhagawan Sri Sathya Sai Baba has always been ‘Love All, Serve All’ and ‘Help Ever, Hurt Never’.",
+      hi: "भगवान श्री सत्य साई बाबा का दिव्य जीवन, संदेश और शिक्षाएँ सदा से ‘सबसे प्रेम करो, सबकी सेवा करो’ और ‘सदा सहायता करो, कभी चोट न पहुँचाओ’ रही हैं।",
+    },
     href: "/programs?wing=service",
   },
   {
     wing: "educational",
     title: { en: "Education", hi: "शिक्षा" },
-    summary: { en: "Bal Vikas classes in human values for children.", hi: "बच्चों के लिए मानवीय मूल्यों की बाल विकास कक्षाएँ।" },
+    summary: {
+      en: "The focus of education in the Sai system is in the holistic development of the human personality.",
+      hi: "साई शिक्षा पद्धति का ध्यान मानव व्यक्तित्व के समग्र विकास पर है।",
+    },
     href: "/programs?wing=educational",
   },
   {
     wing: "spiritual",
     title: { en: "Spiritual", hi: "आध्यात्मिक" },
-    summary: { en: "Bhajans, study circles and festivals open to all.", hi: "सबके लिए खुले भजन, अध्ययन मंडल और उत्सव।" },
+    summary: {
+      en: "Spirituality is an inherent quality in every person but in the hectic, fast-paced rush of life, it is either dormant or not awakened.",
+      hi: "आध्यात्मिकता हर व्यक्ति का सहज गुण है, पर जीवन की भागदौड़ में वह या तो सुप्त रहती है या जागृत नहीं हो पाती।",
+    },
     href: "/programs?wing=spiritual",
-  },
-  {
-    wing: "mahila",
-    title: { en: "Mahila", hi: "महिला" },
-    summary: { en: "Seva and study led by the women's wing.", hi: "महिला विभाग द्वारा सेवा और अध्ययन।" },
-    href: "/programs?wing=mahila",
-  },
-  {
-    wing: "youth",
-    title: { en: "Youth", hi: "युवा" },
-    summary: { en: "Young adults in seva, skills and leadership.", hi: "सेवा, कौशल और नेतृत्व में युवा।" },
-    href: "/programs?wing=youth",
   },
 ];
 

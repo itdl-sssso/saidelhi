@@ -40,7 +40,7 @@ export const SevaType = z.enum([
 ]);
 export type SevaType = z.infer<typeof SevaType>;
 
-export const Wing = z.enum(["service", "educational", "spiritual", "mahila", "youth"]);
+export const Wing = z.enum(["service", "educational", "spiritual"]);
 export type Wing = z.infer<typeof Wing>;
 
 export const LinkPurpose = z.enum(["report", "desk", "public"]);
