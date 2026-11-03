@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { getTranslations } from "next-intl/server";
 import { Wing } from "@/contract";
+import { getDiscourseFlag } from "@/features/discourses/data";
 import { getPrograms } from "@/features/public/data";
 import { ProgramsView } from "@/features/programs/ProgramsView";
 import Loading from "./loading";
@@ -20,8 +21,8 @@ async function ProgramsContent({ searchParams }: PageProps<"/[locale]/programs">
   const sp = await searchParams;
   // An unknown wing shows every programme.
   const wing = Wing.safeParse(first(sp.wing)).data ?? null;
-  const cards = await getPrograms(wing ?? undefined);
-  return <ProgramsView wing={wing} cards={cards} />;
+  const [cards, discourses] = await Promise.all([getPrograms(wing ?? undefined), getDiscourseFlag()]);
+  return <ProgramsView wing={wing} cards={cards} discourses={discourses} />;
 }
 
 export default function ProgramsPage(props: PageProps<"/[locale]/programs">) {

@@ -15,8 +15,8 @@ export async function getUpcomingBhajans(limit = 3): Promise<EventPublic[]> {
   return res.data.slice(0, limit);
 }
 
-/** A few discourses for the home page; only call with the `discourses` flag on. */
-export async function getHomeDiscourses(limit = 3): Promise<DiscourseCard[]> {
+/** Every published discourse; home shows a random few per visit. Only call with the `discourses` flag on. */
+export async function getHomeDiscourses(): Promise<DiscourseCard[]> {
   const res = await getDiscourses({});
-  return res ? res.items.slice(0, limit) : [];
+  return res ? res.items : [];
 }

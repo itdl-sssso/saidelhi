@@ -25,9 +25,9 @@ import { QuoteCard } from "@/ui/QuoteCard";
 import { SectionHeading } from "@/ui/SectionHeading";
 import { CentreFinder } from "./CentreFinder";
 import type { HomeStory } from "./stories";
-import { DiscourseCardView } from "@/features/discourses/DiscoursesView";
 import { OptInForm } from "@/features/join/OptInForm";
 import { FACEBOOK_URL, SAICONNECT_URL, SAI_ANSWERS_URL, YOUTUBE_URL } from "@/features/shell/links";
+import { HomeDiscourses } from "./HomeDiscourses";
 import styles from "./HomeSections.module.css";
 
 // The organisation has three wings: service, educational, spiritual.
@@ -54,7 +54,7 @@ export function HomeSections({
   stories: HomeStory[];
   /** Feature flag `discourses`: the Answers section only links into /discourses when it is on. */
   discourses: boolean;
-  /** A few discourses for the learn section (empty when the flag is off). */
+  /** Discourse pool for the learn section; a random few are picked per request (empty when the flag is off). */
   discoursePicks: DiscourseCard[];
   /** Next bhajan gatherings. */
   bhajans: EventPublic[];
@@ -469,13 +469,7 @@ function Learn({ discourses, picks }: { discourses: boolean; picks: DiscourseCar
               {t("discAll")}
             </Button>
           </div>
-          <ul className={styles.discList}>
-            {picks.map((d) => (
-              <li key={d.slug}>
-                <DiscourseCardView d={d} />
-              </li>
-            ))}
-          </ul>
+          <HomeDiscourses pool={picks} className={styles.discList} />
         </Wrap>
       </section>
     );

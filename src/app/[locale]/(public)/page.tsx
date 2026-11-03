@@ -14,8 +14,8 @@ export async function generateMetadata(): Promise<Metadata> {
   return { title: t("metaTitle") };
 }
 
-// Spec 01. Data is cached (tags home/events/impact/articles/centres), so the whole page
-// is part of the static shell and revalidates on those tags.
+// Spec 01. Data is cached (tags home/events/impact/articles/centres), so the page is part of
+// the static shell and revalidates on those tags. One dynamic hole: the random discourse picks.
 export default async function HomePage() {
   await initLocale();
   const [data, centres, stories, discourses, waOutreach, bhajans] = await Promise.all([
