@@ -135,7 +135,7 @@ async function main() {
     `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${CREAM}"/><stop offset="1" stop-color="${BLUE50}"/></linearGradient></defs><rect width="${W}" height="${H}" fill="url(#g)"/><rect x="0" y="${H - 8}" width="${W}" height="8" fill="${GOLD300}"/><rect x="0" y="0" width="${W}" height="${H - 8}" fill="none"/></svg>`,
   );
   const textSvg = Buffer.from(
-    `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}"><style>.o{font:700 34px 'Noto Sans','DejaVu Sans',sans-serif;fill:${BLUE700}}.r{font:400 28px 'Noto Sans','DejaVu Sans',sans-serif;fill:#4B5563;letter-spacing:6px}</style><text class="o" x="330" y="165">Sri Sathya Sai</text><text class="o" x="330" y="209">Seva Organisation</text><rect x="330" y="232" width="64" height="4" fill="${GOLD300}"/><text class="r" x="330" y="283">DELHI NCR</text></svg>`,
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}"><style>.o{font:700 34px 'Noto Sans','DejaVu Sans',sans-serif;fill:${BLUE700}}.r{font:400 28px 'Noto Sans','DejaVu Sans',sans-serif;fill:#4B5563;letter-spacing:6px}</style><text class="o" x="330" y="165">Sri Sathya Sai</text><text class="o" x="330" y="209">Seva Organisations</text><rect x="330" y="232" width="64" height="4" fill="${GOLD300}"/><text class="r" x="330" y="283">DELHI NCR</text></svg>`,
   );
   const hdrEmblem = await emblemAt(300);
   write(

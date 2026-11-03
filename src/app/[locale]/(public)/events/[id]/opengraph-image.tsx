@@ -2,7 +2,7 @@ import { ogContentType, ogLocale, ogSize, sectionOg } from "@/lib/og";
 import { getEvent } from "@/features/public/data";
 import { formatDate, pickText } from "@/lib/format";
 
-export const alt = "Sri Sathya Sai Seva Organisation, Delhi NCR";
+export const alt = "Sri Sathya Sai Seva Organisations, Delhi NCR";
 export const size = ogSize;
 export const contentType = ogContentType;
 

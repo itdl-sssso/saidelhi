@@ -207,7 +207,7 @@ export function createReportsService(ctx: PortalCtx): ReportsService {
 
     const cover = doc.addPage([W, H]);
     cover.drawImage(await embedEmblem(doc), { x: 56, y: 712, width: 64, height: 64 });
-    text(cover, "Sri Sathya Sai Seva Organisation", 132, 752, 13, bold, ink);
+    text(cover, "Sri Sathya Sai Seva Organisations", 132, 752, 13, bold, ink);
     text(cover, "Delhi NCR", 132, 734, 13, font, muted);
     cover.drawLine({ start: { x: 56, y: 696 }, end: { x: W - 56, y: 696 }, thickness: 0.75, color: rgb(0.83, 0.69, 0.22) });
     text(cover, `Seva report, ${monthName}`, 56, 640, 28, bold);
