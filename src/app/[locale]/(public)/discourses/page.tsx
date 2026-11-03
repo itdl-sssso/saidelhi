@@ -22,9 +22,10 @@ async function DiscoursesContent({ searchParams }: PageProps<"/[locale]/discours
   // An unknown theme falls back to "all themes".
   const theme = DiscourseTheme.safeParse(first(sp.theme)).data;
   const q = (first(sp.q) ?? "").trim().slice(0, 80);
+  const page = Number.parseInt(first(sp.page) ?? "1", 10) || 1;
   const data = await getDiscourses({ theme, q: q || undefined });
   if (!data) notFound(); // flag off
-  return <DiscoursesView data={data} theme={theme} q={q} />;
+  return <DiscoursesView data={data} theme={theme} q={q} page={page} />;
 }
 
 export default function DiscoursesPage(props: PageProps<"/[locale]/discourses">) {

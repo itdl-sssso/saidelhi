@@ -7,15 +7,19 @@ import { Badge } from "@/ui/Badge";
 import { cx } from "@/ui/cx";
 import { EmptyState } from "@/ui/EmptyState";
 import { Icon } from "@/ui/Icon";
+import { Pagination } from "@/ui/Pagination";
 import { QuoteCard } from "@/ui/QuoteCard";
 import { DiscourseSearch } from "./DiscourseSearch";
 import { ShareQuote } from "./ShareQuote";
 import styles from "./Discourses.module.css";
 
-export const hrefFor = (theme?: DiscourseTheme, q?: string) => {
+export const PAGE_SIZE = 12;
+
+export const hrefFor = (theme?: DiscourseTheme, q?: string, page?: number) => {
   const p = new URLSearchParams();
   if (theme) p.set("theme", theme);
   if (q) p.set("q", q);
+  if (page && page > 1) p.set("page", String(page));
   const s = p.toString();
   return s ? `/discourses?${s}` : "/discourses";
 };
@@ -59,9 +63,22 @@ export function DiscourseCardView({ d, level = 3 }: { d: DiscourseCard; level?: 
   );
 }
 
-export function DiscoursesView({ data, theme, q }: { data: DiscoursesPayload; theme?: DiscourseTheme; q: string }) {
+export function DiscoursesView({
+  data,
+  theme,
+  q,
+  page: askedPage = 1,
+}: {
+  data: DiscoursesPayload;
+  theme?: DiscourseTheme;
+  q: string;
+  page?: number;
+}) {
   const t = useTranslations("discourses");
   const locale = useLocale() as AppLocale;
+  const total = data.items.length;
+  const page = Math.min(Math.max(1, askedPage), Math.max(1, Math.ceil(total / PAGE_SIZE)));
+  const items = data.items.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
   const credit = tx(data.credit, locale);
   const f = data.featured;
   const filtered = Boolean(theme || q);
@@ -123,16 +140,21 @@ export function DiscoursesView({ data, theme, q }: { data: DiscoursesPayload; th
             </ul>
           </nav>
           <p className={cx(pub.cap, styles.count)} role="status">
-            {t("count", { count: data.items.length })}
+            {t("count", { count: total })}
           </p>
-          {data.items.length ? (
-            <ul className={styles.grid}>
-              {data.items.map((d) => (
-                <li key={d.slug}>
-                  <DiscourseCardView d={d} />
-                </li>
-              ))}
-            </ul>
+          {total ? (
+            <>
+              <ul className={styles.grid}>
+                {items.map((d) => (
+                  <li key={d.slug}>
+                    <DiscourseCardView d={d} />
+                  </li>
+                ))}
+              </ul>
+              {total > PAGE_SIZE ? (
+                <Pagination page={page} pageSize={PAGE_SIZE} total={total} href={(p) => hrefFor(theme, q, p)} />
+              ) : null}
+            </>
           ) : (
             <div className={pub.card}>
               <EmptyState
