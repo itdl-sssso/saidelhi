@@ -1,13 +1,12 @@
 import type { ReactNode } from "react";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
-import type { Article, CentreListItem, EventPublic, HomePayload, KpiTile as KpiTileDto, Thought, WingCard, Wing } from "@/contract";
+import type { Article, CentreListItem, DiscourseCard, EventPublic, HomePayload, Thought, WingCard, Wing } from "@/contract";
 import { Link } from "@/i18n/navigation";
 import {
   type AppLocale,
   formatDate,
   formatIsoDate,
-  formatPeriodRange,
   formatTime,
   istParts,
   monthName,
@@ -22,15 +21,16 @@ import { cx } from "@/ui/cx";
 import { EmptyState } from "@/ui/EmptyState";
 import { Eyebrow } from "@/ui/Eyebrow";
 import { Icon, type IconName } from "@/ui/Icon";
-import { FigureValue } from "@/ui/Figure";
 import { QuoteCard } from "@/ui/QuoteCard";
 import { SectionHeading } from "@/ui/SectionHeading";
 import { CentreFinder } from "./CentreFinder";
 import type { HomeStory } from "./stories";
+import { DiscourseCardView } from "@/features/discourses/DiscoursesView";
 import { OptInForm } from "@/features/join/OptInForm";
 import { FACEBOOK_URL, SAICONNECT_URL, SAI_ANSWERS_URL, YOUTUBE_URL } from "@/features/shell/links";
 import styles from "./HomeSections.module.css";
 
+// The organisation has three wings: service, educational, spiritual.
 const WING_ICON: Record<Wing, IconName> = {
   service: "hand-heart",
   educational: "graduation-cap",
@@ -40,18 +40,13 @@ const WING_ICON: Record<Wing, IconName> = {
 /** Only when there is no thought at all; otherwise the picture is part of the thought data. */
 const FALLBACK_THOUGHT_PHOTO = "/images/home/thought.webp";
 
-const KPI_ICON: Record<string, IconName> = {
-  activities: "calendar-days",
-  people_served: "users",
-  "blood.units": "droplets",
-  "eye.spectacles": "glasses",
-};
-
 export function HomeSections({
   data,
   centres,
   stories,
   discourses,
+  discoursePicks,
+  bhajans,
   waOutreach,
 }: {
   data: HomePayload;
@@ -59,22 +54,27 @@ export function HomeSections({
   stories: HomeStory[];
   /** Feature flag `discourses`: the Answers section only links into /discourses when it is on. */
   discourses: boolean;
+  /** A few discourses for the learn section (empty when the flag is off). */
+  discoursePicks: DiscourseCard[];
+  /** Next bhajan gatherings. */
+  bhajans: EventPublic[];
   /** Feature flag `wa_outreach`: the WhatsApp updates card shows only when it is on. */
   waOutreach: boolean;
 }) {
-  // Order follows the design (Home v2): thought, upcoming, impact, find a centre, wings,
-  // stories, centenary, news, answers, auditorium, get involved.
+  // Order (review round 2): values live in the lotus journey above; then thought, bhajans,
+  // learn about Bhagawan / discourses, upcoming, news, centenary, stories, find a centre,
+  // wings, auditorium, get involved. Impact figures live on each programme page.
   return (
     <div id="home-flow" className={styles.flow}>
       <ThoughtSection thought={data.thought} />
+      <Bhajans events={bhajans} />
+      <Learn discourses={discourses} picks={discoursePicks} />
       <UpcomingStrip events={data.upcoming} />
-      {data.kpis ? <ImpactSnapshot kpis={data.kpis} /> : <ProgramsTeaser />}
+      <News articles={data.articles} />
+      <Centenary articles={data.centenary} />
+      <Stories stories={stories} />
       <CentreFinder centres={centres} />
       <Wings wings={data.wings} />
-      <Stories stories={stories} />
-      <Centenary articles={data.centenary} />
-      <News articles={data.articles} />
-      <Answers discourses={discourses} />
       <Auditorium />
       <GetInvolved waOutreach={waOutreach} />
     </div>
@@ -205,55 +205,6 @@ function UpcomingCard({ event }: { event: EventPublic }) {
   );
 }
 
-function ImpactSnapshot({ kpis }: { kpis: KpiTileDto[] }) {
-  const t = useTranslations("home");
-  const locale = useLocale() as AppLocale;
-  const period = kpis[0].period;
-  const range = formatPeriodRange(period.from, period.to, locale, (to) => t("upTo", { date: to }));
-  return (
-    <section className={styles.sec} aria-labelledby="impact-title">
-      <Wrap>
-        <div className={styles.secHead}>
-          <SectionHeading titleId="impact-title" eyebrow={t("impactEyebrow")} title={t("impactTitle")} description={t("impactLead", { range })} />
-          <Button href="/impact" variant="outline" iconAfter="arrow-right">
-            {t("seeImpact")}
-          </Button>
-        </div>
-        <ul className={styles.kpis}>
-          {kpis.map((k) => (
-            <li key={k.key} className={styles.kpi}>
-              <span className={styles.kpiIc} aria-hidden="true">
-                <Icon name={KPI_ICON[k.key] ?? "hand-heart"} size={24} />
-              </span>
-              <b className={styles.kpiFig}>
-                <FigureValue value={k.figure.value} />
-              </b>
-              <LocalText value={k.label} className={styles.kpiLabel} />
-              {k.note ? <LocalText value={k.note} className={styles.kpiNote} /> : null}
-            </li>
-          ))}
-        </ul>
-      </Wrap>
-    </section>
-  );
-}
-
-function ProgramsTeaser() {
-  const t = useTranslations("home");
-  return (
-    <section className={styles.sec} aria-labelledby="programs-title">
-      <Wrap>
-        <div className={styles.teaser}>
-          <SectionHeading titleId="programs-title" eyebrow={t("programsEyebrow")} title={t("programsTitle")} description={t("programsLead")} />
-          <Button href="/programs" variant="outline" iconAfter="arrow-right">
-            {t("seePrograms")}
-          </Button>
-        </div>
-      </Wrap>
-    </section>
-  );
-}
-
 function Wings({ wings }: { wings: WingCard[] }) {
   const t = useTranslations("home");
   const tc = useTranslations("common");
@@ -275,7 +226,7 @@ function Wings({ wings }: { wings: WingCard[] }) {
           </div>
         </div>
         <ul className={styles.wings}>
-          {wings.map((w) => (
+          {wings.filter((w) => w.wing in WING_ICON).map((w) => (
             <li key={w.wing}>
               <Link href={w.href} className={styles.wing} data-wing={w.wing}>
                 <span className={styles.wingIc} aria-hidden="true">
@@ -469,23 +420,77 @@ function Centenary({ articles }: { articles: Article[] }) {
   );
 }
 
-function Answers({ discourses }: { discourses: boolean }) {
+function Bhajans({ events }: { events: EventPublic[] }) {
   const t = useTranslations("home");
-  const tc = useTranslations("common");
   return (
-    <section className={cx(styles.sec, styles.calm)} aria-labelledby="answers-title">
+    <section id="bhajans" className={cx(styles.sec, styles.warm)} aria-labelledby="bhajans-title">
       <Wrap className={styles.split}>
         <div>
-          <SectionHeading titleId="answers-title" eyebrow={t("answersEyebrow")} title={t("answersTitle")} description={t("answersBody")} />
+          <SectionHeading titleId="bhajans-title" eyebrow={t("bhajansEyebrow")} title={t("bhajansTitle")} description={t("bhajansLead")} />
           <div className={styles.acts}>
-            {/* The discourse library stays hidden until the Trust grants permission (flag), so the link follows the flag. */}
-            {discourses ? (
-              <Button href="/discourses" icon="book-open" iconAfter="arrow-right">
-                {t("answersDiscourses")}
-              </Button>
-            ) : null}
-            <Button href={SAI_ANSWERS_URL} external variant={discourses ? "outline" : "secondary"} icon="video" iconAfter="external-link">
-              {t("answersYoutube")}
+            <Button href="/programs/bhajan" icon="music" iconAfter="arrow-right">
+              {t("bhajansAbout")}
+            </Button>
+            <Button href="/centres/map" variant="outline" icon="map-pin">
+              {t("bhajansFind")}
+            </Button>
+          </div>
+        </div>
+        <div>
+          <h3 className={styles.h3}>{t("bhajansNext")}</h3>
+          {events.length ? (
+            <ul className={styles.bhajanList} aria-label={t("bhajansList")}>
+              {events.map((e) => (
+                <UpcomingCard key={e.id} event={e} />
+              ))}
+            </ul>
+          ) : (
+            <div className={styles.emptyCard}>
+              <EmptyState icon="music" title={t("bhajansNoneTitle")} body={t("bhajansNone")} />
+            </div>
+          )}
+        </div>
+      </Wrap>
+    </section>
+  );
+}
+
+/** Flag on: a few discourses to read. Flag off: a short introduction to Bhagawan, linking to About. */
+function Learn({ discourses, picks }: { discourses: boolean; picks: DiscourseCard[] }) {
+  const t = useTranslations("home");
+  const tc = useTranslations("common");
+  if (discourses && picks.length) {
+    return (
+      <section id="learn" className={styles.sec} aria-labelledby="learn-title">
+        <Wrap>
+          <div className={styles.secHead}>
+            <SectionHeading titleId="learn-title" eyebrow={t("discEyebrow")} title={t("discTitle")} description={t("discLead")} />
+            <Button href="/discourses" variant="outline" icon="book-open" iconAfter="arrow-right">
+              {t("discAll")}
+            </Button>
+          </div>
+          <ul className={styles.discList}>
+            {picks.map((d) => (
+              <li key={d.slug}>
+                <DiscourseCardView d={d} />
+              </li>
+            ))}
+          </ul>
+        </Wrap>
+      </section>
+    );
+  }
+  return (
+    <section id="learn" className={styles.sec} aria-labelledby="learn-title">
+      <Wrap className={styles.split}>
+        <div>
+          <SectionHeading titleId="learn-title" eyebrow={t("learnEyebrow")} title={t("learnTitle")} description={t("learnBody")} />
+          <div className={styles.acts}>
+            <Button href="/about" icon="book-open" iconAfter="arrow-right">
+              {t("learnAbout")}
+            </Button>
+            <Button href={SAI_ANSWERS_URL} external variant="outline" icon="video" iconAfter="external-link">
+              {t("learnYoutube")}
             </Button>
           </div>
         </div>
