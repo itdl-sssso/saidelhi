@@ -298,16 +298,31 @@
 .journey[data-mode="enhanced"] .actTitle {
   text-shadow: 0 0 18px rgba(232, 184, 76, 0.75), 0 0 42px rgba(232, 184, 76, 0.4);
 }
-/* Subtitles over the lotus: heavier weight so they hold up against petals. */
-.journey[data-mode="enhanced"] .actBody { font-weight: var(--weight-semibold); }
-.journey[data-mode="enhanced"] .actBody,
+/* Subtitles over the lotus: bold, full-strength colour and a soft halo in the sky colour under
+   a gold glow, so each letter keeps its own patch of contrast against the petals. */
+.journey[data-mode="enhanced"] .actBody {
+  font-weight: var(--weight-bold);
+  color: var(--on-dark);
+  text-shadow:
+    0 0 2px rgba(18, 12, 36, 0.9),
+    0 0 6px rgba(18, 12, 36, 0.75),
+    0 0 14px rgba(18, 12, 36, 0.55),
+    0 0 22px rgba(232, 184, 76, 0.45);
+}
 .journey[data-mode="enhanced"] .actEyebrow {
   text-shadow: 0 0 12px rgba(232, 184, 76, 0.55);
 }
 .journey[data-mode="enhanced"][data-tone="light"] .actTitle {
   text-shadow: 0 0 16px rgba(255, 214, 120, 0.95), 0 0 36px rgba(240, 190, 80, 0.6);
 }
-.journey[data-mode="enhanced"][data-tone="light"] .actBody,
+.journey[data-mode="enhanced"][data-tone="light"] .actBody {
+  color: var(--slate-900);
+  text-shadow:
+    0 0 2px rgba(255, 250, 235, 0.95),
+    0 0 6px rgba(255, 250, 235, 0.9),
+    0 0 14px rgba(255, 246, 225, 0.75),
+    0 0 22px rgba(255, 220, 140, 0.6);
+}
 .journey[data-mode="enhanced"][data-tone="light"] .actEyebrow {
   text-shadow: 0 0 10px rgba(255, 220, 140, 0.95);
 }
