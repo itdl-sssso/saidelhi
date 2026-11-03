@@ -241,8 +241,8 @@
   border-radius: 50%;
   background: rgba(20, 16, 40, 0.45);
   color: var(--on-dark);
-  backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
   cursor: pointer;
 }
 .snapBtn[data-dir="prev"] svg { transform: rotate(180deg); }
@@ -269,8 +269,10 @@
   margin: calc(-1 * var(--pad-y)) calc(-1 * var(--pad-x));
   pointer-events: none; /* the wide halo must not cover the rail or the hint */
   background: rgba(18, 12, 36, 0.05);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+  /* Prefixed first: the CSS minifier keeps only the last of the pair, and Chrome and Firefox
+     ignore the -webkit- one. */
+  -webkit-backdrop-filter: blur(var(--glass-blur, 2px));
+  backdrop-filter: blur(var(--glass-blur, 2px));
   /* Gaussian-like falloff: long and gentle, so the blur boundary never reads as a line. */
   --r: calc(100% - var(--core));
   --feather: radial-gradient(ellipse 50% 50% at 50% 50%,
@@ -285,6 +287,10 @@
   -webkit-mask-image: var(--feather);
   mask-image: var(--feather);
 }
+/* The glass thins with each act as the lotus opens, so the flower comes into its own. */
+.journey[data-mode="enhanced"] .act[data-index="1"] { --glass-blur: 1.5px; }
+.journey[data-mode="enhanced"] .act[data-index="2"] { --glass-blur: 1px; }
+.journey[data-mode="enhanced"] .act[data-index="3"] { --glass-blur: 0.5px; }
 @media (min-width: 900px) {
   .journey[data-mode="enhanced"] .act { --pad-x: clamp(200px, 22vw, 300px); --pad-y: 260px; --core: 62%; }
 }
@@ -292,16 +298,31 @@
 .journey[data-mode="enhanced"] .actTitle {
   text-shadow: 0 0 18px rgba(232, 184, 76, 0.75), 0 0 42px rgba(232, 184, 76, 0.4);
 }
-/* Subtitles over the lotus: heavier weight so they hold up against petals. */
-.journey[data-mode="enhanced"] .actBody { font-weight: var(--weight-semibold); }
-.journey[data-mode="enhanced"] .actBody,
+/* Subtitles over the lotus: bold, full-strength colour and a soft halo in the sky colour under
+   a gold glow, so each letter keeps its own patch of contrast against the petals. */
+.journey[data-mode="enhanced"] .actBody {
+  font-weight: var(--weight-bold);
+  color: var(--on-dark);
+  text-shadow:
+    0 0 2px rgba(18, 12, 36, 0.9),
+    0 0 6px rgba(18, 12, 36, 0.75),
+    0 0 14px rgba(18, 12, 36, 0.55),
+    0 0 22px rgba(232, 184, 76, 0.45);
+}
 .journey[data-mode="enhanced"] .actEyebrow {
   text-shadow: 0 0 12px rgba(232, 184, 76, 0.55);
 }
 .journey[data-mode="enhanced"][data-tone="light"] .actTitle {
   text-shadow: 0 0 16px rgba(255, 214, 120, 0.95), 0 0 36px rgba(240, 190, 80, 0.6);
 }
-.journey[data-mode="enhanced"][data-tone="light"] .actBody,
+.journey[data-mode="enhanced"][data-tone="light"] .actBody {
+  color: var(--slate-900);
+  text-shadow:
+    0 0 2px rgba(255, 250, 235, 0.95),
+    0 0 6px rgba(255, 250, 235, 0.9),
+    0 0 14px rgba(255, 246, 225, 0.75),
+    0 0 22px rgba(255, 220, 140, 0.6);
+}
 .journey[data-mode="enhanced"][data-tone="light"] .actEyebrow {
   text-shadow: 0 0 10px rgba(255, 220, 140, 0.95);
 }
