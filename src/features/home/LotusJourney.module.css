@@ -271,8 +271,8 @@
   background: rgba(18, 12, 36, 0.05);
   /* Prefixed first: the CSS minifier keeps only the last of the pair, and Chrome and Firefox
      ignore the -webkit- one. */
-  -webkit-backdrop-filter: blur(2px);
-  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(var(--glass-blur, 2px));
+  backdrop-filter: blur(var(--glass-blur, 2px));
   /* Gaussian-like falloff: long and gentle, so the blur boundary never reads as a line. */
   --r: calc(100% - var(--core));
   --feather: radial-gradient(ellipse 50% 50% at 50% 50%,
@@ -287,6 +287,10 @@
   -webkit-mask-image: var(--feather);
   mask-image: var(--feather);
 }
+/* The glass thins with each act as the lotus opens, so the flower comes into its own. */
+.journey[data-mode="enhanced"] .act[data-index="1"] { --glass-blur: 1.5px; }
+.journey[data-mode="enhanced"] .act[data-index="2"] { --glass-blur: 1px; }
+.journey[data-mode="enhanced"] .act[data-index="3"] { --glass-blur: 0.5px; }
 @media (min-width: 900px) {
   .journey[data-mode="enhanced"] .act { --pad-x: clamp(200px, 22vw, 300px); --pad-y: 260px; --core: 62%; }
 }
