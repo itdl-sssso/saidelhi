@@ -17,7 +17,8 @@ export const WINGS = ["service", "educational", "spiritual"] as const satisfies 
 
 const iconFor = (c: ProgramCard): IconName => (c.icon in icons ? (c.icon as IconName) : SEVA_ICON[c.sevaType]);
 
-export function ProgramsView({ wing, cards }: { wing: Wing | null; cards: ProgramCard[] }) {
+/** `discourses`: feature flag; when on, the Education wing links to /discourses. */
+export function ProgramsView({ wing, cards, discourses = false }: { wing: Wing | null; cards: ProgramCard[]; discourses?: boolean }) {
   const t = useTranslations("programs");
   const hrefFor = (w: Wing | null) => (w ? `/programs?wing=${w}` : "/programs");
 
@@ -37,7 +38,7 @@ export function ProgramsView({ wing, cards }: { wing: Wing | null; cards: Progra
 
       <section className={pub.section} style={{ paddingTop: "var(--space-6)" }}>
         <div className={cx(pub.wrap, pub.stack)} style={{ gap: "var(--space-8)" }}>
-          {wing ? <WingIntro wing={wing} /> : <ThreeWings />}
+          {wing ? <WingIntro wing={wing} discourses={discourses} /> : <ThreeWings />}
           {cards.length ? (
             <ul className={p1.grid3}>
               {cards.map((c) => (
@@ -130,7 +131,7 @@ const BLOCKS: Record<Wing, Block[]> = {
 };
 
 /** Legacy saidelhi.org wing page wording (docs/content/legacy-wings.md). */
-function WingIntro({ wing }: { wing: Wing }) {
+function WingIntro({ wing, discourses }: { wing: Wing; discourses: boolean }) {
   const t = useTranslations("programs");
   const k = (s: string) => `wingIntro.${wing}.${s}` as "wingIntro.service.p1";
   return (
@@ -148,6 +149,14 @@ function WingIntro({ wing }: { wing: Wing }) {
           </blockquote>
         ),
       )}
+      {wing === "educational" && discourses ? (
+        <div className={styles.discLink}>
+          <p>{t("discoursesNote")}</p>
+          <Button href="/discourses" variant="outline" icon="book-open" iconAfter="arrow-right">
+            {t("discoursesLink")}
+          </Button>
+        </div>
+      ) : null}
       {wing === "service" ? (
         <>
           <h3 className={pub.h3}>{t(k("activitiesTitle"))}</h3>

@@ -71,7 +71,7 @@ export const SPEC_NAMES: Record<number, string> = {
   2: "Value",
   3: "About",
   4: "Impact",
-  5: "Programs",
+  5: "Programmes",
   6: "Program",
   7: "News",
   8: "Article",

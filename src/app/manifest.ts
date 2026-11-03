@@ -3,7 +3,7 @@ import type { MetadataRoute } from "next";
 // Colours: design-system/tokens/colors.css (--blue-700 = surface-inverse, --cream = surface-page).
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Sri Sathya Sai Seva Organisation, Delhi NCR",
+    name: "Sri Sathya Sai Seva Organisations, Delhi NCR",
     short_name: "SSSSO Delhi NCR",
     description: "Bhajans, study circles, Bal Vikas and seva across Delhi NCR. Open to everyone, free always.",
     start_url: "/",

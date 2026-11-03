@@ -60,7 +60,7 @@ export async function qrPosterPdf(p: PosterInput): Promise<Uint8Array> {
 
   page.drawImage(await embedEmblem(doc), { x: (w - 56) / 2, y: y - 56, width: 56, height: 56 });
   y -= 64;
-  lines("Sri Sathya Sai Seva Organisation · Delhi NCR", regular, 11, MUTED, 18);
+  lines("Sri Sathya Sai Seva Organisations · Delhi NCR", regular, 11, MUTED, 18);
   page.drawLine({ start: { x: MARGIN, y }, end: { x: w - MARGIN, y }, thickness: 0.75, color: rgb(0.83, 0.69, 0.22) });
   y -= 28;
   lines(p.heading, bold, 16, BLUE, 12);

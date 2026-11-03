@@ -56,7 +56,7 @@ export const COPY = {
   languageSet: b("Language set to English. You can change it any time by sending \"language\".", "भाषा हिन्दी पर सेट हो गई। कभी भी \"भाषा\" लिखकर बदल सकते हैं।"),
   menuCoordinator: (name: string) => b(`Hello ${name}. What would you like to do?`, `नमस्ते ${name}। आप क्या करना चाहेंगे?`),
   menuPublic: b(
-    "Namaste. This is Sri Sathya Sai Seva Organisation, Delhi NCR. How can we help?",
+    "Namaste. This is the Sri Sathya Sai Seva Organisations, Delhi NCR. How can we help?",
     "नमस्ते। यह श्री सत्य साई सेवा संगठन, दिल्ली एनसीआर है। हम कैसे मदद करें?",
   ),
   menuButton: b("Open menu", "मेनू खोलें"),
@@ -81,7 +81,7 @@ export const COPY = {
   timeout: b("It has been quiet for a while, so let's start again.", "कुछ देर से कोई संदेश नहीं आया, इसलिए चलिए फिर से शुरू करते हैं।"),
   cancelled: b("Okay, cancelled.", "ठीक है, रद्द कर दिया।"),
   coordinatorsOnly: b(
-    "Namaste. This WhatsApp number is for Sri Sathya Sai Seva Organisation coordinators to plan and report seva. For events and centres near you, please visit saidelhi.org.",
+    "Namaste. This WhatsApp number is for coordinators of the Sri Sathya Sai Seva Organisations, Delhi NCR, to plan and report seva. For events and centres near you, please visit saidelhi.org.",
     "नमस्ते। यह व्हाट्सऐप नंबर श्री सत्य साई सेवा संगठन के समन्वयकों के लिए है, ताकि वे सेवा की योजना और रिपोर्ट भेज सकें। अपने पास के कार्यक्रम और केंद्र जानने के लिए saidelhi.org देखें।",
   ),
   notAllowed: b("Your number can't do that. Please ask your district coordinator.", "आपका नंबर यह नहीं कर सकता। कृपया अपने ज़िला समन्वयक से पूछें।"),
@@ -100,7 +100,7 @@ export const COPY = {
   galleryPick: b("Please choose from the list.", "कृपया सूची में से चुनें।"),
   galleryAdded: (n: number) => b(`Added. ${n} photos so far. Choose where they go, or send more.`, `जुड़ गई। अब तक ${n} फ़ोटो। चुनें कि कहाँ जाएँ, या और भेजें।`),
   galleryThanks: (n: number) =>
-    b(n === 1 ? "Thank you — 1 photo is waiting for review." : `Thank you — ${n} photos are waiting for review.`, n === 1 ? "धन्यवाद — 1 फ़ोटो जाँच की प्रतीक्षा में है।" : `धन्यवाद — ${n} फ़ोटो जाँच की प्रतीक्षा में हैं।`),
+    b(n === 1 ? "Thank you. 1 photo is waiting for review." : `Thank you. ${n} photos are waiting for review.`, n === 1 ? "धन्यवाद। 1 फ़ोटो जाँच की प्रतीक्षा में है।" : `धन्यवाद। ${n} फ़ोटो जाँच की प्रतीक्षा में हैं।`),
   replyForwarded: b("Thanks, your reply has been passed on.", "धन्यवाद, आपका जवाब आगे भेज दिया गया है।"),
 
   // Plan
