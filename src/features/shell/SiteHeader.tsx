@@ -52,7 +52,8 @@ export function SiteHeader({ discourses = false, pathless = false }: SiteHeaderP
       { href: "/centres/map", label: t("findCentre"), icon: "map-pin" },
     ],
     groups,
-    donate: { href: "/donate", label: t("donate") },
+    // Header CTA: joining a seva is the main ask; Donate stays in the menu and footer.
+    donate: { href: "/join", label: t("getInvolved") },
     utilityLinks: [
       { href: SAICONNECT_URL, label: t("saiConnectLabel"), icon: "log-in", external: true },
       { href: "/admin/login", label: t("coordinatorLogin"), icon: "lock", quiet: true },
