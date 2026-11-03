@@ -7,14 +7,7 @@
 .journey {
   --night: #04060b;
   --on-dark: #fff9ef;
-  --on-dark-soft: rgba(255, 249, 239, 0.92);
-  /* Glass over the lotus: thin tint + heavy blur; edge/glow/shade tuned per tone below. */
-  --scrim: linear-gradient(160deg, rgba(20, 18, 34, 0.42), rgba(8, 8, 16, 0.3));
-  --scrim-solid: rgba(8, 8, 16, 0.78);
-  --glass-edge: rgba(255, 249, 239, 0.16);
-  --glass-glow: rgba(255, 249, 239, 0.12);
-  --glass-shade: 0 18px 50px -20px rgba(0, 0, 0, 0.55);
-  --text-halo: 0 1px 12px rgba(4, 6, 11, 0.55);
+  --on-dark-soft: rgba(255, 249, 239, 0.8);
   position: relative;
   isolation: isolate;
   background: var(--night);
@@ -149,23 +142,11 @@
 }
 .acts { position: relative; width: min(760px, 100%); }
 .act {
-  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 14px;
-  padding: 22px 20px 26px;
-  border-radius: var(--radius-xl);
-  /* Glass panel: the copy sits over pink/cream petals and a purple sky. Heavy blur flattens
-     the petals behind it; tint + text halo hold >= 4.5:1 (night glass dark acts, frost light). */
-  background: var(--scrim);
-  border: 1px solid var(--glass-edge);
-  box-shadow: inset 0 1px 0 var(--glass-glow), var(--glass-shade);
-  -webkit-backdrop-filter: blur(22px) saturate(140%);
-  backdrop-filter: blur(22px) saturate(140%);
-  text-shadow: var(--text-halo);
-  transition: background-color 500ms var(--ease-serene), color 500ms var(--ease-serene),
-     opacity 500ms var(--ease-serene), transform 500ms var(--ease-serene);
+  transition: opacity 500ms var(--ease-serene), transform 500ms var(--ease-serene);
 }
 .act:not([data-index="0"]) {
   position: absolute;
@@ -229,17 +210,6 @@
 .hint:lang(hi) { letter-spacing: 0; }
 .journey[data-mode="enhanced"][data-hint="0"] .hint { opacity: 0; pointer-events: none; }
 
-.journey[data-tone="light"] {
-  --scrim: linear-gradient(160deg, rgba(255, 253, 243, 0.62), rgba(255, 249, 239, 0.44));
-  --scrim-solid: rgba(255, 253, 243, 0.9);
-  --glass-edge: rgba(255, 255, 255, 0.7);
-  --glass-glow: rgba(255, 255, 255, 0.85);
-  --glass-shade: 0 18px 50px -22px rgba(60, 40, 70, 0.35);
-  --text-halo: 0 1px 10px rgba(255, 253, 243, 0.7);
-}
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .act { background: var(--scrim-solid); }
-}
 .journey[data-tone="light"] .actTitle { color: var(--slate-900); }
 .journey[data-tone="light"] .actBody { color: var(--slate-600); }
 .journey[data-tone="light"] .actEyebrow { color: var(--gold-600); }
@@ -335,7 +305,6 @@
     url("/images/lotus-bloom.webp") center 78% / min(760px, 130vw) auto no-repeat,
     linear-gradient(to bottom, #fffdf3, var(--cream));
 }
-.journey[data-mode="static"] .act { --scrim: transparent; --glass-edge: transparent; --glass-glow: transparent; --glass-shade: 0 0 #0000; --text-halo: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
 .journey[data-mode="static"] .actTitle { color: var(--slate-900); }
 .journey[data-mode="static"] .actBody { color: var(--slate-600); }
 .journey[data-mode="static"] .actEyebrow { color: var(--gold-600); }
@@ -362,7 +331,6 @@
       url("/images/lotus-bloom.webp") center 78% / min(760px, 130vw) auto no-repeat,
       linear-gradient(to bottom, #fffdf3, var(--cream));
   }
-  .journey:not([data-mode="enhanced"]) .act { --scrim: transparent; --glass-edge: transparent; --glass-glow: transparent; --glass-shade: 0 0 #0000; --text-halo: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
   .journey:not([data-mode="enhanced"]) .actTitle { color: var(--slate-900); }
   .journey:not([data-mode="enhanced"]) .actBody { color: var(--slate-600); }
   .journey:not([data-mode="enhanced"]) .actEyebrow { color: var(--gold-600); }
