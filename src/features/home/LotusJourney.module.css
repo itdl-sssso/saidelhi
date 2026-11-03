@@ -241,8 +241,8 @@
   border-radius: 50%;
   background: rgba(20, 16, 40, 0.45);
   color: var(--on-dark);
-  backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
   cursor: pointer;
 }
 .snapBtn[data-dir="prev"] svg { transform: rotate(180deg); }
@@ -269,8 +269,10 @@
   margin: calc(-1 * var(--pad-y)) calc(-1 * var(--pad-x));
   pointer-events: none; /* the wide halo must not cover the rail or the hint */
   background: rgba(18, 12, 36, 0.05);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+  /* Prefixed first: the CSS minifier keeps only the last of the pair, and Chrome and Firefox
+     ignore the -webkit- one. */
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
   /* Gaussian-like falloff: long and gentle, so the blur boundary never reads as a line. */
   --r: calc(100% - var(--core));
   --feather: radial-gradient(ellipse 50% 50% at 50% 50%,
