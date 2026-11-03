@@ -7,7 +7,8 @@
 .journey {
   --night: #04060b;
   --on-dark: #fff9ef;
-  --on-dark-soft: rgba(255, 249, 239, 0.8);
+  --on-dark-soft: rgba(255, 249, 239, 0.92);
+  --scrim: rgba(8, 8, 16, 0.78);
   position: relative;
   isolation: isolate;
   background: var(--night);
@@ -142,11 +143,20 @@
 }
 .acts { position: relative; width: min(760px, 100%); }
 .act {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 14px;
-  transition: opacity 500ms var(--ease-serene), transform 500ms var(--ease-serene);
+  padding: 22px 20px 26px;
+  border-radius: var(--radius-xl);
+  /* Scrim: the copy sits over pink/cream petals and a purple sky, so it carries its own
+     backing (night glass by day-to-dusk, cream glass in the light acts) to hold >= 4.5:1. */
+  background: var(--scrim);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  transition: background-color 500ms var(--ease-serene), color 500ms var(--ease-serene),
+     opacity 500ms var(--ease-serene), transform 500ms var(--ease-serene);
 }
 .act:not([data-index="0"]) {
   position: absolute;
@@ -210,6 +220,7 @@
 .hint:lang(hi) { letter-spacing: 0; }
 .journey[data-mode="enhanced"][data-hint="0"] .hint { opacity: 0; pointer-events: none; }
 
+.journey[data-tone="light"] { --scrim: rgba(255, 253, 243, 0.88); }
 .journey[data-tone="light"] .actTitle { color: var(--slate-900); }
 .journey[data-tone="light"] .actBody { color: var(--slate-600); }
 .journey[data-tone="light"] .actEyebrow { color: var(--gold-600); }
@@ -305,6 +316,7 @@
     url("/images/lotus-bloom.webp") center 78% / min(760px, 130vw) auto no-repeat,
     linear-gradient(to bottom, #fffdf3, var(--cream));
 }
+.journey[data-mode="static"] .act { --scrim: transparent; -webkit-backdrop-filter: none; backdrop-filter: none; }
 .journey[data-mode="static"] .actTitle { color: var(--slate-900); }
 .journey[data-mode="static"] .actBody { color: var(--slate-600); }
 .journey[data-mode="static"] .actEyebrow { color: var(--gold-600); }
@@ -331,6 +343,7 @@
       url("/images/lotus-bloom.webp") center 78% / min(760px, 130vw) auto no-repeat,
       linear-gradient(to bottom, #fffdf3, var(--cream));
   }
+  .journey:not([data-mode="enhanced"]) .act { --scrim: transparent; -webkit-backdrop-filter: none; backdrop-filter: none; }
   .journey:not([data-mode="enhanced"]) .actTitle { color: var(--slate-900); }
   .journey:not([data-mode="enhanced"]) .actBody { color: var(--slate-600); }
   .journey:not([data-mode="enhanced"]) .actEyebrow { color: var(--gold-600); }

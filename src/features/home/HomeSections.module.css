@@ -113,44 +113,15 @@
 }
 .emptyCard { background: var(--white); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); }
 
-/* Impact snapshot (design: .hv-imp) */
-.kpis { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-@media (min-width: 900px) {
-  .kpis { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-4); }
+/* Bhajans: next gatherings stacked in the right column */
+.bhajanList { list-style: none; margin: var(--space-4) 0 0; padding: 0; display: grid; gap: var(--space-4); }
+/* Discourse picks */
+.discList { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-4); }
+@media (min-width: 768px) {
+  .discList { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
-.kpi {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  min-width: 0;
-  padding: 16px;
-  background: var(--white);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
-}
-@media (min-width: 900px) {
-  .kpi { padding: 22px; }
-}
-.kpiIc {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  margin-bottom: 10px;
-  background: var(--pink-100);
-  border: 1.5px solid var(--pink-300);
-  color: var(--pink-700);
-  box-shadow: 0 0 0 4px var(--pink-50);
-}
-.kpiFig { font-family: var(--font-serif-display); font-weight: 400; font-size: 30px; line-height: 1.1; color: var(--slate-900); font-variant-numeric: lining-nums tabular-nums; }
-@media (min-width: 900px) {
-  .kpiFig { font-size: 40px; }
-}
-.kpiLabel { font-size: var(--text-small); color: var(--slate-700); }
-.kpiNote { font-size: var(--text-caption); color: var(--text-muted); border-top: 1px solid var(--border-subtle); padding-top: 8px; margin-top: 8px; }
-.teaser { display: flex; justify-content: space-between; align-items: flex-end; gap: var(--space-5); flex-wrap: wrap; }
+.discList > li { display: flex; }
+.discList > li > a { flex: 1; }
 
 /* Wings: one colour each, from the Sarva Dharma emblem (Om red, Buddha blue, Zoroastrian yellow, Islam green, Christian tan) */
 .wingActs { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
@@ -167,11 +138,8 @@
 }
 .iconBtn:hover { background: var(--pink-100); color: var(--pink-700); }
 .wings { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-4); }
-@media (min-width: 640px) {
-  .wings { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-@media (min-width: 1000px) {
-  .wings { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+@media (min-width: 768px) {
+  .wings { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 .wings li { display: flex; }
 .wing {
@@ -196,8 +164,6 @@
 .wing[data-wing="spiritual"] { --wc: #ed1c24; --wc-tint: #fdecec; --wc-ink: #a50f15; }
 .wing[data-wing="service"] { --wc: #00a651; --wc-tint: #e6f6ed; --wc-ink: #0b6a3a; }
 .wing[data-wing="educational"] { --wc: #0093dd; --wc-tint: #e6f4fc; --wc-ink: #0a5d92; }
-.wing[data-wing="mahila"] { --wc: #c8a165; --wc-tint: #f8f1e6; --wc-ink: #7a5624; }
-.wing[data-wing="youth"] { --wc: #fff200; --wc-tint: #fffbc7; --wc-ink: #6e6100; }
 .wingIc { width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; background: var(--white); border: 2px solid var(--wc); color: var(--wc-ink); flex: none; }
 .wingTitle { font-family: var(--font-serif-display); font-size: var(--text-h4); color: var(--text-heading); margin-top: 8px; }
 .wingGloss { font-size: var(--text-caption); font-weight: var(--weight-medium); color: var(--wc-ink); line-height: 1.4; }
