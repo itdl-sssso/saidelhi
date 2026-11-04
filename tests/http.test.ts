@@ -5,7 +5,7 @@ import { ErrorEnvelope } from "@/contract";
 import { created, errorBody, fail, list, listBody, ok, okBody } from "@/server/http/envelope";
 import { ApiError } from "@/server/http/errors";
 import { RateLimiter } from "@/server/http/rate-limit";
-import { hashIp, resolveLocale } from "@/server/http/request";
+import { clientIp, hashIp, resolveLocale } from "@/server/http/request";
 import { route, type RouteContext } from "@/server/http/route";
 
 const ctx = (params: Record<string, string> = {}): RouteContext => ({ params: Promise.resolve(params) });
@@ -144,5 +144,41 @@ describe("request helpers", () => {
     rl.hit("other");
     t = 10_001;
     expect(() => rl.hit("ip")).not.toThrow();
+  });
+});
+
+describe("clientIp", () => {
+  it("prefers x-real-ip over a spoofed x-forwarded-for", () => {
+    const h = new Headers({ "x-forwarded-for": "192.168.50.4, 10.9.9.9", "x-real-ip": "10.9.9.9" });
+    expect(clientIp(h)).toBe("10.9.9.9");
+  });
+  it("falls back to the last x-forwarded-for entry", () => {
+    expect(clientIp(new Headers({ "x-forwarded-for": "192.168.50.4, 10.9.9.9" }))).toBe("10.9.9.9");
+  });
+  it("null when no headers", () => {
+    expect(clientIp(new Headers())).toBeNull();
+  });
+});
+
+describe("route body/query hardening", () => {
+  const post = route({ body: z.object({ a: z.string() }) }, async ({ body }) => created(body));
+  const json = { "content-type": "application/json" };
+  it("rejects declared oversize body", async () => {
+    const res = await post(
+      new NextRequest("http://x/t", { method: "POST", body: "{}", headers: { ...json, "content-length": "70000" } }),
+      ctx(),
+    );
+    expect(res.status).toBe(400);
+  });
+  it("rejects oversize streamed body by bytes", async () => {
+    const big = JSON.stringify({ a: "é".repeat(40000) });
+    const res = await post(new NextRequest("http://x/t", { method: "POST", body: big, headers: json }), ctx());
+    expect(res.status).toBe(400);
+  });
+  it("treats __proto__ query key as a plain key", async () => {
+    const q = route({ query: z.object({ n: z.string() }) }, async ({ query }) => ok(query));
+    const res = await q(new NextRequest("http://x/t?n=1&__proto__=x&constructor=y"), ctx());
+    expect(res.status).toBe(200);
+    expect(Object.prototype).not.toHaveProperty("x");
   });
 });

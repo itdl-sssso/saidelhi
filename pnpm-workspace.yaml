@@ -8,6 +8,8 @@ ignoredBuiltDependencies:
 overrides:
   "@esbuild-kit/core-utils>esbuild": ^0.25.0 # GHSA-67mh-4wv8-2f99 (drizzle-kit)
   "exceljs>uuid": ^11.1.1 # GHSA-w5hq-g745-h8pq
-  # GHSA-g3hv-75wg-m249: v3/v5 consumers (eslint 9, glob 7, readdir-glob) get v11 through a callable shim.
+  "archiver-utils>glob": ^14
+  "rimraf>glob": ^14
+  # GHSA-g3hv-75wg-m249: v3/v5 consumers (eslint 9, readdir-glob) get v11 through a callable shim.
   "minimatch@<10": file:./vendor/minimatch-compat
   "minimatch@>=10 <11.0.1": ^11.0.1
