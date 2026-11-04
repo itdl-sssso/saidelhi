@@ -10,6 +10,7 @@ Sign in with a phone number and a code sent on WhatsApp.
 3. 6-digit OTP boxes, "Verify", "Resend in 30s".
 4. Help: "Only registered coordinators can sign in. Ask your district coordinator to add you."
 5. Fallback link: "WhatsApp not working? Get the code by email" (only for accounts with an email on file).
+   - Since v0.10.3: "Use email instead" switches the form to an email address field; the code goes to that address (neutral answer for unknown addresses).
 
 ## States
 - Unknown number (same neutral message as a known one, to avoid revealing who is registered).

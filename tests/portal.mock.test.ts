@@ -4,6 +4,7 @@ import { ImpactPayload } from "@/contract";
 import { ApiError } from "@/server/http/errors";
 import { EVENT, devUserPhone, USER, SAMITHI, NCR_ID } from "@/server/mock/fixtures";
 import { createServices } from "@/server/services/create";
+import { ConsoleEmail } from "@/server/providers/email/console";
 import { MockRepo } from "@/server/repo/mock";
 import { FakeWhatsApp } from "./support/links";
 import { NOW } from "./support/services";
@@ -11,8 +12,10 @@ import { NOW } from "./support/services";
 function setup(now: Date = NOW) {
   const repo = new MockRepo();
   const whatsapp = new FakeWhatsApp();
+  const mails: string[] = [];
+  const email = new ConsoleEmail((line) => mails.push(line));
   const clock = { t: now };
-  const svc = createServices(repo, { now: () => clock.t, mediaBase: "/media", whatsapp });
+  const svc = createServices(repo, { now: () => clock.t, mediaBase: "/media", whatsapp, email });
   const rc = { requestId: "t", ipHash: null };
   const actor = async (userId: string) => (await svc.auth.actorFor(userId, rc))!;
   const tile = async (key: string) => {
@@ -20,7 +23,8 @@ function setup(now: Date = NOW) {
     const v = i.tiles.find((t) => t.key === key)!.figure.value;
     return typeof v === "number" ? v : 0;
   };
-  return { repo, svc, whatsapp, clock, actor, tile, rc };
+  const lastMailCode = () => /code is (\d{6})/.exec(mails.at(-1) ?? "")?.[1] ?? "";
+  return { repo, svc, whatsapp, mails, lastMailCode, clock, actor, tile, rc };
 }
 
 const code = async (e: unknown) => (e instanceof ApiError ? e.code : "other");
@@ -54,6 +58,38 @@ describe("auth", () => {
     const { grant } = await t.svc.auth.verify(devUserPhone(2), t.whatsapp.lastCode(), { ...t.rc, userAgent: null }, "en");
     t.clock.t = new Date(NOW.getTime() + 8 * 86400_000);
     expect(await t.svc.auth.resolve(grant.token, t.rc)).toBeNull();
+  });
+});
+
+describe("auth by email", () => {
+  it("sends the code to the address, answers neutrally for unknown ones, and signs in", async () => {
+    const t = setup();
+    const known = await t.svc.auth.requestEmailOtp("  District.East@Example.org ", "en");
+    const unknown = await t.svc.auth.requestEmailOtp("nobody@example.org", "en");
+    expect(Object.keys(unknown)).toEqual(Object.keys(known));
+    expect(t.mails).toHaveLength(1);
+    expect(t.mails[0]).toContain("to=district.east@example.org");
+    expect(t.whatsapp.sent).toHaveLength(0);
+    const meta = { ...t.rc, userAgent: null };
+    expect(await fails(t.svc.auth.verifyEmail("district.east@example.org", "000000", meta, "en"))).toBe("VALIDATION_FAILED");
+    const { me, grant } = await t.svc.auth.verifyEmail("district.east@example.org", t.lastMailCode(), meta, "en");
+    expect(me.role).toBe("district_coord");
+    expect(await t.svc.auth.resolve(grant.token, t.rc)).not.toBeNull();
+  });
+
+  it("keeps email and phone challenges apart, and rejects bad or shared addresses", async () => {
+    const t = setup();
+    await t.svc.auth.requestOtp(devUserPhone(2), "whatsapp", "en");
+    // A phone challenge in flight does not throttle or satisfy the email one.
+    await t.svc.auth.requestEmailOtp("district.east@example.org", "en");
+    const meta = { ...t.rc, userAgent: null };
+    expect(await fails(t.svc.auth.verifyEmail("district.east@example.org", t.whatsapp.lastCode(), meta, "en"))).toBe("VALIDATION_FAILED");
+    expect(await fails(t.svc.auth.requestEmailOtp("not-an-email", "en"))).toBe("VALIDATION_FAILED");
+
+    await t.repo.portal.updateUser({ userId: USER.stateC, patch: { email: "District.East@example.org" }, audit: [] });
+    t.clock.t = new Date(NOW.getTime() + 60_000);
+    await t.svc.auth.requestEmailOtp("district.east@example.org", "en");
+    expect(t.mails).toHaveLength(1); // two people share the address: nothing sent
   });
 });
 

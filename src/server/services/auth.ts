@@ -1,11 +1,12 @@
-// Portal sign-in (§5.3): WhatsApp/email OTP, DB sessions with 7-day sliding
-// expiry, and the Actor (role + scope + permissions) behind every portal call.
+// Portal sign-in (§5.3): WhatsApp/email OTP (by phone, or by email address since
+// v0.10.3), DB sessions with 7-day sliding expiry, and the Actor (role + scope +
+// permissions) behind every portal call.
 import { type Me, type OtpChannel, type OtpSent, type Locale, PORTAL_SESSION_DAYS } from "@/contract";
 import { auditRec } from "../audit";
 import { type Actor, permissionsFor, type RequestContext } from "../auth/rbac";
 import { ApiError } from "../http/errors";
 import type { RoleAssignmentRec, SessionRec, UserRec } from "../repo/portal-types";
-import { sha256Hex } from "../security/crypto";
+import { hmacHex, sha256Hex } from "../security/crypto";
 import { csrfFor, newSessionToken } from "../security/link-token";
 import { normalisePhone, phoneHash } from "../security/phone";
 import { i18n } from "./org-index";
@@ -20,8 +21,19 @@ const NCR_ROLES = new Set(["state_admin", "content_editor", "pii_officer"]);
 
 const MSG = {
   phone: { en: "Enter a 10-digit mobile number.", hi: "10 अंकों का मोबाइल नंबर लिखें।" },
+  email: { en: "Enter a valid email address.", hi: "सही ईमेल पता लिखें।" },
   wrong: { en: "That code is not right.", hi: "यह कोड सही नहीं है।" },
 } as const;
+
+/** Login-code email (by-email sign-in and the WhatsApp fallback). */
+function loginCodeEmail(to: string, locale: Locale, code: string) {
+  return locale === "hi"
+    ? { to, subject: "आपका साइन-इन कोड", text: `आपका कोड ${code} है। यह 5 मिनट में समाप्त हो जाएगा। इसे किसी से साझा न करें।` }
+    : { to, subject: "Your sign-in code", text: `Your code is ${code}. It expires in 5 minutes. Never share it.` };
+}
+
+/** Keyed OTP key for an email address; namespaced apart from phone hashes in `otp_challenge.phone_hash`. */
+const emailKey = (secret: string, email: string) => hmacHex(secret, "email", email);
 
 export const sessionIdFor = (token: string) => sha256Hex(`sid:${token}`);
 
@@ -48,6 +60,9 @@ export interface ClientMeta {
 export interface AuthService {
   requestOtp(phone: string, channel: OtpChannel, locale: Locale): Promise<OtpSent>;
   verify(phone: string, code: string, meta: ClientMeta & RequestContext, locale: Locale): Promise<{ me: Me; grant: PortalGrant }>;
+  /** Code by email to the address itself (lower-cased). Neutral for unknown or shared addresses. */
+  requestEmailOtp(email: string, locale: Locale): Promise<OtpSent>;
+  verifyEmail(email: string, code: string, meta: ClientMeta & RequestContext, locale: Locale): Promise<{ me: Me; grant: PortalGrant }>;
   /** null when the token is unknown, expired, revoked, or the person is no longer active. */
   resolve(token: string, ctx: RequestContext): Promise<ResolvedSession | null>;
   logout(token: string, ctx: RequestContext): Promise<void>;
@@ -90,6 +105,43 @@ export function createAuthService(ctx: PortalCtx): AuthService {
     return { e164, hash: phoneHash(deps.secret, e164) };
   }
 
+  function parseEmail(raw: string, locale: Locale) {
+    const email = raw.trim().toLowerCase();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 254) {
+      throw new ApiError("VALIDATION_FAILED", { fields: { email: MSG.email[locale] } });
+    }
+    return { email, key: emailKey(deps.secret, email) };
+  }
+
+  /** The one active portal user with this email; null when none or several share it. */
+  async function userForEmail(email: string) {
+    const found = (await Promise.all((await repo.portal.usersByEmail(email)).map((u) => activeUser(u.id)))).filter((f) => f !== null);
+    return found.length === 1 ? found[0] : null;
+  }
+
+  async function startSession(found: { user: UserRec; role: RoleAssignmentRec }, via: "phone" | "email", meta: ClientMeta & RequestContext) {
+    const at = now();
+    const token = newSessionToken();
+    const rec: SessionRec = {
+      id: sessionIdFor(token),
+      userId: found.user.id,
+      createdAt: at,
+      lastSeenAt: at,
+      expiresAt: new Date(at.getTime() + SESSION_TTL_MS),
+      revokedAt: null,
+      ipHash: meta.ipHash,
+      uaHint: meta.userAgent ? meta.userAgent.slice(0, 160) : null,
+    };
+    await repo.portal.insertSession(rec);
+    const actor = await buildActor(found.user, found.role, meta);
+    await repo.portal.updateUser({
+      userId: found.user.id,
+      patch: { lastSignInAt: at, ...(found.user.status === "invited" ? { status: "active" as const } : {}) },
+      audit: [auditRec(actor, { action: "auth.sign_in", entity: "user", entityId: found.user.id, scopeId: found.role.scopeId, data: { firstSignIn: found.user.status === "invited", via } })],
+    });
+    return { me: await me(actor), grant: grantFor(token) };
+  }
+
   async function me(actor: Actor): Promise<Me> {
     const [user, org] = await Promise.all([repo.portal.userById(actor.userId), loadOrg(repo)]);
     if (!user) throw new ApiError("UNAUTHENTICATED");
@@ -112,12 +164,7 @@ export function createAuthService(ctx: PortalCtx): AuthService {
         deliver = (code) => deps.whatsapp.sendTemplate(phone.e164, "login_code", known.locale, [code]);
       } else if (known?.email && channel === "email") {
         const to = known.email;
-        deliver = (code) =>
-          deps.email.send({
-            to,
-            subject: known.locale === "hi" ? "आपका साइन-इन कोड" : "Your sign-in code",
-            text: known.locale === "hi" ? `आपका कोड ${code} है। यह 5 मिनट में समाप्त हो जाएगा।` : `Your code is ${code}. It expires in 5 minutes. Never share it.`,
-          });
+        deliver = (code) => deps.email.send(loginCodeEmail(to, known.locale, code));
       } else {
         // Unknown numbers (or no email on file) get a challenge that is never sent: same answer, same throttling.
         deliver = async () => undefined;
@@ -131,27 +178,23 @@ export function createAuthService(ctx: PortalCtx): AuthService {
       const user = await repo.portal.userByPhoneHash(phone.hash);
       const found = user ? await activeUser(user.id) : null;
       if (!found) throw new ApiError("VALIDATION_FAILED", { fields: { code: MSG.wrong[locale] } });
+      return startSession(found, "phone", meta);
+    },
 
-      const at = now();
-      const token = newSessionToken();
-      const rec: SessionRec = {
-        id: sessionIdFor(token),
-        userId: found.user.id,
-        createdAt: at,
-        lastSeenAt: at,
-        expiresAt: new Date(at.getTime() + SESSION_TTL_MS),
-        revokedAt: null,
-        ipHash: meta.ipHash,
-        uaHint: meta.userAgent ? meta.userAgent.slice(0, 160) : null,
-      };
-      await repo.portal.insertSession(rec);
-      const actor = await buildActor(found.user, found.role, meta);
-      await repo.portal.updateUser({
-        userId: found.user.id,
-        patch: { lastSignInAt: at, ...(found.user.status === "invited" ? { status: "active" as const } : {}) },
-        audit: [auditRec(actor, { action: "auth.sign_in", entity: "user", entityId: found.user.id, scopeId: found.role.scopeId, data: { firstSignIn: found.user.status === "invited" } })],
-      });
-      return { me: await me(actor), grant: grantFor(token) };
+    async requestEmailOtp(rawEmail, locale) {
+      const { email, key } = parseEmail(rawEmail, locale);
+      const found = await userForEmail(email);
+      // Unknown (or shared) addresses get a challenge that is never sent: same answer, same throttling.
+      const deliver = found ? (code: string) => deps.email.send(loginCodeEmail(email, found.user.locale, code)) : async () => undefined;
+      return sendOtp(otpDeps, { phone: "", phoneHash: key, purpose: "login", linkId: null }, locale, deliver);
+    },
+
+    async verifyEmail(rawEmail, code, meta, locale) {
+      const { email, key } = parseEmail(rawEmail, locale);
+      await verifyOtp(otpDeps, { phoneHash: key, purpose: "login", linkId: null }, code, locale);
+      const found = await userForEmail(email);
+      if (!found) throw new ApiError("VALIDATION_FAILED", { fields: { code: MSG.wrong[locale] } });
+      return startSession(found, "email", meta);
     },
 
     async resolve(token, rc) {

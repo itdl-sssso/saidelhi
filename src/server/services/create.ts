@@ -8,7 +8,7 @@ import { createEventsService } from "./events";
 import { createGalleryService } from "./gallery";
 import { createHomeService } from "./home";
 import { DiskStorage } from "../files";
-import { ConsoleEmail } from "../providers/email";
+import { ConsoleEmail } from "../providers/email/console";
 import { ConsoleWhatsApp } from "../providers/whatsapp/console";
 import { DEV_SESSION_SECRET } from "../security/crypto";
 import { createImpactService } from "./impact";

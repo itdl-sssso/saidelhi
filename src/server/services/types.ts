@@ -50,7 +50,7 @@ import type {
 } from "@/contract";
 import type { CacheTag } from "../cache";
 import type { PrivateStorage } from "../files";
-import type { EmailProvider } from "../providers/email";
+import type { EmailProvider } from "../providers/email/types";
 import type { WhatsAppProvider } from "../providers/whatsapp/types";
 import type { Extractor } from "../ai/types";
 import type { AuthService } from "./auth";

@@ -130,6 +130,10 @@ export class DbPortalRepo implements PortalRepo {
     return r ?? null;
   }
 
+  async usersByEmail(email: string) {
+    return this.db.select(userCols).from(appUser).where(sql`lower(${appUser.email}) = ${email.toLowerCase()}`).limit(5);
+  }
+
   async usersByIds(ids: readonly string[]) {
     if (ids.length === 0) return [];
     return this.db.select(userCols).from(appUser).where(inArray(appUser.id, [...ids]));

@@ -5,7 +5,7 @@ import type { Actor } from "../../auth/rbac";
 import { assertInScope } from "../../auth/rbac";
 import { toIso, toIsoOrNull } from "../../domain/time";
 import { ApiError } from "../../http/errors";
-import type { EmailProvider } from "../../providers/email";
+import type { EmailProvider } from "../../providers/email/types";
 import type { TemplateName } from "../../providers/whatsapp/templates";
 import type { PersonRec } from "../../repo/portal-types";
 import type { DataRepo, EventRec } from "../../repo/types";
