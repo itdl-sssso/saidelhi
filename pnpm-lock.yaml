@@ -6,7 +6,6 @@ settings:
 
 overrides:
   exceljs>uuid: ^11.1.1
-  glob@7>minimatch: ^11.0.1
   readdir-glob>minimatch: ^11.0.1
 
 importers:
@@ -6531,7 +6530,7 @@ snapshots:
       fs.realpath: 1.0.0
       inflight: 1.0.6
       inherits: 2.0.4
-      minimatch: 11.0.4
+      minimatch: 3.1.5
       once: 1.4.0
       path-is-absolute: 1.0.1
 
