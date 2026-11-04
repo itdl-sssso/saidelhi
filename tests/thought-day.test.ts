@@ -2,7 +2,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { USER } from "@/server/mock/fixtures";
 import { istDate } from "@/server/domain/time";
-import { parseLongDate, parseOfficialPage } from "@/server/services/portal/official-thought";
+import { decode, parseLongDate, parseOfficialPage } from "@/server/services/portal/official-thought";
 import { pickThoughtFor } from "@/server/services/thought";
 import type { ContentItemRec } from "@/server/repo/types";
 import { errCode, m6Setup } from "./support/m6";
@@ -88,5 +88,13 @@ describe("thought service", () => {
     } finally {
       vi.unstubAllGlobals();
     }
+  });
+});
+
+describe("official decode", () => {
+  it("never leaves angle brackets", () => {
+    expect(decode("&lt;script&gt;x")).not.toMatch(/[<>]/);
+    expect(decode("<<b>script>x")).not.toMatch(/[<>]/);
+    expect(decode("Be <b>good</b> &amp; do good")).toBe("Be good & do good");
   });
 });

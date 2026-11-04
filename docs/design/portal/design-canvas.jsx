@@ -474,6 +474,7 @@ function DCViewport({ children, minScale = 0.1, maxScale = 8, style = {} }) {
     // Host-driven zoom (toolbar % menu). Zooms around viewport centre so the
     // visible midpoint stays fixed — matching the host's iframe-zoom feel.
     const onHostMsg = (e) => {
+      if (e.origin !== window.location.origin) return;
       const d = e.data;
       if (d && d.type === '__dc_set_zoom' && typeof d.scale === 'number') {
         const r = vp.getBoundingClientRect();
