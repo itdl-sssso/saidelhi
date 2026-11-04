@@ -73,6 +73,32 @@ sudo certbot --nginx -d staging.saidelhi.org -d api.staging.saidelhi.org --redir
 certbot edits the installed site file in place (443 + redirects) and renews via `certbot.timer`. If you re-copy
 `saidelhi-staging.conf` from the repo later, run the certbot command again.
 
+### Updating the nginx snippet after changes
+
+CD runs without sudo and cannot touch `/etc/nginx`. After any change to `deploy/nginx/saidelhi-proxy.conf`
+(`ci-deploy.sh` prints a WARNING when the installed copy differs), the operator runs:
+
+```bash
+sudo cp /opt/saidelhi/deploy/nginx/saidelhi-proxy.conf /etc/nginx/snippets/
+sudo nginx -t && sudo systemctl reload nginx
+```
+
+### Firewall: keep :3000 closed
+
+The app binds `0.0.0.0:3000` (host network) and trusts `X-Real-IP` set by nginx. If :3000 is reachable
+directly, a client can send its own `X-Real-IP` and spoof its address past rate limits. Drop non-loopback
+traffic to it on the host:
+
+```bash
+sudo iptables -I INPUT -p tcp --dport 3000 ! -i lo -j DROP
+sudo apt install -y iptables-persistent && sudo netfilter-persistent save   # persist across reboots
+# or, with ufw:
+sudo ufw deny 3000/tcp
+```
+
+The app uses host networking, so Docker's ufw bypass does not apply, but the explicit iptables rule is the
+reliable one. The Oracle Cloud security list must also keep 3000 closed (only 22, 80, 443 open).
+
 ## 4. Cron
 
 ```bash

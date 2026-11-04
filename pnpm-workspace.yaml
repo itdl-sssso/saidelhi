@@ -6,3 +6,5 @@ ignoredBuiltDependencies:
 overrides:
   "exceljs>uuid": "^11.1.1"
   "readdir-glob>minimatch": "^11.0.1"
+  "archiver-utils>glob": "^14"
+  "rimraf>glob": "^14"
