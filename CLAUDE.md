@@ -31,7 +31,9 @@ Rebuild of saidelhi.org (Sri Sathya Sai Seva Organisation, Delhi NCR): bilingual
 pnpm db:up && pnpm db:migrate && pnpm db:import-legacy && pnpm db:seed   # or pnpm db:reset
 pnpm dev --port 4100          # review server used by the user
 pnpm typecheck && pnpm lint && pnpm test && pnpm build   # definition of done
+pnpm security                 # dependency gate: audit at every severity + npm worm IOCs (also pre-push hook + CI)
 ```
+Zero known vulnerabilities is the rule, low/dev-only included: fix via upgrade → `pnpm-workspace.yaml` overrides → `vendor/` shim. New attack IOCs go in `scripts/ci/npm-iocs.txt`.
 Run `pnpm db:seed` before `pnpm test` if the DB was mutated by a walkthrough (links integration test needs clean seed). Seed prints dev login phones (+91 90000 00001…09, one per role) and dev form-link tokens (e.g. eye report `/f/nmopMGuEp-SJ1ZDJLZFslA`, phone 9000000001).
 
 ## Milestone status
