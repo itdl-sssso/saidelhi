@@ -16,4 +16,15 @@ git fetch --quiet origin
 git merge-base --is-ancestor "$sha" origin/main || { echo "$sha is not on origin/main" >&2; exit 3; }
 # A newer commit already landed: skip, its own run deploys it.
 [[ "$(git rev-parse origin/main)" == "$sha" ]] || { echo "skip: origin/main moved past $sha"; exit 0; }
-exec deploy/deploy.sh "$sha"
+deploy/deploy.sh "$sha"
+
+# Post-deploy operator reminders. CD has no sudo, so these only warn; they never fail the deploy.
+snip=/etc/nginx/snippets/saidelhi-proxy.conf
+if [[ -f "$snip" ]] && ! cmp -s "$snip" deploy/nginx/saidelhi-proxy.conf; then
+  echo "WARNING: $snip differs from deploy/nginx/saidelhi-proxy.conf." >&2
+  echo "WARNING: operator: sudo cp /opt/saidelhi/deploy/nginx/saidelhi-proxy.conf $snip && sudo nginx -t && sudo systemctl reload nginx" >&2
+fi
+if ss -ltn 2>/dev/null | awk '$4 ~ /:3000$/ && $4 !~ /^(127\.|\[::1\])/ {f=1} END {exit !f}'; then
+  echo "REMINDER: :3000 listens on a non-loopback address; ensure a host firewall drops it (see deploy/README.md, Firewall)." >&2
+fi
+exit 0

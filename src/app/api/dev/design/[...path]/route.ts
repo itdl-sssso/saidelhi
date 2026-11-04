@@ -15,9 +15,15 @@ export async function GET(_req: NextRequest, ctx: { params: Promise<{ path: stri
     // Resolve symlinks too: the real path must still sit under the root.
     const real = await fs.realpath(full);
     if (!real.startsWith(`${root}/`)) return devNotFound();
-    const st = await fs.stat(real);
-    if (!st.isFile()) return devNotFound();
-    const buf = await fs.readFile(real);
+    // One handle for stat + read: no check-then-use race on the path.
+    const fh = await fs.open(real, "r");
+    let buf: Buffer;
+    try {
+      if (!(await fh.stat()).isFile()) return devNotFound();
+      buf = await fh.readFile();
+    } finally {
+      await fh.close();
+    }
     return new NextResponse(new Uint8Array(buf), { headers: { "content-type": designContentType(real), "cache-control": "no-store", "x-content-type-options": "nosniff" } });
   } catch {
     return devNotFound();

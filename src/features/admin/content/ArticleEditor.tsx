@@ -119,7 +119,7 @@ function Article({ d, org, reload }: { d: ArticleDetail; org: OrgOptions; reload
     return res.ok ? res.data.url : null;
   };
 
-  const hiMissing = !s.title.hi.trim() || !s.body.hi.replace(/<[^>]*>/g, "").trim();
+  const hiMissing = !s.title.hi.trim() || !htmlText(s.body.hi).trim();
   const canPublish = d.status !== "published";
   const slugPath = d.publicPath;
 
@@ -273,4 +273,15 @@ function CoverField({ cover, onChange, upload, busy }: { cover: Media | null; on
       {!alt.trim() ? <span className={styles.cap}>{t("coverNeedsAlt")}</span> : null}
     </div>
   );
+}
+
+/** Emptiness check only: strips tags until stable, then drops stray angle brackets. */
+function htmlText(html: string): string {
+  let prev: string;
+  let out = html;
+  do {
+    prev = out;
+    out = out.replace(/<[^>]*>/g, "");
+  } while (out !== prev);
+  return out.replace(/[<>]/g, "");
 }

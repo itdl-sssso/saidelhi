@@ -29,10 +29,16 @@ export function requestIdFrom(headers: Headers): string {
   return incoming && /^[A-Za-z0-9._-]{8,64}$/.test(incoming) ? incoming : newId();
 }
 
+/**
+ * Client IP behind nginx. nginx sets `x-real-ip` = $remote_addr (not spoofable);
+ * the FIRST x-forwarded-for entry is attacker-controlled, so fall back to the LAST
+ * entry (added by our proxy) and never the first.
+ */
 export function clientIp(headers: Headers): string | null {
-  const fwd = headers.get("x-forwarded-for");
-  if (fwd) return fwd.split(",")[0].trim() || null;
-  return headers.get("x-real-ip");
+  const real = headers.get("x-real-ip")?.trim();
+  if (real) return real;
+  const parts = (headers.get("x-forwarded-for") ?? "").split(",").map((p) => p.trim()).filter(Boolean);
+  return parts.length ? parts[parts.length - 1] : null;
 }
 
 /** Salted hash so raw IPs are never stored. */
