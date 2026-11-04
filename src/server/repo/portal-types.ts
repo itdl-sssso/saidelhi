@@ -172,6 +172,8 @@ export interface PortalRepo {
   // People
   userById(id: string): Promise<UserRec | null>;
   userByPhoneHash(hash: string): Promise<UserRec | null>;
+  /** Users whose email matches, case-insensitively (email is not unique). */
+  usersByEmail(email: string): Promise<UserRec[]>;
   usersByIds(ids: readonly string[]): Promise<UserRec[]>;
   /** Every user with their current role (small table; filtered in services). */
   people(): Promise<PersonRec[]>;

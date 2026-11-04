@@ -67,6 +67,11 @@ export class MemoryPortalRepo implements PortalRepo {
     return this.users.find((u) => u.phoneHash === hash) ?? null;
   }
 
+  async usersByEmail(email: string) {
+    const e = email.toLowerCase();
+    return this.users.filter((u) => u.email?.toLowerCase() === e);
+  }
+
   async usersByIds(ids: readonly string[]) {
     return this.users.filter((u) => ids.includes(u.id));
   }

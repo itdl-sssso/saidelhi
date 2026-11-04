@@ -11,6 +11,8 @@ const limiter = new RateLimiter(20, 10 * 60 * 1000);
 export const POST = route({ body: AuthVerifyRequest }, async ({ req, body, ip, locale, requestId }) => {
   limiter.hit(`auth-verify:${ip ?? "unknown"}`);
   const rc = requestContext(req, requestId);
-  const { me, grant } = await services().auth.verify(body.phone, body.code, { ...rc, userAgent: req.headers.get("user-agent") }, locale);
+  const meta = { ...rc, userAgent: req.headers.get("user-agent") };
+  const { auth } = services();
+  const { me, grant } = body.email ? await auth.verifyEmail(body.email, body.code, meta, locale) : await auth.verify(body.phone ?? "", body.code, meta, locale);
   return withPortalCookies(ok(me), grant);
 });

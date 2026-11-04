@@ -32,6 +32,16 @@ const EnvSchema = z
     WHATSAPP_PUBLIC_KEYWORD: z.preprocess(blank, z.string().default("JOIN")),
     WA_COEXISTENCE: z.preprocess(blank, z.enum(["true", "false"]).default("false").transform((v) => v === "true")),
     WA_GRAPH_VERSION: z.preprocess(blank, z.string().default("v23.0")),
+    /** console = log emails (dev); smtp = send through SMTP_HOST. */
+    EMAIL_PROVIDER: z.preprocess(blank, z.enum(["console", "smtp"]).default("console")),
+    SMTP_HOST: optStr,
+    SMTP_PORT: z.preprocess(blank, z.coerce.number().int().positive().default(587)),
+    /** true = implicit TLS (usually port 465). */
+    SMTP_SECURE: z.preprocess(blank, z.enum(["true", "false"]).default("false").transform((v) => v === "true")),
+    SMTP_USER: optStr,
+    SMTP_PASS: optStr,
+    /** Sender, e.g. `SSSSO Delhi NCR <no-reply@saidelhi.org>`. */
+    SMTP_FROM: optStr,
     EXTRACTOR_PROVIDER: z.preprocess(blank, z.enum(["rules", "ollama", "hf"]).default("rules")),
     OLLAMA_URL: z.preprocess(blank, z.url().default("http://127.0.0.1:11434")),
     OLLAMA_MODEL: z.preprocess(blank, z.string().default("smollm2:1.7b")),
@@ -48,6 +58,11 @@ const EnvSchema = z
     if (env.WHATSAPP_PROVIDER === "cloud") {
       for (const k of ["WA_PHONE_NUMBER_ID", "WA_ACCESS_TOKEN", "WA_APP_SECRET", "WA_VERIFY_TOKEN"] as const) {
         if (!env[k]) ctx.addIssue({ code: "custom", path: [k], message: "required when WHATSAPP_PROVIDER=cloud" });
+      }
+    }
+    if (env.EMAIL_PROVIDER === "smtp") {
+      for (const k of ["SMTP_HOST", "SMTP_FROM"] as const) {
+        if (!env[k]) ctx.addIssue({ code: "custom", path: [k], message: "required when EMAIL_PROVIDER=smtp" });
       }
     }
     if (env.NODE_ENV === "production" && !env.SESSION_SECRET) {

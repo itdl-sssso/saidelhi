@@ -937,7 +937,17 @@
       "changeNumber": "Change number",
       "emailFallback": "WhatsApp not working? Get the code by email",
       "codeWrong": "That code isn't right. Check it and try again.",
-      "codeExpired": "That code has expired. Ask for a new one."
+      "codeExpired": "That code has expired. Ask for a new one.",
+      "titleEmail": "Sign in with your email",
+      "leadEmail": "No password. We send a code to the email address on your coordinator account.",
+      "emailLabel": "Email address",
+      "emailInvalid": "Enter a valid email address.",
+      "sendEmail": "Send code by email",
+      "useEmail": "Use email instead",
+      "usePhone": "Use WhatsApp number instead",
+      "neutralAddress": "If {email} is on a coordinator account, a 6-digit code is on its way. Check your spam folder too.",
+      "changeEmail": "Change email",
+      "emailDown": "Email isn't going out right now. Try again in a few minutes, or use your WhatsApp number."
     },
     "overview": {
       "morning": "Good morning, {name}",

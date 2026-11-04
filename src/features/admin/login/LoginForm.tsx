@@ -1,7 +1,7 @@
 "use client";
 
 import { useLocale, useTranslations } from "next-intl";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { type Me, type OtpChannel, type OtpSent, authEndpoints } from "@/contract";
 import { useRouter } from "@/i18n/navigation";
 import type { AppLocale } from "@/lib/format";
@@ -15,6 +15,15 @@ import { Timer } from "../icons";
 import styles from "./Login.module.css";
 
 type Step = "phone" | "code";
+/** What the person signs in with: their WhatsApp number, or the email address on their account. */
+type Mode = "phone" | "email";
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+/** 'ra•••@example.org': first two characters of the local part. */
+const maskEmail = (e: string) => {
+  const [local = "", domain = ""] = e.split("@");
+  return `${local.slice(0, 2)}•••@${domain}`;
+};
 
 const RESEND_SECONDS = 30;
 const mmss = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
@@ -35,7 +44,9 @@ export function LoginForm({ next }: { next: string }) {
   const locale = useLocale() as AppLocale;
   const router = useRouter();
   const [step, setStep] = useState<Step>("phone");
+  const [mode, setMode] = useState<Mode>("phone");
   const [digits, setDigits] = useState("");
+  const [address, setAddress] = useState("");
   const [code, setCode] = useState("");
   const [channel, setChannel] = useState<OtpChannel>("whatsapp");
   const [busy, setBusy] = useState(false);
@@ -48,13 +59,16 @@ export function LoginForm({ next }: { next: string }) {
   const phone = `+91${digits}`;
   const phoneValid = /^[6-9]\d{9}$/.test(digits);
   const masked = `+91 ${digits.slice(0, 2)}•••••${digits.slice(-2)}`;
+  const emailAddr = address.trim().toLowerCase();
+  const emailValid = EMAIL_RE.test(emailAddr);
+  const who = useMemo(() => (mode === "email" ? { email: emailAddr } : { phone }), [mode, emailAddr, phone]);
 
   const sendCode = useCallback(
     async (via: OtpChannel) => {
       setBusy(true);
       setBanner(null);
       setPhoneError(null);
-      const res = await portalRequest<OtpSent>(authEndpoints.otp(), { method: "POST", body: { phone, channel: via }, locale });
+      const res = await portalRequest<OtpSent>(authEndpoints.otp(), { method: "POST", body: mode === "email" ? who : { ...who, channel: via }, locale });
       setBusy(false);
       if (res.ok) {
         setChannel(via);
@@ -69,16 +83,16 @@ export function LoginForm({ next }: { next: string }) {
         setLockLeft(e.retryAfter ?? 60);
         setBanner({ tone: "attention", text: t("tooMany") });
       } else if (res.status === 422) {
-        setPhoneError(e.fields?.phone ?? t("phoneInvalid"));
+        setPhoneError(e.fields?.email ?? e.fields?.phone ?? t(mode === "email" ? "emailInvalid" : "phoneInvalid"));
       } else if (res.status === 503) {
-        setBanner({ tone: "error", text: t("providerDown"), offerEmail: via === "whatsapp" });
+        setBanner({ tone: "error", text: t(mode === "email" ? "emailDown" : "providerDown"), offerEmail: mode === "phone" && via === "whatsapp" });
       } else if (res.status === 0) {
         setBanner({ tone: "error", text: t("network") });
       } else {
         setBanner({ tone: "error", text: t("generic") });
       }
     },
-    [locale, phone, setLockLeft, setResendLeft, t],
+    [locale, mode, who, setLockLeft, setResendLeft, t],
   );
 
   const verify = useCallback(
@@ -87,7 +101,7 @@ export function LoginForm({ next }: { next: string }) {
       setBusy(true);
       setCodeError(null);
       setBanner(null);
-      const res = await portalRequest<Me>(authEndpoints.verify(), { method: "POST", body: { phone, code: value }, locale });
+      const res = await portalRequest<Me>(authEndpoints.verify(), { method: "POST", body: { ...who, code: value }, locale });
       if (res.ok) {
         router.replace(next);
         router.refresh();
@@ -110,7 +124,7 @@ export function LoginForm({ next }: { next: string }) {
         setBanner({ tone: "error", text: t("generic") });
       }
     },
-    [busy, locale, next, phone, router, setLockLeft, t],
+    [busy, locale, next, who, router, setLockLeft, t],
   );
 
   const locked = lockLeft > 0;
@@ -123,35 +137,56 @@ export function LoginForm({ next }: { next: string }) {
           style={{ display: "contents" }}
           onSubmit={(e) => {
             e.preventDefault();
-            if (!phoneValid) return setPhoneError(t("phoneInvalid"));
-            void sendCode("whatsapp");
+            if (mode === "email" ? !emailValid : !phoneValid) return setPhoneError(t(mode === "email" ? "emailInvalid" : "phoneInvalid"));
+            void sendCode(mode === "email" ? "email" : "whatsapp");
           }}
           noValidate
         >
           <h1 id="login-h" className={styles.h1}>
-            {t("title")}
+            {t(mode === "email" ? "titleEmail" : "title")}
           </h1>
-          <p className={styles.lead}>{t("lead")}</p>
-          <div className={styles.phone}>
-            <span className={styles.prefix} aria-hidden="true">
-              +91
-            </span>
-            <div className={styles.phoneInput}>
-              <Input
-                label={t("phoneLabel")}
-                inputMode="numeric"
-                autoComplete="tel-national"
-                maxLength={12}
-                value={digits}
-                error={phoneError ?? undefined}
-                placeholder="98765 43210"
-                onChange={(e) => {
-                  setDigits(e.target.value.replace(/\D/g, "").slice(-10));
-                  setPhoneError(null);
-                }}
-              />
+          <p className={styles.lead}>{t(mode === "email" ? "leadEmail" : "lead")}</p>
+          {mode === "email" ? (
+            <Input
+              key="email"
+              label={t("emailLabel")}
+              type="email"
+              inputMode="email"
+              autoComplete="email"
+              autoCapitalize="none"
+              spellCheck={false}
+              maxLength={254}
+              value={address}
+              error={phoneError ?? undefined}
+              placeholder="name@example.org"
+              onChange={(e) => {
+                setAddress(e.target.value);
+                setPhoneError(null);
+              }}
+            />
+          ) : (
+            <div className={styles.phone}>
+              <span className={styles.prefix} aria-hidden="true">
+                +91
+              </span>
+              <div className={styles.phoneInput}>
+                <Input
+                  key="phone"
+                  label={t("phoneLabel")}
+                  inputMode="numeric"
+                  autoComplete="tel-national"
+                  maxLength={12}
+                  value={digits}
+                  error={phoneError ?? undefined}
+                  placeholder="98765 43210"
+                  onChange={(e) => {
+                    setDigits(e.target.value.replace(/\D/g, "").slice(-10));
+                    setPhoneError(null);
+                  }}
+                />
+              </div>
             </div>
-          </div>
+          )}
           {banner ? (
             <Alert tone={banner.tone}>
               {banner.text}
@@ -159,8 +194,19 @@ export function LoginForm({ next }: { next: string }) {
             </Alert>
           ) : null}
           <Button type="submit" pending={busy} disabled={locked} fullWidth>
-            {t("send")}
+            {t(mode === "email" ? "sendEmail" : "send")}
           </Button>
+          <button
+            type="button"
+            className={styles.help}
+            onClick={() => {
+              setMode(mode === "email" ? "phone" : "email");
+              setPhoneError(null);
+              setBanner(null);
+            }}
+          >
+            {t(mode === "email" ? "usePhone" : "useEmail")}
+          </button>
           <p className={styles.note}>{t("help")}</p>
         </form>
       ) : (
@@ -168,7 +214,9 @@ export function LoginForm({ next }: { next: string }) {
           <h1 id="login-h" className={styles.h1}>
             {t("codeTitle")}
           </h1>
-          <Alert tone="info">{channel === "email" ? t("neutralEmail") : t("neutral", { phone: masked })}</Alert>
+          <Alert tone="info">
+            {mode === "email" ? t("neutralAddress", { email: maskEmail(emailAddr) }) : channel === "email" ? t("neutralEmail") : t("neutral", { phone: masked })}
+          </Alert>
           <OtpInput id="code" value={code} onChange={setCode} onComplete={(c) => void verify(c)} error={!!codeError} disabled={busy || locked} autoFocus describedBy={codeError ? "code-error" : undefined} />
           {codeError ? (
             <span id="code-error" className={styles.err} role="alert">
@@ -205,10 +253,10 @@ export function LoginForm({ next }: { next: string }) {
                 setCodeError(null);
               }}
             >
-              {t("changeNumber")}
+              {t(mode === "email" ? "changeEmail" : "changeNumber")}
             </button>
           </div>
-          {channel === "whatsapp" ? (
+          {mode === "phone" && channel === "whatsapp" ? (
             <button type="button" className={styles.help} disabled={busy || locked} onClick={() => sendCode("email")}>
               {t("emailFallback")}
             </button>

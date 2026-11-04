@@ -75,19 +75,36 @@ export type Me = z.infer<typeof Me>;
 export const OtpChannel = z.enum(["whatsapp", "email"]);
 export type OtpChannel = z.infer<typeof OtpChannel>;
 
-/** POST /auth/otp → 202 `OtpSent` (same answer for unknown numbers). */
-export const AuthOtpRequest = z.object({
-  phone: z.string().trim().min(8).max(20),
-  channel: OtpChannel.default("whatsapp"),
-});
+/** Sign-in email: trimmed and lower-cased before it is matched or hashed. */
+export const LoginEmail = z.string().trim().toLowerCase().pipe(z.email("Enter a valid email address").max(254));
+
+const oneOf = <T extends { phone?: string; email?: string }>(b: T) => !!b.phone !== !!b.email;
+const oneOfIssue = { message: "Give a phone number or an email", path: ["phone"] };
+
+/**
+ * POST /auth/otp → 202 `OtpSent` (same answer for unknown numbers/addresses).
+ * Exactly one of `phone` or `email`. With `email` (v0.10.3) the code goes to that
+ * address and `channel` is ignored; with `phone`, `channel:'email'` is the fallback
+ * to the email on file.
+ */
+export const AuthOtpRequest = z
+  .object({
+    phone: z.string().trim().min(8).max(20).optional(),
+    email: LoginEmail.optional(),
+    channel: OtpChannel.default("whatsapp"),
+  })
+  .refine(oneOf, oneOfIssue);
 export type AuthOtpRequest = z.input<typeof AuthOtpRequest>;
 
-/** POST /auth/verify → `Me` + `sid`/`csrf` cookies. */
-export const AuthVerifyRequest = z.object({
-  phone: z.string().trim().min(8).max(20),
-  code: z.string().trim().regex(/^\d{6}$/, "Enter the 6-digit code"),
-});
-export type AuthVerifyRequest = z.infer<typeof AuthVerifyRequest>;
+/** POST /auth/verify → `Me` + `sid`/`csrf` cookies. Same `phone`/`email` as the OTP request. */
+export const AuthVerifyRequest = z
+  .object({
+    phone: z.string().trim().min(8).max(20).optional(),
+    email: LoginEmail.optional(),
+    code: z.string().trim().regex(/^\d{6}$/, "Enter the 6-digit code"),
+  })
+  .refine(oneOf, oneOfIssue);
+export type AuthVerifyRequest = z.input<typeof AuthVerifyRequest>;
 
 /** Portal session cookies: `sid` (httpOnly) and `csrf` (readable; echo it as `x-csrf` on mutations). */
 export const PORTAL_COOKIES = { session: "sid", csrf: "csrf" } as const;

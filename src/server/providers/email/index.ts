@@ -1,34 +1,21 @@
-// Outgoing email (login-code fallback, spec 23). Only a console adapter until
-// SMTP credentials exist; add an `smtp` adapter behind the same interface.
+import "server-only";
+import { env } from "../../env";
+import { ConsoleEmail } from "./console";
+import { SmtpEmail } from "./smtp";
+import type { EmailProvider } from "./types";
 
-export interface EmailMessage {
-  to: string;
-  subject: string;
-  text: string;
-}
-
-export interface EmailProvider {
-  readonly name: "console";
-  /** Throws ApiError PROVIDER_UNAVAILABLE on failure. */
-  send(msg: EmailMessage): Promise<{ id: string }>;
-}
-
-/** Dev provider: prints every email (login codes included) to the server log. */
-export class ConsoleEmail implements EmailProvider {
-  readonly name = "console" as const;
-  private n = 0;
-
-  constructor(private readonly log: (line: string) => void = (l) => console.info(l)) {}
-
-  async send(msg: EmailMessage) {
-    this.log(`[email:console] to=${msg.to} subject="${msg.subject}": ${msg.text}`);
-    return { id: `console.email.${++this.n}` };
-  }
-}
+export type { EmailMessage, EmailProvider } from "./types";
+export { ConsoleEmail } from "./console";
 
 let cached: EmailProvider | undefined;
 
+/** Provider selected by EMAIL_PROVIDER (env() already checked the SMTP_* vars for `smtp`). */
 export function email(): EmailProvider {
-  cached ??= new ConsoleEmail();
+  if (cached) return cached;
+  const e = env();
+  cached =
+    e.EMAIL_PROVIDER === "smtp"
+      ? new SmtpEmail({ host: e.SMTP_HOST!, port: e.SMTP_PORT, secure: e.SMTP_SECURE, user: e.SMTP_USER, pass: e.SMTP_PASS, from: e.SMTP_FROM! })
+      : new ConsoleEmail();
   return cached;
 }

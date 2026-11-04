@@ -199,7 +199,7 @@ Paged<T>  { data:T[], meta:{page,pageSize,total} }
 | `POST /links/:token/attachments` | L | multipart, private storage |
 
 ### 5.3 Auth
-`POST /auth/otp {phone, channel:'whatsapp'|'email'}` → 202 (neutral) · `POST /auth/verify {phone, code}` → sets `sid`, returns `Me` · `POST /auth/logout` · `GET /auth/me` → `Me`.
+`POST /auth/otp {phone, channel:'whatsapp'|'email'} | {email}` → 202 (neutral) · `POST /auth/verify {phone|email, code}` → sets `sid`, returns `Me` · `POST /auth/logout` · `GET /auth/me` → `Me`.
 
 ### 5.4 Portal (`A`) — all scoped server-side
 | Area | Endpoints | Spec |
@@ -509,3 +509,9 @@ Spec `docs/specs/52-gallery.md`. (The WIP note said v0.9.3; that number is taken
 1. **`Wing` enum is three wings**: `service | educational | spiritual` (`mahila`, `youth` removed everywhere; UI name of `educational` is "Education", as on the legacy site). DB `seva_type.wing` rows already only used these three. Home wing cards (`DEFAULT_WINGS`) now 3; stale `wing.mahila` / `wing.youth` home_section items are ignored.
 2. **`ProgramDetail.related`**: `ProgramLink[]` (`{sevaType,label,icon,wing,href}`) = every other active seva type, in `sort_order`. UI groups "More in <Wing> wing" (same wing) and "All sevas".
 3. **Programme metrics**: every seva type has a KPI set (`kpiKeysFor` in `services/programs.ts`); new KPI defs `bhajan.attendees`, `study.attendees`, `relief.people`. No data -> empty state, never 0.
+
+### v0.10.3 (sign in by email)
+1. **`AuthOtpRequest` / `AuthVerifyRequest`** take exactly one of `phone` or `email` (else 422 on `phone`). `email` is trimmed + lower-cased (`LoginEmail`). With `email` the code goes to that address (`channel` ignored); `{phone, channel:'email'}` stays the fallback to the email on file.
+2. **Neutral answers**: unknown address, inactive user, or an address shared by more than one active portal user → same 202, nothing sent, same throttling. Matching is case-insensitive on `app_user.email` (`PortalRepo.usersByEmail`). Email challenges live in `otp_challenge` keyed by `HMAC(secret,'email',address)` (separate from phone hashes), same policy (5 min, 30 s resend, 6/h, lock after max attempts). Audit `auth.sign_in` gains `data.via: 'phone'|'email'`.
+3. **Email provider**: `EMAIL_PROVIDER=console|smtp` (default console). `smtp` needs `SMTP_HOST`, `SMTP_FROM`; optional `SMTP_PORT` (587), `SMTP_SECURE` (false = STARTTLS), `SMTP_USER`, `SMTP_PASS`. Send failure → 503 `PROVIDER_UNAVAILABLE` (UI: `admin.login.emailDown`).
+4. **Login UI**: "Use email instead" / "Use WhatsApp number instead" toggle on spec 23; new `admin.login.*` keys `titleEmail, leadEmail, emailLabel, emailInvalid, sendEmail, useEmail, usePhone, neutralAddress, changeEmail, emailDown`.
