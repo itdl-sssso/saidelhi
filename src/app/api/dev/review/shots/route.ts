@@ -13,7 +13,10 @@ export async function GET(req: NextRequest) {
   const file = req.nextUrl.searchParams.get("file") ?? "";
   if (!SHOT_RE.test(file)) return devNotFound();
   try {
-    const buf = await fs.readFile(path.join(shotsDir(), file));
+    const dir = path.resolve(shotsDir());
+    const full = path.resolve(dir, path.basename(file));
+    if (!full.startsWith(dir + path.sep)) return devNotFound();
+    const buf = await fs.readFile(full);
     const ext = file.split(".").pop() as keyof typeof MIME;
     return new NextResponse(new Uint8Array(buf), { headers: { "content-type": MIME[ext], "cache-control": "no-store", "x-content-type-options": "nosniff" } });
   } catch {
