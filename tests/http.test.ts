@@ -149,11 +149,11 @@ describe("request helpers", () => {
 
 describe("clientIp", () => {
   it("prefers x-real-ip over a spoofed x-forwarded-for", () => {
-    const h = new Headers({ "x-forwarded-for": "1.2.3.4, 9.9.9.9", "x-real-ip": "9.9.9.9" });
-    expect(clientIp(h)).toBe("9.9.9.9");
+    const h = new Headers({ "x-forwarded-for": "192.168.50.4, 10.9.9.9", "x-real-ip": "10.9.9.9" });
+    expect(clientIp(h)).toBe("10.9.9.9");
   });
   it("falls back to the last x-forwarded-for entry", () => {
-    expect(clientIp(new Headers({ "x-forwarded-for": "1.2.3.4, 9.9.9.9" }))).toBe("9.9.9.9");
+    expect(clientIp(new Headers({ "x-forwarded-for": "192.168.50.4, 10.9.9.9" }))).toBe("10.9.9.9");
   });
   it("null when no headers", () => {
     expect(clientIp(new Headers())).toBeNull();

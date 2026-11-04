@@ -90,12 +90,12 @@ describe("OTP rate limit keyed on trusted client IP", () => {
     const post = POST as unknown as Post;
     let last = 0;
     for (let i = 0; i < 21; i++) {
-      const res = await call(post, "203.0.113.7", `10.0.0.${i}, 198.51.100.1`, `+9199990000${String(i).padStart(2, "0")}`);
+      const res = await call(post, "10.20.30.7", `10.0.0.${i}, 10.99.0.1`, `+9199990000${String(i).padStart(2, "0")}`);
       last = res.status;
       if (i < 20) expect(res.status, `request ${i + 1}`).not.toBe(429);
     }
     expect(last).toBe(429);
-    expect((await call(post, "203.0.113.8", "10.0.0.1", "+919999000099")).status).not.toBe(429);
+    expect((await call(post, "10.20.30.8", "10.0.0.1", "+919999000099")).status).not.toBe(429);
   });
 });
 

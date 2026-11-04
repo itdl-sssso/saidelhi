@@ -31,9 +31,10 @@ export type RouteContext = { params: Promise<Record<string, string | string[] | 
 const MAX_BODY_BYTES = 64 * 1024;
 
 function queryObject(url: URL): Record<string, string> {
-  const out: Record<string, string> = Object.create(null);
-  for (const [k, v] of url.searchParams) if (!Object.hasOwn(out, k)) out[k] = v;
-  return out;
+  // First value wins. A Map + fromEntries never writes user-chosen keys onto an object (no __proto__ setter).
+  const first = new Map<string, string>();
+  for (const [k, v] of url.searchParams) if (!first.has(k)) first.set(k, v);
+  return Object.fromEntries(first);
 }
 
 const tooLarge = () => new ApiError("BAD_REQUEST", { message: "Body too large" });
