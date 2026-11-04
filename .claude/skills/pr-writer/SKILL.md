@@ -5,20 +5,22 @@ description: >
   Use whenever the user asks to "write a PR", "open a PR", "create a pull request", "draft a PR description",
   "prepare a PR", "let's PR this", "write up the PR", "summarize changes for a PR" or "are we ready to PR".
   Accepts an optional base branch (default: main). Runs the definition-of-done checks (typecheck, lint, tests,
-  optional build, repo-guard) and a diff scan for secrets, server details, personal data, migrations touching
+  optional build, repo-guard, dependency security gate), a check of recent npm/library security news
+  against the lockfile, and a diff scan for secrets, server details, personal data, migrations touching
   legacy tables, contract drift and EN/HI message parity, then fills the checklist from the results.
 ---
 
 ## What this skill does
 
 1. Works out what the branch changes and which areas it touches.
-2. Runs the checks (`scripts/run_checks.sh`). **Hard gate: no PR while any check fails.**
+2. Runs the checks (`scripts/run_checks.sh`), then checks recent security news against our dependencies.
+   **Hard gate: no PR while any check fails or any known vulnerability is left, whatever its severity.**
 3. Scans the diff (`scripts/scan_diff.py`). This repo is **public**: secrets, server details and personal data are blockers.
 4. Writes the title + description, pushes the branch, opens the PR, binds it to the session.
 
 | Script | Purpose |
 |---|---|
-| `scripts/run_checks.sh <base> <repo_root> [--build]` | `pnpm typecheck`, `pnpm lint`, `pnpm db:seed` + `pnpm test`, optional `pnpm build`, `scripts/ci/repo-guard.sh`. JSON: `typecheck`, `lint`, `tests`, `build`, `repo_guard` = `passed`/`failed`/`skipped`. Code checks are skipped for docs-only diffs. |
+| `scripts/run_checks.sh <base> <repo_root> [--build]` | `pnpm typecheck`, `pnpm lint`, `pnpm db:seed` + `pnpm test`, optional `pnpm build`, `scripts/ci/repo-guard.sh`, `scripts/ci/deps-security.sh`. JSON: `typecheck`, `lint`, `tests`, `build`, `repo_guard`, `deps_security` = `passed`/`failed`/`skipped`. Code checks are skipped for docs-only diffs. |
 | `scripts/scan_diff.py <base> [repo_root]` | JSON flags `secrets_found`, `server_details_found`, `personal_data_found`, `new_migrations`, `legacy_table_touched`, `contract_without_doc`, `messages_unpaired`, plus `areas` and `concerns`. |
 
 Paths below are relative to the repo root: `.claude/skills/pr-writer/scripts/…`.
@@ -62,6 +64,32 @@ dev server is running.
 
 Applies even if the failure already exists on `main`: CI blocks merge, so fix it here or in a separate PR first.
 Never tick a box the script did not confirm.
+
+`deps_security` (`scripts/ci/deps-security.sh`, also the `.githooks/pre-push` hook and a CI step) fails on **any**
+`pnpm audit` advisory (prod + dev, low severity included), a compromised release from `scripts/ci/npm-iocs.txt` in the
+lockfile, or a worm payload (file name, hash, exfil domain) in `node_modules`. "Low risk", "dev only" and "transitive"
+are not reasons to leave one. Fix order: upgrade the direct dependency → `overrides` in `pnpm-workspace.yaml` (comment
+the GHSA id) → if the patched major breaks the old API, a callable shim under `vendor/` (see `vendor/minimatch-compat`).
+After a fix, prove the affected tool still works (lint for eslint deps, an xlsx round-trip for exceljs, `pnpm db:migrate`
+for drizzle-kit), then re-run the script.
+
+---
+
+## Step 2b — Recent security news (MUST PASS BEFORE PR)
+
+`pnpm audit` only knows published advisories; fresh incidents (worms, hijacked maintainers, framework RCEs) land in the
+news first. Every PR, run `WebSearch` (mode `extended`, today's month and year in the query) for:
+1. npm supply-chain attacks / compromised packages in the last ~60 days.
+2. Security releases for our runtime dependencies: `next`, `react` (RSC), `sharp`/libvips, `nodemailer`, `mysql2`,
+   `sanitize-html`, `drizzle-orm`, `next-intl`, `@tiptap/*`, `exceljs`, `leaflet`, `three`, `@huggingface/transformers`.
+
+For each hit, compare the affected range with the version in `pnpm-lock.yaml` (`grep -E "^  '?<pkg>@" pnpm-lock.yaml`).
+- Affected → upgrade/override now (same fix order as above), re-run checks. Blocker until fixed.
+- Compromised releases or IOCs (payload files, hashes, domains) from an attack → add them to `scripts/ci/npm-iocs.txt`
+  in this PR so the hook and CI catch them from now on. If one is already installed: stop, tell the user, and have them
+  rotate npm/GitHub tokens and anything in `.env.local` before anything is pushed.
+- Not affected → note it in the PR's Security section ("Next 16.4.2 ≥ 16.4.1 fix for CVE-…").
+List the sources you used in the PR description.
 
 ---
 
@@ -121,6 +149,8 @@ One or more of: Bug fix / New feature / Refactor / Config & infra / Docs.
 - [ ] No server details (IPs, hostnames, ssh users)
 - [ ] No personal data (phones, emails, legacy dump rows)
 - [ ] New/changed endpoints check RBAC scope and CSRF
+- [ ] Dependency security gate passes (`pnpm audit` clean at every severity, no IOC hits)
+- [ ] Recent security news checked against the lockfile (findings + sources below)
 
 ## Contract *(if src/contract changed)*
 - [ ] `docs/CONTRACT.md` §10 amendment added
@@ -146,6 +176,7 @@ One or more of: Bug fix / New feature / Refactor / Config & infra / Docs.
 Filling rules:
 - `typecheck` / `lint` / `tests` / `build` boxes → `[x]` only when `run_checks.sh` said `"passed"`. `"skipped"` → leave `[ ]` and add "(skipped: docs only)" or "(not run)".
 - Security boxes → `[x]` when the matching `scan_diff.py` flag is `false` (or each hit was confirmed safe by the user — say so).
+- Dependency gate box → `[x]` only when `deps_security == "passed"`. News box → `[x]` only after Step 2b ran this session.
 - `CONTRACT.md` box → `[x]` when `contract_without_doc == false`. EN/HI box → `[x]` when `messages_unpaired == false`.
 - `legacy tables untouched` → `[x]` when `legacy_table_touched == false`.
 - **Always leave for the human** (unless you actually did it this session and saw it work): browser check, RBAC/CSRF review,

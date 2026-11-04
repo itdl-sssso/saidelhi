@@ -120,7 +120,7 @@ for f, line in added:
         if not digits.startswith("90000") and not digits.startswith("98765"):  # dev seed / placeholder
             result["personal_data_found"] = True
             concerns.append(f"{f}: phone number {m} — real person's number?")
-    for email in re.findall(r"[\w.+-]+@[\w-]+\.[\w.]+", line):
+    for email in re.findall(r"[\w.+-]+@[\w-]+(?:\.[\w-]+)*\.[A-Za-z]{2,}\b", line):
         if not re.search(r"@(example\.|anthropic\.com|users\.noreply\.github\.com)", email):
             result["personal_data_found"] = True
             concerns.append(f"{f}: email {email} — personal or public org address?")

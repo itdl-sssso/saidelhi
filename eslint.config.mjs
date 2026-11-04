@@ -17,6 +17,8 @@ const eslintConfig = defineConfig([
     ".claude/**",
     // drizzle-kit pull scratch output.
     ".drizzle-pull/**",
+    // CommonJS dependency shims (see pnpm-workspace.yaml overrides).
+    "vendor/**",
   ]),
 ]);
 
