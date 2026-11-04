@@ -31,16 +31,37 @@ export type RouteContext = { params: Promise<Record<string, string | string[] | 
 const MAX_BODY_BYTES = 64 * 1024;
 
 function queryObject(url: URL): Record<string, string> {
-  const out: Record<string, string> = {};
-  for (const [k, v] of url.searchParams) if (!(k in out)) out[k] = v;
+  const out: Record<string, string> = Object.create(null);
+  for (const [k, v] of url.searchParams) if (!Object.hasOwn(out, k)) out[k] = v;
   return out;
+}
+
+const tooLarge = () => new ApiError("BAD_REQUEST", { message: "Body too large" });
+
+async function readBodyLimited(req: NextRequest): Promise<string> {
+  const declared = Number(req.headers.get("content-length"));
+  if (Number.isFinite(declared) && declared > MAX_BODY_BYTES) throw tooLarge();
+  if (!req.body) return "";
+  const reader = req.body.getReader();
+  const chunks: Uint8Array[] = [];
+  let total = 0;
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    total += value.byteLength;
+    if (total > MAX_BODY_BYTES) {
+      await reader.cancel().catch(() => {});
+      throw tooLarge();
+    }
+    chunks.push(value);
+  }
+  return Buffer.concat(chunks).toString("utf8");
 }
 
 async function readJson(req: NextRequest): Promise<unknown> {
   const type = req.headers.get("content-type") ?? "";
   if (!type.includes("application/json")) throw new ApiError("BAD_REQUEST", { message: "Expected application/json" });
-  const text = await req.text();
-  if (text.length > MAX_BODY_BYTES) throw new ApiError("BAD_REQUEST", { message: "Body too large" });
+  const text = await readBodyLimited(req);
   try {
     return JSON.parse(text);
   } catch {
