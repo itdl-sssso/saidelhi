@@ -12,6 +12,7 @@ import { DEV_SESSION_SECRET } from "@/server/security/crypto";
 import { phoneHash } from "@/server/security/phone";
 import { createServices } from "@/server/services/create";
 import { FakeWhatsApp, MemoryStorage } from "./support/links";
+import { NOW } from "./support/services";
 
 const url = process.env.DATABASE_URL ?? "mysql://app:app@127.0.0.1:3307/saidelhi";
 
@@ -30,11 +31,16 @@ async function probe(): Promise<Pool | null> {
 const pool = await probe();
 
 describe.skipIf(!pool)("WhatsApp on MySQL (integration)", () => {
+  // Inbox rows get created_at from MySQL (wall clock); everything the services stamp uses the
+  // test clock, which ticks from NOW so "aaj" in a bot message still means the seeded camp's day.
   const started = new Date(Date.now() - 1000);
+  const t0 = Date.now();
+  const clock = () => new Date(NOW.getTime() + (Date.now() - t0));
+  const clockStarted = new Date(NOW.getTime() - 1000);
   const db = pool ? createDb(pool) : null;
   const whatsapp = new FakeWhatsApp();
   const repo = db ? new DbRepo(db) : null;
-  const svc = repo ? createServices(repo, { now: () => new Date(), mediaBase: "/media", whatsapp, storage: new MemoryStorage() }) : null;
+  const svc = repo ? createServices(repo, { now: clock, mediaBase: "/media", whatsapp, storage: new MemoryStorage() }) : null;
   const rc = { requestId: "it-wa", ipHash: null };
   const TEST_PHONE = "+919810000099";
   const hashA = phoneHash(DEV_SESSION_SECRET, devUserPhone(1));
@@ -59,13 +65,13 @@ describe.skipIf(!pool)("WhatsApp on MySQL (integration)", () => {
         await db.delete(whatsappMessage).where(inArray(whatsappMessage.inboxItemId, ids));
         await db.delete(inboxItem).where(inArray(inboxItem.id, ids));
       }
-      await db.delete(whatsappMessage).where(and(eq(whatsappMessage.phoneHash, hashA), gte(whatsappMessage.createdAt, started)));
+      await db.delete(whatsappMessage).where(and(eq(whatsappMessage.phoneHash, hashA), gte(whatsappMessage.createdAt, clockStarted)));
       await db.delete(whatsappMessage).where(eq(whatsappMessage.phoneHash, phoneHash(DEV_SESSION_SECRET, TEST_PHONE)));
       await db.delete(whatsappConversation).where(eq(whatsappConversation.phoneHash, phoneHash(DEV_SESSION_SECRET, TEST_PHONE)));
       await db.delete(whatsappOptin).where(eq(whatsappOptin.phoneHash, phoneHash(DEV_SESSION_SECRET, optinPhone)));
       if (convBackup) await db.update(whatsappConversation).set(convBackup).where(eq(whatsappConversation.id, convBackup.id));
       await db.update(reminderRule).set({ enabled: true });
-      await db.delete(auditLog).where(and(gte(auditLog.at, started), eq(auditLog.requestId, "it-wa")));
+      await db.delete(auditLog).where(and(gte(auditLog.at, clockStarted), eq(auditLog.requestId, "it-wa")));
     }
     await pool?.end();
   });
@@ -135,7 +141,7 @@ describe.skipIf(!pool)("WhatsApp on MySQL (integration)", () => {
 
   it("stores an opt-in request, records consent on YES and honours STOP", async () => {
     const s = svc!;
-    const token = issueBotChallenge(DEV_SESSION_SECRET, "optin", new Date(Date.now() - 5000));
+    const token = issueBotChallenge(DEV_SESSION_SECRET, "optin", new Date(clock().getTime() - 5000));
     await s.wa.optin.request({ phone: optinPhone, districtId: DISTRICT.east, sevaTypes: ["eye"], locale: "en", botToken: token }, { requestId: "it-wa", ipHash: null });
     const rec = () => db!.select().from(whatsappOptin).where(eq(whatsappOptin.phoneHash, phoneHash(DEV_SESSION_SECRET, optinPhone)));
     expect((await rec())[0]).toMatchObject({ status: "pending", consentAt: null, via: "web" });
