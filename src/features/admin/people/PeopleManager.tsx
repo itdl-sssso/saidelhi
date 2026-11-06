@@ -70,6 +70,8 @@ export function PeopleManager({
   const [target, setTarget] = useState<Person | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [form, setForm] = useState({ name: "", digits: "", email: "", role: "samithi_coord" as Role, scopeId: "", locale: "en" as Locale });
+  const [channel, setChannel] = useState<"whatsapp" | "email">("whatsapp");
+  const byEmail = channel === "email";
 
   const roles: Role[] = isState ? RoleEnum.options : ["district_coord", "samithi_coord"];
   const scopesFor = (role: Role) => {
@@ -86,9 +88,10 @@ export function PeopleManager({
     setErrors({});
   };
 
-  const openInvite = () => {
+  const openInvite = (via: "whatsapp" | "email") => {
     const role: Role = isState ? "samithi_coord" : "samithi_coord";
     setForm({ name: "", digits: "", email: "", role, scopeId: "", locale: "en" });
+    setChannel(via);
     setErrors({});
     setDlg("invite");
   };
@@ -105,16 +108,20 @@ export function PeopleManager({
     const e: Record<string, string> = {};
     if (!form.name.trim()) e.name = t("errName");
     if (!/^[6-9]\d{9}$/.test(form.digits)) e.phone = t("errPhone");
+    if (byEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) e.email = t("errEmail");
     if (needsScope && SCOPE_KIND[form.role] !== "ncr" && !form.scopeId) e.scopeId = t("errScope");
     setErrors(e);
     if (Object.keys(e).length) return;
     const res = await run(
       adminEndpoints.invite(),
-      { body: { name: form.name.trim(), phone: `+91${form.digits}`, email: form.email.trim() || null, role: form.role, scopeId: needsScope ? form.scopeId || null : null, locale: form.locale } },
-      { key: "invite", success: t("invited"), quiet422: true },
+      {
+        body: { name: form.name.trim(), phone: `+91${form.digits}`, email: form.email.trim() || null, role: form.role, scopeId: needsScope ? form.scopeId || null : null, locale: form.locale, channel },
+      },
+      { key: "invite", success: t(byEmail ? "invitedEmail" : "invited"), quiet422: true },
     );
     if (res.ok) setDlg(null);
     else if (res.status === 422 || res.status === 409) setErrors(res.error.fields ?? { form: res.error.message });
+    else if (res.status === 503 && byEmail) setErrors({ form: t("emailDown") });
   };
 
   const save = async () => {
@@ -167,9 +174,14 @@ export function PeopleManager({
       <div className={styles.row} style={{ justifyContent: "space-between" }}>
         <span />
         {canInvite ? (
-          <Button icon="plus" onClick={openInvite}>
-            {t("invite")}
-          </Button>
+          <div className={styles.row}>
+            <Button variant="outline" icon="mail" onClick={() => openInvite("email")}>
+              {t("inviteEmail")}
+            </Button>
+            <Button icon="plus" onClick={() => openInvite("whatsapp")}>
+              {t("invite")}
+            </Button>
+          </div>
         ) : null}
       </div>
       {reviewDue > 0 ? (
@@ -263,7 +275,7 @@ export function PeopleManager({
       <Dialog
         open={dlg === "invite" || dlg === "edit"}
         onClose={() => setDlg(null)}
-        title={dlg === "edit" ? t("editTitle") : t("inviteTitle")}
+        title={dlg === "edit" ? t("editTitle") : t(byEmail ? "inviteTitleEmail" : "inviteTitle")}
         width={520}
         footer={
           <div className={styles.dialogFoot}>
@@ -286,7 +298,7 @@ export function PeopleManager({
               <Input label={t("fPhone")} value={target?.phone ?? ""} readOnly />
             )}
           </div>
-          <Input type="email" label={t("fEmail")} optional value={form.email} error={errors.email} onChange={(e) => set("email", e.target.value)} />
+          <Input type="email" label={t("fEmail")} optional={!(dlg === "invite" && byEmail)} value={form.email} error={errors.email} onChange={(e) => set("email", e.target.value)} />
           <div className={`${styles.fieldGrid} ${styles.fieldGrid2}`}>
             <Select label={t("fRole")} value={form.role} error={errors.role} onChange={(e) => setRole(e.target.value as Role)} options={roles.map((r) => ({ value: r, label: tRole(r) }))} />
             <Select
@@ -312,7 +324,7 @@ export function PeopleManager({
           ) : (
             <p className={styles.cap}>{needsScope ? t("scopeNcr") : t("scopeNone")}</p>
           )}
-          {dlg === "invite" ? <p className={styles.cap}>{t("inviteNote")}</p> : null}
+          {dlg === "invite" ? <p className={styles.cap}>{t(byEmail ? "inviteNoteEmail" : "inviteNote")}</p> : null}
         </div>
       </Dialog>
 

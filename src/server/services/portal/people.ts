@@ -8,6 +8,7 @@ import { type Actor, assertCan, ROLE_LABEL, ROLE_RANK } from "../../auth/rbac";
 import { toIso, toIsoOrNull } from "../../domain/time";
 import { ApiError } from "../../http/errors";
 import type { PersonRec, RoleAssignmentRec, UserRec } from "../../repo/portal-types";
+import { inviteEmail } from "../../email/templates";
 import { encryptField } from "../../security/crypto";
 import { maskPhone, normalisePhone, phoneHash } from "../../security/phone";
 import { i18n, type OrgIndex } from "../org-index";
@@ -86,8 +87,10 @@ export function createPeopleService(ctx: PortalCtx): PeopleService {
     return toPerson(p, org);
   }
 
+  const inviteLabel = (role: Role, scopeName: string | null) => (l: Locale) => `${ROLE_LABEL[role][l]}${scopeName ? ` (${scopeName})` : ""}`;
+
   async function sendInvite(user: UserRec, role: Role, scopeName: string | null) {
-    const label = (l: Locale) => `${ROLE_LABEL[role][l]}${scopeName ? ` (${scopeName})` : ""}`;
+    const label = inviteLabel(role, scopeName);
     await notify(ctx, [{ user, role: null }], "invite_coordinator", (l) => [label(l), portalUrl(ctx, "/login")]);
   }
 
@@ -131,16 +134,31 @@ export function createPeopleService(ctx: PortalCtx): PeopleService {
       const at = deps.now();
       const role: RoleAssignmentRec = { id: newId(), userId: "", role: body.role, scopeId: scope, createdBy: actor.userId, createdAt: at, endedAt: null };
       const existing = await repo.portal.userByPhoneHash(hash);
+      if (existing && existing.status !== "deactivated") throw new ApiError("CONFLICT", { message: "This number is already registered.", fields: { phone: "Already registered" } });
+      const scopeName = scope ? (org.get(scope)?.nameEn ?? null) : null;
+      if (body.channel === "email" && body.email) {
+        // Sent before saving: if the mail can't go out (503), nothing is stored and the admin can simply retry.
+        await deps.email.send(
+          inviteEmail({
+            to: body.email,
+            locale: body.locale,
+            appUrl: deps.appUrl,
+            name: body.name,
+            roleLabel: inviteLabel(body.role, body.locale === "hi" && scope ? (org.get(scope)?.nameHi ?? scopeName) : scopeName)(body.locale),
+            invitedBy: actor.name,
+            loginUrl: portalUrl(ctx, "/login?via=email"),
+          }),
+        );
+      }
       let userId: string;
       if (existing) {
         // Office-bearer rotation: a deactivated person can be invited again.
-        if (existing.status !== "deactivated") throw new ApiError("CONFLICT", { message: "This number is already registered.", fields: { phone: "Already registered" } });
         userId = existing.id;
         const res = await repo.portal.updateUser({
           userId,
           patch: { name: body.name, email: body.email, locale: body.locale, status: "invited" },
           newRole: { ...role, userId },
-          audit: [auditRec(actor, { action: "person.invite", entity: "user", entityId: userId, scopeId: scope, data: { reinvited: true, after: auditPerson({ ...body, status: "invited" }, role) } })],
+          audit: [auditRec(actor, { action: "person.invite", entity: "user", entityId: userId, scopeId: scope, data: { reinvited: true, via: body.channel, after: auditPerson({ ...body, status: "invited" }, role) } })],
         });
         if (res === "conflict") throw new ApiError("CONFLICT");
       } else {
@@ -160,12 +178,12 @@ export function createPeopleService(ctx: PortalCtx): PeopleService {
           version: 1,
         };
         const res = await repo.portal.insertUser(user, { ...role, userId }, [
-          auditRec(actor, { action: "person.invite", entity: "user", entityId: userId, scopeId: scope, data: { after: auditPerson(user, role), phone: user.phoneMasked } }),
+          auditRec(actor, { action: "person.invite", entity: "user", entityId: userId, scopeId: scope, data: { after: auditPerson(user, role), phone: user.phoneMasked, via: body.channel } }),
         ]);
         if (res === "duplicate") throw new ApiError("CONFLICT", { message: "This number is already registered.", fields: { phone: "Already registered" } });
       }
       const user = await repo.portal.userById(userId);
-      if (user) await sendInvite(user, body.role, scope ? (org.get(scope)?.nameEn ?? null) : null);
+      if (user && body.channel === "whatsapp") await sendInvite(user, body.role, scopeName);
       return reload(userId, org);
     },
 

@@ -1400,7 +1400,13 @@
       "deactivateTitle": "Deactivate this person?",
       "deactivateBody": "{name} is signed out straight away and can't sign in again unless you invite them back.",
       "deactivateConfirm": "Deactivate",
-      "deactivated": "Deactivated and signed out."
+      "deactivated": "Deactivated and signed out.",
+      "inviteEmail": "Invite by email",
+      "inviteTitleEmail": "Invite someone by email",
+      "inviteNoteEmail": "They get an email with a sign-in link and sign in with that address. No password is needed. Their number is kept for WhatsApp later.",
+      "invitedEmail": "Invite sent by email.",
+      "errEmail": "Enter the email address to send the invite to.",
+      "emailDown": "The email couldn't be sent, so nothing was saved. Try again in a few minutes, or invite on WhatsApp."
     },
     "audit": {
       "title": "Audit log",
