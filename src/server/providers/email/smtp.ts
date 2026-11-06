@@ -10,7 +10,7 @@ export interface SmtpConfig {
   secure: boolean;
   user?: string;
   pass?: string;
-  /** e.g. `SSSSO Delhi NCR <no-reply@saidelhi.org>`. */
+  /** e.g. `SSSSO Delhi NCR <noreply@saidelhi.org>`. */
   from: string;
 }
 
@@ -38,7 +38,7 @@ export class SmtpEmail implements EmailProvider {
 
   async send(msg: EmailMessage) {
     try {
-      const info = await this.transport.sendMail({ from: this.cfg.from, to: msg.to, subject: msg.subject, text: msg.text });
+      const info = await this.transport.sendMail({ from: this.cfg.from, to: msg.to, subject: msg.subject, text: msg.text, html: msg.html });
       return { id: String(info.messageId ?? "") };
     } catch (err) {
       // Never log the message body: it can hold a login code.

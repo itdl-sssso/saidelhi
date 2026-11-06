@@ -40,7 +40,7 @@ const EnvSchema = z
     SMTP_SECURE: z.preprocess(blank, z.enum(["true", "false"]).default("false").transform((v) => v === "true")),
     SMTP_USER: optStr,
     SMTP_PASS: optStr,
-    /** Sender, e.g. `SSSSO Delhi NCR <no-reply@saidelhi.org>`. */
+    /** Sender, e.g. `SSSSO Delhi NCR <noreply@saidelhi.org>`. */
     SMTP_FROM: optStr,
     EXTRACTOR_PROVIDER: z.preprocess(blank, z.enum(["rules", "ollama", "hf"]).default("rules")),
     OLLAMA_URL: z.preprocess(blank, z.url().default("http://127.0.0.1:11434")),

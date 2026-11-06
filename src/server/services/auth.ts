@@ -10,7 +10,8 @@ import { hmacHex, sha256Hex } from "../security/crypto";
 import { csrfFor, newSessionToken } from "../security/link-token";
 import { normalisePhone, phoneHash } from "../security/phone";
 import { i18n } from "./org-index";
-import { otpPolicy, sendOtp, verifyOtp } from "./otp";
+import { loginCodeEmail } from "../email/templates";
+import { OTP_POLICY, otpPolicy, sendOtp, verifyOtp } from "./otp";
 import { loadOrg } from "./shared";
 import type { PortalCtx } from "./portal/shared";
 
@@ -24,13 +25,6 @@ const MSG = {
   email: { en: "Enter a valid email address.", hi: "सही ईमेल पता लिखें।" },
   wrong: { en: "That code is not right.", hi: "यह कोड सही नहीं है।" },
 } as const;
-
-/** Login-code email (by-email sign-in and the WhatsApp fallback). */
-function loginCodeEmail(to: string, locale: Locale, code: string) {
-  return locale === "hi"
-    ? { to, subject: "आपका साइन-इन कोड", text: `आपका कोड ${code} है। यह 5 मिनट में समाप्त हो जाएगा। इसे किसी से साझा न करें।` }
-    : { to, subject: "Your sign-in code", text: `Your code is ${code}. It expires in 5 minutes. Never share it.` };
-}
 
 /** Keyed OTP key for an email address; namespaced apart from phone hashes in `otp_challenge.phone_hash`. */
 const emailKey = (secret: string, email: string) => hmacHex(secret, "email", email);
@@ -75,6 +69,8 @@ export function createAuthService(ctx: PortalCtx): AuthService {
   const { repo, deps } = ctx;
   const now = () => deps.now();
   const otpDeps = { repo: repo.links, whatsapp: deps.whatsapp, secret: deps.secret, now, policy: () => otpPolicy(repo) };
+
+  const codeMail = (to: string, locale: Locale, code: string) => loginCodeEmail({ to, locale, code, appUrl: deps.appUrl, minutes: OTP_POLICY.ttlMs / 60_000 });
 
   const grantFor = (token: string): PortalGrant => ({ token, csrf: csrfFor(deps.secret, token), maxAgeSeconds: Math.floor(SESSION_TTL_MS / 1000) });
 
@@ -164,7 +160,7 @@ export function createAuthService(ctx: PortalCtx): AuthService {
         deliver = (code) => deps.whatsapp.sendTemplate(phone.e164, "login_code", known.locale, [code]);
       } else if (known?.email && channel === "email") {
         const to = known.email;
-        deliver = (code) => deps.email.send(loginCodeEmail(to, known.locale, code));
+        deliver = (code) => deps.email.send(codeMail(to, known.locale, code));
       } else {
         // Unknown numbers (or no email on file) get a challenge that is never sent: same answer, same throttling.
         deliver = async () => undefined;
@@ -185,7 +181,7 @@ export function createAuthService(ctx: PortalCtx): AuthService {
       const { email, key } = parseEmail(rawEmail, locale);
       const found = await userForEmail(email);
       // Unknown (or shared) addresses get a challenge that is never sent: same answer, same throttling.
-      const deliver = found ? (code: string) => deps.email.send(loginCodeEmail(email, found.user.locale, code)) : async () => undefined;
+      const deliver = found ? (code: string) => deps.email.send(codeMail(email, found.user.locale, code)) : async () => undefined;
       return sendOtp(otpDeps, { phone: "", phoneHash: key, purpose: "login", linkId: null }, locale, deliver);
     },
 

@@ -34,3 +34,19 @@ describe("auth DTOs", () => {
     expect(AuthVerifyRequest.safeParse({ email: "a@example.org", code: "123456" }).success).toBe(true);
   });
 });
+
+describe("email templates", () => {
+  it("renders HTML + text, escapes names, and links absolute assets", async () => {
+    const { inviteEmail, loginCodeEmail } = await import("@/server/email/templates");
+    const m = inviteEmail({ to: "a@example.org", locale: "en", appUrl: "https://staging.example.org/", name: "Asha <script>", roleLabel: "Samithi coordinator (East 2)", invitedBy: "Ravi & Co", loginUrl: "https://staging.example.org/admin/login?via=email" });
+    expect(m.html).toContain("Asha &lt;script&gt;");
+    expect(m.html).not.toContain("<script>");
+    expect(m.html).toContain("Ravi &amp; Co");
+    expect(m.html).toContain('src="https://staging.example.org/brand/emblem-512.png"');
+    expect(m.text).toContain("https://staging.example.org/admin/login?via=email");
+    const hi = loginCodeEmail({ to: "a@example.org", locale: "hi", appUrl: "https://x.org", code: "012345", minutes: 5 });
+    expect(hi.subject).toContain("012345");
+    expect(hi.html).toContain('lang="hi"');
+    expect(hi.text).toContain("012345");
+  });
+});

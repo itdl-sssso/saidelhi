@@ -27,7 +27,9 @@ function safeNext(raw: string | undefined): string {
 
 async function LoginContent({ searchParams }: PageProps<"/[locale]/admin/login">) {
   const locale = await initLocale();
-  const next = safeNext(one((await searchParams).next));
+  const sp = await searchParams;
+  const next = safeNext(one(sp.next));
+  const via = one(sp.via) === "email" ? "email" : "phone";
   await connection();
   if (await getSession()) redirect({ href: next, locale });
   return (
@@ -41,7 +43,7 @@ async function LoginContent({ searchParams }: PageProps<"/[locale]/admin/login">
         <LanguageSwitch />
       </header>
       <main id={MAIN_ID} tabIndex={-1} className={styles.wrap}>
-        <LoginForm next={next} />
+        <LoginForm next={next} via={via} />
       </main>
     </div>
   );

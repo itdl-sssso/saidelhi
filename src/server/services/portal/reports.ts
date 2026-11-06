@@ -6,6 +6,7 @@ import type {
   ExportKind,
   ExportLogRow,
   ExportRequest,
+  Locale,
   MonthlyReport,
   MonthlyReportCreate,
   ReportRecipient,
@@ -21,6 +22,7 @@ import { addDays, istDate, istDayStart, istMonth, toIso } from "../../domain/tim
 import { KPI_DEFS } from "../../domain/kpi";
 import { ApiError } from "../../http/errors";
 import type { EventRec, KpiFactRec } from "../../repo/types";
+import { monthlyReportEmail } from "../../email/templates";
 import { decryptField } from "../../security/crypto";
 import type { OrgIndex } from "../org-index";
 import { embedEmblem } from "./letterhead";
@@ -397,13 +399,15 @@ export function createReportsService(ctx: PortalCtx): ReportsService {
         if (!(await repo.portal.claimNotification(`monthly-report:${s.id}:${month}`, "monthly_report", null, now))) continue;
         const report = await generate(by, org, month, s.data.scopeId);
         out.ids.push(report.id);
-        const monthName = new Intl.DateTimeFormat("en-GB", { month: "long", year: "numeric", timeZone: "Asia/Kolkata" }).format(istDayStart(`${month}-01`));
+        const monthIn = (l: Locale) => new Intl.DateTimeFormat(l === "hi" ? "hi-IN" : "en-GB", { month: "long", year: "numeric", timeZone: "Asia/Kolkata" }).format(istDayStart(`${month}-01`));
+        const monthName = monthIn("en");
         const link = portalUrl(ctx, "/reports");
         const people = (await repo.portal.people()).filter((p) => s.data.recipientIds.includes(p.user.id) && p.user.status !== "deactivated");
         for (const p of people) {
           try {
             if (p.user.email) {
-              await deps.email.send({ to: p.user.email, subject: `Seva report, ${monthName}`, text: `The ${monthName} seva report for ${org.ref(s.data.scopeId).name.en} is ready: ${link}` });
+              const l = p.user.locale;
+              await deps.email.send(monthlyReportEmail({ to: p.user.email, locale: l, appUrl: deps.appUrl, month: monthIn(l), scopeName: org.ref(s.data.scopeId).name[l] ?? org.ref(s.data.scopeId).name.en, url: link }));
               out.notified++;
             } else if (await flagOn(repo, "wa_reminders")) {
               // No email: WhatsApp only while flag `wa_reminders` is on (the report is in the portal either way).

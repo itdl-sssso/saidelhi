@@ -368,15 +368,22 @@ export const PeopleMeta = PageMeta.extend({ reviewDue: z.number().int().nonnegat
 export type PeopleMeta = z.infer<typeof PeopleMeta>;
 
 /** POST /admin/people/invite — sends the `invite_coordinator` WhatsApp template. */
-export const PersonInvite = z.object({
-  name: Text(120).min(1),
-  phone: Text(20).min(8),
-  email: z.email().max(254).nullable().default(null),
-  role: Role,
-  /** Org unit for the role; null for translators. */
-  scopeId: Id.nullable(),
-  locale: Locale.default("en"),
-});
+export const InviteChannel = z.enum(["whatsapp", "email"]);
+export type InviteChannel = z.infer<typeof InviteChannel>;
+
+export const PersonInvite = z
+  .object({
+    name: Text(120).min(1),
+    phone: Text(20).min(8),
+    email: z.email().max(254).nullable().default(null),
+    role: Role,
+    /** Org unit for the role; null for translators. */
+    scopeId: Id.nullable(),
+    locale: Locale.default("en"),
+    /** v0.10.4: how the invite goes out; `email` needs `email` and is sent before anything is saved. */
+    channel: InviteChannel.default("whatsapp"),
+  })
+  .refine((b) => b.channel !== "email" || !!b.email, { message: "Add an email address to invite by email.", path: ["email"] });
 export type PersonInvite = z.input<typeof PersonInvite>;
 
 export const PersonPatch = z.object({

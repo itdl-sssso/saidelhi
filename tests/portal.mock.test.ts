@@ -23,7 +23,7 @@ function setup(now: Date = NOW) {
     const v = i.tiles.find((t) => t.key === key)!.figure.value;
     return typeof v === "number" ? v : 0;
   };
-  const lastMailCode = () => /code is (\d{6})/.exec(mails.at(-1) ?? "")?.[1] ?? "";
+  const lastMailCode = () => /^(\d{6})$/m.exec(mails.at(-1) ?? "")?.[1] ?? "";
   return { repo, svc, whatsapp, mails, lastMailCode, clock, actor, tile, rc };
 }
 
@@ -113,6 +113,24 @@ describe("RBAC", () => {
     expect(ok.role).toBe("samithi_coord");
     expect(await fails(t.svc.portal.people.invite(east, { ...base, phone: "9876500003", role: "samithi_coord", scopeId: SAMITHI.rohini }))).toMatch(/FORBIDDEN|NOT_FOUND|VALIDATION_FAILED/);
     expect(await fails(t.svc.portal.people.invite(east, { ...base, phone: "9876500004", role: "state_admin", scopeId: NCR_ID }))).toBe("FORBIDDEN");
+  });
+
+  it("invites by email: sends a branded mail, skips WhatsApp, and saves nothing when the mail fails", async () => {
+    const t = setup();
+    const east = await t.actor(USER.districtB);
+    const base = { name: "Asha <b>", locale: "en" as const, role: "samithi_coord" as const, scopeId: SAMITHI.laxmiNagar };
+    await expect(t.svc.portal.people.invite(east, { ...base, phone: "9876500011", email: null, channel: "email" })).rejects.toThrow(/email/i);
+    const p = await t.svc.portal.people.invite(east, { ...base, phone: "9876500011", email: "asha@example.org", channel: "email" });
+    expect(p.status).toBe("invited");
+    expect(t.whatsapp.sent).toHaveLength(0);
+    expect(t.mails.at(-1)).toContain("to=asha@example.org");
+
+    const repo = new MockRepo();
+    const down = { name: "console" as const, send: async () => Promise.reject(new ApiError("PROVIDER_UNAVAILABLE")) };
+    const svc = createServices(repo, { now: () => NOW, mediaBase: "/media", whatsapp: new FakeWhatsApp(), email: down });
+    const east2 = (await svc.auth.actorFor(USER.districtB, t.rc))!;
+    expect(await fails(svc.portal.people.invite(east2, { ...base, phone: "9876500012", email: "b@example.org", channel: "email" }))).toBe("PROVIDER_UNAVAILABLE");
+    expect((await repo.portal.people()).some((x) => x.user.email === "b@example.org")).toBe(false);
   });
 
   it("deactivating a person kills their sessions", async () => {

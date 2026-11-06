@@ -39,12 +39,13 @@ function useCountdown() {
   return [left, setLeft] as const;
 }
 
-export function LoginForm({ next }: { next: string }) {
+/** `via="email"` (invite emails link `?via=email`) opens the email form first. */
+export function LoginForm({ next, via = "phone" }: { next: string; via?: Mode }) {
   const t = useTranslations("admin.login");
   const locale = useLocale() as AppLocale;
   const router = useRouter();
   const [step, setStep] = useState<Step>("phone");
-  const [mode, setMode] = useState<Mode>("phone");
+  const [mode, setMode] = useState<Mode>(via);
   const [digits, setDigits] = useState("");
   const [address, setAddress] = useState("");
   const [code, setCode] = useState("");
