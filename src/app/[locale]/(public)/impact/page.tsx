@@ -7,11 +7,12 @@ import { ImpactView } from "@/features/impact/ImpactView";
 import { getImpact } from "@/features/public/data";
 import Loading from "./loading";
 import { initLocale } from "@/i18n/server";
+import { metaDescription, pageAlternates } from "@/features/seo/meta";
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await initLocale();
   const t = await getTranslations({ locale, namespace: "impact" });
-  return { title: t("metaTitle"), description: t("lead") };
+  return { title: t("metaTitle"), description: metaDescription(t("lead")), alternates: pageAlternates(locale, "/impact") };
 }
 
 const first = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v);

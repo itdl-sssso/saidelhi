@@ -7,11 +7,12 @@ import { parseSearch } from "@/features/map/model";
 import Loading from "./loading";
 import { initLocale } from "@/i18n/server";
 import { type AppLocale, tx } from "@/lib/format";
+import { metaDescription, pageAlternates } from "@/features/seo/meta";
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await initLocale();
   const t = await getTranslations({ locale, namespace: "map" });
-  return { title: t("metaTitle"), description: t("lead") };
+  return { title: t("metaTitle"), description: metaDescription(t("lead")), alternates: pageAlternates(locale, "/centres/map") };
 }
 
 const first = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v);

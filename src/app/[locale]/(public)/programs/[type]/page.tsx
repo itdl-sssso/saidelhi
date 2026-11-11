@@ -8,6 +8,7 @@ import { ProgramView } from "@/features/programs/ProgramView";
 import Loading from "./loading";
 import { initLocale } from "@/i18n/server";
 import { tx } from "@/lib/format";
+import { metaDescription, pageAlternates } from "@/features/seo/meta";
 
 type Props = PageProps<"/[locale]/programs/[type]">;
 
@@ -21,7 +22,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return { title: t("notFoundTitle") };
   }
   const t = await getTranslations({ locale, namespace: "program" });
-  return { title: tx(program.label, locale), description: t(`lead.${program.sevaType}`) };
+  return {
+    title: tx(program.label, locale),
+    description: metaDescription(t(`lead.${program.sevaType}`)),
+    alternates: pageAlternates(locale, `/programs/${program.sevaType}`),
+  };
 }
 
 async function ProgramContent({ params }: Props) {

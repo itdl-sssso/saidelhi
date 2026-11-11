@@ -7,6 +7,7 @@ import { getValue } from "@/features/public/data";
 import { ValueView } from "@/features/values/ValueView";
 import Loading from "./loading";
 import { initLocale } from "@/i18n/server";
+import { metaDescription, pageAlternates } from "@/features/seo/meta";
 
 type Props = PageProps<"/[locale]/values/[slug]">;
 
@@ -27,7 +28,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const k = parsed.data;
   return {
     title: `${th(`values.${k}.name`)} (${th(`values.${k}.gloss`)})`,
-    description: `${t("metaSuffix")}. ${th(`values.${k}.body`)}`,
+    description: metaDescription(`${t("metaSuffix")}. ${th(`values.${k}.body`)}`),
+    alternates: pageAlternates(locale, `/values/${k}`),
   };
 }
 

@@ -7,6 +7,7 @@ import { getCentre } from "@/features/public/data";
 import Loading from "./loading";
 import { initLocale } from "@/i18n/server";
 import { tx } from "@/lib/format";
+import { metaDescription, pageAlternates } from "@/features/seo/meta";
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/centres/[slug]">): Promise<Metadata> {
   const locale = await initLocale();
@@ -17,7 +18,11 @@ export async function generateMetadata({ params }: PageProps<"/[locale]/centres/
     return { title: t("notFoundTitle") };
   }
   const t = await getTranslations({ locale, namespace: "centre" });
-  return { title: tx(centre.name, locale), description: `${tx(centre.address, locale)}. ${t("lead")}` };
+  return {
+    title: tx(centre.name, locale),
+    description: metaDescription(`${tx(centre.address, locale)}. ${t("lead")}`),
+    alternates: pageAlternates(locale, `/centres/${encodeURIComponent(slug)}`),
+  };
 }
 
 async function CentreContent({ params }: PageProps<"/[locale]/centres/[slug]">) {

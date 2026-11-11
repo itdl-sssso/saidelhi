@@ -1,10 +1,10 @@
 {
  "date": "2026-11-11",
- "overall": 55,
+ "overall": 62,
  "groups": {
   "SEO": 73,
   "Performance": 70,
-  "AI": 21
+  "AI": 43
  },
  "checks": [
   [
@@ -152,21 +152,21 @@
    "Article/Event schema on posts",
    0,
    3,
-   "0/0 posts"
+   "0/28 posts"
   ],
   [
    "AI",
    "Visible publish dates on posts",
-   0,
+   100,
    2,
-   "0/0 sampled"
+   "10/10 sampled"
   ],
   [
    "AI",
    "Contact facts in text (PIN, phone, email)",
-   0,
+   100,
    2,
-   "0/3"
+   "3/3"
   ],
   [
    "AI",

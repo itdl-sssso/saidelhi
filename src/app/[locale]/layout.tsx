@@ -17,7 +17,8 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     // Absolute og:image URLs for link previews (WhatsApp etc.); without it they point at localhost.
     metadataBase: new URL(env().APP_URL),
-    title: { default: t("siteName"), template: `%s · ${t("siteName")}` },
+    // Short suffix keeps titles under ~70 characters (the Hindi site name alone is 40).
+    title: { default: t("siteName"), template: `%s · ${t("titleSuffix")}` },
     description: t("description"),
   };
 }

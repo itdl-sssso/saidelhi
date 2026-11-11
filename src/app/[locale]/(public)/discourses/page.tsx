@@ -7,11 +7,12 @@ import { getDiscourses } from "@/features/discourses/data";
 import { DiscoursesView } from "@/features/discourses/DiscoursesView";
 import Loading from "./loading";
 import { initLocale } from "@/i18n/server";
+import { metaDescription, pageAlternates } from "@/features/seo/meta";
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await initLocale();
   const t = await getTranslations({ locale, namespace: "discourses" });
-  return { title: t("metaTitle"), description: t("lead") };
+  return { title: t("metaTitle"), description: metaDescription(t("lead")), alternates: pageAlternates(locale, "/discourses") };
 }
 
 const first = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v);

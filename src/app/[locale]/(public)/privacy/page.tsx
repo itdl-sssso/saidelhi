@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { PrivacyView } from "@/features/privacy/PrivacyView";
 import { initLocale } from "@/i18n/server";
+import { metaDescription, pageAlternates } from "@/features/seo/meta";
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await initLocale();
   const t = await getTranslations({ locale, namespace: "privacy" });
-  return { title: t("metaTitle"), description: t("lead") };
+  return { title: t("metaTitle"), description: metaDescription(t("lead")), alternates: pageAlternates(locale, "/privacy") };
 }
 
 // Static content: the notice changes only with a new version of this page.

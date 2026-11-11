@@ -7,6 +7,7 @@ import { getGalleryAlbum } from "@/features/public/data";
 import Loading from "./loading";
 import { initLocale } from "@/i18n/server";
 import { tx } from "@/lib/format";
+import { pageAlternates } from "@/features/seo/meta";
 
 type Props = PageProps<"/[locale]/gallery/[slug]">;
 
@@ -23,6 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: tx(album.title, locale),
     description: t("photosN", { count: album.count }),
     openGraph: { images: [album.cover.src] },
+    alternates: pageAlternates(locale, `/gallery/${encodeURIComponent(slug)}`),
   };
 }
 
