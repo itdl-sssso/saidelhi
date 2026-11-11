@@ -3,7 +3,7 @@ import { ArticleCategory, ContentTypeSlug, DiscourseBlockType, DiscourseTheme, W
 import { EventPublic } from "./events";
 import { I18nText, ISODate, ISODateTime, Id, Media } from "./primitives";
 
-/** v0.10.1: optional YouTube video (unlisted links work). `url` is the watch URL. */
+/** v0.10.5: optional YouTube video (unlisted links work). `url` is the watch URL. */
 export const ArticleVideo = z.object({ provider: z.literal("youtube"), id: z.string(), url: z.string() });
 export type ArticleVideo = z.infer<typeof ArticleVideo>;
 

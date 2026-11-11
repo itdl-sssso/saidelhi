@@ -4,7 +4,7 @@ import { parseYouTubeId, youTubeThumb } from "@/contract";
 import { USER } from "@/server/mock/fixtures";
 import { errCode, m6Setup } from "./support/m6";
 
-const ID = "dQw4w9WgXcQ";
+const ID = "sampleVid01";
 
 describe("parseYouTubeId", () => {
   it.each([

@@ -90,7 +90,7 @@ export const articles: ArticleRec[] = [
     districtId: null,
     eventId: null,
     status: "published",
-    videoId: "dQw4w9WgXcQ",
+    videoId: "sampleVid01",
   }),
   article(900007, "hidden-legacy-post", "N", "Hidden post", "Not public.", "<p>Hidden.</p>", "2026-10-16T06:30:00Z", {
     legacyId: 900007,
