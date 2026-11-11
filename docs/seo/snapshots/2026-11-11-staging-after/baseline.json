@@ -1,0 +1,2785 @@
+{
+ "date": "2026-11-11",
+ "pages": [
+  {
+   "url": "https://staging.saidelhi.org/",
+   "status": 200,
+   "ms": 293,
+   "bytes": 362728,
+   "title": "Love all, serve all · SSSSO Delhi NCR",
+   "description": "Bhajans, study circles, Bal Vikas and seva (service) across Delhi NCR. Open to everyone, free always.",
+   "h1": [
+    "Love all, serve all."
+   ],
+   "canonical": "https://staging.saidelhi.org",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 1,
+   "words": 1217,
+   "imgs": 29,
+   "imgs_no_alt": 22,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/calendar",
+   "status": 200,
+   "ms": 380,
+   "bytes": 570750,
+   "title": "Calendar · SSSSO Delhi NCR",
+   "description": "Bhajans, study circles and seva (service) across Delhi NCR. All free, all welcome.",
+   "h1": [
+    "Calendar"
+   ],
+   "canonical": "https://staging.saidelhi.org/calendar",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 1247,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/centres/map",
+   "status": 200,
+   "ms": 429,
+   "bytes": 667456,
+   "title": "Find a centre · SSSSO Delhi NCR",
+   "description": "Search by pincode or locality to find the nearest Sai centre in Delhi NCR.",
+   "h1": [
+    "Find a centre"
+   ],
+   "canonical": "https://staging.saidelhi.org/centres/map",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 963,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/hi",
+   "status": 200,
+   "ms": 180,
+   "bytes": 535133,
+   "title": "सबसे प्रेम करो, सबकी सेवा करो · SSSSO दिल्ली एनसीआर",
+   "description": "दिल्ली एनसीआर में भजन, स्टडी सर्कल, बाल विकास और सेवा। सबके लिए खुला, हमेशा निःशुल्क।",
+   "h1": [
+    "सबसे प्रेम करो, सबकी सेवा करो।"
+   ],
+   "canonical": "https://staging.saidelhi.org/hi",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 1,
+   "words": 1263,
+   "imgs": 29,
+   "imgs_no_alt": 22,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/en",
+   "status": 307,
+   "ms": 64,
+   "bytes": 1,
+   "location": "/"
+  },
+  {
+   "url": "https://staging.saidelhi.org/join",
+   "status": 200,
+   "ms": 975,
+   "bytes": 476190,
+   "title": "Get involved · SSSSO Delhi NCR",
+   "description": "These sevas (service) still need Sevadal members. Pick one, tell us you’re coming, and turn up. That’s all.",
+   "h1": [
+    "Offer your hands"
+   ],
+   "canonical": "https://staging.saidelhi.org/join",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 279,
+   "imgs": 4,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/about",
+   "status": 200,
+   "ms": 389,
+   "bytes": 273800,
+   "title": "About us · SSSSO Delhi NCR",
+   "description": "Sri Sathya Sai Seva Organisations, Delhi NCR: Sevadal members who meet to sing, study and serve. Free and open to people of every faith.",
+   "h1": [
+    "Neighbours who serve"
+   ],
+   "canonical": "https://staging.saidelhi.org/about",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 559,
+   "imgs": 6,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/programs/bhajan",
+   "status": 200,
+   "ms": 1096,
+   "bytes": 543019,
+   "title": "Bhajan · SSSSO Delhi NCR",
+   "description": "Bhajans (devotional singing) at samithis across Delhi NCR. Many hold them weekly, but days and timings vary by samithi, so check your centre. Anyone may sing…",
+   "h1": [
+    "Bhajan"
+   ],
+   "canonical": "https://staging.saidelhi.org/programs/bhajan",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 447,
+   "imgs": 6,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/news",
+   "status": 200,
+   "ms": 515,
+   "bytes": 501440,
+   "title": "News and stories · SSSSO Delhi NCR",
+   "description": "What our centres have been doing: camps, classes, festivals and quiet seva, from every district.",
+   "h1": [
+    "News and stories"
+   ],
+   "canonical": "https://staging.saidelhi.org/news",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 319,
+   "imgs": 14,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/gallery",
+   "status": 200,
+   "ms": 530,
+   "bytes": 516699,
+   "title": "Photo gallery · SSSSO Delhi NCR",
+   "description": "Moments from our bhajans, seva activities and celebrations across Delhi NCR.",
+   "h1": [
+    "Photo gallery"
+   ],
+   "canonical": "https://staging.saidelhi.org/gallery",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 342,
+   "imgs": 15,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/impact",
+   "status": 200,
+   "ms": 469,
+   "bytes": 609195,
+   "title": "Impact · SSSSO Delhi NCR",
+   "description": "What Sevadal members across the districts have done, counted from approved reports only.",
+   "h1": [
+    "Seva across Delhi NCR"
+   ],
+   "canonical": "https://staging.saidelhi.org/impact",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 876,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/programs",
+   "status": 200,
+   "ms": 414,
+   "bytes": 496149,
+   "title": "Programmes · SSSSO Delhi NCR",
+   "description": "Every seva (service), class and gathering we run, by wing. All free, all open.",
+   "h1": [
+    "Programmes"
+   ],
+   "canonical": "https://staging.saidelhi.org/programs",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 429,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/donate",
+   "status": 200,
+   "ms": 192,
+   "bytes": 257351,
+   "title": "Donate · SSSSO Delhi NCR",
+   "description": "Your donation helps the Trust care for people who need it. Contributions to the Trust are exempt under Section 80G of the Income Tax Act.",
+   "h1": [
+    "Donate by bank transfer"
+   ],
+   "canonical": "https://staging.saidelhi.org/donate",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 392,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/admin/login",
+   "status": 200,
+   "ms": 391,
+   "bytes": 360302,
+   "title": "Sign in · Coordinator portal",
+   "description": "Bhajans, study circles, Bal Vikas and seva (service) across Delhi NCR. Open to everyone, free always.",
+   "h1": [
+    "Sign in with your phone"
+   ],
+   "canonical": null,
+   "lang": "en",
+   "hreflang": 0,
+   "og": 7,
+   "jsonld": 0,
+   "words": 54,
+   "imgs": 1,
+   "imgs_no_alt": 1,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/values/sathya",
+   "status": 200,
+   "ms": 208,
+   "bytes": 282157,
+   "title": "Sathya (truth) · SSSSO Delhi NCR",
+   "description": "One of the five human values. Study circles meet weekly in every centre. One teaching is read, questioned and sat with until it is plain. No fee, no…",
+   "h1": [
+    "Sathya सत्य"
+   ],
+   "canonical": "https://staging.saidelhi.org/values/sathya",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 503,
+   "imgs": 10,
+   "imgs_no_alt": 8,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/values/dharma",
+   "status": 200,
+   "ms": 279,
+   "bytes": 272103,
+   "title": "Dharma (right conduct) · SSSSO Delhi NCR",
+   "description": "One of the five human values. Medical and eye camps bring a doctor’s care to people who could not otherwise reach it: check-ups, medicines and spectacles…",
+   "h1": [
+    "Dharma धर्म"
+   ],
+   "canonical": "https://staging.saidelhi.org/values/dharma",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 496,
+   "imgs": 10,
+   "imgs_no_alt": 8,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/values/shanti",
+   "status": 200,
+   "ms": 198,
+   "bytes": 281208,
+   "title": "Shanti (peace) · SSSSO Delhi NCR",
+   "description": "One of the five human values. Bhajans (devotional singing) at samithis across Delhi NCR, many of them weekly, and Nagar Sankirtan through the lanes at first…",
+   "h1": [
+    "Shanti शान्ति"
+   ],
+   "canonical": "https://staging.saidelhi.org/values/shanti",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 533,
+   "imgs": 10,
+   "imgs_no_alt": 8,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/values/prema",
+   "status": 200,
+   "ms": 278,
+   "bytes": 272160,
+   "title": "Prema (love) · SSSSO Delhi NCR",
+   "description": "One of the five human values. Narayan Seva serves cooked meals through the year. Beside it run blood donation camps, eye camps, winter blanket rounds and…",
+   "h1": [
+    "Prema प्रेम"
+   ],
+   "canonical": "https://staging.saidelhi.org/values/prema",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 471,
+   "imgs": 10,
+   "imgs_no_alt": 8,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/values/ahimsa",
+   "status": 200,
+   "ms": 192,
+   "bytes": 270652,
+   "title": "Ahimsa (non-violence) · SSSSO Delhi NCR",
+   "description": "One of the five human values. Sapling drives through the monsoon, park and lake clean-ups, and water-saving work in schools.",
+   "h1": [
+    "Ahimsa अहिंसा"
+   ],
+   "canonical": "https://staging.saidelhi.org/values/ahimsa",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 433,
+   "imgs": 10,
+   "imgs_no_alt": 8,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/events/gath_01JCSEEDGTH000000000000001_20261112",
+   "status": 404,
+   "ms": 545,
+   "bytes": 380865
+  },
+  {
+   "url": "https://staging.saidelhi.org/events/gath_01JCSEEDGTH000000000000009_20261112",
+   "status": 404,
+   "ms": 391,
+   "bytes": 380865
+  },
+  {
+   "url": "https://staging.saidelhi.org/events/gath_01JCSEEDGTH000000000000007_20261112",
+   "status": 404,
+   "ms": 339,
+   "bytes": 380865
+  },
+  {
+   "url": "https://staging.saidelhi.org/events/01JCSEEDEVT000000000000018",
+   "status": 200,
+   "ms": 391,
+   "bytes": 473590,
+   "title": "Eye screening camp · 29 Nov 2026 · SSSSO Delhi NCR",
+   "description": "Eye screening and reading spectacles with a partner hospital.",
+   "h1": [
+    "Eye screening camp"
+   ],
+   "canonical": "https://staging.saidelhi.org/events/01JCSEEDEVT000000000000018",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 8,
+   "jsonld": 1,
+   "words": 291,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/news/eye-camp-mayur-vihar-oct-2026",
+   "status": 200,
+   "ms": 439,
+   "bytes": 492217,
+   "title": "115 people screened at the Mayur Vihar eye camp · SSSSO Delhi NCR",
+   "description": "Sevadal members and ICARE Eye Hospital screened 115 people and gave 63 pairs of reading spectacles.",
+   "h1": [
+    "115 people screened at the Mayur Vihar eye camp"
+   ],
+   "canonical": "https://staging.saidelhi.org/news/eye-camp-mayur-vihar-oct-2026",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 1,
+   "words": 341,
+   "imgs": 6,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/news/sri-sathya-sai-unity-run-ride-5th-july-delhi-event",
+   "status": 200,
+   "ms": 399,
+   "bytes": 495345,
+   "title": "Sri Sathya Sai Unity Run & Ride-5th July Delhi Event · SSSSO Delhi NCR",
+   "description": "With Bhagawan’s divine blessings, the Sri Sathya Sai Unity Run & Ride is being organized in Delhi as part of the Centenary celebrations and nationwide…",
+   "h1": [
+    "Sri Sathya Sai Unity Run & Ride-5th July Delhi Event"
+   ],
+   "canonical": "https://staging.saidelhi.org/news/sri-sathya-sai-unity-run-ride-5th-july-delhi-event",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 3,
+   "jsonld": 1,
+   "words": 412,
+   "imgs": 8,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/news/invite-sri-sathya-sai-prema-pravahini",
+   "status": 200,
+   "ms": 313,
+   "bytes": 496527,
+   "title": "Invite-Sri Sathya Sai Prema Pravahini · SSSSO Delhi NCR",
+   "description": "Sri Sathya Sai Prema Pravahini at SSIC from 6th to 10th July 2025",
+   "h1": [
+    "Invite-Sri Sathya Sai Prema Pravahini"
+   ],
+   "canonical": "https://staging.saidelhi.org/news/invite-sri-sathya-sai-prema-pravahini",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 3,
+   "jsonld": 1,
+   "words": 569,
+   "imgs": 7,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/news/divine-rath-yatra",
+   "status": 200,
+   "ms": 322,
+   "bytes": 492875,
+   "title": "Divine Rath Yatra · SSSSO Delhi NCR",
+   "description": "Invoking the divine blessings of our beloved Bhagawan, we lovingly invite everyone to join us as we embark on the blissful journey of Centenary Celebrations…",
+   "h1": [
+    "Divine Rath Yatra"
+   ],
+   "canonical": "https://staging.saidelhi.org/news/divine-rath-yatra",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 3,
+   "jsonld": 1,
+   "words": 421,
+   "imgs": 8,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/news/sri-sathya-sai-unity-cup-t20-overs-match",
+   "status": 200,
+   "ms": 270,
+   "bytes": 500020,
+   "title": "Unity Cup - T20 Overs Match · SSSSO Delhi NCR",
+   "description": "To bring the Youth together under a single platform and motivate them to engage impactfully and spread the message of Love and Unity ● To inspire, motivate…",
+   "h1": [
+    "Unity Cup - T20 Overs Match"
+   ],
+   "canonical": "https://staging.saidelhi.org/news/sri-sathya-sai-unity-cup-t20-overs-match",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 3,
+   "jsonld": 1,
+   "words": 732,
+   "imgs": 7,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/news/100-hour-bhajans",
+   "status": 200,
+   "ms": 337,
+   "bytes": 494942,
+   "title": "100 Hour Bhajans · SSSSO Delhi NCR",
+   "description": "Bhagawan Sri Sathya Sai Baba's Centenary Celebrations in Delhi-NCR has been launched with the 100 Hours Bhajans initiative, by Sri Sathya Sai Seva…",
+   "h1": [
+    "100 Hour Bhajans"
+   ],
+   "canonical": "https://staging.saidelhi.org/news/100-hour-bhajans",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 3,
+   "jsonld": 1,
+   "words": 552,
+   "imgs": 8,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/news/sri-sathya-sai-prem-tharu",
+   "status": 200,
+   "ms": 339,
+   "bytes": 517019,
+   "title": "Sri Sathya Sai Prem Tharu · SSSSO Delhi NCR",
+   "description": "As we are poised to celebrate Bhagawan’s Centenary Birthday celebrations in the coming year, Sri Sathya Sai Organisations, India has taken a solemn pledge to…",
+   "h1": [
+    "Sri Sathya Sai Prem Tharu"
+   ],
+   "canonical": "https://staging.saidelhi.org/news/sri-sathya-sai-prem-tharu",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 3,
+   "jsonld": 1,
+   "words": 1085,
+   "imgs": 13,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/news?c=centenary",
+   "status": 200,
+   "ms": 262,
+   "bytes": 491255,
+   "title": "News and stories · SSSSO Delhi NCR",
+   "description": "What our centres have been doing: camps, classes, festivals and quiet seva, from every district.",
+   "h1": [
+    "News and stories"
+   ],
+   "canonical": "https://staging.saidelhi.org/news",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 292,
+   "imgs": 15,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/centres/laxmi-nagar",
+   "status": 200,
+   "ms": 378,
+   "bytes": 478306,
+   "title": "Sai Centre Laxmi Nagar · SSSSO Delhi NCR",
+   "description": "First floor, Block C, Laxmi Nagar, Delhi. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Sai Centre Laxmi Nagar"
+   ],
+   "canonical": "https://staging.saidelhi.org/centres/laxmi-nagar",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 285,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/centres/mayur-vihar",
+   "status": 200,
+   "ms": 281,
+   "bytes": 491625,
+   "title": "Sai Centre Mayur Vihar · SSSSO Delhi NCR",
+   "description": "Community hall, Pocket 2, Mayur Vihar Phase-1, Delhi. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Sai Centre Mayur Vihar"
+   ],
+   "canonical": "https://staging.saidelhi.org/centres/mayur-vihar",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 358,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/centres/rohini",
+   "status": 200,
+   "ms": 299,
+   "bytes": 478117,
+   "title": "Sai Centre Rohini · SSSSO Delhi NCR",
+   "description": "Sector 9, Rohini, Delhi. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Sai Centre Rohini"
+   ],
+   "canonical": "https://staging.saidelhi.org/centres/rohini",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 282,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/programs?wing=service",
+   "status": 200,
+   "ms": 267,
+   "bytes": 491359,
+   "title": "Programmes · SSSSO Delhi NCR",
+   "description": "Every seva (service), class and gathering we run, by wing. All free, all open.",
+   "h1": [
+    "Programmes"
+   ],
+   "canonical": "https://staging.saidelhi.org/programs",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 628,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/programs?wing=educational",
+   "status": 200,
+   "ms": 273,
+   "bytes": 456527,
+   "title": "Programmes · SSSSO Delhi NCR",
+   "description": "Every seva (service), class and gathering we run, by wing. All free, all open.",
+   "h1": [
+    "Programmes"
+   ],
+   "canonical": "https://staging.saidelhi.org/programs",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 342,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/programs?wing=spiritual",
+   "status": 200,
+   "ms": 261,
+   "bytes": 462640,
+   "title": "Programmes · SSSSO Delhi NCR",
+   "description": "Every seva (service), class and gathering we run, by wing. All free, all open.",
+   "h1": [
+    "Programmes"
+   ],
+   "canonical": "https://staging.saidelhi.org/programs",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 487,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/privacy",
+   "status": 200,
+   "ms": 207,
+   "bytes": 257253,
+   "title": "Privacy and data requests · SSSSO Delhi NCR",
+   "description": "We collect as little as we can, keep it only as long as we need it, and never sell it or share it for anyone's marketing.",
+   "h1": [
+    "Your privacy"
+   ],
+   "canonical": "https://staging.saidelhi.org/privacy",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 615,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/hi/calendar",
+   "status": 200,
+   "ms": 454,
+   "bytes": 885473,
+   "title": "कैलेंडर · SSSSO दिल्ली एनसीआर",
+   "description": "दिल्ली एनसीआर में भजन, अध्ययन मंडल और सेवा। सब निःशुल्क, सबका स्वागत।",
+   "h1": [
+    "कैलेंडर"
+   ],
+   "canonical": "https://staging.saidelhi.org/hi/calendar",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 1228,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/en/calendar",
+   "status": 307,
+   "ms": 58,
+   "bytes": 9,
+   "location": "/calendar"
+  },
+  {
+   "url": "https://staging.saidelhi.org/calendar?view=month",
+   "status": 200,
+   "ms": 252,
+   "bytes": 520931,
+   "title": "Calendar · SSSSO Delhi NCR",
+   "description": "Bhajans, study circles and seva (service) across Delhi NCR. All free, all welcome.",
+   "h1": [
+    "Calendar"
+   ],
+   "canonical": "https://staging.saidelhi.org/calendar",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 639,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/centres/karol-bagh",
+   "status": 200,
+   "ms": 340,
+   "bytes": 487552,
+   "title": "Sai Centre Karol Bagh · SSSSO Delhi NCR",
+   "description": "Main hall, Karol Bagh, Delhi. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Sai Centre Karol Bagh"
+   ],
+   "canonical": "https://staging.saidelhi.org/centres/karol-bagh",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 345,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/centres/noida-sector-62",
+   "status": 200,
+   "ms": 266,
+   "bytes": 475769,
+   "title": "Sai Centre Noida · SSSSO Delhi NCR",
+   "description": "Sector 62, Noida, Uttar Pradesh. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Sai Centre Noida"
+   ],
+   "canonical": "https://staging.saidelhi.org/centres/noida-sector-62",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 280,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/centres/gurugram-sector-31",
+   "status": 200,
+   "ms": 275,
+   "bytes": 483694,
+   "title": "Sai Centre Gurugram · SSSSO Delhi NCR",
+   "description": "Sector 31, Gurugram, Haryana. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Sai Centre Gurugram"
+   ],
+   "canonical": "https://staging.saidelhi.org/centres/gurugram-sector-31",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 281,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/centres/dwarka",
+   "status": 200,
+   "ms": 364,
+   "bytes": 480226,
+   "title": "Sai Centre Dwarka · SSSSO Delhi NCR",
+   "description": "Sector 10, Dwarka, New Delhi. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Sai Centre Dwarka"
+   ],
+   "canonical": "https://staging.saidelhi.org/centres/dwarka",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 290,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/centres/preet-vihar",
+   "status": 200,
+   "ms": 277,
+   "bytes": 488888,
+   "title": "Sai Centre Preet Vihar · SSSSO Delhi NCR",
+   "description": "Library room, Preet Vihar, Delhi. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Sai Centre Preet Vihar"
+   ],
+   "canonical": "https://staging.saidelhi.org/centres/preet-vihar",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 355,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/centres/saket",
+   "status": 200,
+   "ms": 355,
+   "bytes": 486230,
+   "title": "Sai Centre Saket · SSSSO Delhi NCR",
+   "description": "Block J, Saket, New Delhi. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Sai Centre Saket"
+   ],
+   "canonical": "https://staging.saidelhi.org/centres/saket",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 341,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/centres/lodhi-road",
+   "status": 200,
+   "ms": 289,
+   "bytes": 476066,
+   "title": "Sai Centre Lodhi Road · SSSSO Delhi NCR",
+   "description": "Lodhi Road, New Delhi. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Sai Centre Lodhi Road"
+   ],
+   "canonical": "https://staging.saidelhi.org/centres/lodhi-road",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 278,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/calendar?page=2",
+   "status": 200,
+   "ms": 296,
+   "bytes": 489299,
+   "title": "Calendar · SSSSO Delhi NCR",
+   "description": "Bhajans, study circles and seva (service) across Delhi NCR. All free, all welcome.",
+   "h1": [
+    "Calendar"
+   ],
+   "canonical": "https://staging.saidelhi.org/calendar",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 666,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/hi/centres/map",
+   "status": 200,
+   "ms": 416,
+   "bytes": 982734,
+   "title": "केंद्र खोजें · SSSSO दिल्ली एनसीआर",
+   "description": "पिनकोड या इलाक़े से खोजें और दिल्ली एनसीआर में अपने सबसे पास का साई केंद्र पाएँ।",
+   "h1": [
+    "केंद्र खोजें"
+   ],
+   "canonical": "https://staging.saidelhi.org/hi/centres/map",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 918,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/en/centres/map",
+   "status": 307,
+   "ms": 57,
+   "bytes": 12,
+   "location": "/centres/map"
+  },
+  {
+   "url": "https://staging.saidelhi.org/centres/central-6",
+   "status": 200,
+   "ms": 268,
+   "bytes": 470636,
+   "title": "Central 6 Samithi · SSSSO Delhi NCR",
+   "description": "R-815, Block R, Rajender Nagar Part 1, New Rajinder Nagar, Near Parko dry cleaner, New Delhi, 110060. Bhajans, study circles and Bal Vikas every week, and…",
+   "h1": [
+    "Central 6 Samithi"
+   ],
+   "canonical": "https://staging.saidelhi.org/centres/central-6",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 250,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/centres/east-1",
+   "status": 200,
+   "ms": 270,
+   "bytes": 470396,
+   "title": "East 1 Samithi · SSSSO Delhi NCR",
+   "description": "D-64, Dilshad Colony New Simapuri, Dilshad Garden, Delhi, 110095. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you…",
+   "h1": [
+    "East 1 Samithi"
+   ],
+   "canonical": "https://staging.saidelhi.org/centres/east-1",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 242,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/centres/east-2",
+   "status": 200,
+   "ms": 215,
+   "bytes": 470456,
+   "title": "East 2 Samithi · SSSSO Delhi NCR",
+   "description": "DH 603, Abhimanyu Appartment, Vasundhara Enclave, Shaheed Raj Guru Collage, Delhi, 110096. Bhajans, study circles and Bal Vikas every week, and seva in the…",
+   "h1": [
+    "East 2 Samithi"
+   ],
+   "canonical": "https://staging.saidelhi.org/centres/east-2",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 245,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/centres/faridabad-2",
+   "status": 200,
+   "ms": 260,
+   "bytes": 470680,
+   "title": "Faridabad 2 Samithi · SSSSO Delhi NCR",
+   "description": "B-33, Manglam Regency, Sector 21D, Near g b n school, Faridabad, 121012. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come…",
+   "h1": [
+    "Faridabad 2 Samithi"
+   ],
+   "canonical": "https://staging.saidelhi.org/centres/faridabad-2",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 245,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/centres/faridabad-3",
+   "status": 200,
+   "ms": 212,
+   "bytes": 470629,
+   "title": "Faridabad 3 Samithi · SSSSO Delhi NCR",
+   "description": "457, Block A, ADB PWD Colony, Sector 16 A, Faridabad, 121002. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Faridabad 3 Samithi"
+   ],
+   "canonical": "https://staging.saidelhi.org/centres/faridabad-3",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 244,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/centres/faridabad-4",
+   "status": 200,
+   "ms": 262,
+   "bytes": 470389,
+   "title": "Faridabad 4 Samithi · SSSSO Delhi NCR",
+   "description": "530 sec 37, 1st floor, Faridabad, 121003. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Faridabad 4 Samithi"
+   ],
+   "canonical": "https://staging.saidelhi.org/centres/faridabad-4",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 240,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/centres/gautam-buddh-nagar-1",
+   "status": 200,
+   "ms": 225,
+   "bytes": 471076,
+   "title": "Gautam Buddh Nagar 1 Samithi · SSSSO Delhi NCR",
+   "description": "Flat No.16-D, E-3 Shatabdi Vihar, Sector-52, Noida, Near SBI Bank, Noida, 201303. Bhajans, study circles and Bal Vikas every week, and seva in the…",
+   "h1": [
+    "Gautam Buddh Nagar 1 Samithi"
+   ],
+   "canonical": "https://staging.saidelhi.org/centres/gautam-buddh-nagar-1",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 255,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/centres/gautam-buddh-nagar-3",
+   "status": 200,
+   "ms": 218,
+   "bytes": 470953,
+   "title": "Gautam Buddh Nagar 3 Samithi · SSSSO Delhi NCR",
+   "description": "Stellar mi legacy, Zeta 1, Greater Noida, 201310. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Gautam Buddh Nagar 3 Samithi"
+   ],
+   "canonical": "https://staging.saidelhi.org/centres/gautam-buddh-nagar-3",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 251,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/centres/ghaziabad-1",
+   "status": 200,
+   "ms": 327,
+   "bytes": 470647,
+   "title": "Ghaziabad 1 Samithi · SSSSO Delhi NCR",
+   "description": "C-102 A Block C, Lajpat Nagar, Sahibabad, Shani Mandir, Ghaziabad, 201005. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood…",
+   "h1": [
+    "Ghaziabad 1 Samithi"
+   ],
+   "canonical": "https://staging.saidelhi.org/centres/ghaziabad-1",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 244,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/centres/ghaziabad-2",
+   "status": 200,
+   "ms": 290,
+   "bytes": 470728,
+   "title": "Ghaziabad 2 Samithi · SSSSO Delhi NCR",
+   "description": "8/416, Swastik, SF-1, Sector-3, Rajendra Nagar, Sahibabad, Sector-3 Market, Ghaziabad, 201005. Bhajans, study circles and Bal Vikas every week, and seva in…",
+   "h1": [
+    "Ghaziabad 2 Samithi"
+   ],
+   "canonical": "https://staging.saidelhi.org/centres/ghaziabad-2",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 244,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/centres/ghaziabad-3",
+   "status": 200,
+   "ms": 220,
+   "bytes": 470608,
+   "title": "Ghaziabad 3 Samithi · SSSSO Delhi NCR",
+   "description": "P-45, Block B, Duplex Flats, Block P, Sector 23, Sanjay Nagar, Ghaziabad, 201002. Bhajans, study circles and Bal Vikas every week, and seva in the…",
+   "h1": [
+    "Ghaziabad 3 Samithi"
+   ],
+   "canonical": "https://staging.saidelhi.org/centres/ghaziabad-3",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 246,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/centres/gurugram-3",
+   "status": 200,
+   "ms": 208,
+   "bytes": 470409,
+   "title": "Gurugram 3 Samithi · SSSSO Delhi NCR",
+   "description": "7603, 2nd Floor, DLF Phase 4, Gurugram, 122009. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Gurugram 3 Samithi"
+   ],
+   "canonical": "https://staging.saidelhi.org/centres/gurugram-3",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 241,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/centres/north-1",
+   "status": 200,
+   "ms": 283,
+   "bytes": 470373,
+   "title": "North 1 Samithi · SSSSO Delhi NCR",
+   "description": "G-3/65, Model Town 3, Phase 3, Model Town, Delhi, 110009. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "North 1 Samithi"
+   ],
+   "canonical": "https://staging.saidelhi.org/centres/north-1",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 243,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/centres/north-4",
+   "status": 200,
+   "ms": 220,
+   "bytes": 470286,
+   "title": "North 4 Samithi · SSSSO Delhi NCR",
+   "description": "A3-37, Pocket 3, Sector 3A, Rohini, Delhi, 110085. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "North 4 Samithi"
+   ],
+   "canonical": "https://staging.saidelhi.org/centres/north-4",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 241,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/centres/faridabad-sector-15",
+   "status": 200,
+   "ms": 230,
+   "bytes": 480635,
+   "title": "Sai Centre Faridabad · SSSSO Delhi NCR",
+   "description": "Sector 15, Faridabad, Haryana. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Sai Centre Faridabad"
+   ],
+   "canonical": "https://staging.saidelhi.org/centres/faridabad-sector-15",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 305,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/centres/south-east-1",
+   "status": 200,
+   "ms": 219,
+   "bytes": 470405,
+   "title": "South East 1 Samithi · SSSSO Delhi NCR",
+   "description": "L-497 Sarita Vihar, New Delhi, 110076. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "South East 1 Samithi"
+   ],
+   "canonical": "https://staging.saidelhi.org/centres/south-east-1",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 244,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/centres/south-east-3",
+   "status": 200,
+   "ms": 261,
+   "bytes": 470405,
+   "title": "South East 3 Samithi · SSSSO Delhi NCR",
+   "description": "182, Kailash Hills, New Delhi, 110065. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "South East 3 Samithi"
+   ],
+   "canonical": "https://staging.saidelhi.org/centres/south-east-3",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 244,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/centres/south-west-2",
+   "status": 200,
+   "ms": 207,
+   "bytes": 470708,
+   "title": "South West 2 Samithi · SSSSO Delhi NCR",
+   "description": "223, P and T Colony, Sector 6, Rama Krishna Puram, P and T Colony, New Delhi, 110022. Bhajans, study circles and Bal Vikas every week, and seva in the…",
+   "h1": [
+    "South West 2 Samithi"
+   ],
+   "canonical": "https://staging.saidelhi.org/centres/south-west-2",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 255,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/centres/west-4",
+   "status": 200,
+   "ms": 272,
+   "bytes": 470369,
+   "title": "West 4 Samithi · SSSSO Delhi NCR",
+   "description": "165, Solanki Market, Block D, Madhu Vihar, New Delhi, 110075. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "West 4 Samithi"
+   ],
+   "canonical": "https://staging.saidelhi.org/centres/west-4",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 243,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/centres/west-5",
+   "status": 200,
+   "ms": 216,
+   "bytes": 470336,
+   "title": "West 5 Samithi · SSSSO Delhi NCR",
+   "description": "B-59, Arjun Park, Main Najafgarh Road, Near Gufa Mata Mandir, Najafgarh, 110043. Bhajans, study circles and Bal Vikas every week, and seva in the…",
+   "h1": [
+    "West 5 Samithi"
+   ],
+   "canonical": "https://staging.saidelhi.org/centres/west-5",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 245,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/hi/join",
+   "status": 200,
+   "ms": 693,
+   "bytes": 787560,
+   "title": "जुड़ें · SSSSO दिल्ली एनसीआर",
+   "description": "इन सेवाओं में अभी सेवादल चाहिए। एक चुनें, बताएँ कि आप आ रहे हैं, और पहुँच जाएँ। बस इतना ही।",
+   "h1": [
+    "अपना हाथ बढ़ाइए"
+   ],
+   "canonical": "https://staging.saidelhi.org/hi/join",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 283,
+   "imgs": 4,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/hi/about",
+   "status": 200,
+   "ms": 286,
+   "bytes": 436874,
+   "title": "हमारे बारे में · SSSSO दिल्ली एनसीआर",
+   "description": "दिल्ली एनसीआर में श्री सत्य साई सेवा संगठन: सेवादल जो साथ मिलकर भजन, अध्ययन और सेवा करते हैं। निःशुल्क और हर धर्म के लोगों के लिए खुला।",
+   "h1": [
+    "सेवा करने वाले पड़ोसी"
+   ],
+   "canonical": "https://staging.saidelhi.org/hi/about",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 587,
+   "imgs": 6,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/hi/programs/bhajan",
+   "status": 200,
+   "ms": 257,
+   "bytes": 861707,
+   "title": "भजन · SSSSO दिल्ली एनसीआर",
+   "description": "दिल्ली एनसीआर की समितियों में भजन (भक्ति गायन)। कई समितियाँ इन्हें हर हफ़्ते करती हैं, पर दिन और समय हर समिति में अलग होता है, इसलिए अपने केंद्र से पूछ लें।…",
+   "h1": [
+    "भजन"
+   ],
+   "canonical": "https://staging.saidelhi.org/hi/programs/bhajan",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 478,
+   "imgs": 6,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/hi/news",
+   "status": 200,
+   "ms": 261,
+   "bytes": 828335,
+   "title": "समाचार और कथाएँ · SSSSO दिल्ली एनसीआर",
+   "description": "हमारे केंद्र क्या कर रहे हैं: कैंप, कक्षाएँ, उत्सव और चुपचाप होने वाली सेवा, हर ज़िले से।",
+   "h1": [
+    "समाचार और कथाएँ"
+   ],
+   "canonical": "https://staging.saidelhi.org/hi/news",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 362,
+   "imgs": 14,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/hi/gallery",
+   "status": 200,
+   "ms": 262,
+   "bytes": 827846,
+   "title": "फ़ोटो गैलरी · SSSSO दिल्ली एनसीआर",
+   "description": "दिल्ली एनसीआर में हमारे भजन, सेवा कार्यों और उत्सवों के पल।",
+   "h1": [
+    "फ़ोटो गैलरी"
+   ],
+   "canonical": "https://staging.saidelhi.org/hi/gallery",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 360,
+   "imgs": 15,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/hi/impact",
+   "status": 200,
+   "ms": 267,
+   "bytes": 931970,
+   "title": "प्रभाव · SSSSO दिल्ली एनसीआर",
+   "description": "ज़िलों के सेवादलों ने क्या किया, केवल स्वीकृत रिपोर्टों से गिना गया।",
+   "h1": [
+    "दिल्ली एनसीआर में सेवा"
+   ],
+   "canonical": "https://staging.saidelhi.org/hi/impact",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 969,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/hi/programs",
+   "status": 200,
+   "ms": 292,
+   "bytes": 809606,
+   "title": "कार्यक्रम · SSSSO दिल्ली एनसीआर",
+   "description": "हमारी हर सेवा, कक्षा और सत्संग, विंग के अनुसार। सब निःशुल्क, सबके लिए।",
+   "h1": [
+    "कार्यक्रम"
+   ],
+   "canonical": "https://staging.saidelhi.org/hi/programs",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 436,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/hi/donate",
+   "status": 200,
+   "ms": 160,
+   "bytes": 421630,
+   "title": "दान करें · SSSSO दिल्ली एनसीआर",
+   "description": "आपका दान ट्रस्ट को ज़रूरतमंद लोगों की देखभाल में मदद करता है। ट्रस्ट को दिए गए योगदान पर आयकर अधिनियम की धारा 80G के अंतर्गत छूट मिलती है।",
+   "h1": [
+    "बैंक ट्रांसफ़र से दान करें"
+   ],
+   "canonical": "https://staging.saidelhi.org/hi/donate",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 413,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/hi/admin/login",
+   "status": 200,
+   "ms": 216,
+   "bytes": 663414,
+   "title": "साइन इन · समन्वयक पोर्टल",
+   "description": "दिल्ली एनसीआर में भजन, स्टडी सर्कल, बाल विकास और सेवा। सबके लिए खुला, हमेशा निःशुल्क।",
+   "h1": [
+    "अपने फ़ोन से साइन इन करें"
+   ],
+   "canonical": null,
+   "lang": "hi",
+   "hreflang": 0,
+   "og": 7,
+   "jsonld": 0,
+   "words": 64,
+   "imgs": 1,
+   "imgs_no_alt": 1,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/hi/values/sathya",
+   "status": 200,
+   "ms": 191,
+   "bytes": 443312,
+   "title": "सत्य (सच्चाई) · SSSSO दिल्ली एनसीआर",
+   "description": "पाँच मानवीय मूल्यों में से एक. हर केंद्र में हर हफ़्ते अध्ययन मंडल होता है। एक शिक्षा पढ़ी जाती है, उस पर प्रश्न होते हैं और तब तक मनन होता है जब तक वह स्पष्ट…",
+   "h1": [
+    "सत्य"
+   ],
+   "canonical": "https://staging.saidelhi.org/hi/values/sathya",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 534,
+   "imgs": 10,
+   "imgs_no_alt": 8,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/hi/values/dharma",
+   "status": 200,
+   "ms": 294,
+   "bytes": 433423,
+   "title": "धर्म (सदाचार) · SSSSO दिल्ली एनसीआर",
+   "description": "पाँच मानवीय मूल्यों में से एक. चिकित्सा और नेत्र शिविर उन लोगों तक डॉक्टर की देखभाल पहुँचाते हैं जो अन्यथा उसे नहीं पा सकते: जाँच, दवाइयाँ और चश्मे, बिल्कुल…",
+   "h1": [
+    "धर्म"
+   ],
+   "canonical": "https://staging.saidelhi.org/hi/values/dharma",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 504,
+   "imgs": 10,
+   "imgs_no_alt": 8,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/hi/values/shanti",
+   "status": 200,
+   "ms": 196,
+   "bytes": 442128,
+   "title": "शांति (शांति) · SSSSO दिल्ली एनसीआर",
+   "description": "पाँच मानवीय मूल्यों में से एक. दिल्ली एनसीआर की समितियों में भजन, कई जगह हर हफ़्ते, और भोर में गलियों में नगर संकीर्तन। कोई भी गा सकता है।",
+   "h1": [
+    "शांति"
+   ],
+   "canonical": "https://staging.saidelhi.org/hi/values/shanti",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 566,
+   "imgs": 10,
+   "imgs_no_alt": 8,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/hi/values/prema",
+   "status": 200,
+   "ms": 245,
+   "bytes": 433663,
+   "title": "प्रेम (प्रेम) · SSSSO दिल्ली एनसीआर",
+   "description": "पाँच मानवीय मूल्यों में से एक. नारायण सेवा पूरे साल पका भोजन परोसती है। साथ में रक्तदान शिविर, नेत्र शिविर, सर्दियों में कंबल वितरण और अस्पताल भेंट होती हैं।",
+   "h1": [
+    "प्रेम"
+   ],
+   "canonical": "https://staging.saidelhi.org/hi/values/prema",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 510,
+   "imgs": 10,
+   "imgs_no_alt": 8,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/hi/values/ahimsa",
+   "status": 200,
+   "ms": 198,
+   "bytes": 430991,
+   "title": "अहिंसा (किसी को हानि न पहुँचाना) · SSSSO दिल्ली एनसीआर",
+   "description": "पाँच मानवीय मूल्यों में से एक. बरसात में पौधारोपण, पार्क और झील की सफ़ाई, और स्कूलों में पानी बचाने का काम।",
+   "h1": [
+    "अहिंसा"
+   ],
+   "canonical": "https://staging.saidelhi.org/hi/values/ahimsa",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 466,
+   "imgs": 10,
+   "imgs_no_alt": 8,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/hi/events/gath_01JCSEEDGTH000000000000001_20261112",
+   "status": 404,
+   "ms": 344,
+   "bytes": 686622
+  },
+  {
+   "url": "https://staging.saidelhi.org/hi/events/gath_01JCSEEDGTH000000000000009_20261112",
+   "status": 404,
+   "ms": 244,
+   "bytes": 686622
+  },
+  {
+   "url": "https://staging.saidelhi.org/hi/events/gath_01JCSEEDGTH000000000000007_20261112",
+   "status": 404,
+   "ms": 322,
+   "bytes": 686622
+  },
+  {
+   "url": "https://staging.saidelhi.org/hi/events/01JCSEEDEVT000000000000018",
+   "status": 200,
+   "ms": 248,
+   "bytes": 783515,
+   "title": "नेत्र जाँच शिविर · 29 नवंबर 2026 · SSSSO दिल्ली एनसीआर",
+   "description": "साझेदार अस्पताल के साथ नेत्र जाँच और पढ़ने के चश्मे।",
+   "h1": [
+    "नेत्र जाँच शिविर"
+   ],
+   "canonical": "https://staging.saidelhi.org/hi/events/01JCSEEDEVT000000000000018",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 8,
+   "jsonld": 1,
+   "words": 291,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/hi/news/eye-camp-mayur-vihar-oct-2026",
+   "status": 200,
+   "ms": 288,
+   "bytes": 808469,
+   "title": "मयूर विहार नेत्र शिविर में 115 लोगों की जाँच · SSSSO दिल्ली एनसीआर",
+   "description": "सेवादलों और ICARE नेत्र अस्पताल ने 115 लोगों की जाँच की और 63 पढ़ने के चश्मे दिए।",
+   "h1": [
+    "मयूर विहार नेत्र शिविर में 115 लोगों की जाँच"
+   ],
+   "canonical": "https://staging.saidelhi.org/hi/news/eye-camp-mayur-vihar-oct-2026",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 1,
+   "words": 356,
+   "imgs": 6,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/hi/news/sri-sathya-sai-unity-run-ride-5th-july-delhi-event",
+   "status": 200,
+   "ms": 221,
+   "bytes": 809054,
+   "title": "Sri Sathya Sai Unity Run & Ride-5th July Delhi Event · SSSSO दिल्ली एनसीआर",
+   "description": "With Bhagawan’s divine blessings, the Sri Sathya Sai Unity Run & Ride is being organized in Delhi as part of the Centenary celebrations and nationwide…",
+   "h1": [
+    "Sri Sathya Sai Unity Run & Ride-5th July Delhi Event"
+   ],
+   "canonical": "https://staging.saidelhi.org/hi/news/sri-sathya-sai-unity-run-ride-5th-july-delhi-event",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 3,
+   "jsonld": 1,
+   "words": 427,
+   "imgs": 8,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/hi/news/invite-sri-sathya-sai-prema-pravahini",
+   "status": 200,
+   "ms": 311,
+   "bytes": 810017,
+   "title": "Invite-Sri Sathya Sai Prema Pravahini · SSSSO दिल्ली एनसीआर",
+   "description": "Sri Sathya Sai Prema Pravahini at SSIC from 6th to 10th July 2025",
+   "h1": [
+    "Invite-Sri Sathya Sai Prema Pravahini"
+   ],
+   "canonical": "https://staging.saidelhi.org/hi/news/invite-sri-sathya-sai-prema-pravahini",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 3,
+   "jsonld": 1,
+   "words": 584,
+   "imgs": 7,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/hi/news/divine-rath-yatra",
+   "status": 200,
+   "ms": 221,
+   "bytes": 806495,
+   "title": "Divine Rath Yatra · SSSSO दिल्ली एनसीआर",
+   "description": "Invoking the divine blessings of our beloved Bhagawan, we lovingly invite everyone to join us as we embark on the blissful journey of Centenary Celebrations…",
+   "h1": [
+    "Divine Rath Yatra"
+   ],
+   "canonical": "https://staging.saidelhi.org/hi/news/divine-rath-yatra",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 3,
+   "jsonld": 1,
+   "words": 436,
+   "imgs": 8,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/hi/news/sri-sathya-sai-unity-cup-t20-overs-match",
+   "status": 200,
+   "ms": 304,
+   "bytes": 813646,
+   "title": "Unity Cup - T20 Overs Match · SSSSO दिल्ली एनसीआर",
+   "description": "To bring the Youth together under a single platform and motivate them to engage impactfully and spread the message of Love and Unity ● To inspire, motivate…",
+   "h1": [
+    "Unity Cup - T20 Overs Match"
+   ],
+   "canonical": "https://staging.saidelhi.org/hi/news/sri-sathya-sai-unity-cup-t20-overs-match",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 3,
+   "jsonld": 1,
+   "words": 747,
+   "imgs": 7,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/hi/news/100-hour-bhajans",
+   "status": 200,
+   "ms": 230,
+   "bytes": 808596,
+   "title": "100 Hour Bhajans · SSSSO दिल्ली एनसीआर",
+   "description": "Bhagawan Sri Sathya Sai Baba's Centenary Celebrations in Delhi-NCR has been launched with the 100 Hours Bhajans initiative, by Sri Sathya Sai Seva…",
+   "h1": [
+    "100 Hour Bhajans"
+   ],
+   "canonical": "https://staging.saidelhi.org/hi/news/100-hour-bhajans",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 3,
+   "jsonld": 1,
+   "words": 567,
+   "imgs": 8,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/hi/news/sri-sathya-sai-prem-tharu",
+   "status": 200,
+   "ms": 288,
+   "bytes": 830652,
+   "title": "Sri Sathya Sai Prem Tharu · SSSSO दिल्ली एनसीआर",
+   "description": "As we are poised to celebrate Bhagawan’s Centenary Birthday celebrations in the coming year, Sri Sathya Sai Organisations, India has taken a solemn pledge to…",
+   "h1": [
+    "Sri Sathya Sai Prem Tharu"
+   ],
+   "canonical": "https://staging.saidelhi.org/hi/news/sri-sathya-sai-prem-tharu",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 3,
+   "jsonld": 1,
+   "words": 1100,
+   "imgs": 13,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/hi/news?c=centenary",
+   "status": 200,
+   "ms": 215,
+   "bytes": 817549,
+   "title": "समाचार और कथाएँ · SSSSO दिल्ली एनसीआर",
+   "description": "हमारे केंद्र क्या कर रहे हैं: कैंप, कक्षाएँ, उत्सव और चुपचाप होने वाली सेवा, हर ज़िले से।",
+   "h1": [
+    "समाचार और कथाएँ"
+   ],
+   "canonical": "https://staging.saidelhi.org/hi/news",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 339,
+   "imgs": 15,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/hi/centres/laxmi-nagar",
+   "status": 200,
+   "ms": 326,
+   "bytes": 789394,
+   "title": "साई केंद्र लक्ष्मी नगर · SSSSO दिल्ली एनसीआर",
+   "description": "पहली मंज़िल, ब्लॉक सी, लक्ष्मी नगर, दिल्ली. हर हफ़्ते भजन, अध्ययन मंडल और बाल विकास, और आस-पास सेवा। जैसे हैं वैसे आइए।",
+   "h1": [
+    "साई केंद्र लक्ष्मी नगर"
+   ],
+   "canonical": "https://staging.saidelhi.org/hi/centres/laxmi-nagar",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 287,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/hi/centres/mayur-vihar",
+   "status": 200,
+   "ms": 229,
+   "bytes": 804437,
+   "title": "साई केंद्र मयूर विहार · SSSSO दिल्ली एनसीआर",
+   "description": "सामुदायिक भवन, पॉकेट 2, मयूर विहार फ़ेज़-1, दिल्ली. हर हफ़्ते भजन, अध्ययन मंडल और बाल विकास, और आस-पास सेवा। जैसे हैं वैसे आइए।",
+   "h1": [
+    "साई केंद्र मयूर विहार"
+   ],
+   "canonical": "https://staging.saidelhi.org/hi/centres/mayur-vihar",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 376,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/hi/centres/rohini",
+   "status": 200,
+   "ms": 301,
+   "bytes": 788830,
+   "title": "साई केंद्र रोहिणी · SSSSO दिल्ली एनसीआर",
+   "description": "सेक्टर 9, रोहिणी, दिल्ली. हर हफ़्ते भजन, अध्ययन मंडल और बाल विकास, और आस-पास सेवा। जैसे हैं वैसे आइए।",
+   "h1": [
+    "साई केंद्र रोहिणी"
+   ],
+   "canonical": "https://staging.saidelhi.org/hi/centres/rohini",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 285,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/hi/programs?wing=service",
+   "status": 200,
+   "ms": 218,
+   "bytes": 808326,
+   "title": "कार्यक्रम · SSSSO दिल्ली एनसीआर",
+   "description": "हमारी हर सेवा, कक्षा और सत्संग, विंग के अनुसार। सब निःशुल्क, सबके लिए।",
+   "h1": [
+    "कार्यक्रम"
+   ],
+   "canonical": "https://staging.saidelhi.org/hi/programs",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 635,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/hi/programs?wing=educational",
+   "status": 200,
+   "ms": 270,
+   "bytes": 768134,
+   "title": "कार्यक्रम · SSSSO दिल्ली एनसीआर",
+   "description": "हमारी हर सेवा, कक्षा और सत्संग, विंग के अनुसार। सब निःशुल्क, सबके लिए।",
+   "h1": [
+    "कार्यक्रम"
+   ],
+   "canonical": "https://staging.saidelhi.org/hi/programs",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 341,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/hi/programs?wing=spiritual",
+   "status": 200,
+   "ms": 212,
+   "bytes": 778588,
+   "title": "कार्यक्रम · SSSSO दिल्ली एनसीआर",
+   "description": "हमारी हर सेवा, कक्षा और सत्संग, विंग के अनुसार। सब निःशुल्क, सबके लिए।",
+   "h1": [
+    "कार्यक्रम"
+   ],
+   "canonical": "https://staging.saidelhi.org/hi/programs",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 506,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/hi/privacy",
+   "status": 200,
+   "ms": 149,
+   "bytes": 420217,
+   "title": "गोपनीयता और डेटा अनुरोध · SSSSO दिल्ली एनसीआर",
+   "description": "हम जितना हो सके कम जानकारी लेते हैं, उसे केवल ज़रूरत तक रखते हैं, और कभी बेचते या किसी के प्रचार के लिए साझा नहीं करते।",
+   "h1": [
+    "आपकी गोपनीयता"
+   ],
+   "canonical": "https://staging.saidelhi.org/hi/privacy",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 675,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/en/join",
+   "status": 307,
+   "ms": 114,
+   "bytes": 5,
+   "location": "/join"
+  },
+  {
+   "url": "https://staging.saidelhi.org/en/about",
+   "status": 307,
+   "ms": 73,
+   "bytes": 6,
+   "location": "/about"
+  },
+  {
+   "url": "https://staging.saidelhi.org/districts/central",
+   "status": 200,
+   "ms": 292,
+   "bytes": 501565,
+   "title": "Central district · SSSSO Delhi NCR",
+   "description": "6 samithis (local centres). Approved reports only.",
+   "h1": [
+    "Central district"
+   ],
+   "canonical": "https://staging.saidelhi.org/districts/central",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 369,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/districts/east",
+   "status": 200,
+   "ms": 253,
+   "bytes": 508366,
+   "title": "East district · SSSSO Delhi NCR",
+   "description": "5 samithis (local centres). Approved reports only.",
+   "h1": [
+    "East district"
+   ],
+   "canonical": "https://staging.saidelhi.org/districts/east",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 393,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/districts/north",
+   "status": 200,
+   "ms": 203,
+   "bytes": 498994,
+   "title": "North district · SSSSO Delhi NCR",
+   "description": "5 samithis (local centres). Approved reports only.",
+   "h1": [
+    "North district"
+   ],
+   "canonical": "https://staging.saidelhi.org/districts/north",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 348,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/districts/south-east",
+   "status": 200,
+   "ms": 272,
+   "bytes": 499384,
+   "title": "South East district · SSSSO Delhi NCR",
+   "description": "5 samithis (local centres). Approved reports only.",
+   "h1": [
+    "South East district"
+   ],
+   "canonical": "https://staging.saidelhi.org/districts/south-east",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 356,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/districts/south-west",
+   "status": 200,
+   "ms": 208,
+   "bytes": 506264,
+   "title": "South West district · SSSSO Delhi NCR",
+   "description": "5 samithis (local centres). Approved reports only.",
+   "h1": [
+    "South West district"
+   ],
+   "canonical": "https://staging.saidelhi.org/districts/south-west",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 391,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/districts/west",
+   "status": 200,
+   "ms": 204,
+   "bytes": 498929,
+   "title": "West district · SSSSO Delhi NCR",
+   "description": "6 samithis (local centres). Approved reports only.",
+   "h1": [
+    "West district"
+   ],
+   "canonical": "https://staging.saidelhi.org/districts/west",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 348,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/districts/faridabad",
+   "status": 200,
+   "ms": 219,
+   "bytes": 507457,
+   "title": "Faridabad district · SSSSO Delhi NCR",
+   "description": "6 samithis (local centres). Approved reports only.",
+   "h1": [
+    "Faridabad district"
+   ],
+   "canonical": "https://staging.saidelhi.org/districts/faridabad",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 384,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/districts/gurugram",
+   "status": 200,
+   "ms": 208,
+   "bytes": 502388,
+   "title": "Gurugram district · SSSSO Delhi NCR",
+   "description": "7 samithis (local centres). Approved reports only.",
+   "h1": [
+    "Gurugram district"
+   ],
+   "canonical": "https://staging.saidelhi.org/districts/gurugram",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 340,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/districts/gautam-buddh-nagar",
+   "status": 200,
+   "ms": 264,
+   "bytes": 499914,
+   "title": "Gautam Buddh Nagar district · SSSSO Delhi NCR",
+   "description": "6 samithis (local centres). Approved reports only.",
+   "h1": [
+    "Gautam Buddh Nagar district"
+   ],
+   "canonical": "https://staging.saidelhi.org/districts/gautam-buddh-nagar",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 362,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/districts/ghaziabad",
+   "status": 200,
+   "ms": 213,
+   "bytes": 499285,
+   "title": "Ghaziabad district · SSSSO Delhi NCR",
+   "description": "5 samithis (local centres). Approved reports only.",
+   "h1": [
+    "Ghaziabad district"
+   ],
+   "canonical": "https://staging.saidelhi.org/districts/ghaziabad",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 348,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/en/programs/bhajan",
+   "status": 307,
+   "ms": 56,
+   "bytes": 16,
+   "location": "/programs/bhajan"
+  },
+  {
+   "url": "https://staging.saidelhi.org/calendar?sevaType=bhajan",
+   "status": 200,
+   "ms": 341,
+   "bytes": 535573,
+   "title": "Calendar · SSSSO Delhi NCR",
+   "description": "Bhajans, study circles and seva (service) across Delhi NCR. All free, all welcome.",
+   "h1": [
+    "Calendar"
+   ],
+   "canonical": "https://staging.saidelhi.org/calendar",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 1002,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/events/gath_01JCSEEDGTH000000000000015_20261112",
+   "status": 404,
+   "ms": 307,
+   "bytes": 380865
+  },
+  {
+   "url": "https://staging.saidelhi.org/events/gath_01JCSEEDGTH000000000000012_20261114",
+   "status": 404,
+   "ms": 235,
+   "bytes": 380865
+  },
+  {
+   "url": "https://staging.saidelhi.org/events/gath_01JCSEEDGTH000000000000011_20261115",
+   "status": 404,
+   "ms": 244,
+   "bytes": 380865
+  },
+  {
+   "url": "https://staging.saidelhi.org/news/youth-activities",
+   "status": 200,
+   "ms": 303,
+   "bytes": 517717,
+   "title": "Youth Activities · SSSSO Delhi NCR",
+   "description": "The ‘Sri Sathya Sai Young messengers’ (SSSYM), an initiative of Sri Sathya Sai Seva Organisations, India was created in 2019 to re-energise and strengthen the…",
+   "h1": [
+    "Youth Activities"
+   ],
+   "canonical": "https://staging.saidelhi.org/news/youth-activities",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 3,
+   "jsonld": 1,
+   "words": 983,
+   "imgs": 13,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/news/sri-sathya-sai-bal-vikas",
+   "status": 200,
+   "ms": 234,
+   "bytes": 555859,
+   "title": "Sri Sathya Sai Bal Vikas · SSSSO Delhi NCR",
+   "description": "The Bal Vikas is the primary basis of the great movement to restore dharma (righteousness) in the world. The elders are far gone in their ways, and it is…",
+   "h1": [
+    "Sri Sathya Sai Bal Vikas"
+   ],
+   "canonical": "https://staging.saidelhi.org/news/sri-sathya-sai-bal-vikas",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 3,
+   "jsonld": 1,
+   "words": 2255,
+   "imgs": 13,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/news/narayan-seva",
+   "status": 200,
+   "ms": 254,
+   "bytes": 525758,
+   "title": "Narayan Seva · SSSSO Delhi NCR",
+   "description": "Clearly, based on Bhagawan’s teachings, the divine endeavour of Narayana Seva is supreme! Have you ever served food to someone you don’t know, and experienced…",
+   "h1": [
+    "Narayan Seva"
+   ],
+   "canonical": "https://staging.saidelhi.org/news/narayan-seva",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 3,
+   "jsonld": 1,
+   "words": 1369,
+   "imgs": 13,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/join?sevaType=bhajan",
+   "status": 200,
+   "ms": 232,
+   "bytes": 474531,
+   "title": "Get involved · SSSSO Delhi NCR",
+   "description": "These sevas (service) still need Sevadal members. Pick one, tell us you’re coming, and turn up. That’s all.",
+   "h1": [
+    "Offer your hands"
+   ],
+   "canonical": "https://staging.saidelhi.org/join",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 276,
+   "imgs": 4,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/programs/study_circle",
+   "status": 200,
+   "ms": 292,
+   "bytes": 536177,
+   "title": "Study circle · SSSSO Delhi NCR",
+   "description": "A small group reads one teaching aloud, asks what it means for this week and sits with it until it is plain.",
+   "h1": [
+    "Study circle"
+   ],
+   "canonical": "https://staging.saidelhi.org/programs/study_circle",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 384,
+   "imgs": 7,
+   "imgs_no_alt": 3,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/programs/eye",
+   "status": 200,
+   "ms": 200,
+   "bytes": 547491,
+   "title": "Eye camp · SSSSO Delhi NCR",
+   "description": "A free morning of eye check-ups, run with a partner hospital. Most people leave with reading glasses; some leave with a date for cataract surgery, also free.",
+   "h1": [
+    "Eye camp"
+   ],
+   "canonical": "https://staging.saidelhi.org/programs/eye",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 431,
+   "imgs": 4,
+   "imgs_no_alt": 3,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/programs/blood",
+   "status": 200,
+   "ms": 258,
+   "bytes": 545633,
+   "title": "Blood donation · SSSSO Delhi NCR",
+   "description": "Blood donation camps run with district hospitals and licensed blood banks, so every unit goes where it is needed.",
+   "h1": [
+    "Blood donation"
+   ],
+   "canonical": "https://staging.saidelhi.org/programs/blood",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 408,
+   "imgs": 7,
+   "imgs_no_alt": 3,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/programs/medical",
+   "status": 200,
+   "ms": 224,
+   "bytes": 540326,
+   "title": "Medical camp · SSSSO Delhi NCR",
+   "description": "A free general check-up with doctors from a partner hospital, with medicines handed out at the camp.",
+   "h1": [
+    "Medical camp"
+   ],
+   "canonical": "https://staging.saidelhi.org/programs/medical",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 376,
+   "imgs": 7,
+   "imgs_no_alt": 3,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/programs/narayan_seva",
+   "status": 200,
+   "ms": 303,
+   "bytes": 540413,
+   "title": "Narayan Seva (food) · SSSSO Delhi NCR",
+   "description": "Cooked meals prepared at the centre and served by hand, every week of the year. Nothing is collected from the people we serve.",
+   "h1": [
+    "Narayan Seva (food)"
+   ],
+   "canonical": "https://staging.saidelhi.org/programs/narayan_seva",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 394,
+   "imgs": 7,
+   "imgs_no_alt": 3,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/programs/bal_vikas",
+   "status": 200,
+   "ms": 213,
+   "bytes": 543383,
+   "title": "Bal Vikas class · SSSSO Delhi NCR",
+   "description": "Bal Vikas (blossoming of the child) gives children an hour a week with the five human values, through stories, songs and silent sitting.",
+   "h1": [
+    "Bal Vikas class"
+   ],
+   "canonical": "https://staging.saidelhi.org/programs/bal_vikas",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 419,
+   "imgs": 7,
+   "imgs_no_alt": 3,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/programs/disaster_relief",
+   "status": 200,
+   "ms": 310,
+   "bytes": 526530,
+   "title": "Disaster relief · SSSSO Delhi NCR",
+   "description": "When floods or other disasters strike, centres gather supplies and Sevadal and deliver them with local authorities.",
+   "h1": [
+    "Disaster relief"
+   ],
+   "canonical": "https://staging.saidelhi.org/programs/disaster_relief",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 337,
+   "imgs": 6,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/programs/cleanliness",
+   "status": 200,
+   "ms": 841,
+   "bytes": 527083,
+   "title": "Cleanliness drive · SSSSO Delhi NCR",
+   "description": "Weekend mornings of planting, clean-ups and water-saving drives, coordinated with local resident associations.",
+   "h1": [
+    "Cleanliness drive"
+   ],
+   "canonical": "https://staging.saidelhi.org/programs/cleanliness",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 333,
+   "imgs": 7,
+   "imgs_no_alt": 3,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/programs/other",
+   "status": 200,
+   "ms": 370,
+   "bytes": 525052,
+   "title": "Other seva · SSSSO Delhi NCR",
+   "description": "Seva run by our centres. Open to all, free always.",
+   "h1": [
+    "Other seva"
+   ],
+   "canonical": "https://staging.saidelhi.org/programs/other",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 330,
+   "imgs": 6,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/en/news",
+   "status": 307,
+   "ms": 64,
+   "bytes": 5,
+   "location": "/news"
+  },
+  {
+   "url": "https://staging.saidelhi.org/news?c=news",
+   "status": 200,
+   "ms": 476,
+   "bytes": 501158,
+   "title": "News and stories · SSSSO Delhi NCR",
+   "description": "What our centres have been doing: camps, classes, festivals and quiet seva, from every district.",
+   "h1": [
+    "News and stories"
+   ],
+   "canonical": "https://staging.saidelhi.org/news",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 312,
+   "imgs": 15,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/news?c=activities",
+   "status": 200,
+   "ms": 463,
+   "bytes": 481858,
+   "title": "News and stories · SSSSO Delhi NCR",
+   "description": "What our centres have been doing: camps, classes, festivals and quiet seva, from every district.",
+   "h1": [
+    "News and stories"
+   ],
+   "canonical": "https://staging.saidelhi.org/news",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 277,
+   "imgs": 10,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/news/english-speaking-course",
+   "status": 200,
+   "ms": 435,
+   "bytes": 494835,
+   "title": "ENGLISH SPEAKING COURSE · SSSSO Delhi NCR",
+   "description": "Launching English Speaking Course at Sri Sathya Sai International Center",
+   "h1": [
+    "ENGLISH SPEAKING COURSE"
+   ],
+   "canonical": "https://staging.saidelhi.org/news/english-speaking-course",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 3,
+   "jsonld": 1,
+   "words": 391,
+   "imgs": 8,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/news/vasant-carnival-festival-of-love-and-joy",
+   "status": 200,
+   "ms": 279,
+   "bytes": 491773,
+   "title": "Basant Carnival- Festival of Love and Joy · SSSSO Delhi NCR",
+   "description": "Basant Carnival By South East District",
+   "h1": [
+    "Basant Carnival- Festival of Love and Joy"
+   ],
+   "canonical": "https://staging.saidelhi.org/news/vasant-carnival-festival-of-love-and-joy",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 3,
+   "jsonld": 1,
+   "words": 323,
+   "imgs": 8,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/news/reliving-the-divine-memories",
+   "status": 200,
+   "ms": 326,
+   "bytes": 493058,
+   "title": "Reliving the Divine Memories · SSSSO Delhi NCR",
+   "description": "Sri Sathya Sai Seva Organisations, Delhi-NCR(South East) invites you to join us for Reliving the Divine Memories",
+   "h1": [
+    "Reliving the Divine Memories"
+   ],
+   "canonical": "https://staging.saidelhi.org/news/reliving-the-divine-memories",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 3,
+   "jsonld": 1,
+   "words": 376,
+   "imgs": 8,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/news/sai-parenting-workshop-ghaziabad",
+   "status": 200,
+   "ms": 344,
+   "bytes": 494257,
+   "title": "Sai Parenting Workshop- Ghaziabad · SSSSO Delhi NCR",
+   "description": "Sri Sathya Sai Seva Organisations Delhi-NCR (Ghaziabad) cordially invites for Sai Parenting Workshop",
+   "h1": [
+    "Sai Parenting Workshop- Ghaziabad"
+   ],
+   "canonical": "https://staging.saidelhi.org/news/sai-parenting-workshop-ghaziabad",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 3,
+   "jsonld": 1,
+   "words": 348,
+   "imgs": 8,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/news/education-in-human-values",
+   "status": 200,
+   "ms": 280,
+   "bytes": 507676,
+   "title": "Education in Human Values- A treasure trove · SSSSO Delhi NCR",
+   "description": "Sri Sathya Sai Education in Human Values- a treasure trove of precious gems of knowledge for holistic development of children",
+   "h1": [
+    "Education in Human Values- A treasure trove"
+   ],
+   "canonical": "https://staging.saidelhi.org/news/education-in-human-values",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 3,
+   "jsonld": 1,
+   "words": 616,
+   "imgs": 13,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/news/christmas-celebration-by-mahila-service-wing",
+   "status": 200,
+   "ms": 654,
+   "bytes": 504159,
+   "title": "Christmas Celebration By Mahila Service Wing · SSSSO Delhi NCR",
+   "description": "Precious moments and prayers sparked divine joy on the holy occasion of Christmas at Sri Sathya Sai International Centre, Lodhi Road.",
+   "h1": [
+    "Christmas Celebration By Mahila Service Wing"
+   ],
+   "canonical": "https://staging.saidelhi.org/news/christmas-celebration-by-mahila-service-wing",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 3,
+   "jsonld": 1,
+   "words": 388,
+   "imgs": 16,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/news/99-bhajan-mala-east-district-None",
+   "status": 200,
+   "ms": 278,
+   "bytes": 497886,
+   "title": "99 Bhajan Mala- East District · SSSSO Delhi NCR",
+   "description": "On December 8, 2024, Sri Sathya Sai Seva Organisations, Delhi-NCR’s East district gathered at Sri Subha Siddhi Vinayaka Temple, Mayur Vihar Phase 1, for the…",
+   "h1": [
+    "99 Bhajan Mala- East District"
+   ],
+   "canonical": "https://staging.saidelhi.org/news/99-bhajan-mala-east-district-None",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 3,
+   "jsonld": 1,
+   "words": 472,
+   "imgs": 10,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/news/blood-donation-camp-at-imt-ghaziabad",
+   "status": 200,
+   "ms": 699,
+   "bytes": 501340,
+   "title": "Blood Donation Camp at IMT Ghaziabad · SSSSO Delhi NCR",
+   "description": "Sri Sathya Sai Young Messengers, Ghaziabad District, Delhi-NCR, in collaboration with the All India Institute of Medical Sciences, is organising a Blood…",
+   "h1": [
+    "Blood Donation Camp at IMT Ghaziabad"
+   ],
+   "canonical": "https://staging.saidelhi.org/news/blood-donation-camp-at-imt-ghaziabad",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 3,
+   "jsonld": 1,
+   "words": 569,
+   "imgs": 8,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/news/sri-sathya-sai-rath-yatra-for-human-values",
+   "status": 200,
+   "ms": 340,
+   "bytes": 524257,
+   "title": "Sri Sathya Sai Rath Yatra for Human Values · SSSSO Delhi NCR",
+   "description": "With Swami’s immense grace, the splendour-filled Rath Yatra commenced with great enthusiasm and fervour.",
+   "h1": [
+    "Sri Sathya Sai Rath Yatra for Human Values"
+   ],
+   "canonical": "https://staging.saidelhi.org/news/sri-sathya-sai-rath-yatra-for-human-values",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 3,
+   "jsonld": 1,
+   "words": 493,
+   "imgs": 22,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/news?page=2",
+   "status": 200,
+   "ms": 348,
+   "bytes": 503731,
+   "title": "News and stories · SSSSO Delhi NCR",
+   "description": "What our centres have been doing: camps, classes, festivals and quiet seva, from every district.",
+   "h1": [
+    "News and stories"
+   ],
+   "canonical": "https://staging.saidelhi.org/news",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 312,
+   "imgs": 15,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/news?page=5",
+   "status": 200,
+   "ms": 425,
+   "bytes": 474390,
+   "title": "News and stories · SSSSO Delhi NCR",
+   "description": "What our centres have been doing: camps, classes, festivals and quiet seva, from every district.",
+   "h1": [
+    "News and stories"
+   ],
+   "canonical": "https://staging.saidelhi.org/news",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 250,
+   "imgs": 9,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "https://staging.saidelhi.org/en/gallery",
+   "status": 307,
+   "ms": 58,
+   "bytes": 8,
+   "location": "/gallery"
+  },
+  {
+   "url": "https://staging.saidelhi.org/gallery?kind=news",
+   "status": 200,
+   "ms": 816,
+   "bytes": 517419,
+   "title": "Photo gallery · SSSSO Delhi NCR",
+   "description": "Moments from our bhajans, seva activities and celebrations across Delhi NCR.",
+   "h1": [
+    "Photo gallery"
+   ],
+   "canonical": "https://staging.saidelhi.org/gallery",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 347,
+   "imgs": 15,
+   "imgs_no_alt": 2,
+   "iframes": []
+  }
+ ],
+ "site": {
+  "/robots.txt": 200,
+  "/sitemap.xml": 200,
+  "/llms.txt": 200,
+  "/favicon.ico": 200,
+  "www->": [
+   200,
+   null
+  ]
+ }
+}
