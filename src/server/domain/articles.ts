@@ -1,6 +1,7 @@
 import sanitizeHtml from "sanitize-html";
 import {
   type Article,
+  articleVideoOf,
   type ArticleCategoryFilter,
   type ArticleCategory,
   type BuiltinArticleCategory,
@@ -135,6 +136,7 @@ export function toArticle(rec: ArticleRec, ctx: ArticleContext): Article {
     bodyHtml: { en: bodyEn, hi: bodyHi },
     // Legacy posts with no featured image fall back to their first gallery image (mapping only; legacy rows stay as they are).
     cover: rec.featuredImage ? legacyMedia(ctx, rec.featuredImage, rec.title) : (sortedGallery[0] ? legacyMedia(ctx, sortedGallery[0].image, sortedGallery[0].caption ?? rec.title) : null),
+    video: articleVideoOf(i18n?.videoId),
     gallery: sortedGallery.map((g) => legacyMedia(ctx, g.image, g.caption ?? rec.title)),
     publishedAt: rec.createdAt.toISOString(),
     district: district ? { slug: district.slug, name: district.name } : null,

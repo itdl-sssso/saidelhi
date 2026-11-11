@@ -105,6 +105,26 @@ reliable one. The Oracle Cloud security list must also keep 3000 closed (only 22
 sudo cp deploy/cron/saidelhi /etc/cron.d/saidelhi   # paths assume /opt/saidelhi
 ```
 
+## 5. Video (Cloudflare Stream)
+
+YouTube links on articles need no setup. Portal uploads (`/admin/videos`) need Cloudflare Stream. With `VIDEO_PROVIDER=mock`
+the upload button is disabled on this server.
+
+1. In Cloudflare, create an API token with **Account > Stream > Edit**. Note the account id and the customer code (the
+   `<code>` in `customer-<code>.cloudflarestream.com`, shown in any video's embed code).
+2. Register the webhook once (Cloudflare returns the signing secret):
+   ```bash
+   curl -s -X PUT "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/stream/webhook" \
+     -H "Authorization: Bearer $CLOUDFLARE_STREAM_API_TOKEN" -H "Content-Type: application/json" \
+     -d '{"notificationUrl":"https://staging.saidelhi.org/api/v1/webhooks/cloudflare-stream"}'
+   ```
+3. In `deploy/.env.staging`, set `VIDEO_PROVIDER=cloudflare` and the four `CLOUDFLARE_*` values (`result.secret` from
+   step 2 goes into `CLOUDFLARE_STREAM_WEBHOOK_SECRET`). Then redeploy (CD on the next main merge, or `deploy/deploy.sh`).
+   If `VIDEO_PROVIDER=cloudflare` and a value is missing, env validation fails and the app reports which one.
+
+Files go straight from the browser to Cloudflare, so nginx `client_max_body_size` does not limit video size. Captions
+(`.srt`/`.vtt`) go through the app and stay well under it. Migrations (`0012`, `0013`) run on every deploy (`deploy.sh`).
+
 ## CI/CD
 
 Two workflows:

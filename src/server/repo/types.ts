@@ -182,6 +182,8 @@ export interface ArticleI18nRec {
   districtId: string | null;
   eventId: string | null;
   status: ArticleStatus;
+  /** YouTube video id (side table `video_id`). */
+  videoId?: string | null;
 }
 
 /** A legacy post joined with its optional i18n side row. */

@@ -8,6 +8,7 @@ export * from "./forms";
 export * from "./form-rules";
 export * from "./content";
 export * from "./gallery";
+export * from "./video";
 export * from "./impact";
 export * from "./system";
 export * from "./auth";

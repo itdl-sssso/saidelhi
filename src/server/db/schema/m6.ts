@@ -38,6 +38,7 @@ export const userPref = docTable("user_pref");
 export const galleryAlbum = docTable("gallery_album");
 export const galleryPhoto = docTable("gallery_photo");
 export const contentType = docTable("content_type");
+export const video = docTable("video");
 
 export const M6_DOC_TABLES = {
   form_change_request: formChangeRequest,
@@ -58,5 +59,6 @@ export const M6_DOC_TABLES = {
   gallery_album: galleryAlbum,
   gallery_photo: galleryPhoto,
   content_type: contentType,
+  video,
 } as const;
 export type DocTableName = keyof typeof M6_DOC_TABLES;

@@ -53,6 +53,7 @@ import type { PrivateStorage } from "../files";
 import type { EmailProvider } from "../providers/email/types";
 import type { WhatsAppProvider } from "../providers/whatsapp/types";
 import type { Extractor } from "../ai/types";
+import type { VideoProvider } from "../providers/video/types";
 import type { AuthService } from "./auth";
 import type { WaServices } from "./wa";
 import type { PortalServices } from "./portal";
@@ -293,6 +294,8 @@ export interface ServiceDeps {
   revalidate?: (tags: readonly CacheTag[]) => void;
   /** Turns chat text into draft report answers (rules by default). */
   extractor?: Extractor;
+  /** Video hosting (Cloudflare Stream or the dev mock). */
+  video?: VideoProvider;
 }
 
 export type LinkServiceDeps = Required<ServiceDeps> & {

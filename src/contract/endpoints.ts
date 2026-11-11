@@ -152,6 +152,11 @@ export const adminEndpoints = {
   centres: (q?: { q?: string; district?: string; active?: boolean } & PageQuery) => withQuery(p("/admin/centres"), q),
   centre: (id: string) => p(`/admin/centres/${seg(id)}`),
   centrePhotos: (id: string) => p(`/admin/centres/${seg(id)}/photos`),
+  // video library (v0.11)
+  videos: (q?: { ready?: "1" | "0" } & PageQuery) => withQuery(p("/admin/videos"), q),
+  video: (id: string) => p(`/admin/videos/${seg(id)}`),
+  videoCaptions: (id: string) => p(`/admin/videos/${seg(id)}/captions`),
+  videoWebhook: () => p("/webhooks/cloudflare-stream"),
   // gallery (v0.9.5)
   galleryPhotos: (q?: { status?: string; albumId?: string } & PageQuery) => withQuery(p("/admin/gallery/photos"), q),
   galleryPhoto: (id: string) => p(`/admin/gallery/photos/${seg(id)}`),

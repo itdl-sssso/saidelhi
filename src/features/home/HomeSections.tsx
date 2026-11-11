@@ -286,7 +286,7 @@ function Stories({ stories }: { stories: HomeStory[] }) {
                 <Link href={s.href} className={styles.acard}>
                   <span className={styles.acardImg}>
                     {s.image ? (
-                      <Image src={s.image.url} alt={tx(s.image.alt, locale)} fill sizes="(min-width: 900px) 30vw, 100vw" className={styles.cover} />
+                      <Image src={s.image.url} unoptimized={/^https:\/\/(?:i\.ytimg\.com|customer-[^/]+\.cloudflarestream\.com)\//.test(s.image.url) || /\.svg$/.test(s.image.url)} alt={tx(s.image.alt, locale)} fill sizes="(min-width: 900px) 30vw, 100vw" className={styles.cover} />
                     ) : (
                       <span className={styles.acardPh} aria-hidden="true">
                         <Icon name="hand-heart" size={24} />

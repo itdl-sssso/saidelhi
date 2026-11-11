@@ -833,14 +833,16 @@
         "audit": "Audit log",
         "migration": "Migration import",
         "settings": "Settings",
-        "gallery": "Gallery"
+        "gallery": "Gallery",
+        "videos": "Videos"
       },
       "short": {
         "overview": "Home",
         "events": "Events",
         "approvals": "Approve",
         "links": "Links",
-        "inbox": "Inbox"
+        "inbox": "Inbox",
+        "videos": "Videos"
       }
     },
     "roles": {
@@ -2490,7 +2492,15 @@
       "removeDay": "Remove",
       "importResult": "{created} added, {updated} updated, {errors} with problems.",
       "importRow": "Row {row}",
-      "csvNote": "CSV columns: date, text_en, text_hi, source_en, source_hi. Dates as yyyy-mm-dd."
+      "csvNote": "CSV columns: date, text_en, text_hi, source_en, source_hi. Dates as yyyy-mm-dd.",
+      "fVideo": "YouTube video",
+      "videoHint": "Unlisted links work. Shown as a player at the top of the article.",
+      "videoPreviewAlt": "Video thumbnail",
+      "errVideo": "Paste a YouTube link (youtube.com or youtu.be).",
+      "videoYoutube": "YouTube link",
+      "videoLibrary": "From video library",
+      "videoLibraryEmpty": "No ready videos yet.",
+      "videoLibraryLink": "Upload one in Videos"
     },
     "impact": {
       "title": "Public impact",
@@ -3312,6 +3322,60 @@
       "title": "We can't find that page.",
       "body": "It may have been removed, or the link is wrong. It could also be outside your area.",
       "toOverview": "Go to overview"
+    },
+    "videos": {
+      "notConfigured": "Video uploads are not set up on this server yet. Ask an admin to connect Cloudflare Stream.",
+      "title": "Videos",
+      "sub": "Upload episodes once; use them in articles. Large files upload in pieces and can be resumed.",
+      "upload": "Upload video",
+      "uploadTitle": "Upload a video",
+      "startUpload": "Start upload",
+      "cancel": "Cancel",
+      "close": "Close",
+      "save": "Save",
+      "saved": "Saved",
+      "delete": "Delete",
+      "deleted": "Video deleted",
+      "confirmDelete": "Delete this video for good? It is removed from storage too.",
+      "deleteYes": "Yes, delete",
+      "keepOpen": "Uploading. Keep this page open until the upload finishes. Closing it pauses the upload and you can resume it later.",
+      "wrongFile": "That is not the file you started with. Pick the same file again.",
+      "cannotResume": "This upload was started in another browser. Delete the video and upload again.",
+      "empty": "No videos yet",
+      "emptyBody": "Upload an episode to get started. Once it is ready you can add it to an article.",
+      "status_uploading": "Uploading",
+      "status_processing": "Processing",
+      "status_ready": "Ready",
+      "status_error": "Failed",
+      "details": "Details",
+      "progress": "Upload progress",
+      "phase_uploading": "Uploading",
+      "phase_paused": "Paused",
+      "phase_failed": "Upload interrupted",
+      "pause": "Pause",
+      "resume": "Resume",
+      "retry": "Try again",
+      "resumeAfterReload": "Resume: choose the same file",
+      "file": "Video file",
+      "fileHint": "MP4, MOV or MKV, up to 4 GB. Keep this page open while it uploads.",
+      "videoTitle": "Title",
+      "errFile": "Choose a video file.",
+      "errTooBig": "This file is larger than 4 GB.",
+      "errTitle": "Enter an English title.",
+      "errPoster": "Enter seconds, for example 30.",
+      "errCaption": "Choose a .srt or .vtt file.",
+      "mockNote": "Development mode: the file was not stored, so there is no real video.",
+      "posterTime": "Poster frame (seconds)",
+      "posterHint": "Which moment of the video to show before it plays. Leave empty for the default.",
+      "captions": "Captions",
+      "noCaptions": "No captions yet.",
+      "captionsWait": "Captions can be added once the video is ready.",
+      "captionLang": "Language",
+      "langHi": "Hindi",
+      "langEn": "English",
+      "captionFile": "Caption file",
+      "captionHint": ".srt or .vtt",
+      "addCaptions": "Add captions"
     }
   },
   "news": {
@@ -3340,7 +3404,17 @@
     "relatedHeading": "Related stories",
     "calendarCtaTitle": "Come to the next one",
     "calendarCtaBody": "Every camp and class on the calendar is free and open to all.",
-    "seeCalendar": "See the calendar"
+    "seeCalendar": "See the calendar",
+    "video": {
+      "play": "Play video: {title}",
+      "loadNote": "The video loads from YouTube only after you press play.",
+      "privacy": "Playing from YouTube (privacy mode).",
+      "watchOnYouTube": "Watch on YouTube",
+      "newTab": "(opens in a new tab)",
+      "placeholder": "Development placeholder: no real video is stored.",
+      "loadNoteStream": "The video loads only after you press play.",
+      "privacyStream": "Playing now."
+    }
   },
   "district": {
     "crumbHome": "Home",

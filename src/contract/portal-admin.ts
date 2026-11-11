@@ -6,6 +6,7 @@
 import { z } from "zod";
 import { ScopeRef } from "./auth";
 import { ArticleCategory, ContentKind, ContentTypeSlug, LinkPurpose, PartnerKind, PrivacyRequestStatus, PrivacyRequestType, Role, SevaType, Source, Wing } from "./enums";
+import { ArticleVideo } from "./content";
 import { EventCard } from "./events";
 import { ExcelColumn } from "./form-builder";
 import { Answers, FormDefinition } from "./forms";
@@ -490,6 +491,8 @@ export const ArticleEditor = z.object({
    */
   bodyHtml: I18nText,
   cover: Media.nullable(),
+  /** YouTube video shown at the top of the article, or null. */
+  video: ArticleVideo.nullable(),
   gallery: z.array(Media),
   district: UnitRef.nullable(),
   event: EventRef.nullable(),
@@ -536,6 +539,8 @@ const ArticleFields = {
   summary: I18nOptionalInput(1000).default({ en: "", hi: null }),
   bodyHtml: I18nOptionalInput(200_000).default({ en: "", hi: null }),
   cover: Media.nullable().default(null),
+  /** YouTube link or 11-char id; empty/null = none. */
+  video: Text(300).nullable().default(null),
   gallery: z.array(Media).max(40).default([]),
   districtId: Id.nullable().default(null),
   eventId: Id.nullable().default(null),
@@ -581,6 +586,8 @@ export const ContentPatch = z.object({
   startsAt: ISODateTime.nullable().optional(),
   endsAt: ISODateTime.nullable().optional(),
   cover: Media.nullable().optional(),
+  /** YouTube link or 11-char id; "" or null clears. */
+  video: Text(300).nullable().optional(),
   gallery: z.array(Media).max(40).optional(),
   districtId: Id.nullable().optional(),
   eventId: Id.nullable().optional(),

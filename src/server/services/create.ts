@@ -10,6 +10,7 @@ import { createHomeService } from "./home";
 import { DiskStorage } from "../files";
 import { ConsoleEmail } from "../providers/email/console";
 import { ConsoleWhatsApp } from "../providers/whatsapp/console";
+import { MockVideo } from "../providers/video/mock";
 import { DEV_SESSION_SECRET } from "../security/crypto";
 import { createImpactService } from "./impact";
 import { createJoinService } from "./join";
@@ -36,6 +37,7 @@ export function createServices(repo: DataRepo, deps: ServiceDeps): Services {
     revalidate: () => {},
     email: new ConsoleEmail(),
     extractor: new RulesExtractor(),
+    video: new MockVideo(),
     whatsappPublic: { number: null, keyword: "JOIN" },
     ...deps,
     // `portal` is created below; the hook only runs after a request, never during wiring.

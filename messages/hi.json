@@ -833,14 +833,16 @@
         "audit": "ऑडिट लॉग",
         "migration": "माइग्रेशन",
         "settings": "सेटिंग्स",
-        "gallery": "गैलरी"
+        "gallery": "गैलरी",
+        "videos": "वीडियो"
       },
       "short": {
         "overview": "होम",
         "events": "कार्यक्रम",
         "approvals": "स्वीकृति",
         "links": "लिंक",
-        "inbox": "इनबॉक्स"
+        "inbox": "इनबॉक्स",
+        "videos": "वीडियो"
       }
     },
     "roles": {
@@ -2490,7 +2492,15 @@
       "removeDay": "हटाएँ",
       "importResult": "{created} जोड़े, {updated} अपडेट, {errors} में समस्या।",
       "importRow": "पंक्ति {row}",
-      "csvNote": "CSV कॉलम: date, text_en, text_hi, source_en, source_hi. तिथि yyyy-mm-dd रूप में।"
+      "csvNote": "CSV कॉलम: date, text_en, text_hi, source_en, source_hi. तिथि yyyy-mm-dd रूप में।",
+      "fVideo": "YouTube वीडियो",
+      "videoHint": "अनलिस्टेड लिंक भी चलते हैं। लेख के ऊपर प्लेयर के रूप में दिखेगा।",
+      "videoPreviewAlt": "वीडियो का थंबनेल",
+      "errVideo": "YouTube लिंक चिपकाएँ (youtube.com या youtu.be)।",
+      "videoYoutube": "YouTube लिंक",
+      "videoLibrary": "वीडियो लाइब्रेरी से",
+      "videoLibraryEmpty": "अभी कोई तैयार वीडियो नहीं।",
+      "videoLibraryLink": "वीडियो में अपलोड करें"
     },
     "impact": {
       "title": "सार्वजनिक प्रभाव",
@@ -3312,6 +3322,60 @@
       "title": "वह पेज नहीं मिला।",
       "body": "हो सकता है उसे हटा दिया गया हो, या लिंक ग़लत हो। वह आपके क्षेत्र से बाहर भी हो सकता है।",
       "toOverview": "अवलोकन पर जाएँ"
+    },
+    "videos": {
+      "notConfigured": "इस सर्वर पर अभी वीडियो अपलोड चालू नहीं है। Cloudflare Stream जोड़ने के लिए एडमिन से कहें।",
+      "title": "वीडियो",
+      "sub": "एपिसोड एक बार अपलोड करें और लेखों में इस्तेमाल करें। बड़ी फ़ाइलें टुकड़ों में अपलोड होती हैं और बीच से दोबारा शुरू की जा सकती हैं।",
+      "upload": "वीडियो अपलोड करें",
+      "uploadTitle": "वीडियो अपलोड करें",
+      "startUpload": "अपलोड शुरू करें",
+      "cancel": "रद्द करें",
+      "close": "बंद करें",
+      "save": "सहेजें",
+      "saved": "सहेजा गया",
+      "delete": "हटाएँ",
+      "deleted": "वीडियो हटाया गया",
+      "confirmDelete": "इस वीडियो को हमेशा के लिए हटाएँ? यह स्टोरेज से भी हट जाएगा।",
+      "deleteYes": "हाँ, हटाएँ",
+      "keepOpen": "अपलोड चल रहा है। पूरा होने तक यह पेज खुला रखें। बंद करने पर अपलोड रुक जाएगा, बाद में फिर शुरू कर सकते हैं।",
+      "wrongFile": "यह वह फ़ाइल नहीं है जिससे आपने शुरू किया था। वही फ़ाइल फिर चुनें।",
+      "cannotResume": "यह अपलोड किसी और ब्राउज़र में शुरू हुआ था। वीडियो हटाकर दोबारा अपलोड करें।",
+      "empty": "अभी कोई वीडियो नहीं",
+      "emptyBody": "शुरू करने के लिए कोई एपिसोड अपलोड करें। तैयार होने पर इसे लेख में जोड़ सकते हैं।",
+      "status_uploading": "अपलोड हो रहा है",
+      "status_processing": "प्रोसेस हो रहा है",
+      "status_ready": "तैयार",
+      "status_error": "विफल",
+      "details": "विवरण",
+      "progress": "अपलोड की प्रगति",
+      "phase_uploading": "अपलोड हो रहा है",
+      "phase_paused": "रुका हुआ",
+      "phase_failed": "अपलोड बीच में रुक गया",
+      "pause": "रोकें",
+      "resume": "जारी रखें",
+      "retry": "फिर कोशिश करें",
+      "resumeAfterReload": "जारी रखें: वही फ़ाइल चुनें",
+      "file": "वीडियो फ़ाइल",
+      "fileHint": "MP4, MOV या MKV, 4 GB तक। अपलोड के दौरान यह पेज खुला रखें।",
+      "videoTitle": "शीर्षक",
+      "errFile": "वीडियो फ़ाइल चुनें।",
+      "errTooBig": "यह फ़ाइल 4 GB से बड़ी है।",
+      "errTitle": "अंग्रेज़ी शीर्षक लिखें।",
+      "errPoster": "सेकंड लिखें, जैसे 30।",
+      "errCaption": ".srt या .vtt फ़ाइल चुनें।",
+      "mockNote": "डेवलपमेंट मोड: फ़ाइल सहेजी नहीं गई, इसलिए असली वीडियो नहीं है।",
+      "posterTime": "पोस्टर फ़्रेम (सेकंड)",
+      "posterHint": "चलने से पहले वीडियो का कौन-सा पल दिखाना है। खाली छोड़ें तो डिफ़ॉल्ट।",
+      "captions": "कैप्शन",
+      "noCaptions": "अभी कोई कैप्शन नहीं।",
+      "captionsWait": "वीडियो तैयार होने पर कैप्शन जोड़े जा सकते हैं।",
+      "captionLang": "भाषा",
+      "langHi": "हिन्दी",
+      "langEn": "अंग्रेज़ी",
+      "captionFile": "कैप्शन फ़ाइल",
+      "captionHint": ".srt या .vtt",
+      "addCaptions": "कैप्शन जोड़ें"
     }
   },
   "news": {
@@ -3340,7 +3404,17 @@
     "relatedHeading": "संबंधित कथाएँ",
     "calendarCtaTitle": "अगले कार्यक्रम में आइए",
     "calendarCtaBody": "कैलेंडर में हर कैंप और कक्षा निःशुल्क है और सबके लिए खुली है।",
-    "seeCalendar": "कैलेंडर देखें"
+    "seeCalendar": "कैलेंडर देखें",
+    "video": {
+      "play": "वीडियो चलाएँ: {title}",
+      "loadNote": "वीडियो चलाने का बटन दबाने पर ही YouTube से लोड होगा।",
+      "privacy": "YouTube से चल रहा है (गोपनीयता मोड)।",
+      "watchOnYouTube": "YouTube पर देखें",
+      "newTab": "(नए टैब में खुलता है)",
+      "placeholder": "डेवलपमेंट प्लेसहोल्डर: कोई असली वीडियो सहेजा नहीं गया।",
+      "loadNoteStream": "वीडियो प्ले दबाने के बाद ही लोड होता है।",
+      "privacyStream": "अभी चल रहा है।"
+    }
   },
   "district": {
     "crumbHome": "होम",

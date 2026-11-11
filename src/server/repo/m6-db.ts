@@ -308,7 +308,7 @@ export class DbM6Repo implements M6Repo {
 
   private i18nOf(r: typeof articleI18n.$inferSelect | null): ArticleI18nRec | null {
     return r
-      ? { legacyId: r.legacyId, titleHi: r.titleHi, summaryHi: r.summaryHi, bodyHi: r.bodyHi, districtId: r.districtId, eventId: r.eventId, status: r.status }
+      ? { legacyId: r.legacyId, titleHi: r.titleHi, summaryHi: r.summaryHi, bodyHi: r.bodyHi, districtId: r.districtId, eventId: r.eventId, status: r.status, videoId: r.videoId }
       : null;
   }
 
@@ -354,7 +354,7 @@ export class DbM6Repo implements M6Repo {
 
   async articleI18nUpsert(rec: ArticleI18nRec, audit?: AuditRec[]) {
     await this.db.transaction(async (tx) => {
-      await tx.insert(articleI18n).values(rec).onDuplicateKeyUpdate({ set: { titleHi: rec.titleHi, summaryHi: rec.summaryHi, bodyHi: rec.bodyHi, districtId: rec.districtId, eventId: rec.eventId, status: rec.status } });
+      await tx.insert(articleI18n).values(rec).onDuplicateKeyUpdate({ set: { titleHi: rec.titleHi, summaryHi: rec.summaryHi, bodyHi: rec.bodyHi, districtId: rec.districtId, eventId: rec.eventId, status: rec.status, videoId: rec.videoId ?? null } });
       await this.audit(tx, audit);
     });
   }
