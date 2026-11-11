@@ -68,3 +68,19 @@ next-env.d.ts
 
 # Hugging Face model weights (EXTRACTOR_PROVIDER=hf)
 /.cache/
+
+# Local-only media: licensed audio, personal interviews, transcripts (never commit)
+/media-kit/
+
+# Screenshots and raw reports stay local; commit only the summaries
+/docs/feedback/shots/
+/docs/seo/snapshots/*/lh_*.json
+
+# Agent progress logs stay in the worktree; summaries go in the PR description and HANDOFF.md
+/docs/progress/*
+!/docs/progress/HANDOFF.md
+!/docs/progress/M5-plan.md
+!/docs/progress/M6-plan.md
+!/docs/progress/M7-plan.md
+!/docs/progress/M7-a11y-findings.md
+!/docs/progress/M7-redirect-waterfall.html

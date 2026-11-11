@@ -36,7 +36,7 @@ The 22 Oct run shows what quick fixes alone reached on the old stack. The rebuil
 ## Files
 
 - `snapshots/<date>-<label>/baseline.json`: raw crawl (per-URL title, description, h1, canonical, hreflang, OG, JSON-LD count, words, images) plus site checks (robots, sitemap, llms.txt, favicon, www redirect).
-- `snapshots/<date>-<label>/lh_*.json`: Lighthouse reports, optional; they feed the Performance group.
+- `snapshots/<date>-<label>/lh_*.json`: Lighthouse reports, optional; they feed the Performance group. Gitignored (large): kept locally, only the scorecard is committed.
 - `snapshots/<date>-<label>/scorecard.{md,json}`: weighted scores from `scripts/seo/score.py`.
 - `ai-prompt-panel.csv`: 15 EN/HI prompts for checking AI answer engines by hand (ChatGPT, Perplexity, Gemini, Claude…). Fill in mention, cited URL and accuracy on each run. It was not filled in for the baseline.
 
