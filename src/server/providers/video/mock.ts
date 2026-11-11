@@ -1,5 +1,6 @@
 // Dev/test video provider: nothing leaves the machine. The upload URL points at the dev-only tus
 // endpoint (/api/v1/dev/video-upload/:uid) which discards the bytes and marks the video ready.
+import { randomUUID } from "node:crypto";
 import { API_BASE } from "@/contract";
 import type { CreateUploadInput, CreateUploadResult, RemoteVideo, VideoProvider, VideoWebhookEvent } from "./types";
 
@@ -42,7 +43,7 @@ export class MockVideo implements VideoProvider {
   private n = 0;
 
   async createUpload(i: CreateUploadInput): Promise<CreateUploadResult> {
-    const uid = `mock${Date.now().toString(36)}${(this.n++).toString(36)}${Math.random().toString(36).slice(2, 8)}`;
+    const uid = `mock${Date.now().toString(36)}${(this.n++).toString(36)}${randomUUID().slice(0, 8)}`;
     table().set(uid, { length: i.sizeBytes, offset: 0, state: "uploading", durationS: null, captions: {} });
     return { uid, uploadUrl: `${API_BASE}/dev/video-upload/${uid}` };
   }
