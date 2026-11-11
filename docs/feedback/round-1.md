@@ -12,7 +12,6 @@ Checked: desktop, mobile, hindi
 
 got this default 404 page, but it should be the custom 404 page we made
 
-![adm-event-1.png](shots/adm-event-1.png)
 
 ## Doesn't match design (5)
 
@@ -45,23 +44,14 @@ comparisons made to: Design: Home v2 wireframe
 
 in the mobile view the photo of swami is cut in the background rather show it on the card than lotus ( only on mobile screens )
 
-![en-home-1.png](shots/en-home-1.png)
 
-![en-home-2.png](shots/en-home-2.png)
 
-![en-home-3.png](shots/en-home-3.png)
 
-![en-home-4.png](shots/en-home-4.png)
 
-![en-home-5.png](shots/en-home-5.png)
 
-![en-home-6.png](shots/en-home-6.png)
 
-![en-home-7.png](shots/en-home-7.png)
 
-![en-home-8.png](shots/en-home-8.png)
 
-![en-home-9.png](shots/en-home-9.png)
 
 ### About `/about` (`en-about`)
 Group: Public (EN)
@@ -69,7 +59,6 @@ Checked: desktop, mobile, hindi
 
 two sections for find a center, keep the pincode one
 
-![en-about-1.png](shots/en-about-1.png)
 
 ### Calendar `/calendar` (`en-calendar`)
 Group: Public (EN)
@@ -77,7 +66,6 @@ Checked: desktop, mobile, hindi
 
 Dropdowns need to be rounded
 
-![en-calendar-1.png](shots/en-calendar-1.png)
 
 ### Centres map `/centres/map` (`en-map`)
 Group: Public (EN)
@@ -93,9 +81,7 @@ Fewer than 5 doesn't match the rest of the fonts
 
 in the by district section, find a way to make the height of both containers equal so it looks symmetrical
 
-![en-impact-1.png](shots/en-impact-1.png)
 
-![en-impact-2.png](shots/en-impact-2.png)
 
 ## Minor issues (13)
 
@@ -115,7 +101,6 @@ the clock sign must be left and 1 min read should be right in a single row not v
 
 on the top in the drawer, Home > News > News it should be Home > News > <Title>
 
-![en-article-1.png](shots/en-article-1.png)
 
 ### Form link: verify (eye report) `/f/nmopMGuEp-SJ1ZDJLZFslA` (`form-verify`)
 Group: Form links
@@ -147,7 +132,6 @@ Some hindi texts are not available
 
 cards should have consistent height.
 
-![en-value-shanti-1.png](shots/en-value-shanti-1.png)
 
 ### Value: prema `/values/prema` (`en-value-prema`)
 Group: Public (EN)
@@ -167,7 +151,6 @@ Checked: none
 
 the type filter needs a sidescroll
 
-![adm-events-1.png](shots/adm-events-1.png)
 
 ### Inbox item `/admin/inbox/01JCSEEDIBX000000000000003` (`adm-inbox-item`)
 Group: Portal / Operate
@@ -175,7 +158,6 @@ Checked: desktop, mobile, hindi
 
 should give a reason of why the action is blocked, when the cursor hovers on the blocked action
 
-![adm-inbox-item-1.png](shots/adm-inbox-item-1.png)
 
 ### Form templates `/admin/forms` (`adm-forms`)
 Group: Portal / Collect
@@ -189,7 +171,6 @@ Checked: desktop, mobile, hindi
 
 dialogue box is encapsulated inside the list box and there is no delete option
 
-![adm-uploads-1.png](shots/adm-uploads-1.png)
 
 ### WhatsApp `/admin/whatsapp` (`adm-whatsapp`)
 Group: Portal / Communicate
@@ -197,7 +178,6 @@ Checked: none
 
 need to make tab selection horizontally scrollable
 
-![adm-whatsapp-1.png](shots/adm-whatsapp-1.png)
 
 ## Works (47)
 
@@ -291,7 +271,6 @@ Checked: desktop, mobile, hindi
 
 the dialogue box that opens is covered inside the list div it should be above it
 
-![adm-links-1.png](shots/adm-links-1.png)
 
 ### Form builder `/admin/forms/01JCSEEDFTP000000000000001/edit` (`adm-form-edit`)
 Group: Portal / Collect
@@ -385,7 +364,6 @@ Checked: desktop, mobile, hindi
 
 actions in redirect are not aligned properly
 
-![adm-migration-1.png](shots/adm-migration-1.png)
 
 ### Settings `/admin/settings` (`adm-settings`)
 Group: Portal / Govern
@@ -406,4 +384,3 @@ Checked: none
 ## Notes on items still marked Not tested
 
 - `dev-whatsapp` WhatsApp bot simulator: 122003: is the pincode of gurugram still it didn't pick it up
-  - ![dev-whatsapp-1.png](shots/dev-whatsapp-1.png)
