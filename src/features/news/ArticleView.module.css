@@ -43,3 +43,14 @@
 }
 
 .readTime { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+
+.video { margin: 0 0 var(--space-5, 24px); }
+.player { position: relative; aspect-ratio: 16 / 9; border-radius: var(--radius-lg); overflow: hidden; background: var(--slate-900); }
+.player iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.facade { position: absolute; inset: 0; width: 100%; height: 100%; padding: 0; border: 0; background: transparent; cursor: pointer; }
+.facade img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.playBtn { position: absolute; inset: 0; margin: auto; width: 64px; height: 64px; border-radius: 50%; display: grid; place-items: center; background: rgb(0 0 0 / 0.65); color: #fff; transition: transform 0.15s; }
+.facade:hover .playBtn { transform: scale(1.08); }
+.facade:focus-visible, .videoMeta a:focus-visible { outline: 3px solid var(--blue-700); outline-offset: -3px; }
+.videoMeta { margin: var(--space-2, 8px) 0 0; font-size: var(--text-sm, 0.875rem); }
+@media (prefers-reduced-motion: reduce) { .playBtn { transition: none; } }

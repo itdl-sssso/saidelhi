@@ -522,3 +522,8 @@ Spec `docs/specs/52-gallery.md`. (The WIP note said v0.9.3; that number is taken
 3. **Login `?via=email`** opens the email form first (link in invite emails).
 4. **HTML emails**: `EmailMessage.html?` (SMTP sends text + HTML). Templates in `src/server/email/templates.ts` (`loginCodeEmail`, `inviteEmail`, `monthlyReportEmail`; EN/HI, inline styles, emblem from `APP_URL/brand/emblem-512.png`). Dev preview: `GET /api/v1/dev/email/{login-code|invite|monthly-report}?locale=hi` (dev simulator gate). Monthly report email now uses the recipient's locale.
 
+### v0.10.5 (YouTube video on articles)
+1. **`Article.video`**: `{ provider: 'youtube', id, url } | null` (always present; `url` = `https://www.youtube.com/watch?v=<id>`). Same on `ArticleDetail`, the `ArticleEditor` DTO, and `HomeStory.image` falls back to the YouTube thumbnail when there is no cover.
+2. **Input**: `ContentCreate` (article) and `ContentPatch` gain `video` (string | null, max 300): a YouTube link (watch?v=, youtu.be/, /shorts/, /embed/, /live/, youtube-nocookie) or a bare 11-char id; `""`/`null` clears. Unparseable → 422 field `video`. Parser: `parseYouTubeId` in `src/contract/content.ts`.
+3. **Storage**: native articles keep the id in the JSON doc (`NativeArticle.video?`); legacy posts in the side table `article_i18n.video_id varchar(16) NULL` (migration `0012_article_video`). Editing a legacy post copies the id into the native copy.
+4. **UI**: portal article editor "YouTube video" field + thumbnail preview; public article page shows a click-to-load youtube-nocookie player above the body. New keys `news.video.*`, `admin.content.{fVideo,videoHint,videoPreviewAlt,errVideo}`.

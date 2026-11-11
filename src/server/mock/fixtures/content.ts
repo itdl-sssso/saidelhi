@@ -82,7 +82,16 @@ export const articles: ArticleRec[] = [
   article(900003, "state-centenary-celebrations", "D", "Centenary celebrations across Delhi NCR", "Samithis mark the centenary year with seva.", "<h1>Centenary year</h1><p>Every samithi is marking the centenary with a seva project.</p>", "2026-06-01T06:30:00Z"),
   article(900004, "national-centenary-programme", "C", "National centenary programme", "An overview of the national programme.", "<p>The national programme brings together seva, study and devotion.</p>", "2026-05-20T06:30:00Z"),
   article(900005, "new-website-launch", "N", "A new website for Delhi NCR", "Find seva near you, in Hindi and English.", "<p>The new site shows upcoming seva, centres and approved impact figures.</p>", "2026-10-15T06:30:00Z"),
-  article(900006, "a-day-at-narayan-seva", "P", "A morning at Narayan Seva", "What a food seva morning looks like.", "<p>Cooking begins at six. By eight the first families arrive.</p>", "2026-08-20T06:30:00Z"),
+  article(900006, "a-day-at-narayan-seva", "P", "A morning at Narayan Seva", "What a food seva morning looks like.", "<p>Cooking begins at six. By eight the first families arrive.</p>", "2026-08-20T06:30:00Z", {
+    legacyId: 900006,
+    titleHi: null,
+    summaryHi: null,
+    bodyHi: null,
+    districtId: null,
+    eventId: null,
+    status: "published",
+    videoId: "dQw4w9WgXcQ",
+  }),
   article(900007, "hidden-legacy-post", "N", "Hidden post", "Not public.", "<p>Hidden.</p>", "2026-10-16T06:30:00Z", {
     legacyId: 900007,
     titleHi: null,

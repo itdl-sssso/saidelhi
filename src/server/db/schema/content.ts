@@ -36,6 +36,7 @@ export const articleI18n = mysqlTable(
     districtId: idRef("district_id").references(() => orgUnit.id),
     eventId: idRef("event_id").references(() => event.id),
     status: varchar("status", { length: 16 }).$type<ArticleStatus>().notNull().default("published"),
+    videoId: varchar("video_id", { length: 16 }),
     ...timestamps(),
   },
   (t) => [index("article_i18n_event_idx").on(t.eventId), index("article_i18n_district_idx").on(t.districtId)],

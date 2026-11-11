@@ -11,6 +11,7 @@ import { Button } from "@/ui/Button";
 import { cx } from "@/ui/cx";
 import { FigureValue } from "@/ui/Figure";
 import { Icon } from "@/ui/Icon";
+import { ArticleVideo } from "./ArticleVideo";
 import styles from "./ArticleView.module.css";
 
 export function ArticleView({ article }: { article: ArticleDetail }) {
@@ -64,6 +65,7 @@ export function ArticleView({ article }: { article: ArticleDetail }) {
         <div className={cx(pub.wrap, pub.stack)}>
           <div className={styles.layout}>
             <div className={styles.main}>
+              {article.video ? <ArticleVideo video={article.video} title={title.text} /> : null}
               {article.cover ? (
                 <figure className={styles.cover}>
                   <Image

@@ -1,0 +1,1 @@
+ALTER TABLE `article_i18n` ADD `video_id` varchar(16);

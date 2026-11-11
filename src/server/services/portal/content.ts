@@ -2,6 +2,8 @@
 // thought-for-the-day / announcement / home-section items, thought calendar + CSV import,
 // create-from-event, cover upload and scheduled publishing.
 import {
+  articleVideoOf,
+  parseYouTubeId,
   type ArticleEditor,
   ContentCreate as ContentCreateSchema,
   type ContentDetail,
@@ -75,6 +77,13 @@ export const slugify = (s: string) =>
     .replace(/^-+|-+$/g, "")
     .slice(0, 70) || "article";
 
+/** Admin video input (YouTube link or id; empty clears) -> id or null; 422 on `video` when unparseable. */
+export function videoInput(raw: string | null | undefined): string | null {
+  if (!raw || !raw.trim()) return null;
+  const id = parseYouTubeId(raw);
+  if (!id) throw new ApiError("VALIDATION_FAILED", { fields: { video: "Paste a YouTube link (youtube.com or youtu.be)." } });
+  return id;
+}
 const hasText = (v: string | null | undefined): v is string => !!v && v.trim().length > 0;
 const itemStatus = (s: ContentItemRec["status"]): ContentStatus => (s === "archived" ? "hidden" : s);
 const toItemStatus = (s: ContentStatus): ContentItemRec["status"] => (s === "hidden" ? "archived" : s === "scheduled" ? "draft" : s);
@@ -169,6 +178,7 @@ export function createContentAdminService(ctx: PortalCtx): ContentAdminService {
     summary: d.data.summary,
     bodyHtml: d.data.bodyHtml,
     cover: d.data.cover,
+    video: articleVideoOf(d.data.video),
     gallery: d.data.gallery,
     district: districtRef(org, d.data.districtId),
     event,
@@ -207,6 +217,7 @@ export function createContentAdminService(ctx: PortalCtx): ContentAdminService {
       summary: i18n(rec.shortDescription, rec.i18n?.summaryHi ?? null),
       bodyHtml: { en: sanitizeBody(rec.content, deps.mediaBase), hi: rec.i18n?.bodyHi ? sanitizeBody(rec.i18n.bodyHi, deps.mediaBase) : null },
       cover: rec.featuredImage ? legacyMedia(rec.featuredImage, rec.title) : null,
+      video: articleVideoOf(rec.i18n?.videoId),
       gallery: [...rec.gallery].sort((a, b) => a.order - b.order).map((g) => legacyMedia(g.image, g.caption ?? rec.title)),
       district: districtRef(org, rec.i18n?.districtId ?? null),
       event: await eventCard(org, rec.i18n?.eventId ?? null),
@@ -379,6 +390,7 @@ export function createContentAdminService(ctx: PortalCtx): ContentAdminService {
           summary: cleanI18n(body.summary ?? { en: "", hi: null }),
           bodyHtml: cleanBody(body.bodyHtml ?? { en: "", hi: null }),
           cover: body.cover,
+          video: videoInput(body.video),
           gallery: body.gallery,
           districtId: body.districtId ?? (body.eventId ? ((await repo.eventById(body.eventId))?.districtId ?? null) : null),
           eventId: body.eventId,
@@ -458,6 +470,7 @@ export function createContentAdminService(ctx: PortalCtx): ContentAdminService {
       if (body.summary) a.summary = cleanI18n(body.summary);
       if (body.bodyHtml) a.bodyHtml = cleanBody(body.bodyHtml);
       if (body.cover !== undefined) a.cover = body.cover;
+      if (body.video !== undefined) a.video = videoInput(body.video);
       if (body.gallery) a.gallery = body.gallery;
       if (body.districtId !== undefined) a.districtId = body.districtId;
       if (body.eventId !== undefined) a.eventId = body.eventId;
@@ -540,6 +553,7 @@ export function createContentAdminService(ctx: PortalCtx): ContentAdminService {
         summary: { en: summary("en"), hi: org.ref(ev.samithiId).name.hi && seva?.labelHi ? summary("hi") : null },
         bodyHtml: { en: `<p>${escapeHtml(summary("en"))}</p>${card}`, hi: null },
         cover: ev.resultsPhotos[0] ? { url: (ev.resultsPhotos[0] as { url?: string }).url ?? "", width: null, height: null, alt: { en: titleEn, hi: null } } : null,
+        video: null,
         gallery: [],
         districtId: ev.districtId,
         eventId: ev.id,

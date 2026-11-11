@@ -2489,7 +2489,11 @@
       "removeDay": "Remove",
       "importResult": "{created} added, {updated} updated, {errors} with problems.",
       "importRow": "Row {row}",
-      "csvNote": "CSV columns: date, text_en, text_hi, source_en, source_hi. Dates as yyyy-mm-dd."
+      "csvNote": "CSV columns: date, text_en, text_hi, source_en, source_hi. Dates as yyyy-mm-dd.",
+      "fVideo": "YouTube video",
+      "videoHint": "Unlisted links work. Shown as a player at the top of the article.",
+      "videoPreviewAlt": "Video thumbnail",
+      "errVideo": "Paste a YouTube link (youtube.com or youtu.be)."
     },
     "impact": {
       "title": "Public impact",
@@ -3339,7 +3343,14 @@
     "relatedHeading": "Related stories",
     "calendarCtaTitle": "Come to the next one",
     "calendarCtaBody": "Every camp and class on the calendar is free and open to all.",
-    "seeCalendar": "See the calendar"
+    "seeCalendar": "See the calendar",
+    "video": {
+      "play": "Play video: {title}",
+      "loadNote": "The video loads from YouTube only after you press play.",
+      "privacy": "Playing from YouTube (privacy mode).",
+      "watchOnYouTube": "Watch on YouTube",
+      "newTab": "(opens in a new tab)"
+    }
   },
   "district": {
     "crumbHome": "Home",

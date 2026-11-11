@@ -50,6 +50,7 @@ const toI18n = (r: I18nRow | null): ArticleI18nRec | null =>
         districtId: r.districtId,
         eventId: r.eventId,
         status: r.status,
+        videoId: r.videoId,
       }
     : null;
 

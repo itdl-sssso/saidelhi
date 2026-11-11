@@ -2489,7 +2489,11 @@
       "removeDay": "हटाएँ",
       "importResult": "{created} जोड़े, {updated} अपडेट, {errors} में समस्या।",
       "importRow": "पंक्ति {row}",
-      "csvNote": "CSV कॉलम: date, text_en, text_hi, source_en, source_hi. तिथि yyyy-mm-dd रूप में।"
+      "csvNote": "CSV कॉलम: date, text_en, text_hi, source_en, source_hi. तिथि yyyy-mm-dd रूप में।",
+      "fVideo": "YouTube वीडियो",
+      "videoHint": "अनलिस्टेड लिंक भी चलते हैं। लेख के ऊपर प्लेयर के रूप में दिखेगा।",
+      "videoPreviewAlt": "वीडियो का थंबनेल",
+      "errVideo": "YouTube लिंक चिपकाएँ (youtube.com या youtu.be)।"
     },
     "impact": {
       "title": "सार्वजनिक प्रभाव",
@@ -3339,7 +3343,14 @@
     "relatedHeading": "संबंधित कथाएँ",
     "calendarCtaTitle": "अगले कार्यक्रम में आइए",
     "calendarCtaBody": "कैलेंडर में हर कैंप और कक्षा निःशुल्क है और सबके लिए खुली है।",
-    "seeCalendar": "कैलेंडर देखें"
+    "seeCalendar": "कैलेंडर देखें",
+    "video": {
+      "play": "वीडियो चलाएँ: {title}",
+      "loadNote": "वीडियो चलाने का बटन दबाने पर ही YouTube से लोड होगा।",
+      "privacy": "YouTube से चल रहा है (गोपनीयता मोड)।",
+      "watchOnYouTube": "YouTube पर देखें",
+      "newTab": "(नए टैब में खुलता है)"
+    }
   },
   "district": {
     "crumbHome": "होम",

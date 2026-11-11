@@ -2,7 +2,7 @@
 
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
-import { type ArticleEditor as ArticleDetail, type ContentDetail, type ContentItemEditor, UPLOAD_LIMITS, type Media, adminEndpoints } from "@/contract";
+import { type ArticleEditor as ArticleDetail, type ContentDetail, type ContentItemEditor, UPLOAD_LIMITS, type Media, adminEndpoints, parseYouTubeId, youTubeThumb } from "@/contract";
 import { formatDate, type AppLocale, tx } from "@/lib/format";
 import { Alert } from "@/ui/Alert";
 import { Button } from "@/ui/Button";
@@ -42,6 +42,7 @@ interface State {
   districtId: string;
   eventId: string;
   cover: Media | null;
+  video: string;
   publishAt: string;
 }
 const local = (iso: string | null) => (iso ? new Date(new Date(iso).getTime() - new Date(iso).getTimezoneOffset() * 60000).toISOString().slice(0, 16) : "");
@@ -53,6 +54,7 @@ const from = (d: ArticleDetail): State => ({
   districtId: d.district?.id ?? "",
   eventId: d.event?.id ?? "",
   cover: d.cover,
+  video: d.video?.url ?? "",
   publishAt: local(d.publishAt),
 });
 
@@ -85,6 +87,7 @@ function Article({ d, org, reload }: { d: ArticleDetail; org: OrgOptions; reload
   const save = async (status?: "published" | "scheduled" | "hidden" | "draft", publishAt?: string | null) => {
     const e: Record<string, string> = {};
     if (!s.title.en.trim()) e.title = t("errTitle");
+    if (s.video.trim() && !parseYouTubeId(s.video)) e.video = t("errVideo");
     setErrors(e);
     if (Object.keys(e).length) return false;
     const body = {
@@ -93,6 +96,7 @@ function Article({ d, org, reload }: { d: ArticleDetail; org: OrgOptions; reload
       summary: i18n(s.summary),
       bodyHtml: i18n(s.body),
       cover: s.cover,
+      video: s.video.trim() || null,
       districtId: s.districtId || null,
       eventId: s.eventId || null,
       ...(status ? { status, publishAt: publishAt === undefined ? null : publishAt } : {}),
@@ -186,6 +190,7 @@ function Article({ d, org, reload }: { d: ArticleDetail; org: OrgOptions; reload
                 )}
               </Loadable>
               <CoverField cover={s.cover} onChange={(m) => set("cover", m)} upload={uploadImage} busy={uploading === "media"} />
+              <VideoField value={s.video} error={errors.video} onChange={(v) => set("video", v)} />
             </div>
           </Panel>
           <Panel title={t("preview")}>
@@ -229,6 +234,20 @@ function Article({ d, org, reload }: { d: ArticleDetail; org: OrgOptions; reload
           <p className={styles.cap}>{t("scheduleNote")}</p>
         </div>
       </Dialog>
+    </div>
+  );
+}
+
+function VideoField({ value, error, onChange }: { value: string; error?: string; onChange: (v: string) => void }) {
+  const t = useTranslations("admin.content");
+  const id = parseYouTubeId(value);
+  return (
+    <div className={c.stack}>
+      <Input label={t("fVideo")} hint={t("videoHint")} value={value} error={error} maxLength={300} inputMode="url" placeholder="https://youtu.be/..." onChange={(e) => onChange(e.target.value)} />
+      {id ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={youTubeThumb(id)} alt={t("videoPreviewAlt")} className={c.cover} referrerPolicy="no-referrer" />
+      ) : null}
     </div>
   );
 }

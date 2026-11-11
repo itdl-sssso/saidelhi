@@ -1,6 +1,6 @@
 // Native `article` documents (M6, spec 38): editor-written articles and copy-on-write
 // copies of legacy posts. Public reads overlay these on the Django posts.
-import { type Article, type ArticleCategory, type I18nText, LEGACY_ARTICLE_CATEGORY, isBuiltinCategory, type Media, type UnitRef } from "@/contract";
+import { type Article, articleVideoOf, type ArticleCategory, type I18nText, LEGACY_ARTICLE_CATEGORY, isBuiltinCategory, type Media, type UnitRef } from "@/contract";
 import { type ArticleContext, typeOf, mapLegacyCategory, readingMinutes, sanitizeBody, toArticle } from "../domain/articles";
 import { toIso } from "../domain/time";
 import type { DocRec } from "../repo/m6-types";
@@ -17,6 +17,8 @@ export interface NativeArticle {
   bodyHtml: I18nText;
   cover: Media | null;
   gallery: Media[];
+  /** YouTube video id; absent on older docs. */
+  video?: string | null;
   districtId: string | null;
   eventId: string | null;
   status: NativeStatus;
@@ -74,6 +76,7 @@ export function nativeToArticle(d: NativeDoc, ctx: ArticleContext): Article {
     type: typeOf(ctx, a.category),
     bodyHtml: { en: bodyEn, hi: a.bodyHtml.hi ? sanitizeBody(a.bodyHtml.hi, ctx.mediaBase) : null },
     cover: a.cover,
+    video: articleVideoOf(a.video),
     gallery: a.gallery,
     district: district ? { slug: district.slug, name: district.name } : null,
     readingMinutes: readingMinutes(bodyEn || a.bodyHtml.hi || ""),
@@ -120,6 +123,7 @@ export function nativeFromLegacy(rec: ArticleRec, mediaBase: string, over: Parti
     bodyHtml: { en: sanitizeBody(rec.content ?? "", mediaBase), hi: hi?.trim() ? sanitizeBody(hi, mediaBase) || null : null },
     cover: rec.featuredImage ? legacyMediaOf(mediaBase, rec.featuredImage, rec.title) : null,
     gallery: [...rec.gallery].sort((a, b) => a.order - b.order).map((g) => legacyMediaOf(mediaBase, g.image, g.caption ?? rec.title)),
+    video: rec.i18n?.videoId ?? null,
     districtId: rec.i18n?.districtId ?? null,
     eventId: rec.i18n?.eventId ?? null,
     status: legacyStatusOf(rec),
