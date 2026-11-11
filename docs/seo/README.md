@@ -27,6 +27,7 @@ Lighthouse (mobile), 21 Oct 2026:
 |---|---|---|
 | [2026-10-21-legacy-live](snapshots/2026-10-21-legacy-live/scorecard.md) | **The baseline.** Live legacy Django site | 28 |
 | [2026-10-22-legacy-local-fixes](snapshots/2026-10-22-legacy-local-fixes/scorecard.md) | Legacy Django with quick SEO fixes, run locally (17 pages, no Lighthouse, so no Performance group) | 90 (SEO 90, AI 89) |
+| [2026-11-11-staging](snapshots/2026-11-11-staging/scorecard.md) | Rebuilt Next.js site on staging, before the SEO/AI optimisation pass (133 pages, Lighthouse `/` + `/about`). Staging sends noindex, so Lighthouse SEO reads 66 and canonical/www checks are expected to fail there. AI score is low because JSON-LD, llms.txt, hreflang and canonical are not yet on the new pages | 55 (SEO 73, Perf 70, AI 21) |
 
 The 22 Oct run shows what quick fixes alone reached on the old stack. The rebuild should beat it, with Performance included.
 

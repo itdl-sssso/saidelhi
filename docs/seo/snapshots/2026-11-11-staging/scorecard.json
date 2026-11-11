@@ -1,0 +1,186 @@
+{
+ "date": "2026-11-11",
+ "overall": 55,
+ "groups": {
+  "SEO": 73,
+  "Performance": 70,
+  "AI": 21
+ },
+ "checks": [
+  [
+   "SEO",
+   "Unique, descriptive <title>",
+   77,
+   3,
+   "77% of 133 pages"
+  ],
+  [
+   "SEO",
+   "Meta description 50-170 chars",
+   79,
+   3,
+   "79% of pages"
+  ],
+  [
+   "SEO",
+   "Exactly one <h1>",
+   100,
+   2,
+   ""
+  ],
+  [
+   "SEO",
+   "Canonical tag",
+   0,
+   2,
+   ""
+  ],
+  [
+   "SEO",
+   "Open Graph tags (link previews)",
+   100,
+   1,
+   ""
+  ],
+  [
+   "SEO",
+   "Image alt text",
+   57,
+   1,
+   ""
+  ],
+  [
+   "SEO",
+   "robots.txt present",
+   100,
+   2,
+   "200"
+  ],
+  [
+   "SEO",
+   "sitemap.xml present",
+   100,
+   3,
+   "200"
+  ],
+  [
+   "SEO",
+   "www redirects to apex (one host)",
+   0,
+   2,
+   "www -> 200"
+  ],
+  [
+   "SEO",
+   "No broken '-None' slugs",
+   100,
+   1,
+   "0 found"
+  ],
+  [
+   "SEO",
+   "Favicon",
+   100,
+   1,
+   "200"
+  ],
+  [
+   "SEO",
+   "Pages >= 300 words",
+   72,
+   1,
+   ""
+  ],
+  [
+   "Performance",
+   "Lighthouse performance (mobile, avg)",
+   60,
+   3,
+   "60"
+  ],
+  [
+   "Performance",
+   "Lighthouse SEO (avg)",
+   66,
+   2,
+   "66"
+  ],
+  [
+   "Performance",
+   "Worst LCP <= 2.5 s",
+   61,
+   3,
+   "6.4 s"
+  ],
+  [
+   "Performance",
+   "Heaviest page <= 2 MB",
+   100,
+   2,
+   "1.1 MB"
+  ],
+  [
+   "AI",
+   "AI and search crawlers get full HTML",
+   100,
+   3,
+   "6/6 bots"
+  ],
+  [
+   "AI",
+   "robots.txt names AI crawlers explicitly",
+   0,
+   1,
+   ""
+  ],
+  [
+   "AI",
+   "llms.txt present",
+   0,
+   1,
+   "404"
+  ],
+  [
+   "AI",
+   "Organization schema on home",
+   0,
+   3,
+   "none"
+  ],
+  [
+   "AI",
+   "Article/Event schema on posts",
+   0,
+   3,
+   "0/0 posts"
+  ],
+  [
+   "AI",
+   "Visible publish dates on posts",
+   0,
+   2,
+   "0/0 sampled"
+  ],
+  [
+   "AI",
+   "Contact facts in text (PIN, phone, email)",
+   0,
+   2,
+   "0/3"
+  ],
+  [
+   "AI",
+   "Hindi pages with hreflang",
+   0,
+   2,
+   ""
+  ],
+  [
+   "AI",
+   "Meta descriptions (used as answer snippets)",
+   79,
+   1,
+   ""
+  ]
+ ]
+}
