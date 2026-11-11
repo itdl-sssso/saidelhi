@@ -12,6 +12,7 @@ Rebuild of saidelhi.org (Sri Sathya Sai Seva Organisation, Delhi NCR): bilingual
 | `docs/design/` | Claude Design export: `public/`, `portal/` (batch HTML + JSX prototypes), `wireframes/` (Home 3D lotus, Values, Calendar, Map), `ds-additions/`, `assets/` (real Sarva Dharma emblem, lotus.glb). Recreate faithfully; prototypes are reference, not code to copy. |
 | `design-system/tokens/*.css` | Design tokens (SSSSO Delhi NCR design system, claude.ai/design project `9ec6b9ec-3169-4084-8acf-09aeff92e3a6`). |
 | `docs/db/saidelhi-schema.sql` | Live legacy Django MySQL schema (14 tables) from server. |
+| `docs/seo/README.md` | SEO + AI-search baseline of legacy saidelhi.org (21 Oct 2026, overall 28/100) + re-run steps (`scripts/seo/crawl.py`, `score.py`). Add a snapshot per improvement. |
 | `docs/whatsapp-setup.md` | Meta WhatsApp Cloud API setup guide (creds pending from user). |
 
 ## Stack & decisions (agreed with user)

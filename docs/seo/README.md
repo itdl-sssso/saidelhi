@@ -1,0 +1,56 @@
+# SEO & AI-search baseline
+
+Reference point for every SEO / AI-search improvement on the rebuilt site. Moved here from the legacy repo (`saidelhi org/seo/`) on 11 Nov 2026 so new runs sit next to the code they measure.
+
+## Baseline: legacy saidelhi.org, live, 21 Oct 2026
+
+Overall **28 / 100** across 68 crawled pages. Full detail: [scorecard.md](snapshots/2026-10-21-legacy-live/scorecard.md).
+
+| Area | Score | Weakest checks |
+|---|---|---|
+| SEO | **10** | no meta descriptions, no canonical, no single `<h1>`, no OG tags, robots.txt + sitemap.xml 404, www not redirected, favicon 404, 18% unique titles |
+| Performance | **35** | worst LCP 16.8 s, heaviest page 9.3 MB |
+| AI | **39** | no Organization / Article / Event JSON-LD (0/53 posts), no llms.txt, no hreflang, robots.txt names no AI crawlers |
+
+What was already fine: all six crawlers tested (GPTBot, OAI-SearchBot, ClaudeBot, PerplexityBot, Googlebot, Bingbot) got full HTML, image alt text 98%, visible publish dates, and contact facts (PIN, phone, email) in page text.
+
+Lighthouse (mobile), 21 Oct 2026:
+
+| URL | Perf | A11y | Best practices | SEO |
+|---|---|---|---|---|
+| `/` | 55 | 84 | 75 | 82 |
+| `/about-us/` | 64 | 89 | 89 | 91 |
+
+## Other snapshots
+
+| Snapshot | What | Overall |
+|---|---|---|
+| [2026-10-21-legacy-live](snapshots/2026-10-21-legacy-live/scorecard.md) | **The baseline.** Live legacy Django site | 28 |
+| [2026-10-22-legacy-local-fixes](snapshots/2026-10-22-legacy-local-fixes/scorecard.md) | Legacy Django with quick SEO fixes, run locally (17 pages, no Lighthouse, so no Performance group) | 90 (SEO 90, AI 89) |
+
+The 22 Oct run shows what quick fixes alone reached on the old stack. The rebuild should beat it, with Performance included.
+
+## Files
+
+- `snapshots/<date>-<label>/baseline.json`: raw crawl (per-URL title, description, h1, canonical, hreflang, OG, JSON-LD count, words, images) plus site checks (robots, sitemap, llms.txt, favicon, www redirect).
+- `snapshots/<date>-<label>/lh_*.json`: Lighthouse reports, optional; they feed the Performance group.
+- `snapshots/<date>-<label>/scorecard.{md,json}`: weighted scores from `scripts/seo/score.py`.
+- `ai-prompt-panel.csv`: 15 EN/HI prompts for checking AI answer engines by hand (ChatGPT, Perplexity, Gemini, Claude…). Fill in mention, cited URL and accuracy on each run. It was not filled in for the baseline.
+
+## Re-running
+
+Needs Python 3 with `requests` and `beautifulsoup4`; Lighthouse via `npx lighthouse` (optional).
+
+```bash
+d=docs/seo/snapshots/$(date +%F)-staging && mkdir -p $d && cd $d
+SEO_BASE=https://staging.saidelhi.org python3 ../../../../scripts/seo/crawl.py   # writes baseline.json here
+npx lighthouse https://staging.saidelhi.org/ --form-factor=mobile --output=json --output-path=lh_home.json --quiet --chrome-flags=--headless
+cd - && SEO_BASE=https://staging.saidelhi.org python3 scripts/seo/score.py $d   # writes scorecard.md/json
+```
+
+`SEO_BASE` defaults to `https://saidelhi.org`. Crawl is polite (0.5 s between requests, max 150 pages). Keep snapshots append-only and add a row to the table above for each run, so the trend stays visible.
+
+Caveats when comparing:
+- Page counts differ (68 legacy pages vs. the new route set), so percentage checks matter more than raw counts.
+- The www→apex check sends a `Host: www.saidelhi.org` header to `SEO_BASE`. On staging, read it as a check of the prod proxy setup.
+- The "-None slugs" check targets a legacy Django bug and should stay at 0.

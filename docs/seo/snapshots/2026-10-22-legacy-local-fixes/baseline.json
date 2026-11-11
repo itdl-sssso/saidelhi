@@ -1,0 +1,361 @@
+{
+ "date": "2026-10-22",
+ "pages": [
+  {
+   "url": "http://127.0.0.1:8765/",
+   "status": 200,
+   "ms": 10,
+   "bytes": 26175,
+   "title": "Sri Sathya Sai Seva Organisations, Delhi-NCR: Seva and Bal Vikas",
+   "description": "Sri Sathya Sai Seva Organisations, Delhi-NCR: free medical and eye camps, blood donation, Narayan Seva, Bal Vikas classes and spiritual programmes across Delhi-NCR.",
+   "h1": [
+    "Sri Sathya Sai Seva Organisations, Delhi-NCR"
+   ],
+   "canonical": "https://saidelhi.org/",
+   "lang": "en",
+   "hreflang": 0,
+   "og": 7,
+   "jsonld": 1,
+   "words": 680,
+   "imgs": 12,
+   "imgs_no_alt": 0,
+   "iframes": [
+    "https://calendar.google.com/calendar/u/0/embed?src=c_1697c8b",
+    "https://www.youtube.com/embed/w17W_wsfKd8",
+    "https://www.google.com/maps/d/embed?mid=19V_s4gYKEZSRgg3PBco"
+   ]
+  },
+  {
+   "url": "http://127.0.0.1:8765/about-us/",
+   "status": 200,
+   "ms": 3,
+   "bytes": 19056,
+   "title": "About Us | Sri Sathya Sai Seva Organisations, Delhi-NCR",
+   "description": "History and work of the Sri Sathya Sai Seva Organisations in Delhi-NCR: founded by Sri Sathya Sai Baba in 1960, with spiritual, service and education wings.",
+   "h1": [
+    "About Us"
+   ],
+   "canonical": "https://saidelhi.org/about-us/",
+   "lang": "en",
+   "hreflang": 0,
+   "og": 7,
+   "jsonld": 1,
+   "words": 916,
+   "imgs": 9,
+   "imgs_no_alt": 3,
+   "iframes": []
+  },
+  {
+   "url": "http://127.0.0.1:8765/content/Key_Programs/getallposts/",
+   "status": 200,
+   "ms": 3,
+   "bytes": 11748,
+   "title": "Key Programs | Sri Sathya Sai Seva Organisations, Delhi-NCR",
+   "description": "Key Programs from the Sri Sathya Sai Seva Organisations, Delhi-NCR: reports and photos from service, education and spiritual activities across Delhi-NCR.",
+   "h1": [
+    "Key Programs"
+   ],
+   "canonical": "https://saidelhi.org/content/Key_Programs/getallposts/",
+   "lang": "en",
+   "hreflang": 0,
+   "og": 7,
+   "jsonld": 1,
+   "words": 120,
+   "imgs": 3,
+   "imgs_no_alt": 0,
+   "iframes": []
+  },
+  {
+   "url": "http://127.0.0.1:8765/get-involved/",
+   "status": 200,
+   "ms": 2,
+   "bytes": 17511,
+   "title": "Volunteer and Donate | Sri Sathya Sai Seva Organisations, Delhi-NCR",
+   "description": "How to volunteer with the Sri Sathya Sai Seva Organisations, Delhi-NCR, and how to donate by RTGS or NEFT with 80G income tax exemption.",
+   "h1": [
+    "Get Involved"
+   ],
+   "canonical": "https://saidelhi.org/get-involved/",
+   "lang": "en",
+   "hreflang": 0,
+   "og": 7,
+   "jsonld": 1,
+   "words": 503,
+   "imgs": 8,
+   "imgs_no_alt": 2,
+   "iframes": [
+    "https://docs.google.com/forms/d/e/1FAIpQLSfvcsp3R7XfSnuADLWt"
+   ]
+  },
+  {
+   "url": "http://127.0.0.1:8765/contact-us/",
+   "status": 200,
+   "ms": 3,
+   "bytes": 12079,
+   "title": "Contact Us | Sri Sathya Sai Seva Organisations, Delhi-NCR",
+   "description": "Address, phone and email of the Sri Sathya Sai Seva Organisations, Delhi-NCR office at Pragati Vihar, New Delhi, and contacts for state office bearers.",
+   "h1": [
+    "Contact Us"
+   ],
+   "canonical": "https://saidelhi.org/contact-us/",
+   "lang": "en",
+   "hreflang": 0,
+   "og": 7,
+   "jsonld": 1,
+   "words": 167,
+   "imgs": 4,
+   "imgs_no_alt": 1,
+   "iframes": []
+  },
+  {
+   "url": "http://127.0.0.1:8765/content/Special_Programs/getallposts/",
+   "status": 200,
+   "ms": 3,
+   "bytes": 13422,
+   "title": "Special Programs | Sri Sathya Sai Seva Organisations, Delhi-NCR",
+   "description": "Special Programs from the Sri Sathya Sai Seva Organisations, Delhi-NCR: reports and photos from service, education and spiritual activities across Delhi-NCR.",
+   "h1": [
+    "Special Programs"
+   ],
+   "canonical": "https://saidelhi.org/content/Special_Programs/getallposts/",
+   "lang": "en",
+   "hreflang": 0,
+   "og": 7,
+   "jsonld": 1,
+   "words": 165,
+   "imgs": 5,
+   "imgs_no_alt": 0,
+   "iframes": []
+  },
+  {
+   "url": "http://127.0.0.1:8765/content/divine-rath-yatra-2/",
+   "status": 200,
+   "ms": 5,
+   "bytes": 17874,
+   "title": "Divine Rath Yatra | SSSSO Delhi-NCR",
+   "description": "Medical camp with free check-ups for over 500 people in East Delhi, organised by the samithis of the district.",
+   "h1": [
+    "Divine Rath Yatra"
+   ],
+   "canonical": "https://saidelhi.org/content/divine-rath-yatra-2/",
+   "lang": "en",
+   "hreflang": 0,
+   "og": 7,
+   "jsonld": 2,
+   "words": 163,
+   "imgs": 5,
+   "imgs_no_alt": 0,
+   "iframes": []
+  },
+  {
+   "url": "http://127.0.0.1:8765/content/divine-rath-yatra/",
+   "status": 200,
+   "ms": 4,
+   "bytes": 17866,
+   "title": "Divine Rath Yatra | SSSSO Delhi-NCR",
+   "description": "Medical camp with free check-ups for over 500 people in East Delhi, organised by the samithis of the district.",
+   "h1": [
+    "Divine Rath Yatra"
+   ],
+   "canonical": "https://saidelhi.org/content/divine-rath-yatra/",
+   "lang": "en",
+   "hreflang": 0,
+   "og": 7,
+   "jsonld": 2,
+   "words": 163,
+   "imgs": 5,
+   "imgs_no_alt": 0,
+   "iframes": []
+  },
+  {
+   "url": "http://127.0.0.1:8765/content/News/getallposts/",
+   "status": 200,
+   "ms": 3,
+   "bytes": 12393,
+   "title": "News and Events | Sri Sathya Sai Seva Organisations, Delhi-NCR",
+   "description": "News and Events from the Sri Sathya Sai Seva Organisations, Delhi-NCR: reports and photos from service, education and spiritual activities across Delhi-NCR.",
+   "h1": [
+    "News and Events"
+   ],
+   "canonical": "https://saidelhi.org/content/News/getallposts/",
+   "lang": "en",
+   "hreflang": 0,
+   "og": 7,
+   "jsonld": 1,
+   "words": 122,
+   "imgs": 4,
+   "imgs_no_alt": 0,
+   "iframes": []
+  },
+  {
+   "url": "http://127.0.0.1:8765/content/short/",
+   "status": 200,
+   "ms": 4,
+   "bytes": 17492,
+   "title": "Short | SSSSO Delhi-NCR",
+   "description": "Tiny - News and Events, Sri Sathya Sai Seva Organisations, Delhi-NCR",
+   "h1": [
+    "Short"
+   ],
+   "canonical": "https://saidelhi.org/content/short/",
+   "lang": "en",
+   "hreflang": 0,
+   "og": 7,
+   "jsonld": 2,
+   "words": 161,
+   "imgs": 5,
+   "imgs_no_alt": 0,
+   "iframes": []
+  },
+  {
+   "url": "http://127.0.0.1:8765/content/Centenary/getallposts/",
+   "status": 200,
+   "ms": 5,
+   "bytes": 12367,
+   "title": "Centenary Celebrations | Sri Sathya Sai Seva Organisations, Delhi-NCR",
+   "description": "Centenary Celebrations from the Sri Sathya Sai Seva Organisations, Delhi-NCR: reports and photos from service, education and spiritual activities across Delhi-NCR.",
+   "h1": [
+    "Centenary Celebrations"
+   ],
+   "canonical": "https://saidelhi.org/content/Centenary/getallposts/",
+   "lang": "en",
+   "hreflang": 0,
+   "og": 7,
+   "jsonld": 1,
+   "words": 127,
+   "imgs": 3,
+   "imgs_no_alt": 0,
+   "iframes": []
+  },
+  {
+   "url": "http://127.0.0.1:8765/content/Activities_Of_District/getallposts/",
+   "status": 200,
+   "ms": 3,
+   "bytes": 12674,
+   "title": "Activities of District | Sri Sathya Sai Seva Organisations, Delhi-NCR",
+   "description": "Activities of District from the Sri Sathya Sai Seva Organisations, Delhi-NCR: reports and photos from service, education and spiritual activities across Delhi-NCR.",
+   "h1": [
+    "Activities of District"
+   ],
+   "canonical": "https://saidelhi.org/content/Activities_Of_District/getallposts/",
+   "lang": "en",
+   "hreflang": 0,
+   "og": 7,
+   "jsonld": 1,
+   "words": 144,
+   "imgs": 4,
+   "imgs_no_alt": 0,
+   "iframes": []
+  },
+  {
+   "url": "http://127.0.0.1:8765/content/annual-mega-medical-camp-east-district/",
+   "status": 200,
+   "ms": 4,
+   "bytes": 18122,
+   "title": "Annual Mega Medical Camp <East> District | SSSSO Delhi-NCR",
+   "description": "Medical camp with free check-ups for over 500 people in East Delhi, organised by the samithis of the district.",
+   "h1": [
+    "Annual Mega Medical Camp <East> District"
+   ],
+   "canonical": "https://saidelhi.org/content/annual-mega-medical-camp-east-district/",
+   "lang": "en",
+   "hreflang": 0,
+   "og": 7,
+   "jsonld": 2,
+   "words": 166,
+   "imgs": 5,
+   "imgs_no_alt": 0,
+   "iframes": []
+  },
+  {
+   "url": "http://127.0.0.1:8765/wings/Spiritual/",
+   "status": 200,
+   "ms": 3,
+   "bytes": 13799,
+   "title": "Spiritual Wing | Sri Sathya Sai Seva Organisations, Delhi-NCR",
+   "description": "Spiritual wing of the Sri Sathya Sai Seva Organisations, Delhi-NCR: bhajans, festivals and spiritual programmes that help members awaken the divinity within.",
+   "h1": [
+    "Spiritual Wing"
+   ],
+   "canonical": "https://saidelhi.org/wings/Spiritual/",
+   "lang": "en",
+   "hreflang": 0,
+   "og": 7,
+   "jsonld": 1,
+   "words": 414,
+   "imgs": 5,
+   "imgs_no_alt": 1,
+   "iframes": []
+  },
+  {
+   "url": "http://127.0.0.1:8765/wings/Service/",
+   "status": 200,
+   "ms": 2,
+   "bytes": 13910,
+   "title": "Service Wing | Sri Sathya Sai Seva Organisations, Delhi-NCR",
+   "description": "Service wing of the Sri Sathya Sai Seva Organisations, Delhi-NCR: medical camps, blood donation, Narayan Seva, Annaprasadam and village service projects.",
+   "h1": [
+    "Service Wing"
+   ],
+   "canonical": "https://saidelhi.org/wings/Service/",
+   "lang": "en",
+   "hreflang": 0,
+   "og": 7,
+   "jsonld": 1,
+   "words": 370,
+   "imgs": 5,
+   "imgs_no_alt": 1,
+   "iframes": []
+  },
+  {
+   "url": "http://127.0.0.1:8765/wings/Education/",
+   "status": 200,
+   "ms": 2,
+   "bytes": 12461,
+   "title": "Education Wing | Sri Sathya Sai Seva Organisations, Delhi-NCR",
+   "description": "Education wing of the Sri Sathya Sai Seva Organisations, Delhi-NCR: Sri Sathya Sai Bal Vikas, Education in Human Values and holistic, values-based learning for all ages.",
+   "h1": [
+    "Education Wing"
+   ],
+   "canonical": "https://saidelhi.org/wings/Education/",
+   "lang": "en",
+   "hreflang": 0,
+   "og": 7,
+   "jsonld": 1,
+   "words": 260,
+   "imgs": 5,
+   "imgs_no_alt": 1,
+   "iframes": []
+  },
+  {
+   "url": "http://127.0.0.1:8765/book-auditorium/",
+   "status": 200,
+   "ms": 2,
+   "bytes": 16185,
+   "title": "Book the Auditorium | Sri Sathya Sai Seva Organisations, Delhi-NCR",
+   "description": "How to book the auditorium at Sri Sathya Sai International Centre, Pragati Vihar, New Delhi: facilities, timings and booking phone numbers.",
+   "h1": [
+    "Book Auditorium"
+   ],
+   "canonical": "https://saidelhi.org/book-auditorium/",
+   "lang": "en",
+   "hreflang": 0,
+   "og": 7,
+   "jsonld": 1,
+   "words": 383,
+   "imgs": 14,
+   "imgs_no_alt": 1,
+   "iframes": []
+  }
+ ],
+ "site": {
+  "/robots.txt": 200,
+  "/sitemap.xml": 200,
+  "/llms.txt": 200,
+  "/favicon.ico": 404,
+  "www->": [
+   301,
+   "https://saidelhi.org/"
+  ]
+ }
+}

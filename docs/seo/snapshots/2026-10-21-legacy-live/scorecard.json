@@ -1,0 +1,186 @@
+{
+ "date": "2026-10-21",
+ "overall": 28,
+ "groups": {
+  "SEO": 10,
+  "Performance": 35,
+  "AI": 39
+ },
+ "checks": [
+  [
+   "SEO",
+   "Unique, descriptive <title>",
+   18,
+   3,
+   "18% of 68 pages"
+  ],
+  [
+   "SEO",
+   "Meta description 50-170 chars",
+   0,
+   3,
+   "0% of pages"
+  ],
+  [
+   "SEO",
+   "Exactly one <h1>",
+   0,
+   2,
+   ""
+  ],
+  [
+   "SEO",
+   "Canonical tag",
+   0,
+   2,
+   ""
+  ],
+  [
+   "SEO",
+   "Open Graph tags (link previews)",
+   0,
+   1,
+   ""
+  ],
+  [
+   "SEO",
+   "Image alt text",
+   98,
+   1,
+   ""
+  ],
+  [
+   "SEO",
+   "robots.txt present",
+   0,
+   2,
+   "404"
+  ],
+  [
+   "SEO",
+   "sitemap.xml present",
+   0,
+   3,
+   "404"
+  ],
+  [
+   "SEO",
+   "www redirects to apex (one host)",
+   0,
+   2,
+   "www -> 200"
+  ],
+  [
+   "SEO",
+   "No broken '-None' slugs",
+   0,
+   1,
+   "2 found"
+  ],
+  [
+   "SEO",
+   "Favicon",
+   0,
+   1,
+   "404"
+  ],
+  [
+   "SEO",
+   "Pages >= 300 words",
+   78,
+   1,
+   ""
+  ],
+  [
+   "Performance",
+   "Lighthouse performance (mobile, avg)",
+   60,
+   3,
+   "60"
+  ],
+  [
+   "Performance",
+   "Lighthouse SEO (avg)",
+   86,
+   2,
+   "86"
+  ],
+  [
+   "Performance",
+   "Worst LCP <= 2.5 s",
+   0,
+   3,
+   "16.8 s"
+  ],
+  [
+   "Performance",
+   "Heaviest page <= 2 MB",
+   0,
+   2,
+   "9.3 MB"
+  ],
+  [
+   "AI",
+   "AI and search crawlers get full HTML",
+   100,
+   3,
+   "6/6 bots"
+  ],
+  [
+   "AI",
+   "robots.txt names AI crawlers explicitly",
+   0,
+   1,
+   ""
+  ],
+  [
+   "AI",
+   "llms.txt present",
+   0,
+   1,
+   "404"
+  ],
+  [
+   "AI",
+   "Organization schema on home",
+   0,
+   3,
+   "none"
+  ],
+  [
+   "AI",
+   "Article/Event schema on posts",
+   0,
+   3,
+   "0/53 posts"
+  ],
+  [
+   "AI",
+   "Visible publish dates on posts",
+   100,
+   2,
+   "10/10 sampled"
+  ],
+  [
+   "AI",
+   "Contact facts in text (PIN, phone, email)",
+   100,
+   2,
+   "3/3"
+  ],
+  [
+   "AI",
+   "Hindi pages with hreflang",
+   0,
+   2,
+   ""
+  ],
+  [
+   "AI",
+   "Meta descriptions (used as answer snippets)",
+   0,
+   1,
+   ""
+  ]
+ ]
+}
