@@ -11,6 +11,11 @@ export { toVtt } from "./vtt";
 
 let cached: VideoProvider | undefined;
 
+/** Uploads need a real provider in production; the mock tus route only exists in development. */
+export function videoUploadsEnabled(): boolean {
+  return env().VIDEO_PROVIDER === "cloudflare" || process.env.NODE_ENV !== "production";
+}
+
 /** Provider selected by VIDEO_PROVIDER (env() already checked the CLOUDFLARE_* vars for `cloudflare`). */
 export function video(): VideoProvider {
   if (cached) return cached;

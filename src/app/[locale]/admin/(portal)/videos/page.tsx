@@ -4,6 +4,7 @@ import { NoAccess } from "@/features/admin/kit";
 import { requirePortal } from "@/features/admin/server";
 import { Streamed } from "@/features/admin/Streamed";
 import { VideosPage } from "@/features/admin/videos/VideosPage";
+import { videoUploadsEnabled } from "@/server/providers/video";
 
 export async function generateMetadata() {
   const locale = await initLocale();
@@ -14,7 +15,7 @@ export async function generateMetadata() {
 async function Content() {
   const { session } = await requirePortal("/admin/videos");
   if (!session.actor.permissions.has("content.edit")) return <NoAccess />;
-  return <VideosPage />;
+  return <VideosPage uploadsEnabled={videoUploadsEnabled()} />;
 }
 
 export default function Page() {

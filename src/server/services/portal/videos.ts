@@ -87,6 +87,9 @@ export function createVideosAdminService(ctx: PortalCtx): VideosAdminService {
 
     async create(actor, body) {
       assertCan(actor, "content.edit");
+      if (provider.kind === "mock" && process.env.NODE_ENV === "production") {
+        throw new ApiError("PROVIDER_UNAVAILABLE", { message: "Video uploads are not set up on this server (VIDEO_PROVIDER=cloudflare)." });
+      }
       const up = await provider.createUpload({ name: body.title.en, sizeBytes: body.sizeBytes, maxDurationS: VIDEO_LIMITS.maxDurationS });
       const data: VideoData = {
         provider: provider.kind,

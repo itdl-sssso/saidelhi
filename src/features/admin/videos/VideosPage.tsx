@@ -33,7 +33,7 @@ export function fmtSize(b: number): string {
   return b >= 1024 ** 3 ? `${(b / 1024 ** 3).toFixed(1)} GB` : `${Math.max(1, Math.round(b / 1024 ** 2))} MB`;
 }
 
-export function VideosPage() {
+export function VideosPage({ uploadsEnabled = true }: { uploadsEnabled?: boolean }) {
   const t = useTranslations("admin.videos");
   const locale = useLocale() as AppLocale;
   const api = useApi<AdminVideo[], { total: number }>(adminEndpoints.videos({ pageSize: 100 }));
@@ -98,11 +98,12 @@ export function VideosPage() {
         title={t("title")}
         sub={t("sub")}
         actions={
-          <Button icon="upload" onClick={() => setCreating(true)}>
+          <Button icon="upload" onClick={() => setCreating(true)} disabled={!uploadsEnabled}>
             {t("upload")}
           </Button>
         }
       />
+      {!uploadsEnabled ? <p className={v.warn}>{t("notConfigured")}</p> : null}
       {uploads.active ? <p className={v.warn}>{t("keepOpen")}</p> : null}
       {notice ? (
         <p className={v.warn} role="alert">

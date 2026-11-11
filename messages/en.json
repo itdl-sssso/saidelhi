@@ -3323,6 +3323,7 @@
       "toOverview": "Go to overview"
     },
     "videos": {
+      "notConfigured": "Video uploads are not set up on this server yet. Ask an admin to connect Cloudflare Stream.",
       "title": "Videos",
       "sub": "Upload episodes once; use them in articles. Large files upload in pieces and can be resumed.",
       "upload": "Upload video",

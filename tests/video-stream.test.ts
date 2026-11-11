@@ -170,4 +170,16 @@ describe("video library service", () => {
     const tr = await t.actor(USER.translatorE);
     expect(await errCode(t.svc.portal.videos.get(tr, "x"))).toBe("FORBIDDEN");
   });
+
+  it("mock provider refuses uploads in production (the dev tus route does not exist there)", async () => {
+    const t = m6Setup();
+    const ed = await t.actor(USER.contentD);
+    vi.stubEnv("NODE_ENV", "production");
+    try {
+      expect(await errCode(t.svc.portal.videos.create(ed, { title: { en: "x", hi: null }, fileName: "x.mp4", sizeBytes: 5 }))).toBe("PROVIDER_UNAVAILABLE");
+      expect(await errCode(t.svc.portal.videos.handleWebhook(hook("x"), MOCK_WEBHOOK_HEADER))).toBe("FORBIDDEN");
+    } finally {
+      vi.unstubAllEnvs();
+    }
+  });
 });
