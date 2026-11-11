@@ -1,0 +1,781 @@
+{
+  "round": "round-1",
+  "updatedAt": "2026-10-28T09:34:12.648Z",
+  "items": {
+    "en-home": {
+      "status": "mismatch",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "Navbar does not match the design it covers the whole width but the design is different more like a floating island.\n\nAs i scroll down the gap of the navbar gets filled first displacing the whole background upwards. \nThere is no scroll snapping as in the design.\n\nThought of the day not updating automatically, picture doesn't change either.\n\nImpact says the year number, it should just say this year so far, the icons on each card is not well highlighted\n\n5 wings should have a different color each take inspiration from the sarva dharma logo, saiconnect and social links not given in this section as mentioned in the design\n\nadd a placeholder in the centenary celebration card image as we will add a centenary image there \n\nTold by the people who were there, this is missing as the stories are still not on the website but make sure we account for this section\n\nremove the current map image with a real embedded map as on the map page but it shouldn't be interactable just clickable takes you to the map page \n\nSri Sathya Sai Answers Questions answered from his discourses, Auditorium reservation Sri Sathya Sai International Centre these sections were completely missed \n\ndiscrepancy in the design and implementation: Seva updates on WhatsApp, \n\ncomparisons made to: Design: Home v2 wireframe\n\nin the mobile view the photo of swami is cut in the background rather show it on the card than lotus ( only on mobile screens )",
+      "shots": [
+        "en-home-1.png",
+        "en-home-2.png",
+        "en-home-3.png",
+        "en-home-4.png",
+        "en-home-5.png",
+        "en-home-6.png",
+        "en-home-7.png",
+        "en-home-8.png",
+        "en-home-9.png"
+      ],
+      "updatedAt": "2026-10-26T23:09:07.366Z"
+    },
+    "en-about": {
+      "status": "mismatch",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "two sections for find a center, keep the pincode one ",
+      "shots": [
+        "en-about-1.png"
+      ],
+      "updatedAt": "2026-10-26T23:14:47.065Z"
+    },
+    "en-calendar": {
+      "status": "mismatch",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "Dropdowns need to be rounded",
+      "shots": [
+        "en-calendar-1.png"
+      ],
+      "updatedAt": "2026-10-26T23:26:03.631Z"
+    },
+    "en-map": {
+      "status": "mismatch",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "This page doesn't match the design at all, the list should be on the right, there should be internal scrolling in a div for the list right now it blocks the page scroll, the filter and search need to be just above the list with the map spanning both the divs vertically refer Design: Map wireframe",
+      "shots": [],
+      "updatedAt": "2026-10-26T23:30:50.355Z"
+    },
+    "en-impact": {
+      "status": "mismatch",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "Fewer than 5 doesn't match the rest of the fonts\n\nin the by district section, find a way to make the height of both containers equal so it looks symmetrical",
+      "shots": [
+        "en-impact-1.png",
+        "en-impact-2.png"
+      ],
+      "updatedAt": "2026-10-26T23:40:19.472Z"
+    },
+    "en-join": {
+      "status": "minor",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "Conceptual change we don't show the number of sevadal but rather a sevadal needed sign, also if we share the number of he coordinator will it cause issues? \n\nAlso remove the Whatsapp JOIN card, reminder card is fine",
+      "shots": [],
+      "updatedAt": "2026-10-26T23:47:43.533Z"
+    },
+    "en-news": {
+      "status": "works",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "",
+      "shots": [],
+      "updatedAt": "2026-10-26T23:59:26.176Z"
+    },
+    "en-article": {
+      "status": "minor",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "the clock sign must be left and 1 min read should be right in a single row not vertically aligned\n\non the top in the drawer, Home > News > News it should be Home > News > <Title>",
+      "shots": [
+        "en-article-1.png"
+      ],
+      "updatedAt": "2026-10-27T05:48:41.678Z"
+    },
+    "en-privacy": {
+      "status": "works",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "",
+      "shots": [],
+      "updatedAt": "2026-10-27T00:05:47.235Z"
+    },
+    "en-programs": {
+      "status": "works",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "",
+      "shots": [],
+      "updatedAt": "2026-10-27T00:12:53.662Z"
+    },
+    "en-program": {
+      "status": "works",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "",
+      "shots": [],
+      "updatedAt": "2026-10-27T00:16:36.909Z"
+    },
+    "en-event": {
+      "status": "works",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "",
+      "shots": [],
+      "updatedAt": "2026-10-27T05:46:29.786Z"
+    },
+    "en-centre": {
+      "status": "works",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "",
+      "shots": [],
+      "updatedAt": "2026-10-27T05:48:01.425Z"
+    },
+    "en-district": {
+      "status": "works",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "",
+      "shots": [],
+      "updatedAt": "2026-10-27T07:00:49.470Z"
+    },
+    "en-not-found": {
+      "status": "works",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "",
+      "shots": [],
+      "updatedAt": "2026-10-27T09:36:30.716Z"
+    },
+    "en-legacy-redirect": {
+      "status": "works",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "",
+      "shots": [],
+      "updatedAt": "2026-10-27T09:36:52.654Z"
+    },
+    "form-verify": {
+      "status": "minor",
+      "devices": {
+        "desktop": false,
+        "mobile": false,
+        "hindi": false
+      },
+      "notes": "Can we also add a photos section to the form?",
+      "shots": [],
+      "updatedAt": "2026-10-28T06:50:02.189Z"
+    },
+    "en-value-sathya": {
+      "status": "minor",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "Hindi version not implemented fully",
+      "shots": [],
+      "updatedAt": "2026-10-27T23:47:12.419Z"
+    },
+    "en-value-dharma": {
+      "status": "minor",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "In Dharma, instead of Bal Vikas section add medical camp; Hindi translation on the page is not fully done\n\nधर्म पर साथ ले जाने वाले शब्द -> can be changed to a better hindi phrase ( might be in all value pages )",
+      "shots": [],
+      "updatedAt": "2026-10-28T00:11:30.110Z"
+    },
+    "en-value-shanti": {
+      "status": "minor",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "Bhajans are not always / just on Thursdays and Sundays and not all samithis have fixed weekly time for it.\n\nSome hindi texts are not available\n\ncards should have consistent height. ",
+      "shots": [
+        "en-value-shanti-1.png"
+      ],
+      "updatedAt": "2026-10-28T06:42:14.220Z"
+    },
+    "en-gallery-album": {
+      "status": "works",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "",
+      "shots": [],
+      "updatedAt": "2026-10-28T06:07:51.253Z"
+    },
+    "en-value-prema": {
+      "status": "minor",
+      "devices": {
+        "desktop": false,
+        "mobile": false,
+        "hindi": false
+      },
+      "notes": "Hindi translation for a few sections are missing",
+      "shots": [],
+      "updatedAt": "2026-10-28T06:46:18.150Z"
+    },
+    "en-value-ahimsa": {
+      "status": "minor",
+      "devices": {
+        "desktop": false,
+        "mobile": false,
+        "hindi": false
+      },
+      "notes": "Hindi translation for a few sections are missing",
+      "shots": [],
+      "updatedAt": "2026-10-28T06:46:22.205Z"
+    },
+    "form-fill": {
+      "status": "works",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "",
+      "shots": [],
+      "updatedAt": "2026-10-28T06:51:17.712Z"
+    },
+    "form-done": {
+      "status": "works",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "",
+      "shots": [],
+      "updatedAt": "2026-10-28T06:52:06.692Z"
+    },
+    "form-expired": {
+      "status": "works",
+      "devices": {
+        "desktop": false,
+        "mobile": false,
+        "hindi": false
+      },
+      "notes": "",
+      "shots": [],
+      "updatedAt": "2026-10-28T06:52:48.282Z"
+    },
+    "form-public": {
+      "status": "works",
+      "devices": {
+        "desktop": false,
+        "mobile": false,
+        "hindi": false
+      },
+      "notes": "",
+      "shots": [],
+      "updatedAt": "2026-10-28T06:54:14.694Z"
+    },
+    "form-invalid": {
+      "status": "works",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "",
+      "shots": [],
+      "updatedAt": "2026-10-28T06:54:44.150Z"
+    },
+    "adm-login": {
+      "status": "works",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "",
+      "shots": [],
+      "updatedAt": "2026-10-28T07:03:48.339Z"
+    },
+    "adm-overview": {
+      "status": "works",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "",
+      "shots": [],
+      "updatedAt": "2026-10-28T07:04:05.711Z"
+    },
+    "adm-events": {
+      "status": "minor",
+      "devices": {
+        "desktop": false,
+        "mobile": false,
+        "hindi": false
+      },
+      "notes": "the type filter needs a sidescroll",
+      "shots": [
+        "adm-events-1.png"
+      ],
+      "updatedAt": "2026-10-28T07:07:25.558Z"
+    },
+    "adm-event-new": {
+      "status": "works",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "",
+      "shots": [],
+      "updatedAt": "2026-10-28T07:16:37.816Z"
+    },
+    "adm-event": {
+      "status": "broken",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "got this default 404 page, but it should be the custom 404 page we made  ",
+      "shots": [
+        "adm-event-1.png"
+      ],
+      "updatedAt": "2026-10-28T07:22:57.685Z"
+    },
+    "adm-event-edit": {
+      "status": "works",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "",
+      "shots": [],
+      "updatedAt": "2026-10-28T07:27:08.526Z"
+    },
+    "adm-inbox": {
+      "status": "works",
+      "devices": {
+        "desktop": false,
+        "mobile": false,
+        "hindi": false
+      },
+      "notes": "",
+      "shots": [],
+      "updatedAt": "2026-10-28T07:32:02.109Z"
+    },
+    "adm-inbox-item": {
+      "status": "minor",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "should give a reason of why the action is blocked, when the cursor hovers on the blocked action",
+      "shots": [
+        "adm-inbox-item-1.png"
+      ],
+      "updatedAt": "2026-10-28T07:31:58.759Z"
+    },
+    "adm-approvals": {
+      "status": "works",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "",
+      "shots": [],
+      "updatedAt": "2026-10-28T07:36:11.497Z"
+    },
+    "adm-links": {
+      "status": "works",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "the dialogue box that opens is covered inside the list div it should be above it ",
+      "shots": [
+        "adm-links-1.png"
+      ],
+      "updatedAt": "2026-10-28T07:45:33.344Z"
+    },
+    "adm-forms": {
+      "status": "minor",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "No way to delete a template",
+      "shots": [],
+      "updatedAt": "2026-10-28T07:56:20.703Z"
+    },
+    "adm-form-edit": {
+      "status": "works",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "",
+      "shots": [],
+      "updatedAt": "2026-10-28T07:57:32.885Z"
+    },
+    "adm-uploads": {
+      "status": "minor",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "dialogue box is encapsulated inside the list box and there is no delete option",
+      "shots": [
+        "adm-uploads-1.png"
+      ],
+      "updatedAt": "2026-10-28T08:00:57.868Z"
+    },
+    "adm-uploads-new": {
+      "status": "works",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "",
+      "shots": [],
+      "updatedAt": "2026-10-28T08:08:32.779Z"
+    },
+    "adm-volunteers": {
+      "status": "works",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "",
+      "shots": [],
+      "updatedAt": "2026-10-28T08:11:31.972Z"
+    },
+    "adm-org": {
+      "status": "works",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "",
+      "shots": [],
+      "updatedAt": "2026-10-28T08:13:15.233Z"
+    },
+    "adm-centres": {
+      "status": "works",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "",
+      "shots": [],
+      "updatedAt": "2026-10-28T08:17:07.814Z"
+    },
+    "adm-centre": {
+      "status": "works",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "",
+      "shots": [],
+      "updatedAt": "2026-10-28T08:17:44.329Z"
+    },
+    "adm-partners": {
+      "status": "works",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "",
+      "shots": [],
+      "updatedAt": "2026-10-28T08:18:58.390Z"
+    },
+    "adm-people": {
+      "status": "works",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "",
+      "shots": [],
+      "updatedAt": "2026-10-28T08:20:32.967Z"
+    },
+    "adm-content": {
+      "status": "works",
+      "devices": {
+        "desktop": false,
+        "mobile": false,
+        "hindi": false
+      },
+      "notes": "Additional types should be added and the ability to add more types. Golden Stories needs to be added",
+      "shots": [],
+      "updatedAt": "2026-10-28T08:40:52.569Z"
+    },
+    "adm-gallery": {
+      "status": "works",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "",
+      "shots": [],
+      "updatedAt": "2026-10-28T08:42:07.213Z"
+    },
+    "adm-gallery-albums": {
+      "status": "works",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "",
+      "shots": [],
+      "updatedAt": "2026-10-28T08:43:04.269Z"
+    },
+    "adm-content-item": {
+      "status": "works",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "",
+      "shots": [],
+      "updatedAt": "2026-10-28T08:43:49.290Z"
+    },
+    "adm-thoughts": {
+      "status": "works",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "Let's figure out a way to automate thought of the day.",
+      "shots": [],
+      "updatedAt": "2026-10-28T08:52:50.303Z"
+    },
+    "adm-impact": {
+      "status": "works",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "Save changes / revert changes should be a floating sticky island at the bottom",
+      "shots": [],
+      "updatedAt": "2026-10-28T08:58:57.070Z"
+    },
+    "adm-discourses": {
+      "status": "works",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "",
+      "shots": [],
+      "updatedAt": "2026-10-28T09:00:41.071Z"
+    },
+    "adm-whatsapp": {
+      "status": "minor",
+      "devices": {
+        "desktop": false,
+        "mobile": false,
+        "hindi": false
+      },
+      "notes": "need to make tab selection horizontally scrollable",
+      "shots": [
+        "adm-whatsapp-1.png"
+      ],
+      "updatedAt": "2026-10-28T09:04:13.194Z"
+    },
+    "adm-reports": {
+      "status": "works",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "",
+      "shots": [],
+      "updatedAt": "2026-10-28T09:06:54.732Z"
+    },
+    "adm-health": {
+      "status": "works",
+      "devices": {
+        "desktop": false,
+        "mobile": false,
+        "hindi": false
+      },
+      "notes": "",
+      "shots": [],
+      "updatedAt": "2026-10-28T09:08:16.203Z"
+    },
+    "adm-follow-up": {
+      "status": "works",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "",
+      "shots": [],
+      "updatedAt": "2026-10-28T09:09:02.756Z"
+    },
+    "adm-privacy": {
+      "status": "works",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "",
+      "shots": [],
+      "updatedAt": "2026-10-28T09:12:48.287Z"
+    },
+    "adm-audit": {
+      "status": "works",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "",
+      "shots": [],
+      "updatedAt": "2026-10-28T09:14:54.591Z"
+    },
+    "adm-migration": {
+      "status": "works",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "actions in redirect are not aligned properly",
+      "shots": [
+        "adm-migration-1.png"
+      ],
+      "updatedAt": "2026-10-28T09:20:24.432Z"
+    },
+    "adm-settings": {
+      "status": "works",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "",
+      "shots": [],
+      "updatedAt": "2026-10-28T09:25:48.387Z"
+    },
+    "discourses": {
+      "status": "works",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "",
+      "shots": [],
+      "updatedAt": "2026-10-28T09:27:23.842Z"
+    },
+    "discourse": {
+      "status": "works",
+      "devices": {
+        "desktop": true,
+        "mobile": true,
+        "hindi": true
+      },
+      "notes": "",
+      "shots": [],
+      "updatedAt": "2026-10-28T09:27:43.512Z"
+    },
+    "dev-ui": {
+      "status": "works",
+      "devices": {
+        "desktop": false,
+        "mobile": false,
+        "hindi": false
+      },
+      "notes": "",
+      "shots": [],
+      "updatedAt": "2026-10-28T09:30:04.097Z"
+    },
+    "dev-whatsapp": {
+      "status": "not_tested",
+      "devices": {
+        "desktop": false,
+        "mobile": false,
+        "hindi": false
+      },
+      "notes": "122003: is the pincode of gurugram still it didn't pick it up",
+      "shots": [
+        "dev-whatsapp-1.png"
+      ],
+      "updatedAt": "2026-10-28T09:34:11.929Z"
+    }
+  },
+  "general": []
+}

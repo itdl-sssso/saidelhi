@@ -30,7 +30,11 @@ if git grep -lIE '^INSERT INTO' -- '*.sql' >/dev/null; then
 fi
 
 private='\b(127\.0\.0\.1|0\.0\.0\.0|10\.[0-9]+\.[0-9]+\.[0-9]+|192\.168\.[0-9]+\.[0-9]+|172\.(1[6-9]|2[0-9]|3[01])\.[0-9]+\.[0-9]+|100\.(6[4-9]|[7-9][0-9]|1[01][0-9]|12[0-7])\.[0-9]+\.[0-9]+|255\.255\.[0-9]+\.[0-9]+)\b'
-ips=$(git grep -nIE '\b([0-9]{1,3}\.){3}[0-9]{1,3}\b' -- ':!pnpm-lock.yaml' ':!*.svg' ':!docs/design' ':!public' | grep -vE "$private" || true)
+# Dotted quads that are not IPs: browser versions in user agents (Chrome/136.0.0.0) and
+# axe/WCAG rule ids (EN-9.1.4.3) in Lighthouse reports. Strip them, then re-check the line.
+not_ip='(Chrome/|EN-)[0-9]+(\.[0-9]+){3}'
+ips=$(git grep -nIE '\b([0-9]{1,3}\.){3}[0-9]{1,3}\b' -- ':!pnpm-lock.yaml' ':!*.svg' ':!docs/design' ':!public' \
+  | sed -E "s#$not_ip##g" | grep -E '\b([0-9]{1,3}\.){3}[0-9]{1,3}\b' | grep -vE "$private" || true)
 if [ -n "$ips" ]; then
   report "public IP address in tracked files (server details must stay out of this public repo):"
   echo "$ips"
