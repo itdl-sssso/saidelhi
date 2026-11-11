@@ -71,7 +71,8 @@ export class MockVideo implements VideoProvider {
   }
 
   verifyWebhook(_raw: string, header: string | null): boolean {
-    return header === MOCK_WEBHOOK_HEADER;
+    // The fixed mock header must never authenticate a production webhook.
+    return process.env.NODE_ENV !== "production" && header === MOCK_WEBHOOK_HEADER;
   }
 
   parseWebhook(raw: string): VideoWebhookEvent | null {
