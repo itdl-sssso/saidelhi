@@ -2,7 +2,7 @@
 
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
-import { type ArticleEditor as ArticleDetail, type ContentDetail, type ContentItemEditor, UPLOAD_LIMITS, type Media, adminEndpoints, parseYouTubeId, youTubeThumb } from "@/contract";
+import { type ArticleEditor as ArticleDetail, type ContentDetail, type AdminVideo, type ContentItemEditor, UPLOAD_LIMITS, type Media, adminEndpoints, cfVideoIdOf, cfVideoRef, parseYouTubeId, youTubeThumb } from "@/contract";
 import { formatDate, type AppLocale, tx } from "@/lib/format";
 import { Alert } from "@/ui/Alert";
 import { Button } from "@/ui/Button";
@@ -24,6 +24,9 @@ import { STATUS_TONE } from "./ContentPage";
 import { useContentTypes } from "./ContentTypesPage";
 import styles from "../Admin.module.css";
 import c from "./Content.module.css";
+import p from "../Parts.module.css";
+import vc from "../videos/Videos.module.css";
+import { Link } from "@/i18n/navigation";
 
 export function ContentEditorPage({ id, org }: { id: string; org: OrgOptions }) {
   const api = useApi<ContentDetail>(adminEndpoints.contentItem(id));
@@ -54,7 +57,7 @@ const from = (d: ArticleDetail): State => ({
   districtId: d.district?.id ?? "",
   eventId: d.event?.id ?? "",
   cover: d.cover,
-  video: d.video?.url ?? "",
+  video: d.video ? (d.video.provider === "youtube" ? d.video.url : cfVideoRef(d.video.id)) : "",
   publishAt: local(d.publishAt),
 });
 
@@ -87,7 +90,7 @@ function Article({ d, org, reload }: { d: ArticleDetail; org: OrgOptions; reload
   const save = async (status?: "published" | "scheduled" | "hidden" | "draft", publishAt?: string | null) => {
     const e: Record<string, string> = {};
     if (!s.title.en.trim()) e.title = t("errTitle");
-    if (s.video.trim() && !parseYouTubeId(s.video)) e.video = t("errVideo");
+    if (s.video.trim() && !cfVideoIdOf(s.video) && !parseYouTubeId(s.video)) e.video = t("errVideo");
     setErrors(e);
     if (Object.keys(e).length) return false;
     const body = {
@@ -240,15 +243,66 @@ function Article({ d, org, reload }: { d: ArticleDetail; org: OrgOptions; reload
 
 function VideoField({ value, error, onChange }: { value: string; error?: string; onChange: (v: string) => void }) {
   const t = useTranslations("admin.content");
+  const [mode, setMode] = useState<"youtube" | "library">(cfVideoIdOf(value) ? "library" : "youtube");
   const id = parseYouTubeId(value);
   return (
     <div className={c.stack}>
-      <Input label={t("fVideo")} hint={t("videoHint")} value={value} error={error} maxLength={300} inputMode="url" placeholder="https://youtu.be/..." onChange={(e) => onChange(e.target.value)} />
-      {id ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={youTubeThumb(id)} alt={t("videoPreviewAlt")} className={c.cover} referrerPolicy="no-referrer" />
-      ) : null}
+      <div role="group" aria-label={t("fVideo")} className={p.chips}>
+        <button type="button" className={p.chipBtn} aria-pressed={mode === "youtube"} onClick={() => (setMode("youtube"), cfVideoIdOf(value) && onChange(""))}>
+          {t("videoYoutube")}
+        </button>
+        <button type="button" className={p.chipBtn} aria-pressed={mode === "library"} onClick={() => (setMode("library"), !cfVideoIdOf(value) && onChange(""))}>
+          {t("videoLibrary")}
+        </button>
+      </div>
+      {mode === "youtube" ? (
+        <>
+          <Input label={t("fVideo")} hint={t("videoHint")} value={value} error={error} maxLength={300} inputMode="url" placeholder="https://youtu.be/..." onChange={(e) => onChange(e.target.value)} />
+          {id ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={youTubeThumb(id)} alt={t("videoPreviewAlt")} className={c.cover} referrerPolicy="no-referrer" />
+          ) : null}
+        </>
+      ) : (
+        <LibraryPicker selected={cfVideoIdOf(value)} error={error} onPick={(vid) => onChange(vid ? cfVideoRef(vid) : "")} />
+      )}
     </div>
+  );
+}
+
+function LibraryPicker({ selected, error, onPick }: { selected: string | null; error?: string; onPick: (id: string | null) => void }) {
+  const t = useTranslations("admin.content");
+  const locale = useLocale() as AppLocale;
+  const api = useApi<AdminVideo[]>(adminEndpoints.videos({ ready: "1", pageSize: 100 }));
+  return (
+    <Loadable api={api} rows={2}>
+      {(rows) =>
+        rows.length === 0 ? (
+          <Note>
+            {t("videoLibraryEmpty")} <Link href="/admin/videos">{t("videoLibraryLink")}</Link>
+          </Note>
+        ) : (
+          <div className={vc.pickRow} role="group" aria-label={t("videoLibrary")}>
+            {rows.map((x) => (
+              <button key={x.id} type="button" className={vc.pickItem} aria-pressed={selected === x.id} onClick={() => onPick(selected === x.id ? null : x.id)}>
+                <span className={vc.thumb}>
+                  {x.posterUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={x.posterUrl} alt="" loading="lazy" />
+                  ) : null}
+                </span>
+                <span>
+                  <strong>{tx(x.title, locale)}</strong>
+                  <br />
+                  <span className={styles.cap}>{x.durationS !== null ? `${Math.floor(x.durationS / 60)} min` : ""}</span>
+                </span>
+              </button>
+            ))}
+            {error ? <span className={styles.cap}>{error}</span> : null}
+          </div>
+        )
+      }
+    </Loadable>
   );
 }
 

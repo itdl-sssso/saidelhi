@@ -42,6 +42,12 @@ const EnvSchema = z
     SMTP_PASS: optStr,
     /** Sender, e.g. `SSSSO Delhi NCR <noreply@saidelhi.org>`. */
     SMTP_FROM: optStr,
+    /** mock = no network (dev/tests); cloudflare = Cloudflare Stream. */
+    VIDEO_PROVIDER: z.preprocess(blank, z.enum(["mock", "cloudflare"]).default("mock")),
+    CLOUDFLARE_ACCOUNT_ID: optStr,
+    CLOUDFLARE_STREAM_API_TOKEN: optStr,
+    CLOUDFLARE_STREAM_CUSTOMER_CODE: optStr,
+    CLOUDFLARE_STREAM_WEBHOOK_SECRET: optStr,
     EXTRACTOR_PROVIDER: z.preprocess(blank, z.enum(["rules", "ollama", "hf"]).default("rules")),
     OLLAMA_URL: z.preprocess(blank, z.url().default("http://127.0.0.1:11434")),
     OLLAMA_MODEL: z.preprocess(blank, z.string().default("smollm2:1.7b")),
@@ -58,6 +64,11 @@ const EnvSchema = z
     if (env.WHATSAPP_PROVIDER === "cloud") {
       for (const k of ["WA_PHONE_NUMBER_ID", "WA_ACCESS_TOKEN", "WA_APP_SECRET", "WA_VERIFY_TOKEN"] as const) {
         if (!env[k]) ctx.addIssue({ code: "custom", path: [k], message: "required when WHATSAPP_PROVIDER=cloud" });
+      }
+    }
+    if (env.VIDEO_PROVIDER === "cloudflare") {
+      for (const k of ["CLOUDFLARE_ACCOUNT_ID", "CLOUDFLARE_STREAM_API_TOKEN", "CLOUDFLARE_STREAM_CUSTOMER_CODE", "CLOUDFLARE_STREAM_WEBHOOK_SECRET"] as const) {
+        if (!env[k]) ctx.addIssue({ code: "custom", path: [k], message: "required when VIDEO_PROVIDER=cloudflare" });
       }
     }
     if (env.EMAIL_PROVIDER === "smtp") {

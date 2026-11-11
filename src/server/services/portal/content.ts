@@ -4,6 +4,7 @@
 import {
   articleVideoOf,
   parseYouTubeId,
+  cfVideoIdOf,
   type ArticleEditor,
   ContentCreate as ContentCreateSchema,
   type ContentDetail,
@@ -77,9 +78,11 @@ export const slugify = (s: string) =>
     .replace(/^-+|-+$/g, "")
     .slice(0, 70) || "article";
 
-/** Admin video input (YouTube link or id; empty clears) -> id or null; 422 on `video` when unparseable. */
+/** Admin video input (YouTube link or id, or a library reference `cf:<id>`; empty clears) -> id or null; 422 on `video` when unparseable. */
 export function videoInput(raw: string | null | undefined): string | null {
   if (!raw || !raw.trim()) return null;
+  const ref = raw.trim();
+  if (cfVideoIdOf(ref)) return ref;
   const id = parseYouTubeId(raw);
   if (!id) throw new ApiError("VALIDATION_FAILED", { fields: { video: "Paste a YouTube link (youtube.com or youtu.be)." } });
   return id;
@@ -310,6 +313,13 @@ export function createContentAdminService(ctx: PortalCtx): ContentAdminService {
   }
 
   const revalidate = () => deps.revalidate(["articles", "home", "events"]);
+  /** videoInput + the library video must exist (422 on `video`). */
+  const videoRef = async (raw: string | null | undefined): Promise<string | null> => {
+    const v = videoInput(raw);
+    const id = cfVideoIdOf(v);
+    if (id && !(await repo.m6.docGet("video", id))) throw new ApiError("VALIDATION_FAILED", { fields: { video: "That video is not in the library." } });
+    return v;
+  };
 
   /** Copies a legacy post into the native table (copy-on-write). */
   async function copyLegacy(rec: ArticleRec): Promise<NativeDoc> {
@@ -390,7 +400,7 @@ export function createContentAdminService(ctx: PortalCtx): ContentAdminService {
           summary: cleanI18n(body.summary ?? { en: "", hi: null }),
           bodyHtml: cleanBody(body.bodyHtml ?? { en: "", hi: null }),
           cover: body.cover,
-          video: videoInput(body.video),
+          video: await videoRef(body.video),
           gallery: body.gallery,
           districtId: body.districtId ?? (body.eventId ? ((await repo.eventById(body.eventId))?.districtId ?? null) : null),
           eventId: body.eventId,
@@ -470,7 +480,7 @@ export function createContentAdminService(ctx: PortalCtx): ContentAdminService {
       if (body.summary) a.summary = cleanI18n(body.summary);
       if (body.bodyHtml) a.bodyHtml = cleanBody(body.bodyHtml);
       if (body.cover !== undefined) a.cover = body.cover;
-      if (body.video !== undefined) a.video = videoInput(body.video);
+      if (body.video !== undefined) a.video = await videoRef(body.video);
       if (body.gallery) a.gallery = body.gallery;
       if (body.districtId !== undefined) a.districtId = body.districtId;
       if (body.eventId !== undefined) a.eventId = body.eventId;

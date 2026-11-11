@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
-import { type Article, youTubeThumb } from "@/contract";
+import { type Article, articleVideoThumb } from "@/contract";
 import { Link } from "@/i18n/navigation";
 import { type AppLocale, formatDate, pickText, tx } from "@/lib/format";
 import { Badge, type BadgeTone } from "@/ui/Badge";
@@ -62,7 +62,7 @@ export function ArticleCard({ article }: { article: Article }) {
       <span className={styles.acardImg}>
         {article.cover || article.video ? (
           <Image
-            src={article.cover?.url ?? youTubeThumb(article.video!.id)}
+            src={article.cover?.url ?? articleVideoThumb(article.video!)}
             unoptimized={!article.cover}
             alt={article.cover ? tx(article.cover.alt, locale) : title.text}
             fill

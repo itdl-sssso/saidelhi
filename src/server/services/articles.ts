@@ -1,4 +1,4 @@
-import { isBuiltinCategory, youTubeThumb, type I18nText, type Article, ArticleCategoryFilter, ArticleDetail, ArticleRef, ArticlesQuery, Paged, UnitRef } from "@/contract";
+import { isBuiltinCategory, articleVideoThumb, type I18nText, type Article, ArticleCategoryFilter, ArticleDetail, ArticleRef, ArticlesQuery, Paged, UnitRef } from "@/contract";
 import { legacyLettersFor, toArticle, toArticleRef, type ArticleContext } from "../domain/articles";
 import { contentTypeLabels, GOLDEN_STORIES_SLUG } from "./content-types";
 import type { ArticleRec, DataRepo } from "../repo/types";
@@ -6,6 +6,7 @@ import { assembleEvents } from "./event-assembler";
 import { isLive, nativeAll, nativeAsRec, nativeLive, nativeToArticle, shownAt, type NativeDoc } from "./native-articles";
 import type { OrgIndex } from "./org-index";
 import { loadOrg, pageOffset } from "./shared";
+import { resolveArticleVideos, videoOf } from "./video-store";
 import type { ArticlesService, ServiceDeps } from "./types";
 
 export function articleContext(org: OrgIndex, mediaBase: string, categoryLabels?: ReadonlyMap<string, I18nText>): ArticleContext {
@@ -29,7 +30,8 @@ export async function listMerged(repo: DataRepo, deps: ServiceDeps, c: ArticleCa
     ...nat.map((d) => ({ at: shownAt(d).getTime(), art: () => nativeToArticle(d, ctx) })),
     ...legacy.rows.map((r) => ({ at: r.createdAt.getTime(), art: () => toArticle(r, ctx) })),
   ].sort((x, y) => y.at - x.at);
-  return { rows: merged.slice(offset, offset + limit).map((m) => m.art()), total: legacy.total + nat.length };
+  const rows = await resolveArticleVideos(repo, videoOf(deps), merged.slice(offset, offset + limit).map((m) => m.art()));
+  return { rows, total: legacy.total + nat.length };
 }
 
 export function createArticlesService(repo: DataRepo, deps: ServiceDeps): ArticlesService {
@@ -44,7 +46,7 @@ export function createArticlesService(repo: DataRepo, deps: ServiceDeps): Articl
       return rows.map((a) => {
         const title = a.title[locale] || a.title.en;
         const plain = (a.summary[locale] || a.summary.en || stripTags(a.bodyHtml[locale] || a.bodyHtml.en)).trim();
-        return { title, excerpt: plain.length > 180 ? `${plain.slice(0, 177).trimEnd()}...` : plain, href: `/news/${a.slug}`, ...(a.cover ? { image: a.cover } : a.video ? { image: { url: youTubeThumb(a.video.id), width: 480, height: 360, alt: { en: a.title.en, hi: a.title.hi } } } : {}) };
+        return { title, excerpt: plain.length > 180 ? `${plain.slice(0, 177).trimEnd()}...` : plain, href: `/news/${a.slug}`, ...(a.cover ? { image: a.cover } : a.video ? { image: { url: articleVideoThumb(a.video), width: 480, height: 360, alt: { en: a.title.en, hi: a.title.hi } } } : {}) };
       });
     },
 
@@ -93,6 +95,7 @@ export function createArticlesService(repo: DataRepo, deps: ServiceDeps): Articl
         ...others.filter((d) => d.data.category === article.category).map((d) => nativeToArticle(d, ctx)),
         ...related.rows.filter((r) => r.id !== rec?.id).map((r) => toArticle(r, ctx)),
       ].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
+      await resolveArticleVideos(repo, videoOf(deps), [article, ...relatedAll]);
       return {
         ...article,
         prev: prev ? toArticleRef(prev) : natDoc && natDoc.data.legacyId === null ? sibling(older[0]) : null,

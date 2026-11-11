@@ -5,6 +5,7 @@ import type { DataRepo, EventRec } from "../repo/types";
 import { articleContext } from "./articles";
 import { figureFor, filterData, hasAnyData, type ImpactData, kpiLabel, loadImpactData, periodWindow, tile } from "./impact-calc";
 import { loadOrg, loadSettings } from "./shared";
+import { resolveArticleVideos, videoOf } from "./video-store";
 import type { EventsService, ProgramsService, ServiceDeps } from "./types";
 
 /** One headline KPI per seva type for the "This year: ..." line. Others fall back to activities. */
@@ -134,7 +135,7 @@ export function createProgramsService(repo: DataRepo, deps: ServiceDeps, events:
         articleRecs = (await repo.listArticles({ categories: legacyLettersFor("key_programs"), limit: 3, offset: 0 })).rows;
       }
       const ctx = articleContext(org, deps.mediaBase);
-      const articles: Article[] = articleRecs.map((a) => toArticle(a, ctx));
+      const articles: Article[] = await resolveArticleVideos(repo, videoOf(deps), articleRecs.map((a) => toArticle(a, ctx)));
 
       return {
         sevaType: type,

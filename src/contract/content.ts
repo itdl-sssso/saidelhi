@@ -4,8 +4,30 @@ import { EventPublic } from "./events";
 import { I18nText, ISODate, ISODateTime, Id, Media } from "./primitives";
 
 /** v0.10.5: optional YouTube video (unlisted links work). `url` is the watch URL. */
-export const ArticleVideo = z.object({ provider: z.literal("youtube"), id: z.string(), url: z.string() });
+export const YouTubeVideo = z.object({ provider: z.literal("youtube"), id: z.string(), url: z.string() });
+/**
+ * v0.11: video from the portal library, streamed by Cloudflare Stream. `id` = our library id (what
+ * the editor stores as `cf:<id>`); `uid` = provider id. Only ready videos are ever exposed publicly.
+ */
+export const CloudflareVideo = z.object({
+  provider: z.literal("cloudflare"),
+  id: z.string(),
+  uid: z.string(),
+  /** Player URL without autoplay/poster/caption params. Empty for the mock provider (placeholder player). */
+  iframeUrl: z.string(),
+  posterUrl: z.string(),
+  durationS: z.number().nullable(),
+  /** Caption languages available (`hi` / `en`). */
+  captions: z.array(z.enum(["hi", "en"])),
+});
+export type CloudflareVideo = z.infer<typeof CloudflareVideo>;
+export const ArticleVideo = z.discriminatedUnion("provider", [YouTubeVideo, CloudflareVideo]);
 export type ArticleVideo = z.infer<typeof ArticleVideo>;
+
+/** Stored reference of a library video in the article's video slot (`cf:<video id>`). */
+export const CF_VIDEO_PREFIX = "cf:";
+export const cfVideoRef = (id: string) => `${CF_VIDEO_PREFIX}${id}`;
+export const cfVideoIdOf = (ref: string | null | undefined): string | null => (ref?.startsWith(CF_VIDEO_PREFIX) ? ref.slice(CF_VIDEO_PREFIX.length) || null : null);
 
 const YT_ID = /^[A-Za-z0-9_-]{11}$/;
 const YT_HOSTS = new Set(["youtube.com", "www.youtube.com", "m.youtube.com", "music.youtube.com", "youtube-nocookie.com", "www.youtube-nocookie.com", "youtu.be", "www.youtu.be"]);
@@ -33,7 +55,18 @@ export function parseYouTubeId(input: string | null | undefined): string | null 
 
 export const youTubeWatchUrl = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 export const youTubeThumb = (id: string) => `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
-export const articleVideoOf = (id: string | null | undefined): ArticleVideo | null => (id ? { provider: "youtube", id, url: youTubeWatchUrl(id) } : null);
+/** Poster/thumbnail of an article video (YouTube thumbnail or Stream poster). */
+export const articleVideoThumb = (v: ArticleVideo): string => (v.provider === "youtube" ? youTubeThumb(v.id) : v.posterUrl);
+/**
+ * Stored reference -> DTO. A library reference (`cf:<id>`) comes back as an unresolved stub (empty uid/urls);
+ * the articles service resolves it against the video library and drops it unless the video is ready.
+ */
+export const articleVideoOf = (ref: string | null | undefined): ArticleVideo | null => {
+  if (!ref) return null;
+  const cf = cfVideoIdOf(ref);
+  if (cf) return { provider: "cloudflare", id: cf, uid: "", iframeUrl: "", posterUrl: "", durationS: null, captions: [] };
+  return { provider: "youtube", id: ref, url: youTubeWatchUrl(ref) };
+};
 
 export const Article = z.object({
   slug: z.string(),
