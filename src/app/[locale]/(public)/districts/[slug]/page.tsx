@@ -7,6 +7,7 @@ import { getDistrict } from "@/features/public/data";
 import Loading from "./loading";
 import { initLocale } from "@/i18n/server";
 import { tx } from "@/lib/format";
+import { metaDescription, pageAlternates } from "@/features/seo/meta";
 
 type Props = PageProps<"/[locale]/districts/[slug]">;
 
@@ -20,7 +21,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
   const t = await getTranslations({ locale, namespace: "district" });
   const name = t("districtName", { name: tx(data.district.name, locale) });
-  return { title: name, description: t("introFallback", { count: data.samithiCount }) };
+  return {
+    title: name,
+    description: metaDescription(t("introFallback", { count: data.samithiCount })),
+    alternates: pageAlternates(locale, `/districts/${encodeURIComponent(slug)}`),
+  };
 }
 
 async function DistrictContent({ params }: Props) {

@@ -1,0 +1,2811 @@
+{
+ "date": "2026-11-11",
+ "pages": [
+  {
+   "url": "http://localhost:4600/",
+   "status": 200,
+   "ms": 38,
+   "bytes": 351049,
+   "title": "Love all, serve all · SSSSO Delhi NCR",
+   "description": "Bhajans, study circles, Bal Vikas and seva (service) across Delhi NCR. Open to everyone, free always.",
+   "h1": [
+    "Love all, serve all."
+   ],
+   "canonical": "http://localhost:4600",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 1,
+   "words": 1123,
+   "imgs": 27,
+   "imgs_no_alt": 22,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/calendar",
+   "status": 200,
+   "ms": 77,
+   "bytes": 577213,
+   "title": "Calendar · SSSSO Delhi NCR",
+   "description": "Bhajans, study circles and seva (service) across Delhi NCR. All free, all welcome.",
+   "h1": [
+    "Calendar"
+   ],
+   "canonical": "http://localhost:4600/calendar",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 1353,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/map",
+   "status": 200,
+   "ms": 84,
+   "bytes": 877601,
+   "title": "Find a centre · SSSSO Delhi NCR",
+   "description": "Search by pincode or locality to find the nearest Sai centre in Delhi NCR.",
+   "h1": [
+    "Find a centre"
+   ],
+   "canonical": "http://localhost:4600/centres/map",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 1529,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/hi",
+   "status": 200,
+   "ms": 28,
+   "bytes": 523204,
+   "title": "सबसे प्रेम करो, सबकी सेवा करो · SSSSO दिल्ली एनसीआर",
+   "description": "दिल्ली एनसीआर में भजन, स्टडी सर्कल, बाल विकास और सेवा। सबके लिए खुला, हमेशा निःशुल्क।",
+   "h1": [
+    "सबसे प्रेम करो, सबकी सेवा करो।"
+   ],
+   "canonical": "http://localhost:4600/hi",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 1,
+   "words": 1167,
+   "imgs": 27,
+   "imgs_no_alt": 22,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/en",
+   "status": 307,
+   "ms": 6,
+   "bytes": 1,
+   "location": "/"
+  },
+  {
+   "url": "http://localhost:4600/join",
+   "status": 200,
+   "ms": 46,
+   "bytes": 477569,
+   "title": "Get involved · SSSSO Delhi NCR",
+   "description": "These sevas (service) still need Sevadal members. Pick one, tell us you’re coming, and turn up. That’s all.",
+   "h1": [
+    "Offer your hands"
+   ],
+   "canonical": "http://localhost:4600/join",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 279,
+   "imgs": 4,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/about",
+   "status": 200,
+   "ms": 21,
+   "bytes": 273673,
+   "title": "About us · SSSSO Delhi NCR",
+   "description": "Sri Sathya Sai Seva Organisations, Delhi NCR: Sevadal members who meet to sing, study and serve. Free and open to people of every faith.",
+   "h1": [
+    "Neighbours who serve"
+   ],
+   "canonical": "http://localhost:4600/about",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 559,
+   "imgs": 6,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/programs/bhajan",
+   "status": 200,
+   "ms": 70,
+   "bytes": 533211,
+   "title": "Bhajan · SSSSO Delhi NCR",
+   "description": "Bhajans (devotional singing) at samithis across Delhi NCR. Many hold them weekly, but days and timings vary by samithi, so check your centre. Anyone may sing…",
+   "h1": [
+    "Bhajan"
+   ],
+   "canonical": "http://localhost:4600/programs/bhajan",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 420,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/news",
+   "status": 200,
+   "ms": 43,
+   "bytes": 451707,
+   "title": "News and stories · SSSSO Delhi NCR",
+   "description": "What our centres have been doing: camps, classes, festivals and quiet seva, from every district.",
+   "h1": [
+    "News and stories"
+   ],
+   "canonical": "http://localhost:4600/news",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 198,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/gallery",
+   "status": 200,
+   "ms": 47,
+   "bytes": 445402,
+   "title": "Photo gallery · SSSSO Delhi NCR",
+   "description": "Moments from our bhajans, seva activities and celebrations across Delhi NCR.",
+   "h1": [
+    "Photo gallery"
+   ],
+   "canonical": "http://localhost:4600/gallery",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 184,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/impact",
+   "status": 200,
+   "ms": 60,
+   "bytes": 611692,
+   "title": "Impact · SSSSO Delhi NCR",
+   "description": "What Sevadal members across the districts have done, counted from approved reports only.",
+   "h1": [
+    "Seva across Delhi NCR"
+   ],
+   "canonical": "http://localhost:4600/impact",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 876,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/programs",
+   "status": 200,
+   "ms": 49,
+   "bytes": 497614,
+   "title": "Programmes · SSSSO Delhi NCR",
+   "description": "Every seva (service), class and gathering we run, by wing. All free, all open.",
+   "h1": [
+    "Programmes"
+   ],
+   "canonical": "http://localhost:4600/programs",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 429,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/donate",
+   "status": 200,
+   "ms": 22,
+   "bytes": 257267,
+   "title": "Donate · SSSSO Delhi NCR",
+   "description": "Your donation helps the Trust care for people who need it. Contributions to the Trust are exempt under Section 80G of the Income Tax Act.",
+   "h1": [
+    "Donate by bank transfer"
+   ],
+   "canonical": "http://localhost:4600/donate",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 392,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/admin/login",
+   "status": 200,
+   "ms": 38,
+   "bytes": 360948,
+   "title": "Sign in · Coordinator portal",
+   "description": "Bhajans, study circles, Bal Vikas and seva (service) across Delhi NCR. Open to everyone, free always.",
+   "h1": [
+    "Sign in with your phone"
+   ],
+   "canonical": null,
+   "lang": "en",
+   "hreflang": 0,
+   "og": 7,
+   "jsonld": 0,
+   "words": 54,
+   "imgs": 1,
+   "imgs_no_alt": 1,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/values/sathya",
+   "status": 200,
+   "ms": 26,
+   "bytes": 282073,
+   "title": "Sathya (truth) · SSSSO Delhi NCR",
+   "description": "One of the five human values. Study circles meet weekly in every centre. One teaching is read, questioned and sat with until it is plain. No fee, no…",
+   "h1": [
+    "Sathya सत्य"
+   ],
+   "canonical": "http://localhost:4600/values/sathya",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 503,
+   "imgs": 10,
+   "imgs_no_alt": 8,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/values/dharma",
+   "status": 200,
+   "ms": 21,
+   "bytes": 272019,
+   "title": "Dharma (right conduct) · SSSSO Delhi NCR",
+   "description": "One of the five human values. Medical and eye camps bring a doctor’s care to people who could not otherwise reach it: check-ups, medicines and spectacles…",
+   "h1": [
+    "Dharma धर्म"
+   ],
+   "canonical": "http://localhost:4600/values/dharma",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 496,
+   "imgs": 10,
+   "imgs_no_alt": 8,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/values/shanti",
+   "status": 200,
+   "ms": 20,
+   "bytes": 281124,
+   "title": "Shanti (peace) · SSSSO Delhi NCR",
+   "description": "One of the five human values. Bhajans (devotional singing) at samithis across Delhi NCR, many of them weekly, and Nagar Sankirtan through the lanes at first…",
+   "h1": [
+    "Shanti शान्ति"
+   ],
+   "canonical": "http://localhost:4600/values/shanti",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 533,
+   "imgs": 10,
+   "imgs_no_alt": 8,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/values/prema",
+   "status": 200,
+   "ms": 21,
+   "bytes": 272076,
+   "title": "Prema (love) · SSSSO Delhi NCR",
+   "description": "One of the five human values. Narayan Seva serves cooked meals through the year. Beside it run blood donation camps, eye camps, winter blanket rounds and…",
+   "h1": [
+    "Prema प्रेम"
+   ],
+   "canonical": "http://localhost:4600/values/prema",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 471,
+   "imgs": 10,
+   "imgs_no_alt": 8,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/values/ahimsa",
+   "status": 200,
+   "ms": 20,
+   "bytes": 270568,
+   "title": "Ahimsa (non-violence) · SSSSO Delhi NCR",
+   "description": "One of the five human values. Sapling drives through the monsoon, park and lake clean-ups, and water-saving work in schools.",
+   "h1": [
+    "Ahimsa अहिंसा"
+   ],
+   "canonical": "http://localhost:4600/values/ahimsa",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 433,
+   "imgs": 10,
+   "imgs_no_alt": 8,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/events/gath_01JCSEEDGTH000000000000001_20261112",
+   "status": 404,
+   "ms": 57,
+   "bytes": 381769
+  },
+  {
+   "url": "http://localhost:4600/events/gath_01JCSEEDGTH000000000000009_20261112",
+   "status": 404,
+   "ms": 55,
+   "bytes": 381769
+  },
+  {
+   "url": "http://localhost:4600/events/gath_01JCSEEDGTH000000000000007_20261112",
+   "status": 404,
+   "ms": 44,
+   "bytes": 381769
+  },
+  {
+   "url": "http://localhost:4600/events/01JCSEEDEVT000000000000018",
+   "status": 200,
+   "ms": 73,
+   "bytes": 475140,
+   "title": "Eye screening camp · 29 Nov 2026 · SSSSO Delhi NCR",
+   "description": "Eye screening and reading spectacles with a partner hospital.",
+   "h1": [
+    "Eye screening camp"
+   ],
+   "canonical": "http://localhost:4600/events/01JCSEEDEVT000000000000018",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 8,
+   "jsonld": 1,
+   "words": 291,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/news/eye-camp-mayur-vihar-oct-2026",
+   "status": 200,
+   "ms": 71,
+   "bytes": 475320,
+   "title": "115 people screened at the Mayur Vihar eye camp · SSSSO Delhi NCR",
+   "description": "Sevadal members and ICARE Eye Hospital screened 115 people and gave 63 pairs of reading spectacles.",
+   "h1": [
+    "115 people screened at the Mayur Vihar eye camp"
+   ],
+   "canonical": "http://localhost:4600/news/eye-camp-mayur-vihar-oct-2026",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 1,
+   "words": 296,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/news?c=centenary",
+   "status": 200,
+   "ms": 37,
+   "bytes": 450407,
+   "title": "News and stories · SSSSO Delhi NCR",
+   "description": "What our centres have been doing: camps, classes, festivals and quiet seva, from every district.",
+   "h1": [
+    "News and stories"
+   ],
+   "canonical": "http://localhost:4600/news",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 202,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/laxmi-nagar",
+   "status": 200,
+   "ms": 57,
+   "bytes": 479599,
+   "title": "Sai Centre Laxmi Nagar · SSSSO Delhi NCR",
+   "description": "First floor, Block C, Laxmi Nagar, Delhi. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Sai Centre Laxmi Nagar"
+   ],
+   "canonical": "http://localhost:4600/centres/laxmi-nagar",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 285,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/mayur-vihar",
+   "status": 200,
+   "ms": 70,
+   "bytes": 493047,
+   "title": "Sai Centre Mayur Vihar · SSSSO Delhi NCR",
+   "description": "Community hall, Pocket 2, Mayur Vihar Phase-1, Delhi. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Sai Centre Mayur Vihar"
+   ],
+   "canonical": "http://localhost:4600/centres/mayur-vihar",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 358,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/rohini",
+   "status": 200,
+   "ms": 45,
+   "bytes": 479410,
+   "title": "Sai Centre Rohini · SSSSO Delhi NCR",
+   "description": "Sector 9, Rohini, Delhi. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Sai Centre Rohini"
+   ],
+   "canonical": "http://localhost:4600/centres/rohini",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 282,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/programs?wing=service",
+   "status": 200,
+   "ms": 40,
+   "bytes": 492781,
+   "title": "Programmes · SSSSO Delhi NCR",
+   "description": "Every seva (service), class and gathering we run, by wing. All free, all open.",
+   "h1": [
+    "Programmes"
+   ],
+   "canonical": "http://localhost:4600/programs",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 628,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/programs?wing=educational",
+   "status": 200,
+   "ms": 36,
+   "bytes": 457734,
+   "title": "Programmes · SSSSO Delhi NCR",
+   "description": "Every seva (service), class and gathering we run, by wing. All free, all open.",
+   "h1": [
+    "Programmes"
+   ],
+   "canonical": "http://localhost:4600/programs",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 342,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/programs?wing=spiritual",
+   "status": 200,
+   "ms": 39,
+   "bytes": 463847,
+   "title": "Programmes · SSSSO Delhi NCR",
+   "description": "Every seva (service), class and gathering we run, by wing. All free, all open.",
+   "h1": [
+    "Programmes"
+   ],
+   "canonical": "http://localhost:4600/programs",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 487,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/privacy",
+   "status": 200,
+   "ms": 21,
+   "bytes": 257169,
+   "title": "Privacy and data requests · SSSSO Delhi NCR",
+   "description": "We collect as little as we can, keep it only as long as we need it, and never sell it or share it for anyone's marketing.",
+   "h1": [
+    "Your privacy"
+   ],
+   "canonical": "http://localhost:4600/privacy",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 615,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/hi/calendar",
+   "status": 200,
+   "ms": 57,
+   "bytes": 898342,
+   "title": "कैलेंडर · SSSSO दिल्ली एनसीआर",
+   "description": "दिल्ली एनसीआर में भजन, अध्ययन मंडल और सेवा। सब निःशुल्क, सबका स्वागत।",
+   "h1": [
+    "कैलेंडर"
+   ],
+   "canonical": "http://localhost:4600/hi/calendar",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 1324,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/en/calendar",
+   "status": 307,
+   "ms": 5,
+   "bytes": 9,
+   "location": "/calendar"
+  },
+  {
+   "url": "http://localhost:4600/calendar?view=month",
+   "status": 200,
+   "ms": 44,
+   "bytes": 527636,
+   "title": "Calendar · SSSSO Delhi NCR",
+   "description": "Bhajans, study circles and seva (service) across Delhi NCR. All free, all welcome.",
+   "h1": [
+    "Calendar"
+   ],
+   "canonical": "http://localhost:4600/calendar",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 745,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/karol-bagh",
+   "status": 200,
+   "ms": 65,
+   "bytes": 488974,
+   "title": "Sai Centre Karol Bagh · SSSSO Delhi NCR",
+   "description": "Main hall, Karol Bagh, Delhi. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Sai Centre Karol Bagh"
+   ],
+   "canonical": "http://localhost:4600/centres/karol-bagh",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 345,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/noida-sector-62",
+   "status": 200,
+   "ms": 52,
+   "bytes": 477062,
+   "title": "Sai Centre Noida · SSSSO Delhi NCR",
+   "description": "Sector 62, Noida, Uttar Pradesh. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Sai Centre Noida"
+   ],
+   "canonical": "http://localhost:4600/centres/noida-sector-62",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 280,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/gurugram-sector-31",
+   "status": 200,
+   "ms": 64,
+   "bytes": 485030,
+   "title": "Sai Centre Gurugram · SSSSO Delhi NCR",
+   "description": "Sector 31, Gurugram, Haryana. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Sai Centre Gurugram"
+   ],
+   "canonical": "http://localhost:4600/centres/gurugram-sector-31",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 281,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/dwarka",
+   "status": 200,
+   "ms": 49,
+   "bytes": 481519,
+   "title": "Sai Centre Dwarka · SSSSO Delhi NCR",
+   "description": "Sector 10, Dwarka, New Delhi. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Sai Centre Dwarka"
+   ],
+   "canonical": "http://localhost:4600/centres/dwarka",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 290,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/preet-vihar",
+   "status": 200,
+   "ms": 59,
+   "bytes": 490310,
+   "title": "Sai Centre Preet Vihar · SSSSO Delhi NCR",
+   "description": "Library room, Preet Vihar, Delhi. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Sai Centre Preet Vihar"
+   ],
+   "canonical": "http://localhost:4600/centres/preet-vihar",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 355,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/saket",
+   "status": 200,
+   "ms": 63,
+   "bytes": 487609,
+   "title": "Sai Centre Saket · SSSSO Delhi NCR",
+   "description": "Block J, Saket, New Delhi. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Sai Centre Saket"
+   ],
+   "canonical": "http://localhost:4600/centres/saket",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 341,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/lodhi-road",
+   "status": 200,
+   "ms": 67,
+   "bytes": 477359,
+   "title": "Sai Centre Lodhi Road · SSSSO Delhi NCR",
+   "description": "Lodhi Road, New Delhi. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Sai Centre Lodhi Road"
+   ],
+   "canonical": "http://localhost:4600/centres/lodhi-road",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 278,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/calendar?page=2",
+   "status": 200,
+   "ms": 45,
+   "bytes": 494469,
+   "title": "Calendar · SSSSO Delhi NCR",
+   "description": "Bhajans, study circles and seva (service) across Delhi NCR. All free, all welcome.",
+   "h1": [
+    "Calendar"
+   ],
+   "canonical": "http://localhost:4600/calendar",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 772,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/hi/centres/map",
+   "status": 200,
+   "ms": 68,
+   "bytes": 1196002,
+   "title": "केंद्र खोजें · SSSSO दिल्ली एनसीआर",
+   "description": "पिनकोड या इलाक़े से खोजें और दिल्ली एनसीआर में अपने सबसे पास का साई केंद्र पाएँ।",
+   "h1": [
+    "केंद्र खोजें"
+   ],
+   "canonical": "http://localhost:4600/hi/centres/map",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 1441,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/en/centres/map",
+   "status": 307,
+   "ms": 5,
+   "bytes": 12,
+   "location": "/centres/map"
+  },
+  {
+   "url": "http://localhost:4600/centres/bhajan-mandali-neher-par",
+   "status": 200,
+   "ms": 48,
+   "bytes": 471944,
+   "title": "Bhajan Mandali, Neher Par · SSSSO Delhi NCR",
+   "description": "Neher Par, Faridabad, Haryana. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Bhajan Mandali, Neher Par"
+   ],
+   "canonical": "http://localhost:4600/centres/bhajan-mandali-neher-par",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 239,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/central-2",
+   "status": 200,
+   "ms": 55,
+   "bytes": 471161,
+   "title": "Central 2 Samithi · SSSSO Delhi NCR",
+   "description": "Central. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Central 2 Samithi"
+   ],
+   "canonical": "http://localhost:4600/centres/central-2",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 233,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/central-3",
+   "status": 200,
+   "ms": 51,
+   "bytes": 471161,
+   "title": "Central 3 Samithi · SSSSO Delhi NCR",
+   "description": "Central. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Central 3 Samithi"
+   ],
+   "canonical": "http://localhost:4600/centres/central-3",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 233,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/central-4",
+   "status": 200,
+   "ms": 46,
+   "bytes": 471161,
+   "title": "Central 4 Samithi · SSSSO Delhi NCR",
+   "description": "Central. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Central 4 Samithi"
+   ],
+   "canonical": "http://localhost:4600/centres/central-4",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 233,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/central-5",
+   "status": 200,
+   "ms": 50,
+   "bytes": 471161,
+   "title": "Central 5 Samithi · SSSSO Delhi NCR",
+   "description": "Central. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Central 5 Samithi"
+   ],
+   "canonical": "http://localhost:4600/centres/central-5",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 233,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/central-6",
+   "status": 200,
+   "ms": 58,
+   "bytes": 471929,
+   "title": "Central 6 Samithi · SSSSO Delhi NCR",
+   "description": "R-815, Block R, Rajender Nagar Part 1, New Rajinder Nagar, Near Parko dry cleaner, New Delhi, 110060. Bhajans, study circles and Bal Vikas every week, and…",
+   "h1": [
+    "Central 6 Samithi"
+   ],
+   "canonical": "http://localhost:4600/centres/central-6",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 250,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/east-1",
+   "status": 200,
+   "ms": 49,
+   "bytes": 471689,
+   "title": "East 1 Samithi · SSSSO Delhi NCR",
+   "description": "D-64, Dilshad Colony New Simapuri, Dilshad Garden, Delhi, 110095. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you…",
+   "h1": [
+    "East 1 Samithi"
+   ],
+   "canonical": "http://localhost:4600/centres/east-1",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 242,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/east-2",
+   "status": 200,
+   "ms": 52,
+   "bytes": 471749,
+   "title": "East 2 Samithi · SSSSO Delhi NCR",
+   "description": "DH 603, Abhimanyu Appartment, Vasundhara Enclave, Shaheed Raj Guru Collage, Delhi, 110096. Bhajans, study circles and Bal Vikas every week, and seva in the…",
+   "h1": [
+    "East 2 Samithi"
+   ],
+   "canonical": "http://localhost:4600/centres/east-2",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 245,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/faridabad-2",
+   "status": 200,
+   "ms": 52,
+   "bytes": 471973,
+   "title": "Faridabad 2 Samithi · SSSSO Delhi NCR",
+   "description": "B-33, Manglam Regency, Sector 21D, Near g b n school, Faridabad, 121012. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come…",
+   "h1": [
+    "Faridabad 2 Samithi"
+   ],
+   "canonical": "http://localhost:4600/centres/faridabad-2",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 245,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/faridabad-3",
+   "status": 200,
+   "ms": 52,
+   "bytes": 471922,
+   "title": "Faridabad 3 Samithi · SSSSO Delhi NCR",
+   "description": "457, Block A, ADB PWD Colony, Sector 16 A, Faridabad, 121002. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Faridabad 3 Samithi"
+   ],
+   "canonical": "http://localhost:4600/centres/faridabad-3",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 244,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/faridabad-4",
+   "status": 200,
+   "ms": 51,
+   "bytes": 471682,
+   "title": "Faridabad 4 Samithi · SSSSO Delhi NCR",
+   "description": "530 sec 37, 1st floor, Faridabad, 121003. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Faridabad 4 Samithi"
+   ],
+   "canonical": "http://localhost:4600/centres/faridabad-4",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 240,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/faridabad-5",
+   "status": 200,
+   "ms": 52,
+   "bytes": 471574,
+   "title": "Faridabad 5 Samithi · SSSSO Delhi NCR",
+   "description": "Green Field, Charmwood, Faridabad. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Faridabad 5 Samithi"
+   ],
+   "canonical": "http://localhost:4600/centres/faridabad-5",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 236,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/gautam-buddh-nagar-1",
+   "status": 200,
+   "ms": 45,
+   "bytes": 472369,
+   "title": "Gautam Buddh Nagar 1 Samithi · SSSSO Delhi NCR",
+   "description": "Flat No.16-D, E-3 Shatabdi Vihar, Sector-52, Noida, Near SBI Bank, Noida, 201303. Bhajans, study circles and Bal Vikas every week, and seva in the…",
+   "h1": [
+    "Gautam Buddh Nagar 1 Samithi"
+   ],
+   "canonical": "http://localhost:4600/centres/gautam-buddh-nagar-1",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 255,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/gautam-buddh-nagar-3",
+   "status": 200,
+   "ms": 51,
+   "bytes": 472246,
+   "title": "Gautam Buddh Nagar 3 Samithi · SSSSO Delhi NCR",
+   "description": "Stellar mi legacy, Zeta 1, Greater Noida, 201310. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Gautam Buddh Nagar 3 Samithi"
+   ],
+   "canonical": "http://localhost:4600/centres/gautam-buddh-nagar-3",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 251,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/gautam-buddh-nagar-4",
+   "status": 200,
+   "ms": 54,
+   "bytes": 471865,
+   "title": "Gautam Buddh Nagar 4 Samithi · SSSSO Delhi NCR",
+   "description": "Gautam Buddh Nagar. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Gautam Buddh Nagar 4 Samithi"
+   ],
+   "canonical": "http://localhost:4600/centres/gautam-buddh-nagar-4",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 245,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/ghaziabad-1",
+   "status": 200,
+   "ms": 49,
+   "bytes": 471940,
+   "title": "Ghaziabad 1 Samithi · SSSSO Delhi NCR",
+   "description": "C-102 A Block C, Lajpat Nagar, Sahibabad, Shani Mandir, Ghaziabad, 201005. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood…",
+   "h1": [
+    "Ghaziabad 1 Samithi"
+   ],
+   "canonical": "http://localhost:4600/centres/ghaziabad-1",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 244,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/ghaziabad-2",
+   "status": 200,
+   "ms": 47,
+   "bytes": 472021,
+   "title": "Ghaziabad 2 Samithi · SSSSO Delhi NCR",
+   "description": "8/416, Swastik, SF-1, Sector-3, Rajendra Nagar, Sahibabad, Sector-3 Market, Ghaziabad, 201005. Bhajans, study circles and Bal Vikas every week, and seva in…",
+   "h1": [
+    "Ghaziabad 2 Samithi"
+   ],
+   "canonical": "http://localhost:4600/centres/ghaziabad-2",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 244,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/ghaziabad-3",
+   "status": 200,
+   "ms": 53,
+   "bytes": 471901,
+   "title": "Ghaziabad 3 Samithi · SSSSO Delhi NCR",
+   "description": "P-45, Block B, Duplex Flats, Block P, Sector 23, Sanjay Nagar, Ghaziabad, 201002. Bhajans, study circles and Bal Vikas every week, and seva in the…",
+   "h1": [
+    "Ghaziabad 3 Samithi"
+   ],
+   "canonical": "http://localhost:4600/centres/ghaziabad-3",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 246,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/ghaziabad-4",
+   "status": 200,
+   "ms": 50,
+   "bytes": 471289,
+   "title": "Ghaziabad 4 Samithi · SSSSO Delhi NCR",
+   "description": "Ghaziabad. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Ghaziabad 4 Samithi"
+   ],
+   "canonical": "http://localhost:4600/centres/ghaziabad-4",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 233,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/ghaziabad-5",
+   "status": 200,
+   "ms": 46,
+   "bytes": 471289,
+   "title": "Ghaziabad 5 Samithi · SSSSO Delhi NCR",
+   "description": "Ghaziabad. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Ghaziabad 5 Samithi"
+   ],
+   "canonical": "http://localhost:4600/centres/ghaziabad-5",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 233,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/gurugram-2",
+   "status": 200,
+   "ms": 52,
+   "bytes": 471861,
+   "title": "Gurugram 2 Samithi · SSSSO Delhi NCR",
+   "description": "DLF 4, South City 1, Sector 31, 40, 45, 46, 50–57, Gurugram. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Gurugram 2 Samithi"
+   ],
+   "canonical": "http://localhost:4600/centres/gurugram-2",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 244,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/gurugram-3",
+   "status": 200,
+   "ms": 42,
+   "bytes": 471702,
+   "title": "Gurugram 3 Samithi · SSSSO Delhi NCR",
+   "description": "7603, 2nd Floor, DLF Phase 4, Gurugram, 122009. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Gurugram 3 Samithi"
+   ],
+   "canonical": "http://localhost:4600/centres/gurugram-3",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 241,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/gurugram-4",
+   "status": 200,
+   "ms": 54,
+   "bytes": 471801,
+   "title": "Gurugram 4 Samithi · SSSSO Delhi NCR",
+   "description": "Palam Vihar, Ashok Vihar, Brijwasan, Kapashera, Gurugram. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Gurugram 4 Samithi"
+   ],
+   "canonical": "http://localhost:4600/centres/gurugram-4",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 239,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/gurugram-5",
+   "status": 200,
+   "ms": 57,
+   "bytes": 471693,
+   "title": "Gurugram 5 Samithi · SSSSO Delhi NCR",
+   "description": "Sohna Road, Rajiv Chowk to Badshahpur, Gurugram. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Gurugram 5 Samithi"
+   ],
+   "canonical": "http://localhost:4600/centres/gurugram-5",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 239,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/gurugram-6",
+   "status": 200,
+   "ms": 50,
+   "bytes": 471417,
+   "title": "Gurugram 6 Samithi · SSSSO Delhi NCR",
+   "description": "Sector 12–17, Gurugram. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Gurugram 6 Samithi"
+   ],
+   "canonical": "http://localhost:4600/centres/gurugram-6",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 235,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/gurugram-7",
+   "status": 200,
+   "ms": 44,
+   "bytes": 471522,
+   "title": "Gurugram 7 Samithi · SSSSO Delhi NCR",
+   "description": "Manesar, Sector 83–89, Gurugram. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Gurugram 7 Samithi"
+   ],
+   "canonical": "http://localhost:4600/centres/gurugram-7",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 236,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/north-1",
+   "status": 200,
+   "ms": 47,
+   "bytes": 471666,
+   "title": "North 1 Samithi · SSSSO Delhi NCR",
+   "description": "G-3/65, Model Town 3, Phase 3, Model Town, Delhi, 110009. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "North 1 Samithi"
+   ],
+   "canonical": "http://localhost:4600/centres/north-1",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 243,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/north-2",
+   "status": 200,
+   "ms": 42,
+   "bytes": 471033,
+   "title": "North 2 Samithi · SSSSO Delhi NCR",
+   "description": "North. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "North 2 Samithi"
+   ],
+   "canonical": "http://localhost:4600/centres/north-2",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 233,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/north-4",
+   "status": 200,
+   "ms": 47,
+   "bytes": 471579,
+   "title": "North 4 Samithi · SSSSO Delhi NCR",
+   "description": "A3-37, Pocket 3, Sector 3A, Rohini, Delhi, 110085. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "North 4 Samithi"
+   ],
+   "canonical": "http://localhost:4600/centres/north-4",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 241,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/north-5",
+   "status": 200,
+   "ms": 55,
+   "bytes": 471033,
+   "title": "North 5 Samithi · SSSSO Delhi NCR",
+   "description": "North. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "North 5 Samithi"
+   ],
+   "canonical": "http://localhost:4600/centres/north-5",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 233,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/prashanti-dham-sai-mandir-dwarka",
+   "status": 200,
+   "ms": 49,
+   "bytes": 472054,
+   "title": "Prashanti Dham Sai Mandir, Dwarka · SSSSO Delhi NCR",
+   "description": "Dwarka, New Delhi. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Prashanti Dham Sai Mandir, Dwarka"
+   ],
+   "canonical": "http://localhost:4600/centres/prashanti-dham-sai-mandir-dwarka",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 241,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/faridabad-sector-15",
+   "status": 200,
+   "ms": 61,
+   "bytes": 481928,
+   "title": "Sai Centre Faridabad · SSSSO Delhi NCR",
+   "description": "Sector 15, Faridabad, Haryana. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Sai Centre Faridabad"
+   ],
+   "canonical": "http://localhost:4600/centres/faridabad-sector-15",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 305,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/sai-centre-sector-21-noida",
+   "status": 200,
+   "ms": 55,
+   "bytes": 472066,
+   "title": "Sai Centre, Sector 21 · SSSSO Delhi NCR",
+   "description": "Sector 21, Noida, Uttar Pradesh. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Sai Centre, Sector 21"
+   ],
+   "canonical": "http://localhost:4600/centres/sai-centre-sector-21-noida",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 244,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/sai-centre-sector-31-noida",
+   "status": 200,
+   "ms": 50,
+   "bytes": 472066,
+   "title": "Sai Centre, Sector 31 · SSSSO Delhi NCR",
+   "description": "Sector 31, Noida, Uttar Pradesh. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Sai Centre, Sector 31"
+   ],
+   "canonical": "http://localhost:4600/centres/sai-centre-sector-31-noida",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 244,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/sai-centre-faridabad",
+   "status": 200,
+   "ms": 64,
+   "bytes": 471757,
+   "title": "Sathya Sai Centre, Faridabad · SSSSO Delhi NCR",
+   "description": "Faridabad, Haryana. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Sathya Sai Centre, Faridabad"
+   ],
+   "canonical": "http://localhost:4600/centres/sai-centre-faridabad",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 237,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/south-east-1",
+   "status": 200,
+   "ms": 47,
+   "bytes": 471698,
+   "title": "South East 1 Samithi · SSSSO Delhi NCR",
+   "description": "L-497 Sarita Vihar, New Delhi, 110076. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "South East 1 Samithi"
+   ],
+   "canonical": "http://localhost:4600/centres/south-east-1",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 244,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/south-east-3",
+   "status": 200,
+   "ms": 46,
+   "bytes": 471698,
+   "title": "South East 3 Samithi · SSSSO Delhi NCR",
+   "description": "182, Kailash Hills, New Delhi, 110065. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "South East 3 Samithi"
+   ],
+   "canonical": "http://localhost:4600/centres/south-east-3",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 244,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/south-east-4",
+   "status": 200,
+   "ms": 47,
+   "bytes": 471353,
+   "title": "South East 4 Samithi · SSSSO Delhi NCR",
+   "description": "South East. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "South East 4 Samithi"
+   ],
+   "canonical": "http://localhost:4600/centres/south-east-4",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 239,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/south-east-5",
+   "status": 200,
+   "ms": 44,
+   "bytes": 471353,
+   "title": "South East 5 Samithi · SSSSO Delhi NCR",
+   "description": "South East. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "South East 5 Samithi"
+   ],
+   "canonical": "http://localhost:4600/centres/south-east-5",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 239,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/south-west-2",
+   "status": 200,
+   "ms": 53,
+   "bytes": 472001,
+   "title": "South West 2 Samithi · SSSSO Delhi NCR",
+   "description": "223, P and T Colony, Sector 6, Rama Krishna Puram, P and T Colony, New Delhi, 110022. Bhajans, study circles and Bal Vikas every week, and seva in the…",
+   "h1": [
+    "South West 2 Samithi"
+   ],
+   "canonical": "http://localhost:4600/centres/south-west-2",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 255,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/south-west-3",
+   "status": 200,
+   "ms": 53,
+   "bytes": 471353,
+   "title": "South West 3 Samithi · SSSSO Delhi NCR",
+   "description": "South West. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "South West 3 Samithi"
+   ],
+   "canonical": "http://localhost:4600/centres/south-west-3",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 239,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/south-west-4",
+   "status": 200,
+   "ms": 53,
+   "bytes": 471353,
+   "title": "South West 4 Samithi · SSSSO Delhi NCR",
+   "description": "South West. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "South West 4 Samithi"
+   ],
+   "canonical": "http://localhost:4600/centres/south-west-4",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 239,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/south-west-5",
+   "status": 200,
+   "ms": 48,
+   "bytes": 471353,
+   "title": "South West 5 Samithi · SSSSO Delhi NCR",
+   "description": "South West. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "South West 5 Samithi"
+   ],
+   "canonical": "http://localhost:4600/centres/south-west-5",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 239,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/sai-international-centre",
+   "status": 200,
+   "ms": 54,
+   "bytes": 480215,
+   "title": "Sri Sathya Sai International Centre · SSSSO Delhi NCR",
+   "description": "Bhisham Pitamah Marg, Pragati Vihar, New Delhi 110003. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Sri Sathya Sai International Centre"
+   ],
+   "canonical": "http://localhost:4600/centres/sai-international-centre",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 292,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/sai-nilayam-palam-vihar",
+   "status": 200,
+   "ms": 46,
+   "bytes": 472069,
+   "title": "Sri Sathya Sai Nilayam, Palam Vihar · SSSSO Delhi NCR",
+   "description": "Palam Vihar, Gurugram, Haryana. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Sri Sathya Sai Nilayam, Palam Vihar"
+   ],
+   "canonical": "http://localhost:4600/centres/sai-nilayam-palam-vihar",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 245,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/sai-seva-centre-badshahpur",
+   "status": 200,
+   "ms": 54,
+   "bytes": 472321,
+   "title": "Sri Sathya Sai Seva Centre, Badshahpur · SSSSO Delhi NCR",
+   "description": "Badshahpur, Sohna Road, Gurugram, Haryana. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Sri Sathya Sai Seva Centre, Badshahpur"
+   ],
+   "canonical": "http://localhost:4600/centres/sai-seva-centre-badshahpur",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 246,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/sai-vidya-vihar-south-east-delhi",
+   "status": 200,
+   "ms": 52,
+   "bytes": 472015,
+   "title": "Sri Sathya Sai Vidya Vihar · SSSSO Delhi NCR",
+   "description": "South East Delhi. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "Sri Sathya Sai Vidya Vihar"
+   ],
+   "canonical": "http://localhost:4600/centres/sai-vidya-vihar-south-east-delhi",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 243,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/west-2",
+   "status": 200,
+   "ms": 52,
+   "bytes": 470966,
+   "title": "West 2 Samithi · SSSSO Delhi NCR",
+   "description": "West. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "West 2 Samithi"
+   ],
+   "canonical": "http://localhost:4600/centres/west-2",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 233,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/west-3",
+   "status": 200,
+   "ms": 56,
+   "bytes": 470963,
+   "title": "West 3 Samithi · SSSSO Delhi NCR",
+   "description": "West. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "West 3 Samithi"
+   ],
+   "canonical": "http://localhost:4600/centres/west-3",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 233,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/west-4",
+   "status": 200,
+   "ms": 49,
+   "bytes": 471662,
+   "title": "West 4 Samithi · SSSSO Delhi NCR",
+   "description": "165, Solanki Market, Block D, Madhu Vihar, New Delhi, 110075. Bhajans, study circles and Bal Vikas every week, and seva in the neighbourhood. Come as you are.",
+   "h1": [
+    "West 4 Samithi"
+   ],
+   "canonical": "http://localhost:4600/centres/west-4",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 243,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/west-5",
+   "status": 200,
+   "ms": 55,
+   "bytes": 471629,
+   "title": "West 5 Samithi · SSSSO Delhi NCR",
+   "description": "B-59, Arjun Park, Main Najafgarh Road, Near Gufa Mata Mandir, Najafgarh, 110043. Bhajans, study circles and Bal Vikas every week, and seva in the…",
+   "h1": [
+    "West 5 Samithi"
+   ],
+   "canonical": "http://localhost:4600/centres/west-5",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 245,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/centres/west-6",
+   "status": 200,
+   "ms": 54,
+   "bytes": 471767,
+   "title": "West 6 Samithi · SSSSO Delhi NCR",
+   "description": "Dwarka Sector 9, Dwarka, Prashanti Dham Sai Mandir, Opp Center for Sight Hospital, New Delhi, 110077. Bhajans, study circles and Bal Vikas every week, and…",
+   "h1": [
+    "West 6 Samithi"
+   ],
+   "canonical": "http://localhost:4600/centres/west-6",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 249,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/hi/join",
+   "status": 200,
+   "ms": 51,
+   "bytes": 789694,
+   "title": "जुड़ें · SSSSO दिल्ली एनसीआर",
+   "description": "इन सेवाओं में अभी सेवादल चाहिए। एक चुनें, बताएँ कि आप आ रहे हैं, और पहुँच जाएँ। बस इतना ही।",
+   "h1": [
+    "अपना हाथ बढ़ाइए"
+   ],
+   "canonical": "http://localhost:4600/hi/join",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 283,
+   "imgs": 4,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/hi/about",
+   "status": 200,
+   "ms": 39,
+   "bytes": 436747,
+   "title": "हमारे बारे में · SSSSO दिल्ली एनसीआर",
+   "description": "दिल्ली एनसीआर में श्री सत्य साई सेवा संगठन: सेवादल जो साथ मिलकर भजन, अध्ययन और सेवा करते हैं। निःशुल्क और हर धर्म के लोगों के लिए खुला।",
+   "h1": [
+    "सेवा करने वाले पड़ोसी"
+   ],
+   "canonical": "http://localhost:4600/hi/about",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 587,
+   "imgs": 6,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/hi/programs/bhajan",
+   "status": 200,
+   "ms": 85,
+   "bytes": 847071,
+   "title": "भजन · SSSSO दिल्ली एनसीआर",
+   "description": "दिल्ली एनसीआर की समितियों में भजन (भक्ति गायन)। कई समितियाँ इन्हें हर हफ़्ते करती हैं, पर दिन और समय हर समिति में अलग होता है, इसलिए अपने केंद्र से पूछ लें।…",
+   "h1": [
+    "भजन"
+   ],
+   "canonical": "http://localhost:4600/hi/programs/bhajan",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 440,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/hi/news",
+   "status": 200,
+   "ms": 66,
+   "bytes": 760606,
+   "title": "समाचार और कथाएँ · SSSSO दिल्ली एनसीआर",
+   "description": "हमारे केंद्र क्या कर रहे हैं: कैंप, कक्षाएँ, उत्सव और चुपचाप होने वाली सेवा, हर ज़िले से।",
+   "h1": [
+    "समाचार और कथाएँ"
+   ],
+   "canonical": "http://localhost:4600/hi/news",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 197,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/hi/gallery",
+   "status": 200,
+   "ms": 65,
+   "bytes": 753589,
+   "title": "फ़ोटो गैलरी · SSSSO दिल्ली एनसीआर",
+   "description": "दिल्ली एनसीआर में हमारे भजन, सेवा कार्यों और उत्सवों के पल।",
+   "h1": [
+    "फ़ोटो गैलरी"
+   ],
+   "canonical": "http://localhost:4600/hi/gallery",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 180,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/hi/impact",
+   "status": 200,
+   "ms": 81,
+   "bytes": 934725,
+   "title": "प्रभाव · SSSSO दिल्ली एनसीआर",
+   "description": "ज़िलों के सेवादलों ने क्या किया, केवल स्वीकृत रिपोर्टों से गिना गया।",
+   "h1": [
+    "दिल्ली एनसीआर में सेवा"
+   ],
+   "canonical": "http://localhost:4600/hi/impact",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 969,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/hi/programs",
+   "status": 200,
+   "ms": 68,
+   "bytes": 811286,
+   "title": "कार्यक्रम · SSSSO दिल्ली एनसीआर",
+   "description": "हमारी हर सेवा, कक्षा और सत्संग, विंग के अनुसार। सब निःशुल्क, सबके लिए।",
+   "h1": [
+    "कार्यक्रम"
+   ],
+   "canonical": "http://localhost:4600/hi/programs",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 436,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/hi/donate",
+   "status": 200,
+   "ms": 50,
+   "bytes": 421546,
+   "title": "दान करें · SSSSO दिल्ली एनसीआर",
+   "description": "आपका दान ट्रस्ट को ज़रूरतमंद लोगों की देखभाल में मदद करता है। ट्रस्ट को दिए गए योगदान पर आयकर अधिनियम की धारा 80G के अंतर्गत छूट मिलती है।",
+   "h1": [
+    "बैंक ट्रांसफ़र से दान करें"
+   ],
+   "canonical": "http://localhost:4600/hi/donate",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 413,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/hi/admin/login",
+   "status": 200,
+   "ms": 48,
+   "bytes": 664060,
+   "title": "साइन इन · समन्वयक पोर्टल",
+   "description": "दिल्ली एनसीआर में भजन, स्टडी सर्कल, बाल विकास और सेवा। सबके लिए खुला, हमेशा निःशुल्क।",
+   "h1": [
+    "अपने फ़ोन से साइन इन करें"
+   ],
+   "canonical": null,
+   "lang": "hi",
+   "hreflang": 0,
+   "og": 7,
+   "jsonld": 0,
+   "words": 64,
+   "imgs": 1,
+   "imgs_no_alt": 1,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/hi/values/sathya",
+   "status": 200,
+   "ms": 30,
+   "bytes": 443228,
+   "title": "सत्य (सच्चाई) · SSSSO दिल्ली एनसीआर",
+   "description": "पाँच मानवीय मूल्यों में से एक. हर केंद्र में हर हफ़्ते अध्ययन मंडल होता है। एक शिक्षा पढ़ी जाती है, उस पर प्रश्न होते हैं और तब तक मनन होता है जब तक वह स्पष्ट…",
+   "h1": [
+    "सत्य"
+   ],
+   "canonical": "http://localhost:4600/hi/values/sathya",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 534,
+   "imgs": 10,
+   "imgs_no_alt": 8,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/hi/values/dharma",
+   "status": 200,
+   "ms": 27,
+   "bytes": 433339,
+   "title": "धर्म (सदाचार) · SSSSO दिल्ली एनसीआर",
+   "description": "पाँच मानवीय मूल्यों में से एक. चिकित्सा और नेत्र शिविर उन लोगों तक डॉक्टर की देखभाल पहुँचाते हैं जो अन्यथा उसे नहीं पा सकते: जाँच, दवाइयाँ और चश्मे, बिल्कुल…",
+   "h1": [
+    "धर्म"
+   ],
+   "canonical": "http://localhost:4600/hi/values/dharma",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 504,
+   "imgs": 10,
+   "imgs_no_alt": 8,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/hi/values/shanti",
+   "status": 200,
+   "ms": 29,
+   "bytes": 442044,
+   "title": "शांति (शांति) · SSSSO दिल्ली एनसीआर",
+   "description": "पाँच मानवीय मूल्यों में से एक. दिल्ली एनसीआर की समितियों में भजन, कई जगह हर हफ़्ते, और भोर में गलियों में नगर संकीर्तन। कोई भी गा सकता है।",
+   "h1": [
+    "शांति"
+   ],
+   "canonical": "http://localhost:4600/hi/values/shanti",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 566,
+   "imgs": 10,
+   "imgs_no_alt": 8,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/hi/values/prema",
+   "status": 200,
+   "ms": 29,
+   "bytes": 433622,
+   "title": "प्रेम (प्रेम) · SSSSO दिल्ली एनसीआर",
+   "description": "पाँच मानवीय मूल्यों में से एक. नारायण सेवा पूरे साल पका भोजन परोसती है। साथ में रक्तदान शिविर, नेत्र शिविर, सर्दियों में कंबल वितरण और अस्पताल भेंट होती हैं।",
+   "h1": [
+    "प्रेम"
+   ],
+   "canonical": "http://localhost:4600/hi/values/prema",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 510,
+   "imgs": 10,
+   "imgs_no_alt": 8,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/hi/values/ahimsa",
+   "status": 200,
+   "ms": 41,
+   "bytes": 430950,
+   "title": "अहिंसा (किसी को हानि न पहुँचाना) · SSSSO दिल्ली एनसीआर",
+   "description": "पाँच मानवीय मूल्यों में से एक. बरसात में पौधारोपण, पार्क और झील की सफ़ाई, और स्कूलों में पानी बचाने का काम।",
+   "h1": [
+    "अहिंसा"
+   ],
+   "canonical": "http://localhost:4600/hi/values/ahimsa",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 466,
+   "imgs": 10,
+   "imgs_no_alt": 8,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/hi/events/gath_01JCSEEDGTH000000000000001_20261112",
+   "status": 404,
+   "ms": 89,
+   "bytes": 687526
+  },
+  {
+   "url": "http://localhost:4600/hi/events/gath_01JCSEEDGTH000000000000009_20261112",
+   "status": 404,
+   "ms": 58,
+   "bytes": 687526
+  },
+  {
+   "url": "http://localhost:4600/hi/events/gath_01JCSEEDGTH000000000000007_20261112",
+   "status": 404,
+   "ms": 56,
+   "bytes": 687526
+  },
+  {
+   "url": "http://localhost:4600/hi/events/01JCSEEDEVT000000000000018",
+   "status": 200,
+   "ms": 83,
+   "bytes": 784870,
+   "title": "नेत्र जाँच शिविर · 29 नवंबर 2026 · SSSSO दिल्ली एनसीआर",
+   "description": "साझेदार अस्पताल के साथ नेत्र जाँच और पढ़ने के चश्मे।",
+   "h1": [
+    "नेत्र जाँच शिविर"
+   ],
+   "canonical": "http://localhost:4600/hi/events/01JCSEEDEVT000000000000018",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 8,
+   "jsonld": 1,
+   "words": 291,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/hi/news/eye-camp-mayur-vihar-oct-2026",
+   "status": 200,
+   "ms": 76,
+   "bytes": 787083,
+   "title": "मयूर विहार नेत्र शिविर में 115 लोगों की जाँच · SSSSO दिल्ली एनसीआर",
+   "description": "सेवादलों और ICARE नेत्र अस्पताल ने 115 लोगों की जाँच की और 63 पढ़ने के चश्मे दिए।",
+   "h1": [
+    "मयूर विहार नेत्र शिविर में 115 लोगों की जाँच"
+   ],
+   "canonical": "http://localhost:4600/hi/news/eye-camp-mayur-vihar-oct-2026",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 1,
+   "words": 299,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/hi/news?c=centenary",
+   "status": 200,
+   "ms": 45,
+   "bytes": 759371,
+   "title": "समाचार और कथाएँ · SSSSO दिल्ली एनसीआर",
+   "description": "हमारे केंद्र क्या कर रहे हैं: कैंप, कक्षाएँ, उत्सव और चुपचाप होने वाली सेवा, हर ज़िले से।",
+   "h1": [
+    "समाचार और कथाएँ"
+   ],
+   "canonical": "http://localhost:4600/hi/news",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 203,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/hi/centres/laxmi-nagar",
+   "status": 200,
+   "ms": 74,
+   "bytes": 790773,
+   "title": "साई केंद्र लक्ष्मी नगर · SSSSO दिल्ली एनसीआर",
+   "description": "पहली मंज़िल, ब्लॉक सी, लक्ष्मी नगर, दिल्ली. हर हफ़्ते भजन, अध्ययन मंडल और बाल विकास, और आस-पास सेवा। जैसे हैं वैसे आइए।",
+   "h1": [
+    "साई केंद्र लक्ष्मी नगर"
+   ],
+   "canonical": "http://localhost:4600/hi/centres/laxmi-nagar",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 287,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/hi/centres/mayur-vihar",
+   "status": 200,
+   "ms": 47,
+   "bytes": 805988,
+   "title": "साई केंद्र मयूर विहार · SSSSO दिल्ली एनसीआर",
+   "description": "सामुदायिक भवन, पॉकेट 2, मयूर विहार फ़ेज़-1, दिल्ली. हर हफ़्ते भजन, अध्ययन मंडल और बाल विकास, और आस-पास सेवा। जैसे हैं वैसे आइए।",
+   "h1": [
+    "साई केंद्र मयूर विहार"
+   ],
+   "canonical": "http://localhost:4600/hi/centres/mayur-vihar",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 376,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/hi/centres/rohini",
+   "status": 200,
+   "ms": 63,
+   "bytes": 790252,
+   "title": "साई केंद्र रोहिणी · SSSSO दिल्ली एनसीआर",
+   "description": "सेक्टर 9, रोहिणी, दिल्ली. हर हफ़्ते भजन, अध्ययन मंडल और बाल विकास, और आस-पास सेवा। जैसे हैं वैसे आइए।",
+   "h1": [
+    "साई केंद्र रोहिणी"
+   ],
+   "canonical": "http://localhost:4600/hi/centres/rohini",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 285,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/hi/programs?wing=service",
+   "status": 200,
+   "ms": 51,
+   "bytes": 810006,
+   "title": "कार्यक्रम · SSSSO दिल्ली एनसीआर",
+   "description": "हमारी हर सेवा, कक्षा और सत्संग, विंग के अनुसार। सब निःशुल्क, सबके लिए।",
+   "h1": [
+    "कार्यक्रम"
+   ],
+   "canonical": "http://localhost:4600/hi/programs",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 635,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/hi/programs?wing=educational",
+   "status": 200,
+   "ms": 48,
+   "bytes": 769470,
+   "title": "कार्यक्रम · SSSSO दिल्ली एनसीआर",
+   "description": "हमारी हर सेवा, कक्षा और सत्संग, विंग के अनुसार। सब निःशुल्क, सबके लिए।",
+   "h1": [
+    "कार्यक्रम"
+   ],
+   "canonical": "http://localhost:4600/hi/programs",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 341,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/hi/programs?wing=spiritual",
+   "status": 200,
+   "ms": 46,
+   "bytes": 781416,
+   "title": "कार्यक्रम · SSSSO दिल्ली एनसीआर",
+   "description": "हमारी हर सेवा, कक्षा और सत्संग, विंग के अनुसार। सब निःशुल्क, सबके लिए।",
+   "h1": [
+    "कार्यक्रम"
+   ],
+   "canonical": "http://localhost:4600/hi/programs",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 506,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/hi/privacy",
+   "status": 200,
+   "ms": 38,
+   "bytes": 420133,
+   "title": "गोपनीयता और डेटा अनुरोध · SSSSO दिल्ली एनसीआर",
+   "description": "हम जितना हो सके कम जानकारी लेते हैं, उसे केवल ज़रूरत तक रखते हैं, और कभी बेचते या किसी के प्रचार के लिए साझा नहीं करते।",
+   "h1": [
+    "आपकी गोपनीयता"
+   ],
+   "canonical": "http://localhost:4600/hi/privacy",
+   "lang": "hi",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 675,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/en/join",
+   "status": 307,
+   "ms": 7,
+   "bytes": 5,
+   "location": "/join"
+  },
+  {
+   "url": "http://localhost:4600/en/about",
+   "status": 307,
+   "ms": 4,
+   "bytes": 6,
+   "location": "/about"
+  },
+  {
+   "url": "http://localhost:4600/districts/central",
+   "status": 200,
+   "ms": 75,
+   "bytes": 512662,
+   "title": "Central district · SSSSO Delhi NCR",
+   "description": "6 samithis (local centres). Approved reports only.",
+   "h1": [
+    "Central district"
+   ],
+   "canonical": "http://localhost:4600/districts/central",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 386,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/districts/east",
+   "status": 200,
+   "ms": 53,
+   "bytes": 510089,
+   "title": "East district · SSSSO Delhi NCR",
+   "description": "5 samithis (local centres). Approved reports only.",
+   "h1": [
+    "East district"
+   ],
+   "canonical": "http://localhost:4600/districts/east",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 393,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/districts/north",
+   "status": 200,
+   "ms": 46,
+   "bytes": 504289,
+   "title": "North district · SSSSO Delhi NCR",
+   "description": "5 samithis (local centres). Approved reports only.",
+   "h1": [
+    "North district"
+   ],
+   "canonical": "http://localhost:4600/districts/north",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 354,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/districts/south-east",
+   "status": 200,
+   "ms": 44,
+   "bytes": 506810,
+   "title": "South East district · SSSSO Delhi NCR",
+   "description": "5 samithis (local centres). Approved reports only.",
+   "h1": [
+    "South East district"
+   ],
+   "canonical": "http://localhost:4600/districts/south-east",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 369,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/districts/south-west",
+   "status": 200,
+   "ms": 46,
+   "bytes": 513579,
+   "title": "South West district · SSSSO Delhi NCR",
+   "description": "5 samithis (local centres). Approved reports only.",
+   "h1": [
+    "South West district"
+   ],
+   "canonical": "http://localhost:4600/districts/south-west",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 403,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/districts/west",
+   "status": 200,
+   "ms": 44,
+   "bytes": 508079,
+   "title": "West district · SSSSO Delhi NCR",
+   "description": "6 samithis (local centres). Approved reports only.",
+   "h1": [
+    "West district"
+   ],
+   "canonical": "http://localhost:4600/districts/west",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 362,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/districts/faridabad",
+   "status": 200,
+   "ms": 47,
+   "bytes": 514904,
+   "title": "Faridabad district · SSSSO Delhi NCR",
+   "description": "6 samithis (local centres). Approved reports only.",
+   "h1": [
+    "Faridabad district"
+   ],
+   "canonical": "http://localhost:4600/districts/faridabad",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 395,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/districts/gurugram",
+   "status": 200,
+   "ms": 43,
+   "bytes": 517486,
+   "title": "Gurugram district · SSSSO Delhi NCR",
+   "description": "7 samithis (local centres). Approved reports only.",
+   "h1": [
+    "Gurugram district"
+   ],
+   "canonical": "http://localhost:4600/districts/gurugram",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 367,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/districts/gautam-buddh-nagar",
+   "status": 200,
+   "ms": 46,
+   "bytes": 507432,
+   "title": "Gautam Buddh Nagar district · SSSSO Delhi NCR",
+   "description": "6 samithis (local centres). Approved reports only.",
+   "h1": [
+    "Gautam Buddh Nagar district"
+   ],
+   "canonical": "http://localhost:4600/districts/gautam-buddh-nagar",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 375,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/districts/ghaziabad",
+   "status": 200,
+   "ms": 41,
+   "bytes": 504644,
+   "title": "Ghaziabad district · SSSSO Delhi NCR",
+   "description": "5 samithis (local centres). Approved reports only.",
+   "h1": [
+    "Ghaziabad district"
+   ],
+   "canonical": "http://localhost:4600/districts/ghaziabad",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 354,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/en/programs/bhajan",
+   "status": 307,
+   "ms": 5,
+   "bytes": 16,
+   "location": "/programs/bhajan"
+  },
+  {
+   "url": "http://localhost:4600/calendar?sevaType=bhajan",
+   "status": 200,
+   "ms": 79,
+   "bytes": 541702,
+   "title": "Calendar · SSSSO Delhi NCR",
+   "description": "Bhajans, study circles and seva (service) across Delhi NCR. All free, all welcome.",
+   "h1": [
+    "Calendar"
+   ],
+   "canonical": "http://localhost:4600/calendar",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 1108,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/events/gath_01JCSEEDGTH000000000000015_20261112",
+   "status": 404,
+   "ms": 66,
+   "bytes": 381769
+  },
+  {
+   "url": "http://localhost:4600/events/gath_01JCSEEDGTH000000000000012_20261114",
+   "status": 404,
+   "ms": 41,
+   "bytes": 381769
+  },
+  {
+   "url": "http://localhost:4600/events/gath_01JCSEEDGTH000000000000011_20261115",
+   "status": 404,
+   "ms": 41,
+   "bytes": 381769
+  },
+  {
+   "url": "http://localhost:4600/join?sevaType=bhajan",
+   "status": 200,
+   "ms": 63,
+   "bytes": 475867,
+   "title": "Get involved · SSSSO Delhi NCR",
+   "description": "These sevas (service) still need Sevadal members. Pick one, tell us you’re coming, and turn up. That’s all.",
+   "h1": [
+    "Offer your hands"
+   ],
+   "canonical": "http://localhost:4600/join",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 276,
+   "imgs": 4,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/programs/study_circle",
+   "status": 200,
+   "ms": 71,
+   "bytes": 526212,
+   "title": "Study circle · SSSSO Delhi NCR",
+   "description": "A small group reads one teaching aloud, asks what it means for this week and sits with it until it is plain.",
+   "h1": [
+    "Study circle"
+   ],
+   "canonical": "http://localhost:4600/programs/study_circle",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 357,
+   "imgs": 4,
+   "imgs_no_alt": 3,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/programs/eye",
+   "status": 200,
+   "ms": 68,
+   "bytes": 549515,
+   "title": "Eye camp · SSSSO Delhi NCR",
+   "description": "A free morning of eye check-ups, run with a partner hospital. Most people leave with reading glasses; some leave with a date for cataract surgery, also free.",
+   "h1": [
+    "Eye camp"
+   ],
+   "canonical": "http://localhost:4600/programs/eye",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 431,
+   "imgs": 4,
+   "imgs_no_alt": 3,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/programs/blood",
+   "status": 200,
+   "ms": 50,
+   "bytes": 535952,
+   "title": "Blood donation · SSSSO Delhi NCR",
+   "description": "Blood donation camps run with district hospitals and licensed blood banks, so every unit goes where it is needed.",
+   "h1": [
+    "Blood donation"
+   ],
+   "canonical": "http://localhost:4600/programs/blood",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 381,
+   "imgs": 4,
+   "imgs_no_alt": 3,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/programs/medical",
+   "status": 200,
+   "ms": 47,
+   "bytes": 530602,
+   "title": "Medical camp · SSSSO Delhi NCR",
+   "description": "A free general check-up with doctors from a partner hospital, with medicines handed out at the camp.",
+   "h1": [
+    "Medical camp"
+   ],
+   "canonical": "http://localhost:4600/programs/medical",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 349,
+   "imgs": 4,
+   "imgs_no_alt": 3,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/programs/narayan_seva",
+   "status": 200,
+   "ms": 46,
+   "bytes": 530689,
+   "title": "Narayan Seva (food) · SSSSO Delhi NCR",
+   "description": "Cooked meals prepared at the centre and served by hand, every week of the year. Nothing is collected from the people we serve.",
+   "h1": [
+    "Narayan Seva (food)"
+   ],
+   "canonical": "http://localhost:4600/programs/narayan_seva",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 367,
+   "imgs": 4,
+   "imgs_no_alt": 3,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/programs/bal_vikas",
+   "status": 200,
+   "ms": 49,
+   "bytes": 533660,
+   "title": "Bal Vikas class · SSSSO Delhi NCR",
+   "description": "Bal Vikas (blossoming of the child) gives children an hour a week with the five human values, through stories, songs and silent sitting.",
+   "h1": [
+    "Bal Vikas class"
+   ],
+   "canonical": "http://localhost:4600/programs/bal_vikas",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 392,
+   "imgs": 4,
+   "imgs_no_alt": 3,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/programs/disaster_relief",
+   "status": 200,
+   "ms": 42,
+   "bytes": 516651,
+   "title": "Disaster relief · SSSSO Delhi NCR",
+   "description": "When floods or other disasters strike, centres gather supplies and Sevadal and deliver them with local authorities.",
+   "h1": [
+    "Disaster relief"
+   ],
+   "canonical": "http://localhost:4600/programs/disaster_relief",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 310,
+   "imgs": 3,
+   "imgs_no_alt": 2,
+   "iframes": []
+  },
+  {
+   "url": "http://localhost:4600/programs/cleanliness",
+   "status": 200,
+   "ms": 45,
+   "bytes": 517204,
+   "title": "Cleanliness drive · SSSSO Delhi NCR",
+   "description": "Weekend mornings of planting, clean-ups and water-saving drives, coordinated with local resident associations.",
+   "h1": [
+    "Cleanliness drive"
+   ],
+   "canonical": "http://localhost:4600/programs/cleanliness",
+   "lang": "en",
+   "hreflang": 3,
+   "og": 7,
+   "jsonld": 0,
+   "words": 306,
+   "imgs": 4,
+   "imgs_no_alt": 3,
+   "iframes": []
+  }
+ ],
+ "site": {
+  "/robots.txt": 200,
+  "/sitemap.xml": 200,
+  "/llms.txt": 200,
+  "/favicon.ico": 200,
+  "www->": [
+   200,
+   null
+  ]
+ }
+}

@@ -7,6 +7,10 @@ import { getArticle } from "@/features/public/data";
 import Loading from "./loading";
 import { initLocale } from "@/i18n/server";
 import { tx } from "@/lib/format";
+import { metaDescription, pageAlternates } from "@/features/seo/meta";
+import { JsonLd } from "@/features/seo/JsonLd";
+import { articleSchema } from "@/features/seo/schema";
+import { env } from "@/server/env";
 
 type Props = PageProps<"/[locale]/news/[slug]">;
 
@@ -20,17 +24,24 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
   return {
     title: tx(article.title, locale),
-    description: tx(article.summary, locale),
+    description: metaDescription(tx(article.summary, locale)),
+    alternates: pageAlternates(locale, `/news/${encodeURIComponent(slug)}`),
     openGraph: article.cover ? { images: [article.cover.url] } : undefined,
   };
 }
 
 async function ArticleContent({ params }: Props) {
-  await initLocale();
+  const locale = await initLocale();
   const { slug } = await params;
   const article = await getArticle(slug);
   if (!article) notFound();
-  return <ArticleView article={article} />;
+  const tm = await getTranslations({ locale, namespace: "meta" });
+  return (
+    <>
+      <JsonLd data={articleSchema(article, { base: env().APP_URL, locale, orgName: `${tm("orgName")}, ${tm("region")}` })} />
+      <ArticleView article={article} />
+    </>
+  );
 }
 
 export default function ArticlePage(props: Props) {

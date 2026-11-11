@@ -6,8 +6,8 @@ Pages crawled: 133
 |---|---|
 | SEO | 73 |
 | Performance | 70 |
-| AI | 21 |
-| **Overall** | **55** |
+| AI | 43 |
+| **Overall** | **62** |
 
 ## SEO
 
@@ -43,9 +43,9 @@ Pages crawled: 133
 | robots.txt names AI crawlers explicitly | 0 | 1 |  |
 | llms.txt present | 0 | 1 | 404 |
 | Organization schema on home | 0 | 3 | none |
-| Article/Event schema on posts | 0 | 3 | 0/0 posts |
-| Visible publish dates on posts | 0 | 2 | 0/0 sampled |
-| Contact facts in text (PIN, phone, email) | 0 | 2 | 0/3 |
+| Article/Event schema on posts | 0 | 3 | 0/28 posts |
+| Visible publish dates on posts | 100 | 2 | 10/10 sampled |
+| Contact facts in text (PIN, phone, email) | 100 | 2 | 3/3 |
 | Hindi pages with hreflang | 0 | 2 |  |
 | Meta descriptions (used as answer snippets) | 79 | 1 |  |
 
@@ -53,9 +53,9 @@ Pages crawled: 133
 
 | Bot | Status | Bytes | robots.txt |
 |---|---|---|---|
-| GPTBot | 200 | 359119 | allowed |
-| OAI-SearchBot | 200 | 359119 | allowed |
-| ClaudeBot | 200 | 359119 | allowed |
-| PerplexityBot | 200 | 359119 | allowed |
-| Googlebot | 200 | 359119 | allowed |
-| Bingbot | 200 | 614423 | allowed |
+| GPTBot | 200 | 359724 | allowed |
+| OAI-SearchBot | 200 | 359724 | allowed |
+| ClaudeBot | 200 | 359724 | allowed |
+| PerplexityBot | 200 | 359724 | allowed |
+| Googlebot | 200 | 359724 | allowed |
+| Bingbot | 200 | 615467 | allowed |

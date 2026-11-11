@@ -7,6 +7,10 @@ import { DiscourseView, type ReadLang } from "@/features/discourses/DiscourseVie
 import Loading from "../loading";
 import { initLocale } from "@/i18n/server";
 import { tx } from "@/lib/format";
+import { metaDescription, pageAlternates } from "@/features/seo/meta";
+import { JsonLd } from "@/features/seo/JsonLd";
+import { discourseSchema } from "@/features/seo/schema";
+import { env } from "@/server/env";
 
 type Props = PageProps<"/[locale]/discourses/[slug]">;
 
@@ -18,7 +22,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const t = await getTranslations({ locale, namespace: "errors" });
     return { title: t("notFoundTitle") };
   }
-  return { title: tx(d.title, locale), description: tx(d.why, locale) || undefined };
+  return {
+    title: tx(d.title, locale),
+    description: metaDescription(tx(d.why, locale)),
+    alternates: pageAlternates(locale, `/discourses/${encodeURIComponent(slug)}`),
+  };
 }
 
 const first = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v);
@@ -31,7 +39,13 @@ async function DiscourseContent({ params, searchParams }: Props) {
   if (!d) notFound(); // unknown slug, unpublished, or flag off
   const l = first(sp.lang);
   const read: ReadLang = l === "en" || l === "hi" || l === "both" ? l : locale;
-  return <DiscourseView d={d} read={read} />;
+  const tm = await getTranslations({ locale, namespace: "meta" });
+  return (
+    <>
+      <JsonLd data={discourseSchema(d, { base: env().APP_URL, locale, orgName: `${tm("orgName")}, ${tm("region")}` })} />
+      <DiscourseView d={d} read={read} />
+    </>
+  );
 }
 
 export default function DiscoursePage(props: Props) {

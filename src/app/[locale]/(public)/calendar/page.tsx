@@ -9,11 +9,12 @@ import { type EventsFilter, getCentres, getEvents } from "@/features/public/data
 import Loading from "./loading";
 import { initLocale } from "@/i18n/server";
 import { istDateKey, tx } from "@/lib/format";
+import { metaDescription, pageAlternates } from "@/features/seo/meta";
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await initLocale();
   const t = await getTranslations({ locale, namespace: "calendar" });
-  return { title: t("metaTitle"), description: t("lead") };
+  return { title: t("metaTitle"), description: metaDescription(t("lead")), alternates: pageAlternates(locale, "/calendar") };
 }
 
 const LIST_PAGE_SIZE = 50;

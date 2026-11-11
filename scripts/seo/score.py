@@ -7,6 +7,7 @@ Usage:
 Every check is measured from the live site, so a re-run after a deploy shows the change the same day.
 """
 import glob, json, os, re, sys, collections
+from urllib.parse import urlparse
 import requests
 
 SITE = os.environ.get("SEO_BASE", "https://saidelhi.org").rstrip("/")
@@ -22,9 +23,19 @@ AI_BOTS = {
 snap = sys.argv[1] if len(sys.argv) > 1 else "."
 data = json.load(open(os.path.join(snap, "baseline.json")))
 pages = [p for p in data["pages"] if p.get("status") == 200 and "title" in p]
+
+
+def own_canonical(p):
+    """False for filtered/paged variants (?view=, ?page=) whose canonical points at another URL."""
+    c = (p.get("canonical") or "").split("?")[0].rstrip("/")
+    return not c or c.endswith(urlparse(p["url"]).path.rstrip("/")) and "?" not in p["url"]
+
+
+canon_pages = [p for p in pages if own_canonical(p)]
 site = data["site"]
 n = len(pages)
-titles = collections.Counter((p["title"] or "").strip() for p in pages)
+# Title uniqueness only among pages that are their own canonical (variants share their base title by design).
+titles = collections.Counter((p["title"] or "").strip() for p in canon_pages)
 
 
 def pct(pred):
@@ -34,7 +45,7 @@ def pct(pred):
 def title_ok(p):
     t = (p["title"] or "").strip()
     head = t.split("|")[0].strip()
-    return bool(head) and titles[t] == 1 and 20 <= len(t) <= 70
+    return bool(head) and (titles[t] == 1 or not own_canonical(p)) and 20 <= len(t) <= 70
 
 
 def desc_ok(p):
@@ -43,7 +54,9 @@ def desc_ok(p):
 
 
 def is_article(p):
-    return "/content/" in p["url"] and "getallposts" not in p["url"]
+    # Legacy Django posts live under /content/; the rebuild uses /news/<slug>, /discourses/<slug>, /events/<id>.
+    path = urlparse(p["url"]).path
+    return ("/content/" in path and "getallposts" not in p["url"]) or bool(re.search(r"/(news|discourses|events)/[^/]+/?$", path))
 
 
 arts = [p for p in pages if is_article(p)]
@@ -63,7 +76,7 @@ for name, ua in AI_BOTS.items():
     bots_ok += ok
     bot_rows.append((name, r.status_code, len(r.text), "blocked" if blocked_robots else "allowed"))
 
-contact = next((p for p in pages if "contact" in p["url"]), None)
+contact = next((p for p in pages if "contact" in p["url"]), None) or next((p for p in pages if urlparse(p["url"]).path.rstrip("/") == "/about"), None)
 contact_html = s.get(contact["url"], timeout=20).text if contact else ""
 art_html = {p["url"]: s.get(p["url"], timeout=20).text for p in arts[:10]}
 schema_types = collections.Counter()
@@ -71,7 +84,8 @@ for p in [home] + arts[:10]:
     html = art_html.get(p["url"]) or s.get(p["url"], timeout=20).text
     for block in re.findall(r'<script[^>]+application/ld\+json[^>]*>(.*?)</script>', html, re.S):
         schema_types.update(re.findall(r'"@type"\s*:\s*"([^"]+)"', block))
-dated = sum(1 for h in art_html.values() if re.search(r'<time[^>]*datetime=|"datePublished"', h))
+# HTML attribute names are case-insensitive (React writes dateTime=).
+dated = sum(1 for h in art_html.values() if re.search(r'<time[^>]*datetime=|"datePublished"|"startDate"', h, re.I))
 
 checks = []  # (group, name, score 0-100, weight, detail)
 

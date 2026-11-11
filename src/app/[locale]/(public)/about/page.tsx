@@ -5,11 +5,12 @@ import { AboutView } from "@/features/about/AboutView";
 import { getDistricts } from "@/features/public/data";
 import Loading from "./loading";
 import { initLocale } from "@/i18n/server";
+import { metaDescription, pageAlternates } from "@/features/seo/meta";
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await initLocale();
   const t = await getTranslations({ locale, namespace: "about" });
-  return { title: t("metaTitle"), description: t("metaDescription") };
+  return { title: t("metaTitle"), description: metaDescription(t("metaDescription")), alternates: pageAlternates(locale, "/about") };
 }
 
 async function AboutContent() {
