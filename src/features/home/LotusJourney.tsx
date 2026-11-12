@@ -22,7 +22,43 @@ export function LotusJourney() {
       {/* Design's "Lighting the lamp…" veil: first paint, lifted by JourneyStage (first 3D frame,
           static mode, or a time cap). Hidden without JS so the poster is never covered. */}
       <div className={styles.veil} aria-hidden="true">
-        <span className={styles.veilFlame} />
+        <span className={styles.jyoti}>
+          <span className={styles.jyotiHalo} />
+          <svg className={styles.jyotiFlame} viewBox="0 0 60 150" focusable="false">
+            <defs>
+              <radialGradient id="jyoti-outer" cx="50%" cy="72%" r="62%">
+                <stop offset="0" stopColor="#fffdf2" />
+                <stop offset="0.3" stopColor="#ffe9a0" />
+                <stop offset="0.62" stopColor="#ffb84a" />
+                <stop offset="0.86" stopColor="#ff8a1f" stopOpacity="0.75" />
+                <stop offset="1" stopColor="#ff6a00" stopOpacity="0" />
+              </radialGradient>
+              <radialGradient id="jyoti-core" cx="50%" cy="70%" r="55%">
+                <stop offset="0" stopColor="#ffffff" />
+                <stop offset="0.55" stopColor="#fff7d6" />
+                <stop offset="1" stopColor="#ffe28a" stopOpacity="0" />
+              </radialGradient>
+              <radialGradient id="jyoti-base" cx="50%" cy="50%" r="50%">
+                <stop offset="0" stopColor="#7fb4ff" stopOpacity="0.85" />
+                <stop offset="1" stopColor="#3a6dff" stopOpacity="0" />
+              </radialGradient>
+            </defs>
+            <g className={styles.jyotiBody}>
+              <path
+                d="M30 2C35 30 55 62 55 94c0 21-11 34-25 34S5 115 5 94C5 62 25 30 30 2Z"
+                fill="url(#jyoti-outer)"
+              />
+              <path
+                className={styles.jyotiCore}
+                d="M30 46c4 17 14 34 14 52 0 14-6 23-14 23s-14-9-14-23c0-18 10-35 14-52Z"
+                fill="url(#jyoti-core)"
+              />
+              <ellipse cx="30" cy="120" rx="10" ry="7" fill="url(#jyoti-base)" />
+            </g>
+            <path d="M30 104q1.5 14 0 30" stroke="#2a1a10" strokeWidth="2.4" strokeLinecap="round" fill="none" />
+            <circle cx="30.4" cy="105" r="1.6" fill="#ff9a3c" />
+          </svg>
+        </span>
         {t("lighting")}
       </div>
       <noscript>
