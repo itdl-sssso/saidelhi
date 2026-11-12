@@ -467,20 +467,58 @@
   transition: opacity 600ms linear, visibility 0s linear 600ms;
 }
 .veil:lang(hi) { letter-spacing: 0; text-transform: none; }
-.veilFlame {
-  width: 10px;
-  height: 16px;
-  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-  background: radial-gradient(circle at 50% 70%, #fff6d8 0 25%, #f5c35b 45%, #e8892c 75%, transparent 76%);
-  box-shadow: 0 0 18px 6px rgba(245, 195, 91, 0.35);
-  animation: flicker 1.6s ease-in-out infinite;
+/* Jyoti (meditation) flame: tall, steady teardrop with a white core, blue root, wick and soft halo. */
+.jyoti {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 60px;
+  height: 150px;
+  margin-bottom: 6px;
 }
-@keyframes flicker {
-  0%, 100% { transform: scale(1) rotate(-2deg); opacity: 1; }
-  50% { transform: scale(0.9, 1.08) rotate(2deg); opacity: 0.85; }
+.jyotiHalo {
+  position: absolute;
+  left: 50%;
+  top: 58%;
+  width: 220px;
+  height: 220px;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 200, 110, 0.28) 0%, rgba(255, 160, 60, 0.1) 38%, transparent 68%);
+  animation: jyotiHalo 4.8s ease-in-out infinite;
+}
+.jyotiFlame {
+  position: relative;
+  width: 60px;
+  height: 150px;
+  overflow: visible;
+}
+.jyotiBody {
+  transform-box: fill-box;
+  transform-origin: 50% 92%;
+  filter: blur(0.5px) drop-shadow(0 0 10px rgba(255, 190, 90, 0.55));
+  animation: jyotiSway 3.6s ease-in-out infinite;
+}
+.jyotiCore {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: jyotiCore 2.3s ease-in-out infinite;
+}
+@keyframes jyotiSway {
+  0%, 100% { transform: rotate(-1deg) scale(1, 1); }
+  30% { transform: rotate(0.8deg) scale(0.985, 1.035); }
+  60% { transform: rotate(-0.4deg) scale(1.01, 0.985); }
+}
+@keyframes jyotiCore {
+  0%, 100% { transform: scale(1, 1); opacity: 1; }
+  50% { transform: scale(0.96, 1.05); opacity: 0.92; }
+}
+@keyframes jyotiHalo {
+  0%, 100% { opacity: 0.85; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.06); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .veilFlame { animation: none; }
+  .jyotiBody, .jyotiCore, .jyotiHalo { animation: none; }
 }
 .journey[data-mode="static"] .veil,
 .journey[data-ready="1"] .veil,
